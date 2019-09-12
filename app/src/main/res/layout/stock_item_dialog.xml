@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <EditText
+            android:id="@+id/name_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+            android:id="@+id/min_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/minimum_quantity"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/name_et"
+            app:layout_constraintStart_toStartOf="@+id/name_et"
+            app:layout_constraintTop_toBottomOf="@+id/name_et" />
+
+    <EditText
+            android:id="@+id/max_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/maximum_quantity"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/min_et"
+            app:layout_constraintStart_toStartOf="@+id/min_et"
+            app:layout_constraintTop_toBottomOf="@+id/min_et" />
+
+    <EditText
+            android:id="@+id/current_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/current_quantity"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/max_et"
+            app:layout_constraintStart_toStartOf="@+id/max_et"
+            app:layout_constraintTop_toBottomOf="@+id/max_et" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

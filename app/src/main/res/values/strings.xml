@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">HomeAssistant</string>
+    <string name="delete">Delete</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="minimum_quantity">Minimum Quantity</string>
+    <string name="maximum_quantity">Maximum Quantity</string>
+    <string name="current_quantity">Current Quantity</string>
 </resources>
