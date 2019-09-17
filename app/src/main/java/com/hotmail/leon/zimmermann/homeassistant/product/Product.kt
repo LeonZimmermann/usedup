@@ -1,32 +1,15 @@
 package com.hotmail.leon.zimmermann.homeassistant.product
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "products")
 data class Product(
-    @PrimaryKey val id: Int,
     var name: String,
+    var quantity: Int,
     var min: Int,
-    var max: Int,
-    var current: Int
-)
-
-@Dao
-interface ProductDAO {
-    @Query("SELECT * FROM product")
-    fun getAll()
-
-    /*
-    @Query("SELECT * FROM product WHERE current < min")
-    fun getAllWithDeficit()
-    */
-
-    @Insert
-    fun insert(product: Product)
-
-    @Update
-    fun update(product: Product)
-
-    @Delete
-    fun delete(product: Product)
+    var max: Int
+) {
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 }

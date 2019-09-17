@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.stockList
+package com.hotmail.leon.zimmermann.homeassistant.list
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -9,24 +9,24 @@ import android.view.ViewGroup
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 
-class StockListFragment : Fragment() {
+class ProductListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = StockListFragment()
+        fun newInstance() = ProductListFragment()
     }
 
-    private lateinit var viewModel: StockListViewModel
+    private lateinit var viewModel: ProductListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.stock_list_fragment, container, false)
+        return inflater.inflate(R.layout.product_list_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StockListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ProductListViewModel::class.java)
     }
 
 }

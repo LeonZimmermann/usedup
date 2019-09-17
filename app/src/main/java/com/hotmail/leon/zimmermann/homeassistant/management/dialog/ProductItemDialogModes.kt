@@ -1,17 +1,16 @@
-package com.hotmail.leon.zimmermann.homeassistant.stockManagement.itemDialog
+package com.hotmail.leon.zimmermann.homeassistant.management.dialog
 
 import android.app.AlertDialog
 import android.view.View
 import com.hotmail.leon.zimmermann.homeassistant.product.Product
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.utils.MutableListLiveData
-import kotlinx.android.synthetic.main.stock_item_dialog.view.*
+import kotlinx.android.synthetic.main.product_item_dialog.view.*
 
-sealed class StockItemDialogMode {
+sealed class ProductItemDialogMode {
     abstract fun apply(builder: AlertDialog.Builder, view: View)
 }
 
-class StockItemDialogAddMode(private val productList: MutableListLiveData<Product>) : StockItemDialogMode() {
+class ProductItemDialogAddMode(private val onAdd: (product: Product) -> Unit) : ProductItemDialogMode() {
     override fun apply(builder: AlertDialog.Builder, view: View) {
         initializeView(view)
         addAddButton(builder, view)
@@ -31,7 +30,7 @@ class StockItemDialogAddMode(private val productList: MutableListLiveData<Produc
     }
 
     private fun addProduct(view: View) {
-        productList.add(
+        onAdd(
             Product(
                 view.name_et.text.toString(),
                 if (view.max_et.text.isNotBlank()) view.max_et.text.toString().toInt() else 0,
@@ -42,10 +41,11 @@ class StockItemDialogAddMode(private val productList: MutableListLiveData<Produc
     }
 }
 
-class StockItemDialogEditMode(
-    private val productList: MutableListLiveData<Product>,
-    private val product: Product
-) : StockItemDialogMode() {
+class ProductItemDialogEditMode(
+    private val product: Product,
+    val onEdit: (old: Product, new: Product) -> Unit,
+    val onDelete: (product: Product) -> Unit
+) : ProductItemDialogMode() {
 
     override fun apply(builder: AlertDialog.Builder, view: View) {
         initializeView(view)
@@ -57,7 +57,7 @@ class StockItemDialogEditMode(
         view.name_et.setText(product.name)
         view.max_et.setText(product.max.toString())
         view.min_et.setText(product.min.toString())
-        view.current_et.setText(product.current.toString())
+        view.current_et.setText(product.quantity.toString())
     }
 
     private fun addUpdateButton(builder: AlertDialog.Builder, view: View) {
@@ -67,17 +67,19 @@ class StockItemDialogEditMode(
     }
 
     private fun updateProductAttributes(view: View) {
-        productList.change(product) {
-            it.name = view.name_et.text.toString()
-            it.max = view.max_et.text.toString().toInt()
-            it.min = view.min_et.text.toString().toInt()
-            it.current = view.current_et.text.toString().toInt()
-        }
+        onEdit(
+            product, Product(
+                view.name_et.text.toString(),
+                view.max_et.text.toString().toInt(),
+                view.min_et.text.toString().toInt(),
+                view.current_et.text.toString().toInt()
+            )
+        )
     }
 
     private fun addDeleteButton(builder: AlertDialog.Builder) {
         builder.setNegativeButton(R.string.delete) { dialogInterface, i ->
-            productList.remove(product)
+            onDelete(product)
         }
     }
 }

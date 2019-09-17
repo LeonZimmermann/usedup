@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/stock_list_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.stockList.StockListFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.list.ProductListFragment"
             android:label="StockList">
         <action
                 android:id="@+id/action_stock_management"
@@ -15,9 +15,9 @@
     </fragment>
     <fragment
             android:id="@+id/stock_management_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.stockManagement.StockManagementFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.management.ProductManagementFragment"
             android:label="StockManagement"
-            tools:layout="@layout/stock_management_fragment">
+            tools:layout="@layout/product_management_fragment">
         <action
                 android:id="@+id/action_stock_list"
                 app:destination="@id/stock_list_fragment" />
