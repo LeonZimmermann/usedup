@@ -14,26 +14,6 @@ abstract class ProductDatabase: RoomDatabase() {
 
     abstract fun productDao(): ProductDao
 
-    private class ProductDatabaseCallback(private val scope: CoroutineScope): RoomDatabase.Callback() {
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            INSTANCE?.let { database ->
-                scope.launch {
-                    populateDatabase(database.productDao())
-                }
-            }
-        }
-
-        suspend fun populateDatabase(productDao: ProductDao) {
-            productDao.deleteAll()
-            productDao.insert(Product("Cheese", 2, 2, 2))
-            productDao.insert(Product("Salami", 1, 2, 2))
-            productDao.insert(Product("Toast", 2, 1, 2))
-            productDao.insert(Product("Butter", 0, 1, 3))
-            productDao.insert(Product("Bodywash", 0, 1, 2))
-        }
-    }
-
     companion object {
         @Volatile
         private var INSTANCE: ProductDatabase? = null
@@ -44,7 +24,6 @@ abstract class ProductDatabase: RoomDatabase() {
             if (tempInstance != null) return tempInstance
             synchronized(lock) {
                 val instance = Room.databaseBuilder(context.applicationContext, ProductDatabase::class.java, "homeassistant")
-                    .addCallback(ProductDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 return instance
