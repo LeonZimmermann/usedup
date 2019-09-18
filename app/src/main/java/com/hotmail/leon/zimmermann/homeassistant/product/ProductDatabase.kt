@@ -29,6 +29,8 @@ abstract class ProductDatabase: RoomDatabase() {
             productDao.insert(Product("Cheese", 2, 2, 2))
             productDao.insert(Product("Salami", 1, 2, 2))
             productDao.insert(Product("Toast", 2, 1, 2))
+            productDao.insert(Product("Butter", 0, 1, 3))
+            productDao.insert(Product("Bodywash", 0, 1, 2))
         }
     }
 

@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialog
 import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import kotlinx.android.synthetic.main.product_entry.view.*
+import kotlinx.android.synthetic.main.product_item.view.*
 
 class ProductListAdapter internal constructor(context: Context, private val onClickListener: View.OnClickListener) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
@@ -22,7 +21,7 @@ class ProductListAdapter internal constructor(context: Context, private val onCl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val itemView = inflater.inflate(R.layout.product_entry, parent, false)
+        val itemView = inflater.inflate(R.layout.product_item, parent, false)
         itemView.setOnClickListener(onClickListener)
         return ProductViewHolder(itemView)
     }
