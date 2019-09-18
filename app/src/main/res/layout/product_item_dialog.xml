@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-            android:id="@+id/quantity_et"
+            android:id="@+id/quantity_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -40,7 +40,7 @@
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="@+id/name_et"
             app:layout_constraintStart_toStartOf="@+id/name_et"
-            app:layout_constraintTop_toBottomOf="@+id/quantity_et" />
+            app:layout_constraintTop_toBottomOf="@+id/quantity_tv" />
 
     <EditText
             android:id="@+id/max_et"
