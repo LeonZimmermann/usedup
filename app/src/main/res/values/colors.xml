@@ -7,5 +7,5 @@
     <!-- Text -->
     <color name="listItemTextColor">#555555</color>
 
-    <color name="dividerColor">@color/listItemTextColor</color>
+    <color name="dividerColor">#CCCCCC</color>
 </resources>
