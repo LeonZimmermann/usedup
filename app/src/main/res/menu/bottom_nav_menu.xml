@@ -6,6 +6,6 @@
             android:title="Shopping" />
     <item
             android:id="@+id/management_item"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/management_icon"
             android:title="Management" />
 </menu>

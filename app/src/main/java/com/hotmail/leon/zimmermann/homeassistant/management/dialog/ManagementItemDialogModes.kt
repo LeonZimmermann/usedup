@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.view.View
 import com.hotmail.leon.zimmermann.homeassistant.product.Product
 import com.hotmail.leon.zimmermann.homeassistant.R
-import kotlinx.android.synthetic.main.product_item_dialog.view.*
+import kotlinx.android.synthetic.main.management_item_dialog.view.*
 
 sealed class ProductItemDialogMode {
     abstract fun apply(builder: AlertDialog.Builder, view: View)

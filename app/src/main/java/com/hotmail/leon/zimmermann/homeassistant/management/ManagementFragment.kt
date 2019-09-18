@@ -9,36 +9,36 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialog
+import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialog
 import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogAddMode
 import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogEditMode
-import kotlinx.android.synthetic.main.product_management_fragment.*
+import kotlinx.android.synthetic.main.management_fragment.*
 
 
-class ProductManagementFragment : Fragment() {
+class ManagementFragment : Fragment() {
     companion object {
-        fun newInstance() = ProductManagementFragment()
+        fun newInstance() = ManagementFragment()
     }
 
-    private lateinit var viewModel: ProductManagementViewModel
-    private lateinit var adapter: ProductListAdapter
+    private lateinit var viewModel: ManagementViewModel
+    private lateinit var adapter: ManagementListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.product_management_fragment, container, false)
+        return inflater.inflate(R.layout.management_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ProductManagementViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ManagementViewModel::class.java)
         initializeProductList()
         initializeAddButton()
     }
 
     private fun initializeProductList() {
-        adapter = ProductListAdapter(activity!!, View.OnClickListener { onItemClicked(it) })
+        adapter = ManagementListAdapter(activity!!, View.OnClickListener { onItemClicked(it) })
         product_entry_container.adapter = adapter
         product_entry_container.layoutManager = LinearLayoutManager(activity)
         viewModel.productList.observe(this, Observer {
@@ -48,18 +48,18 @@ class ProductManagementFragment : Fragment() {
 
     private fun initializeAddButton() {
         add_button.setOnClickListener {
-            ProductItemDialog(ProductItemDialogAddMode(viewModel::insert))
-                .show(fragmentManager!!, "ProductItemDialog")
+            ManagementItemDialog(ProductItemDialogAddMode(viewModel::insert))
+                .show(fragmentManager!!, "ManagementItemDialog")
         }
     }
 
     private fun onItemClicked(view: View) {
-        ProductItemDialog(
+        ManagementItemDialog(
             ProductItemDialogEditMode(
                 adapter[product_entry_container.getChildAdapterPosition(view)],
                 viewModel::update,
                 viewModel::delete
             )
-        ).show(fragmentManager!!, "ProductItemDialog")
+        ).show(fragmentManager!!, "ManagementItemDialog")
     }
 }

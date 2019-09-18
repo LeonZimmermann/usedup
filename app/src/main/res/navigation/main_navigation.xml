@@ -15,9 +15,9 @@
     </fragment>
     <fragment
             android:id="@+id/stock_management_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.management.ProductManagementFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.management.ManagementFragment"
             android:label="StockManagement"
-            tools:layout="@layout/product_management_fragment">
+            tools:layout="@layout/management_fragment">
         <action
                 android:id="@+id/action_stock_list"
                 app:destination="@id/stock_list_fragment" />

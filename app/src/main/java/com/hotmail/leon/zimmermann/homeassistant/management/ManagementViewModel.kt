@@ -9,7 +9,7 @@ import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
 import com.hotmail.leon.zimmermann.homeassistant.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class ProductManagementViewModel(application: Application) : AndroidViewModel(application) {
+class ManagementViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
     val productList: LiveData<List<Product>>

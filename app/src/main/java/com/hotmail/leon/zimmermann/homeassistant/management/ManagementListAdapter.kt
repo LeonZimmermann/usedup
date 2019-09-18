@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import kotlinx.android.synthetic.main.product_item.view.*
+import kotlinx.android.synthetic.main.management_item.view.*
 
-class ProductListAdapter internal constructor(context: Context, private val onClickListener: View.OnClickListener) :
-    RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
+class ManagementListAdapter internal constructor(context: Context, private val onClickListener: View.OnClickListener) :
+    RecyclerView.Adapter<ManagementListAdapter.ProductViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
     private var productList = emptyList<Product>()
@@ -21,7 +21,7 @@ class ProductListAdapter internal constructor(context: Context, private val onCl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val itemView = inflater.inflate(R.layout.product_item, parent, false)
+        val itemView = inflater.inflate(R.layout.management_item, parent, false)
         itemView.setOnClickListener(onClickListener)
         return ProductViewHolder(itemView)
     }
