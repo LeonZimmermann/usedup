@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -46,9 +47,13 @@ class ShoppingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ShoppingViewModel::class.java)
-        adapter = ShoppingListAdapter(activity!!)
+        adapter = ShoppingListAdapter(context!!)
+        val layoutManager = LinearLayoutManager(context!!)
+        val divider = DividerItemDecoration(shopping_list.context, layoutManager.orientation)
+        divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
+        shopping_list.addItemDecoration(divider)
         shopping_list.adapter = adapter
-        shopping_list.layoutManager = LinearLayoutManager(activity!!)
+        shopping_list.layoutManager = layoutManager
         viewModel.productList.observe(this, Observer { productList ->
             adapter.setProductList(productList)
         })

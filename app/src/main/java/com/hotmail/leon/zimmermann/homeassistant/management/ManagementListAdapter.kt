@@ -16,8 +16,10 @@ class ManagementListAdapter internal constructor(context: Context, private val o
     private var productList = emptyList<Product>()
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val productNameView = itemView.product_name
-        val productQuantityView = itemView.product_quantity
+        val productNameView = itemView.name_tv
+        val productQuantityView = itemView.quantity_tv
+        val productMinView = itemView.min_tv
+        val productMaxView = itemView.max_tv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -30,6 +32,8 @@ class ManagementListAdapter internal constructor(context: Context, private val o
         val current = productList[position]
         holder.productNameView.text = current.name
         holder.productQuantityView.text = current.quantity.toString()
+        holder.productMinView.text = current.min.toString()
+        holder.productMaxView.text = current.max.toString()
     }
 
     internal fun setProductList(productList: List<Product>) {

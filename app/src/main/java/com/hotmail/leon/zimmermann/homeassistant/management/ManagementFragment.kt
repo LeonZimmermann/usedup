@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialog
 import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogAddMode
 import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogEditMode
 import kotlinx.android.synthetic.main.management_fragment.*
+import kotlinx.android.synthetic.main.shopping_fragment.*
 
 
 class ManagementFragment : Fragment() {
@@ -38,9 +40,13 @@ class ManagementFragment : Fragment() {
     }
 
     private fun initializeProductList() {
-        adapter = ManagementListAdapter(activity!!, View.OnClickListener { onItemClicked(it) })
+        val layoutManager = LinearLayoutManager(context!!)
+        val divider = DividerItemDecoration(product_entry_container.context, layoutManager.orientation)
+        divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
+        product_entry_container.addItemDecoration(divider)
+        adapter = ManagementListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
         product_entry_container.adapter = adapter
-        product_entry_container.layoutManager = LinearLayoutManager(activity)
+        product_entry_container.layoutManager = layoutManager
         viewModel.productList.observe(this, Observer {
             it?.let { adapter.setProductList(it) }
         })
