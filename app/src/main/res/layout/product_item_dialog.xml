@@ -20,6 +20,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+            android:id="@+id/quantity_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/current_quantity"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/max_et"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/max_et"
+            app:layout_constraintTop_toBottomOf="@+id/name_et" />
+
+    <EditText
             android:id="@+id/min_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,7 +40,7 @@
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="@+id/name_et"
             app:layout_constraintStart_toStartOf="@+id/name_et"
-            app:layout_constraintTop_toBottomOf="@+id/name_et" />
+            app:layout_constraintTop_toBottomOf="@+id/quantity_et" />
 
     <EditText
             android:id="@+id/max_et"
@@ -40,16 +52,5 @@
             app:layout_constraintEnd_toEndOf="@+id/min_et"
             app:layout_constraintStart_toStartOf="@+id/min_et"
             app:layout_constraintTop_toBottomOf="@+id/min_et" />
-
-    <EditText
-            android:id="@+id/current_et"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/current_quantity"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/max_et"
-            app:layout_constraintStart_toStartOf="@+id/max_et"
-            app:layout_constraintTop_toBottomOf="@+id/max_et" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,12 @@ class ProductManagementViewModel(application: Application) : AndroidViewModel(ap
         }
     }
 
+    fun update(product: Product) {
+        viewModelScope.launch {
+            productRepository.update(product)
+        }
+    }
+
     fun delete(product: Product) {
         viewModelScope.launch {
             productRepository.delete(product)

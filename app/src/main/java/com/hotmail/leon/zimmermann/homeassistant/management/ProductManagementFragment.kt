@@ -54,13 +54,12 @@ class ProductManagementFragment : Fragment() {
     }
 
     private fun onItemClicked(view: View) {
-        ProductItemDialog(ProductItemDialogEditMode(adapter[product_entry_container.getChildAdapterPosition(view)],
-            { old, new ->
-                viewModel.delete(old)
-                viewModel.insert(new)
-            }, {
-                viewModel.delete(it)
-            })
+        ProductItemDialog(
+            ProductItemDialogEditMode(
+                adapter[product_entry_container.getChildAdapterPosition(view)],
+                viewModel::update,
+                viewModel::delete
+            )
         ).show(fragmentManager!!, "ProductItemDialog")
     }
 }
