@@ -3,23 +3,45 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_navigation.xml"
-        app:startDestination="@id/stock_list_fragment">
+        app:startDestination="@id/transaction_fragment">
 
     <fragment
-            android:id="@+id/stock_list_fragment"
+            android:id="@+id/shopping_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.shopping.ShoppingFragment"
-            android:label="StockList">
-        <action
-                android:id="@+id/action_stock_management"
-                app:destination="@id/stock_management_fragment" />
-    </fragment>
+            android:label="Shopping"
+            tools:layout="@layout/shopping_fragment"/>
     <fragment
-            android:id="@+id/stock_management_fragment"
+            android:id="@+id/management_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.management.ManagementFragment"
-            android:label="StockManagement"
-            tools:layout="@layout/management_fragment">
-        <action
-                android:id="@+id/action_stock_list"
-                app:destination="@id/stock_list_fragment" />
-    </fragment>
+            android:label="Management"
+            tools:layout="@layout/management_fragment"/>
+    <fragment
+            android:id="@+id/transaction_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.transaction.TransactionFragment"
+            android:label="Transaction"
+            tools:layout="@layout/transaction_fragment" />
+    <action
+            android:id="@+id/action_global_shopping_fragment"
+            app:destination="@id/shopping_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:launchSingleTop="true" />
+    <action
+            android:id="@+id/action_global_management_fragment"
+            app:destination="@id/management_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <action
+            android:id="@+id/action_global_transaction_fragment"
+            app:destination="@id/transaction_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:launchSingleTop="true" />
 </navigation>

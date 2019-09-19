@@ -16,15 +16,20 @@ class MainActivity : AppCompatActivity() {
     private fun initializeBottomNavigation() {
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.shopping_item -> {
-                    nav_host_fragment.findNavController().navigate(R.id.action_stock_list)
+                R.id.shopping_option -> {
+                    nav_host_fragment.findNavController().navigate(R.id.action_global_shopping_fragment)
                     true
                 }
-                R.id.management_item -> {
-                    nav_host_fragment.findNavController().navigate(R.id.action_stock_management)
+                R.id.management_option -> {
+                    nav_host_fragment.findNavController().navigate(R.id.action_global_management_fragment)
+                    true
+                }
+                R.id.transaction_option -> {
+                    nav_host_fragment.findNavController().navigate(R.id.action_global_transaction_fragment)
                     true
                 }
                 else -> false
+
             }
         }
     }
