@@ -10,11 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialog
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogAddMode
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ProductItemDialogEditMode
+import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogAddHandler
+import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogEditHandler
+import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogFragment
 import kotlinx.android.synthetic.main.management_fragment.*
-import kotlinx.android.synthetic.main.shopping_fragment.*
 
 
 class ManagementFragment : Fragment() {
@@ -54,18 +53,16 @@ class ManagementFragment : Fragment() {
 
     private fun initializeAddButton() {
         add_button.setOnClickListener {
-            ManagementItemDialog(ProductItemDialogAddMode(viewModel::insert))
-                .show(fragmentManager!!, "ManagementItemDialog")
+            ManagementItemDialogFragment(ManagementItemDialogAddHandler, null)
+                .show(fragmentManager!!, "ManagementItemDialogFragment")
         }
     }
 
     private fun onItemClicked(view: View) {
-        ManagementItemDialog(
-            ProductItemDialogEditMode(
-                adapter[product_entry_container.getChildAdapterPosition(view)],
-                viewModel::update,
-                viewModel::delete
-            )
-        ).show(fragmentManager!!, "ManagementItemDialog")
+        val productId = adapter[product_entry_container.getChildAdapterPosition(view)].id
+        ManagementItemDialogFragment(
+            ManagementItemDialogEditHandler,
+            productId
+        ).show(fragmentManager!!, "ManagementItemDialogFragment")
     }
 }
