@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_navigation.xml"
-        app:startDestination="@id/shopping_fragment">
+        app:startDestination="@id/overview_fragment">
 
     <fragment
             android:id="@+id/shopping_fragment"
@@ -44,4 +44,17 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:launchSingleTop="true" />
+    <fragment
+            android:id="@+id/overview_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.overview.OverviewFragment"
+            android:label="Overview"
+            tools:layout="@layout/overview_fragment" />
+    <action
+            android:id="@+id/action_global_overviewFragment"
+            app:destination="@+id/overview_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>
