@@ -3,6 +3,7 @@ package com.hotmail.leon.zimmermann.homeassistant.transaction
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.product.Product
 import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
@@ -13,16 +14,18 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
 
     private val repository: ProductRepository
     val productList: LiveData<List<Product>>
+    var transactionList: MutableLiveData<MutableList<Pair<Product, Int>>>
 
     init {
         val productDao = ProductDatabase.getDatabase(application, viewModelScope).productDao()
         repository = ProductRepository(productDao)
         productList = repository.productList
+        transactionList = MutableLiveData(mutableListOf())
     }
 
-    fun update(product: Product) {
+    fun updateAll(productList: List<Product>) {
         viewModelScope.launch {
-            repository.update(product)
+            repository.updateAll(productList)
         }
     }
 

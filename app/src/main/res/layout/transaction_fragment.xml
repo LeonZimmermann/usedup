@@ -32,11 +32,46 @@
 
     <Button
             android:id="@+id/transaction_button"
+            style="pr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Make Transaction"
+            app:layout_constraintEnd_toEndOf="@+id/add_button"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/add_button"
+            app:layout_constraintTop_toBottomOf="@+id/add_button" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/transaction_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/save_button"
+            app:layout_constraintStart_toStartOf="@+id/save_button"
+            app:layout_constraintTop_toBottomOf="@+id/save_button"
+            tools:itemCount="10"
+            tools:listitem="@layout/product_item" />
+
+    <Button
+            android:id="@+id/add_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Add Product To List"
             app:layout_constraintEnd_toEndOf="@+id/quantity_change_input"
             app:layout_constraintStart_toStartOf="@+id/quantity_change_input"
             app:layout_constraintTop_toBottomOf="@+id/quantity_change_input" />
+
+    <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Save Transaction"
+            app:layout_constraintEnd_toEndOf="@+id/transaction_button"
+            app:layout_constraintStart_toStartOf="@+id/transaction_button"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

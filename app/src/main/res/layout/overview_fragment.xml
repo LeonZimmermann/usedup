@@ -120,7 +120,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/discrepancy_view_button"
                     tools:itemCount="3"
-                    tools:listitem="@layout/overview_discrepancy_item" />
+                    tools:listitem="@layout/product_item" />
 
             <TextView
                     android:id="@+id/textView"
