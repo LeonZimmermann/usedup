@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.management
+package com.hotmail.leon.zimmermann.homeassistant.fragments.management
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import kotlinx.android.synthetic.main.management_item.view.*
 
 class ManagementListAdapter internal constructor(context: Context, private val onClickListener: View.OnClickListener) :

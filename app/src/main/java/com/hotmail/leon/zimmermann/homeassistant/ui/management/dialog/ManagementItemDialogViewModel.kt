@@ -1,12 +1,12 @@
-package com.hotmail.leon.zimmermann.homeassistant.management.dialog
+package com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ManagementItemDialogViewModel(application: Application): AndroidViewModel(application) {

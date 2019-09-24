@@ -1,22 +1,19 @@
-package com.hotmail.leon.zimmermann.homeassistant.transaction
+package com.hotmail.leon.zimmermann.homeassistant.fragments.transaction
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.MultiAutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import kotlinx.android.synthetic.main.shopping_fragment.*
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import kotlinx.android.synthetic.main.transaction_fragment.*
 
 class TransactionFragment : Fragment() {
@@ -81,7 +78,8 @@ class TransactionFragment : Fragment() {
     }
 
     private fun initializeTransactionList() {
-        val adapter = TransactionBatchListAdapter(context!!)
+        val adapter =
+            TransactionBatchListAdapter(context!!)
         val layoutManager = LinearLayoutManager(context!!)
         val divider = DividerItemDecoration(transaction_list.context!!, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)

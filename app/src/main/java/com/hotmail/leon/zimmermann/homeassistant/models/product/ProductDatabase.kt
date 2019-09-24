@@ -1,12 +1,10 @@
-package com.hotmail.leon.zimmermann.homeassistant.product
+package com.hotmail.leon.zimmermann.homeassistant.models.product
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import java.util.concurrent.locks.ReentrantLock
 
 @Database(entities = [Product::class], version = 1)

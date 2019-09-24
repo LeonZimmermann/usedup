@@ -1,13 +1,13 @@
-package com.hotmail.leon.zimmermann.homeassistant.transaction
+package com.hotmail.leon.zimmermann.homeassistant.fragments.transaction
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {

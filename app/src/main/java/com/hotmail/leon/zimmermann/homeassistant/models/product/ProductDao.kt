@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.product
+package com.hotmail.leon.zimmermann.homeassistant.models.product
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

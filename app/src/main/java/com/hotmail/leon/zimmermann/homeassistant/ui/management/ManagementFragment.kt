@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.management
+package com.hotmail.leon.zimmermann.homeassistant.fragments.management
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogAddHandler
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogEditHandler
-import com.hotmail.leon.zimmermann.homeassistant.management.dialog.ManagementItemDialogFragment
+import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogAddHandler
+import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogEditHandler
+import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogFragment
 import kotlinx.android.synthetic.main.management_fragment.*
 
 
@@ -43,7 +43,9 @@ class ManagementFragment : Fragment() {
         val divider = DividerItemDecoration(product_entry_container.context, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
         product_entry_container.addItemDecoration(divider)
-        adapter = ManagementListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
+        adapter = ManagementListAdapter(
+            context!!,
+            View.OnClickListener { onItemClicked(it) })
         product_entry_container.adapter = adapter
         product_entry_container.layoutManager = layoutManager
         viewModel.productList.observe(this, Observer {
@@ -53,7 +55,10 @@ class ManagementFragment : Fragment() {
 
     private fun initializeAddButton() {
         add_button.setOnClickListener {
-            ManagementItemDialogFragment(ManagementItemDialogAddHandler, null)
+            ManagementItemDialogFragment(
+                ManagementItemDialogAddHandler,
+                null
+            )
                 .show(fragmentManager!!, "ManagementItemDialogFragment")
         }
     }

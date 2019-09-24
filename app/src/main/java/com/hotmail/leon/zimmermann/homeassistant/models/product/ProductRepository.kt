@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.product
+package com.hotmail.leon.zimmermann.homeassistant.models.product
 
 class ProductRepository(private val productDao: ProductDao) {
     val productList = productDao.getAll()

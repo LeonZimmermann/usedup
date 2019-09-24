@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.shopping
+package com.hotmail.leon.zimmermann.homeassistant.fragments.shopping
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import kotlinx.android.synthetic.main.shopping_item.view.*
 
 class ShoppingListAdapter(context: Context) :

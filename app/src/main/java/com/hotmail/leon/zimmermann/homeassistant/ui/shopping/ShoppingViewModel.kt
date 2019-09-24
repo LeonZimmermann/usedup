@@ -1,10 +1,10 @@
-package com.hotmail.leon.zimmermann.homeassistant.shopping
+package com.hotmail.leon.zimmermann.homeassistant.fragments.shopping
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ShoppingViewModel(application: Application) : AndroidViewModel(application) {

@@ -1,13 +1,13 @@
-package com.hotmail.leon.zimmermann.homeassistant.overview
+package com.hotmail.leon.zimmermann.homeassistant.fragments.overview
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductDatabase
-import com.hotmail.leon.zimmermann.homeassistant.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 

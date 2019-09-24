@@ -1,7 +1,6 @@
-package com.hotmail.leon.zimmermann.homeassistant.product
+package com.hotmail.leon.zimmermann.homeassistant.models.product
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlin.math.max
 

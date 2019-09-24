@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.management.dialog
+package com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import java.lang.RuntimeException
 
 class ManagementItemDialogFragment() : DialogFragment() {
@@ -49,12 +49,12 @@ class ManagementItemDialogFragment() : DialogFragment() {
 
     private fun initializeButtons(builder: AlertDialog.Builder, view: View) {
         when (val handler = this.handler) {
-            is ManagementItemDialogAddHandler -> handler.initializeButtons(
+            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeButtons(
                 builder,
                 view,
                 viewModel::insert
             )
-            is ManagementItemDialogEditHandler -> handler.initializeButtons(
+            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeButtons(
                 builder,
                 view,
                 { name, quantity, min, max ->
@@ -77,8 +77,13 @@ class ManagementItemDialogFragment() : DialogFragment() {
 
     private fun initializeView(view: View, product: Product?) {
         when (val handler = this.handler) {
-            is ManagementItemDialogAddHandler -> handler.initializeView(view)
-            is ManagementItemDialogEditHandler -> handler.initializeView(view, product!!)
+            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeView(
+                view
+            )
+            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeView(
+                view,
+                product!!
+            )
         }
     }
 

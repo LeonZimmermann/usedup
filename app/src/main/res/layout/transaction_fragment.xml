@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".transaction.TransactionFragment">
+        tools:context=".fragments.transaction.TransactionFragment">
 
     <AutoCompleteTextView
             android:id="@+id/product_name_input"

@@ -1,8 +1,8 @@
-package com.hotmail.leon.zimmermann.homeassistant.management.dialog
+package com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog
 
 import android.app.AlertDialog
 import android.view.View
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.management_item_dialog.view.*
 import java.io.Serializable
@@ -13,7 +13,12 @@ sealed class ManagementItemDialogHandler : Serializable
 object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
 
     fun initializeButtons(builder: AlertDialog.Builder, view: View, onAdd: (product: Product) -> Unit) {
-        builder.setPositiveButton(R.string.submit) { dialogInterface, i -> addProduct(view, onAdd) }
+        builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
+            addProduct(
+                view,
+                onAdd
+            )
+        }
     }
 
     fun initializeView(view: View) {
@@ -42,8 +47,15 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
         onEdit: (name: String, quantity: Int, min: Int, max: Int) -> Unit,
         onDelete: () -> Unit
     ) {
-        addUpdateButton(builder, view, onEdit)
-        addDeleteButton(builder, onDelete)
+        addUpdateButton(
+            builder,
+            view,
+            onEdit
+        )
+        addDeleteButton(
+            builder,
+            onDelete
+        )
     }
 
     fun initializeView(view: View, product: Product) {

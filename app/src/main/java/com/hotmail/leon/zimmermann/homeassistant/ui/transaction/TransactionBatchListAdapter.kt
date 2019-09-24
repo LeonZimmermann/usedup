@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.transaction
+package com.hotmail.leon.zimmermann.homeassistant.fragments.transaction
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class TransactionBatchListAdapter internal constructor(context: Context) :
