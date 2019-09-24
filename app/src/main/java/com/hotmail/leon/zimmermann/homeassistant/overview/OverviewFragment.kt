@@ -36,6 +36,7 @@ class OverviewFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
         initializeTransactionCard()
         initializeDiscrepancyCard()
+        initializeManagementCard()
     }
 
     private fun initializeTransactionCard() {
@@ -56,6 +57,15 @@ class OverviewFragment : Fragment() {
         viewModel.productList.observe(this, Observer {
             it?.let { adapter.setProductList(it) }
         })
+        shopping_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_shopping_fragment)
+        }
+    }
+
+    private fun initializeManagementCard() {
+        management_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_management_fragment)
+        }
     }
 
 }
