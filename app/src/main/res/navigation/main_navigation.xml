@@ -7,19 +7,19 @@
 
     <fragment
             android:id="@+id/shopping_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.fragments.shopping.ShoppingFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.shopping.ShoppingFragment"
             android:label="Shopping"
             tools:layout="@layout/shopping_fragment"/>
     <fragment
             android:id="@+id/management_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.fragments.management.ManagementFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.management.ManagementFragment"
             android:label="Management"
             tools:layout="@layout/management_fragment"/>
     <fragment
             android:id="@+id/transaction_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.fragments.transaction.TransactionFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ConsumptionFragment"
             android:label="Transaction"
-            tools:layout="@layout/transaction_fragment" />
+            tools:layout="@layout/consumption_fragment" />
     <action
             android:id="@+id/action_global_shopping_fragment"
             app:destination="@id/shopping_fragment"
@@ -46,7 +46,7 @@
             app:launchSingleTop="true" />
     <fragment
             android:id="@+id/overview_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.fragments.overview.OverviewFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.overview.OverviewFragment"
             android:label="Overview"
             tools:layout="@layout/overview_fragment" />
     <action

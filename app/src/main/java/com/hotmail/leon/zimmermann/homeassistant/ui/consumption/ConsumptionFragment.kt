@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.transaction
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -14,35 +14,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
-import kotlinx.android.synthetic.main.transaction_fragment.*
+import kotlinx.android.synthetic.main.consumption_fragment.*
 
-class TransactionFragment : Fragment() {
+class ConsumptionFragment : Fragment() {
 
-    private open inner class TransactionException(message: String) : Exception(message)
-    private inner class InvalidQuantityChangeException : TransactionException("Invalid Quantity Change")
-    private inner class InvalidProductNameException : TransactionException("Invalid ProductEntity Name")
-    private inner class NoTransactionsException : TransactionException("No transactions to be made")
+    private open inner class ConsumptionException(message: String) : Exception(message)
+    private inner class InvalidQuantityChangeException : ConsumptionException("Invalid Quantity Change")
+    private inner class InvalidProductNameException : ConsumptionException("Invalid ProductEntity Name")
+    private inner class NoConsumptionsException : ConsumptionException("No consumptions specified")
 
     companion object {
-        fun newInstance() = TransactionFragment()
+        fun newInstance() = ConsumptionFragment()
     }
 
-    private lateinit var viewModel: TransactionViewModel
+    private lateinit var viewModel: ConsumptionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.transaction_fragment, container, false)
+        return inflater.inflate(R.layout.consumption_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TransactionViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
         initializeProductNameInput()
         initializeAddButton()
-        initializeTransactionList()
-        initializeTransactionButton()
+        initializeConsumptionList()
+        initializeConsumptionButton()
     }
 
     private fun initializeProductNameInput() {
@@ -59,10 +59,10 @@ class TransactionFragment : Fragment() {
         add_button.setOnClickListener {
             try {
                 val (product, quantityChange) = getProductAndQuantityChange(viewModel.productEntityList.value!!)
-                val transactionList = viewModel.transactionList.value!!
-                transactionList.add(Pair(product, quantityChange))
-                viewModel.transactionList.value = transactionList
-            } catch (e: TransactionException) {
+                val consumptionList = viewModel.consumptionList.value!!
+                consumptionList.add(Pair(product, quantityChange))
+                viewModel.consumptionList.value = consumptionList
+            } catch (e: ConsumptionException) {
                 Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
             }
         }
@@ -77,30 +77,30 @@ class TransactionFragment : Fragment() {
         return Pair(product, quantityChange)
     }
 
-    private fun initializeTransactionList() {
+    private fun initializeConsumptionList() {
         val adapter =
-            TransactionBatchListAdapter(context!!)
+            ConsumptionBatchListAdapter(context!!)
         val layoutManager = LinearLayoutManager(context!!)
-        val divider = DividerItemDecoration(transaction_list.context!!, layoutManager.orientation)
+        val divider = DividerItemDecoration(consumption_list.context!!, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
-        transaction_list.addItemDecoration(divider)
-        transaction_list.adapter = adapter
-        transaction_list.layoutManager = layoutManager
-        viewModel.transactionList.observe(this, Observer { transactionList ->
-            adapter.setTransactionList(transactionList)
+        consumption_list.addItemDecoration(divider)
+        consumption_list.adapter = adapter
+        consumption_list.layoutManager = layoutManager
+        viewModel.consumptionList.observe(this, Observer { consumptionList ->
+            adapter.setConsumptionList(consumptionList)
         })
     }
 
-    private fun initializeTransactionButton() {
-        transaction_button.setOnClickListener {
+    private fun initializeConsumptionButton() {
+        consumption_button.setOnClickListener {
             try {
-                val transactionList = viewModel.transactionList.value!!
-                if (transactionList.isEmpty()) throw NoTransactionsException()
-                for ((product, quantityChange) in transactionList)
+                val consumptionList = viewModel.consumptionList.value!!
+                if (consumptionList.isEmpty()) throw NoConsumptionsException()
+                for ((product, quantityChange) in consumptionList)
                     product.quantity += quantityChange
-                viewModel.updateAll(transactionList.map { it.first })
-                viewModel.transactionList.value = mutableListOf()
-            } catch (e: TransactionException) {
+                viewModel.updateAll(consumptionList.map { it.first })
+                viewModel.consumptionList.value = mutableListOf()
+            } catch (e: ConsumptionException) {
                 Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
             }
         }

@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog
+package com.hotmail.leon.zimmermann.homeassistant.ui.management.dialog
 
 import android.app.AlertDialog
 import android.view.View

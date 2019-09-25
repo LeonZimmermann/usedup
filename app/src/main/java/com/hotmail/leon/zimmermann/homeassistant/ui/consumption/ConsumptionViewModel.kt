@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.transaction
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -10,17 +10,17 @@ import com.hotmail.leon.zimmermann.homeassistant.models.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class TransactionViewModel(application: Application) : AndroidViewModel(application) {
+class ConsumptionViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: ProductRepository
     val productEntityList: LiveData<List<ProductEntity>>
-    var transactionList: MutableLiveData<MutableList<Pair<ProductEntity, Int>>>
+    var consumptionList: MutableLiveData<MutableList<Pair<ProductEntity, Int>>>
 
     init {
         val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
         repository = ProductRepository(productDao)
         productEntityList = repository.productList
-        transactionList = MutableLiveData(mutableListOf())
+        consumptionList = MutableLiveData(mutableListOf())
     }
 
     fun updateAll(productEntityList: List<ProductEntity>) {

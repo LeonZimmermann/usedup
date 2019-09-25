@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments
+package com.hotmail.leon.zimmermann.homeassistant.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

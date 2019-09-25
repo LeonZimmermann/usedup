@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.shopping
+package com.hotmail.leon.zimmermann.homeassistant.ui.shopping
 
 import android.app.Application
 import androidx.lifecycle.*

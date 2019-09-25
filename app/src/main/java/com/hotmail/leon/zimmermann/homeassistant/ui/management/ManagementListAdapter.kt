@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.management
+package com.hotmail.leon.zimmermann.homeassistant.ui.management
 
 import android.content.Context
 import android.view.LayoutInflater

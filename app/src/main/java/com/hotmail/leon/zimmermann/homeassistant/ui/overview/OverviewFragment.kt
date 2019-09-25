@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.overview
+package com.hotmail.leon.zimmermann.homeassistant.ui.overview
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -38,11 +38,11 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initializeTransactionCard() {
-        transaction_view_button.setOnClickListener {
+        consumption_view_button.setOnClickListener {
             findNavController().navigate(R.id.action_global_transaction_fragment)
         }
 
-        transaction_button.setOnClickListener {
+        consumption_button.setOnClickListener {
             // TODO Implement
             Toast.makeText(context, "TODO", Toast.LENGTH_LONG).show()
         }

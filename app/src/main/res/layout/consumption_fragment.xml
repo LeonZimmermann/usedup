@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.transaction.TransactionFragment">
+        tools:context=".ui.consumption.ConsumptionFragment">
 
     <AutoCompleteTextView
             android:id="@+id/product_name_input"
@@ -31,19 +31,19 @@
             app:layout_constraintTop_toBottomOf="@+id/product_name_input" />
 
     <Button
-            android:id="@+id/transaction_button"
+            android:id="@+id/consumption_button"
             style="pr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Make Transaction"
+            android:text="Consume"
             app:layout_constraintEnd_toEndOf="@+id/add_button"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/add_button"
             app:layout_constraintTop_toBottomOf="@+id/add_button" />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/transaction_list"
+            android:id="@+id/consumption_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -70,8 +70,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Save Transaction"
-            app:layout_constraintEnd_toEndOf="@+id/transaction_button"
-            app:layout_constraintStart_toStartOf="@+id/transaction_button"
-            app:layout_constraintTop_toBottomOf="@+id/transaction_button" />
+            android:text="Save List"
+            app:layout_constraintEnd_toEndOf="@+id/consumption_button"
+            app:layout_constraintStart_toStartOf="@+id/consumption_button"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

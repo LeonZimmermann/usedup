@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.fragments.management
+package com.hotmail.leon.zimmermann.homeassistant.ui.management
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogAddHandler
-import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogEditHandler
-import com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog.ManagementItemDialogFragment
+import com.hotmail.leon.zimmermann.homeassistant.ui.management.dialog.ManagementItemDialogAddHandler
+import com.hotmail.leon.zimmermann.homeassistant.ui.management.dialog.ManagementItemDialogEditHandler
+import com.hotmail.leon.zimmermann.homeassistant.ui.management.dialog.ManagementItemDialogFragment
 import kotlinx.android.synthetic.main.management_fragment.*
 
 
