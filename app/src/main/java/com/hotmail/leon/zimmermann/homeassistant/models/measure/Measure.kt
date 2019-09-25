@@ -4,7 +4,7 @@ enum class Measure(
     val text: String,
     val abbreviation: String
 ) {
-    MILIGRAM("milligram", "mg"),
+    MILLIGRAM("milligram", "mg"),
     GRAM("gram", "g"),
     KILOGRAM("kilogram", "kg"),
     MILILITER("milliliter", "ml"),
