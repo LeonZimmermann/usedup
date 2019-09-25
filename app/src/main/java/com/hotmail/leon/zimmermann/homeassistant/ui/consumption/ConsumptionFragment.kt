@@ -97,7 +97,7 @@ class ConsumptionFragment : Fragment() {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
                 for ((product, quantityChange) in consumptionList)
-                    product.quantity += quantityChange
+                    product.quantity -= quantityChange
                 viewModel.updateAll(consumptionList.map { it.first })
                 viewModel.consumptionList.value = mutableListOf()
             } catch (e: ConsumptionException) {
