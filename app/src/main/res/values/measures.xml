@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="measures">
+        <!-- Food -->
+        <item>@plurals/measure_milligram</item>
+        <item>@plurals/measure_gram</item>
+        <item>@plurals/measure_kilogram</item>
+
+        <!-- Liquids -->
+        <item>@plurals/measure_milliliter</item>
+        <item>@plurals/measure_centiliter</item>
+        <item>@plurals/measure_deciliter</item>
+        <item>@plurals/measure_liter</item>
+        <item>@plurals/measure_tablespoon</item>
+        <item>@plurals/measure_teaspoon</item>
+        <item>@plurals/measure_cup</item>
+        <item>@plurals/measure_quart</item>
+        <item>@plurals/measure_pint</item>
+        <item>@plurals/measure_gallon</item>
+        <item>@plurals/measure_ounce</item>
+    </string-array>
+
+    <!-- Food -->
+    <plurals name="measure_milligram">
+        <item quantity="one">milligram</item>
+        <item quantity="other">milligrams</item>
+    </plurals>
+    <plurals name="measure_gram">
+        <item quantity="one">gram</item>
+        <item quantity="other">grams</item>
+    </plurals>
+    <plurals name="measure_kilogram">
+        <item quantity="one">kilogram</item>
+        <item quantity="other">kilograms</item>
+    </plurals>
+
+    <!-- Liquids -->
+    <plurals name="measure_milliliter">
+        <item quantity="one">milliliter</item>
+        <item quantity="other">milliliters</item>
+    </plurals>
+    <plurals name="measure_centiliter">
+        <item quantity="one">centiliter</item>
+        <item quantity="other">centiliters</item>
+    </plurals>
+    <plurals name="measure_deciliter">
+        <item quantity="one">deciliter</item>
+        <item quantity="other">deciliters</item>
+    </plurals>
+    <plurals name="measure_liter">
+        <item quantity="one">liter</item>
+        <item quantity="other">liters</item>
+    </plurals>
+    <plurals name="measure_tablespoon">
+        <item quantity="one">tablespoon</item>
+        <item quantity="other">tablespoon</item>
+    </plurals>
+    <plurals name="measure_teaspoon">
+        <item quantity="one">teaspoon</item>
+        <item quantity="other">teaspoons</item>
+    </plurals>
+    <plurals name="measure_cup">
+        <item quantity="one">cup</item>
+        <item quantity="other">cups</item>
+    </plurals>
+    <plurals name="measure_pint">
+        <item quantity="one">pint</item>
+        <item quantity="other">pints</item>
+    </plurals>
+    <plurals name="measure_quart">
+        <item quantity="one">quart</item>
+        <item quantity="other">quarts</item>
+    </plurals>
+    <plurals name="measure_gallon">
+        <item quantity="one">gallon</item>
+        <item quantity="other">gallons</item>
+    </plurals>
+    <plurals name="measure_ounce">
+        <item quantity="one">ounce</item>
+        <item quantity="other">ounces</item>
+    </plurals>
+</resources>

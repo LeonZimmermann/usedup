@@ -48,7 +48,7 @@ class ManagementFragment : Fragment() {
             View.OnClickListener { onItemClicked(it) })
         product_entry_container.adapter = adapter
         product_entry_container.layoutManager = layoutManager
-        viewModel.productList.observe(this, Observer {
+        viewModel.productEntityList.observe(this, Observer {
             it?.let { adapter.setProductList(it) }
         })
     }

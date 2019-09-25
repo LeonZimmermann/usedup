@@ -2,7 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.fragments.management.dialog
 
 import android.app.AlertDialog
 import android.view.View
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.management_item_dialog.view.*
 import java.io.Serializable
@@ -12,7 +12,7 @@ sealed class ManagementItemDialogHandler : Serializable
 
 object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
 
-    fun initializeButtons(builder: AlertDialog.Builder, view: View, onAdd: (product: Product) -> Unit) {
+    fun initializeButtons(builder: AlertDialog.Builder, view: View, onAdd: (productEntity: ProductEntity) -> Unit) {
         builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
             addProduct(
                 view,
@@ -28,15 +28,15 @@ object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
         view.quantity_tv.setText("0")
     }
 
-    private fun addProduct(view: View, onAdd: (product: Product) -> Unit) {
-        onAdd(
-            Product(
-                view.name_et.text.toString(),
-                if (view.quantity_tv.text.isNotBlank()) view.quantity_tv.text.toString().toInt() else 0,
-                if (view.min_et.text.isNotBlank()) view.min_et.text.toString().toInt() else 0,
-                if (view.max_et.text.isNotBlank()) view.max_et.text.toString().toInt() else 0
-            )
-        )
+    private fun addProduct(view: View, onAdd: (productEntity: ProductEntity) -> Unit) {
+        val name = view.name_et.text.toString()
+        val quantity = if (view.quantity_tv.text.isNotBlank()) view.quantity_tv.text.toString().toInt() else 0
+        val min =if (view.min_et.text.isNotBlank()) view.min_et.text.toString().toInt() else 0
+        val max =if (view.max_et.text.isNotBlank()) view.max_et.text.toString().toInt() else 0
+        val capacity = quantity.toDouble()
+        // TODO Add Validation
+        // Example if (max < min) ...
+        onAdd(ProductEntity(name, quantity, min, max, capacity))
     }
 }
 
@@ -58,11 +58,11 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
         )
     }
 
-    fun initializeView(view: View, product: Product) {
-        view.name_et.setText(product.name)
-        view.max_et.setText(product.max.toString())
-        view.min_et.setText(product.min.toString())
-        view.quantity_tv.setText(product.quantity.toString())
+    fun initializeView(view: View, productEntity: ProductEntity) {
+        view.name_et.setText(productEntity.name)
+        view.max_et.setText(productEntity.max.toString())
+        view.min_et.setText(productEntity.min.toString())
+        view.quantity_tv.setText(productEntity.quantity.toString())
     }
 
     private fun addUpdateButton(

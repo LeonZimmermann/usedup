@@ -4,37 +4,37 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ManagementViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
-    val productList: LiveData<List<Product>>
+    val productEntityList: LiveData<List<ProductEntity>>
 
     init {
-        val productDao = ProductDatabase.getDatabase(application, viewModelScope).productDao()
+        val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
         productRepository = ProductRepository(productDao)
-        productList = productRepository.productList
+        productEntityList = productRepository.productList
     }
 
-    fun insert(product: Product)  {
+    fun insert(productEntity: ProductEntity)  {
         viewModelScope.launch {
-            productRepository.insert(product)
+            productRepository.insert(productEntity)
         }
     }
 
-    fun update(product: Product) {
+    fun update(productEntity: ProductEntity) {
         viewModelScope.launch {
-            productRepository.update(product)
+            productRepository.update(productEntity)
         }
     }
 
-    fun delete(product: Product) {
+    fun delete(productEntity: ProductEntity) {
         viewModelScope.launch {
-            productRepository.delete(product)
+            productRepository.delete(productEntity)
         }
     }
 }

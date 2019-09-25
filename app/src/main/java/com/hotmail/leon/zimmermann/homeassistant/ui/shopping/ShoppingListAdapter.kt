@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import kotlinx.android.synthetic.main.shopping_item.view.*
 
 class ShoppingListAdapter(context: Context) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var productList: List<Product> = emptyList()
+    private var productEntityList: List<ProductEntity> = emptyList()
     var checkedProducts: MutableList<Int> = mutableListOf()
         private set
 
@@ -29,26 +29,26 @@ class ShoppingListAdapter(context: Context) :
     }
 
     override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
-        val currentProduct = productList[position]
+        val currentProduct = productEntityList[position]
         holder.checkbox.text = currentProduct.name
         holder.quantity.text = currentProduct.discrepancy.toString()
         holder.itemView.setOnClickListener { updateCheckedProductsList(currentProduct, holder.checkbox) }
     }
 
-    private fun updateCheckedProductsList(product: Product, checkbox: CheckBox) {
-        if (checkedProducts.contains(product.id)) {
-            checkedProducts.remove(product.id)
+    private fun updateCheckedProductsList(productEntity: ProductEntity, checkbox: CheckBox) {
+        if (checkedProducts.contains(productEntity.id)) {
+            checkedProducts.remove(productEntity.id)
             checkbox.isChecked = false
         } else {
-            checkedProducts.add(product.id)
+            checkedProducts.add(productEntity.id)
             checkbox.isChecked = true
         }
     }
 
-    override fun getItemCount() = productList.size
+    override fun getItemCount() = productEntityList.size
 
-    internal fun setProductList(productList: List<Product>) {
-        this.productList = productList
+    internal fun setProductList(productEntityList: List<ProductEntity>) {
+        this.productEntityList = productEntityList
         checkedProducts.clear()
         notifyDataSetChanged()
     }

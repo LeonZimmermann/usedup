@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class DiscrepancyListAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<DiscrepancyListAdapter.DiscrepancyViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var productList = emptyList<Product>()
+    private var productList = emptyList<ProductEntity>()
 
     inner class DiscrepancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
@@ -33,8 +33,8 @@ class DiscrepancyListAdapter internal constructor(context: Context) :
         holder.discrepancyView.text = current.discrepancy.toString()
     }
 
-    internal fun setProductList(productList: List<Product>) {
-        this.productList = productList
+    internal fun setProductList(productEntityList: List<ProductEntity>) {
+        this.productList = productEntityList
         notifyDataSetChanged()
     }
 }

@@ -3,25 +3,25 @@ package com.hotmail.leon.zimmermann.homeassistant.models.product
 class ProductRepository(private val productDao: ProductDao) {
     val productList = productDao.getAll()
 
-    suspend fun insert(product: Product) {
-        productDao.insert(product)
+    suspend fun insert(productEntity: ProductEntity) {
+        productDao.insert(productEntity)
     }
 
-    suspend fun insertAll(productList: List<Product>) {
-        productDao.insertAll(productList)
+    suspend fun insertAll(productEntityList: List<ProductEntity>) {
+        productDao.insertAll(productEntityList)
     }
 
-    suspend fun update(product: Product) {
-        productDao.update(product)
+    suspend fun update(productEntity: ProductEntity) {
+        productDao.update(productEntity)
     }
 
-    suspend fun updateAll(productList: List<Product>) {
-        productDao.updateAll(productList)
+    suspend fun updateAll(productEntityList: List<ProductEntity>) {
+        productDao.updateAll(productEntityList)
     }
 
 
-    suspend fun delete(product: Product) {
-        productDao.delete(product)
+    suspend fun delete(productEntity: ProductEntity) {
+        productDao.delete(productEntity)
     }
 
     suspend fun deleteAll() {

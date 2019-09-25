@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import kotlinx.android.synthetic.main.management_item.view.*
 
 class ManagementListAdapter internal constructor(context: Context, private val onClickListener: View.OnClickListener) :
     RecyclerView.Adapter<ManagementListAdapter.ProductViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var productList = emptyList<Product>()
+    private var productList = emptyList<ProductEntity>()
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView = itemView.name_tv
@@ -36,12 +36,12 @@ class ManagementListAdapter internal constructor(context: Context, private val o
         holder.productMaxView.text = current.max.toString()
     }
 
-    internal fun setProductList(productList: List<Product>) {
-        this.productList = productList
+    internal fun setProductList(productEntityList: List<ProductEntity>) {
+        this.productList = productEntityList
         notifyDataSetChanged()
     }
 
-    operator fun get(position: Int): Product = productList[position]
+    operator fun get(position: Int): ProductEntity = productList[position]
 
     override fun getItemCount(): Int = productList.size
 }

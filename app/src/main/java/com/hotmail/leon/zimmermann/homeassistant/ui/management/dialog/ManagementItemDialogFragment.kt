@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import java.lang.RuntimeException
 
 class ManagementItemDialogFragment() : DialogFragment() {
@@ -36,11 +36,11 @@ class ManagementItemDialogFragment() : DialogFragment() {
         return activity?.let {
             val view = requireActivity().layoutInflater.inflate(R.layout.management_item_dialog, null)
             val builder = AlertDialog.Builder(it)
-                .setTitle("Product")
+                .setTitle("ProductEntity")
                 .setView(view)
                 .setNeutralButton(R.string.cancel) { dialogInterface, i -> dialogInterface.cancel() }
             initializeButtons(builder, view)
-            viewModel.productList.observe(this, Observer { productList ->
+            viewModel.productEntityList.observe(this, Observer { productList ->
                 initializeView(view, productList.firstOrNull { it.id == productId })
             })
             builder.create()
@@ -58,7 +58,7 @@ class ManagementItemDialogFragment() : DialogFragment() {
                 builder,
                 view,
                 { name, quantity, min, max ->
-                    val productList = viewModel.productList.value!!
+                    val productList = viewModel.productEntityList.value!!
                     val product = productList.first { it.id == productId }
                     product.name = name
                     product.quantity = quantity
@@ -67,7 +67,7 @@ class ManagementItemDialogFragment() : DialogFragment() {
                     viewModel.update(product)
                 },
                 {
-                    val productList = viewModel.productList.value!!
+                    val productList = viewModel.productEntityList.value!!
                     val product = productList.first { it.id == productId }
                     viewModel.delete(product)
                 }
@@ -75,14 +75,14 @@ class ManagementItemDialogFragment() : DialogFragment() {
         }
     }
 
-    private fun initializeView(view: View, product: Product?) {
+    private fun initializeView(view: View, productEntity: ProductEntity?) {
         when (val handler = this.handler) {
             is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeView(
                 view
             )
             is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeView(
                 view,
-                product!!
+                productEntity!!
             )
         }
     }

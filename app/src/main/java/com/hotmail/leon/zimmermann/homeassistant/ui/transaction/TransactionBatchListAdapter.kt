@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class TransactionBatchListAdapter internal constructor(context: Context) :
     RecyclerView.Adapter<TransactionBatchListAdapter.TransactionBatchViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var transactionList = mutableListOf<Pair<Product, Int>>()
+    private var transactionList = mutableListOf<Pair<ProductEntity, Int>>()
 
     inner class TransactionBatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
@@ -33,7 +33,7 @@ class TransactionBatchListAdapter internal constructor(context: Context) :
         holder.countView.text = quantity.toString()
     }
 
-    internal fun setTransactionList(transactionList: MutableList<Pair<Product, Int>>) {
+    internal fun setTransactionList(transactionList: MutableList<Pair<ProductEntity, Int>>) {
         this.transactionList = transactionList
         notifyDataSetChanged()
     }

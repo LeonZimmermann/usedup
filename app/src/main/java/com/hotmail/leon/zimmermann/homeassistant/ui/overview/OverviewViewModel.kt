@@ -5,19 +5,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
-    val productList: LiveData<List<Product>>
+    val productEntityList: LiveData<List<ProductEntity>>
 
     init {
-        val productDao = ProductDatabase.getDatabase(application, viewModelScope).productDao()
+        val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
         productRepository = ProductRepository(productDao)
-        productList = Transformations.map(productRepository.productList) { list ->
+        productEntityList = Transformations.map(productRepository.productList) { list ->
             list.filter { it.discrepancy > 0 }
         }
     }

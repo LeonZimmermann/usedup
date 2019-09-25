@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
 import kotlinx.android.synthetic.main.transaction_fragment.*
 
 class TransactionFragment : Fragment() {
 
     private open inner class TransactionException(message: String) : Exception(message)
     private inner class InvalidQuantityChangeException : TransactionException("Invalid Quantity Change")
-    private inner class InvalidProductNameException : TransactionException("Invalid Product Name")
+    private inner class InvalidProductNameException : TransactionException("Invalid ProductEntity Name")
     private inner class NoTransactionsException : TransactionException("No transactions to be made")
 
     companion object {
@@ -46,7 +46,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun initializeProductNameInput() {
-        viewModel.productList.observe(this, Observer { productList ->
+        viewModel.productEntityList.observe(this, Observer { productList ->
             product_name_input.setAdapter(ArrayAdapter<String>(
                 context!!,
                 android.R.layout.simple_dropdown_item_1line,
@@ -58,7 +58,7 @@ class TransactionFragment : Fragment() {
     private fun initializeAddButton() {
         add_button.setOnClickListener {
             try {
-                val (product, quantityChange) = getProductAndQuantityChange(viewModel.productList.value!!)
+                val (product, quantityChange) = getProductAndQuantityChange(viewModel.productEntityList.value!!)
                 val transactionList = viewModel.transactionList.value!!
                 transactionList.add(Pair(product, quantityChange))
                 viewModel.transactionList.value = transactionList
@@ -68,10 +68,10 @@ class TransactionFragment : Fragment() {
         }
     }
 
-    private fun getProductAndQuantityChange(productList: List<Product>): Pair<Product, Int> {
+    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): Pair<ProductEntity, Int> {
         val name = product_name_input.text.toString()
-        productList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
-        val product = productList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
+        productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
+        val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val quantityChange = quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toInt()
             ?: throw InvalidQuantityChangeException()
         return Pair(product, quantityChange)

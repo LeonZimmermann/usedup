@@ -54,13 +54,13 @@ class ShoppingFragment : Fragment() {
         shopping_list.addItemDecoration(divider)
         shopping_list.adapter = adapter
         shopping_list.layoutManager = layoutManager
-        viewModel.productList.observe(this, Observer { productList ->
+        viewModel.productEntityList.observe(this, Observer { productList ->
             adapter.setProductList(productList)
         })
     }
 
     private fun submitTransaction() {
-        viewModel.productList.observe(this, Observer { productList ->
+        viewModel.productEntityList.observe(this, Observer { productList ->
             val changedProducts = productList.filter { adapter.checkedProducts.contains(it.id) }
             changedProducts.forEach { it.quantity += it.discrepancy }
             viewModel.updateAll(changedProducts)

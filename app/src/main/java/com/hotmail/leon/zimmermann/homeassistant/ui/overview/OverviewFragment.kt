@@ -52,7 +52,7 @@ class OverviewFragment : Fragment() {
         val adapter = DiscrepancyListAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        viewModel.productList.observe(this, Observer {
+        viewModel.productEntityList.observe(this, Observer {
             it?.let { adapter.setProductList(it) }
         })
         shopping_button.setOnClickListener {
