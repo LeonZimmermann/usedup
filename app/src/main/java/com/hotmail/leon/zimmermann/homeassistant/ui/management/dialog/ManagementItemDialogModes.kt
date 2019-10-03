@@ -50,7 +50,7 @@ object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
         // TODO Add Validation
         // Example if (max < min) ...
 
-        onAdd(ProductEntity(name, quantity, min, max, capacity, measureId = measure.ordinal))
+        onAdd(ProductEntity(name, quantity, min, max, measure.toBaseMeasure(capacity), measureId = measure.ordinal))
     }
 }
 
@@ -66,8 +66,11 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
     }
 
     fun initializeView(view: View, productEntity: ProductEntity) {
+        val capacity = if (productEntity.measureId != null) Measure.values()[productEntity.measureId!!].fromBaseMeasure(
+            productEntity.capacity
+        ).toString() else productEntity.capacity.toString()
         view.management_item_dialog_name_input.setText(productEntity.name)
-        view.management_item_dialog_capacity_input.setText(productEntity.capacity.toString())
+        view.management_item_dialog_capacity_input.setText(capacity)
         view.management_item_dialog_measure_input.adapter =
             ArrayAdapter(
                 view.management_item_dialog_measure_input.context,
@@ -86,14 +89,17 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
         onEdit: (name: String, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) -> Unit
     ) {
         builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
-            onEdit(
-                view.management_item_dialog_name_input.text.toString(),
-                if (view.management_item_dialog_current_input.text.isNotBlank()) view.management_item_dialog_current_input.text.toString().toDouble() else 0.0,
-                view.management_item_dialog_measure_input.selectedItem as Measure,
-                if (view.management_item_dialog_min_input.text.isNotBlank()) view.management_item_dialog_min_input.text.toString().toInt() else 0,
-                if (view.management_item_dialog_max_input.text.isNotBlank()) view.management_item_dialog_max_input.text.toString().toInt() else 0,
+            val name = view.management_item_dialog_name_input.text.toString()
+            val currentQuantity =
+                if (view.management_item_dialog_current_input.text.isNotBlank()) view.management_item_dialog_current_input.text.toString().toDouble() else 0.0
+            val measure = view.management_item_dialog_measure_input.selectedItem as Measure
+            val min =
+                if (view.management_item_dialog_min_input.text.isNotBlank()) view.management_item_dialog_min_input.text.toString().toInt() else 0
+            val max =
+                if (view.management_item_dialog_max_input.text.isNotBlank()) view.management_item_dialog_max_input.text.toString().toInt() else 0
+            val capacity =
                 if (view.management_item_dialog_capacity_input.text.isNotBlank()) view.management_item_dialog_capacity_input.text.toString().toDouble() else 0.0
-            )
+            onEdit(name, currentQuantity, measure, min, max, measure.toBaseMeasure(capacity))
         }
     }
 
