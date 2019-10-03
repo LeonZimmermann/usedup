@@ -38,7 +38,7 @@ data class ProductEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
-    class ProductReductionException(message: String): Exception(message)
+    class ProductReductionException(message: String) : Exception(message)
 
     val discrepancy: Int
         get() = max(max - floor(quantity).toInt(), 0)
@@ -46,8 +46,10 @@ data class ProductEntity(
     fun reduce(value: Double, measure: Measure = Measure.values()[measureId]) {
         val valueInBase = measure.toBaseMeasure(value)
         val reductionPercentage = valueInBase / capacity
-        if (quantity < reductionPercentage) throw ProductReductionException("Canceling transaction. Otherwise the quantity" +
-                "would go below 0, which is impossible. Please manage the Product \"$name\" in the management view.")
+        if (quantity < reductionPercentage) throw ProductReductionException(
+            "Canceling transaction. Otherwise the quantity " +
+                    "would go below 0, which is impossible. Please manage the Product \"$name\" in the management view."
+        )
         else quantity -= reductionPercentage
     }
 }

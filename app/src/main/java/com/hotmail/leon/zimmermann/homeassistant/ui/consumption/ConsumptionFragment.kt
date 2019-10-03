@@ -100,16 +100,27 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeConsumptionButton() {
         consumption_consume_button.setOnClickListener {
+            val consumptionsMade = mutableListOf<Consumption>()
             try {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
-                for (consumption in consumptionList)
+                for (consumption in consumptionList) {
                     consumption.product.reduce(consumption.value, consumption.measure)
+                    consumptionsMade.add(consumption)
+                }
                 viewModel.updateAll(consumptionList.map { it.product })
                 viewModel.consumptionList.value = mutableListOf()
             } catch (e: ConsumptionException) {
-                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
+                catchConsumptionException(consumptionsMade, e)
+            } catch (e: ProductEntity.ProductReductionException) {
+                catchConsumptionException(consumptionsMade, e)
             }
         }
+    }
+
+    private fun catchConsumptionException(consumptionsMade: List<Consumption>, exception: Exception) {
+        consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
+        viewModel.updateAll(consumptionsMade.map { it.product })
+        Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
     }
 }
