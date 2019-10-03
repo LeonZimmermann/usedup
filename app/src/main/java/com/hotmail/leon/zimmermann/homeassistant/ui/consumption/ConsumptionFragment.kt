@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
@@ -50,7 +51,7 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeProductNameInput() {
         viewModel.productEntityList.observe(this, Observer { productList ->
-            cunsumption_product_name_input.setAdapter(ArrayAdapter<String>(
+            consumption_product_name_input.setAdapter(ArrayAdapter<String>(
                 context!!,
                 android.R.layout.simple_dropdown_item_1line,
                 productList.map { it.name }
@@ -76,14 +77,14 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionRepository.Consumption {
-        val name = cunsumption_product_name_input.text.toString()
+    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionData {
+        val name = consumption_product_name_input.text.toString()
         productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val quantityChange = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
             ?: throw InvalidQuantityChangeException()
         val measure = consumption_measure_input.selectedItem as Measure
-        return ConsumptionRepository.Consumption(product, quantityChange, measure)
+        return ConsumptionData(product, quantityChange, measure)
     }
 
     private fun initializeConsumptionList() {
@@ -101,7 +102,7 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeConsumptionButton() {
         consumption_consume_button.setOnClickListener {
-            val consumptionsMade = mutableListOf<ConsumptionRepository.Consumption>()
+            val consumptionsMade = mutableListOf<ConsumptionData>()
             try {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
@@ -119,7 +120,7 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun catchConsumptionException(consumptionsMade: List<ConsumptionRepository.Consumption>, exception: Exception) {
+    private fun catchConsumptionException(consumptionsMade: List<ConsumptionData>, exception: Exception) {
         consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
         viewModel.updateAll(consumptionsMade.map { it.product })
         Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
