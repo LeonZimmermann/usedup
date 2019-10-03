@@ -37,7 +37,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
         private suspend fun addMeasures(database: HomeAssistantDatabase) {
             val dao = database.measureDao()
             for (measure in Measure.values())
-                dao.insert(MeasureEntity(measure.ordinal, measure.text, measure.abbreviation))
+                dao.insert(MeasureEntity(measure.id, measure.text, measure.abbreviation))
         }
 
         companion object {

@@ -65,7 +65,7 @@ class ManagementItemDialogFragment() : DialogFragment() {
         product.min = min
         product.max = max
         product.capacity = capacity
-        product.measureId = measure.ordinal
+        product.measureId = measure.id
         viewModel.update(product)
     }
 

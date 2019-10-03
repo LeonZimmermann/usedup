@@ -50,7 +50,7 @@ object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
         // TODO Add Validation
         // Example if (max < min) ...
 
-        onAdd(ProductEntity(name, quantity, min, max, measure.toBaseMeasure(capacity), measureId = measure.ordinal))
+        onAdd(ProductEntity(name, quantity, min, max, measure.toBaseMeasure(capacity), measureId = measure.id))
     }
 }
 
