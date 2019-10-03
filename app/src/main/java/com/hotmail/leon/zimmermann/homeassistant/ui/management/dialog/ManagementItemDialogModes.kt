@@ -2,8 +2,10 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.management.dialog
 
 import android.app.AlertDialog
 import android.view.View
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import android.widget.ArrayAdapter
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import kotlinx.android.synthetic.main.management_item_dialog.view.*
 import java.io.Serializable
 
@@ -12,31 +14,43 @@ sealed class ManagementItemDialogHandler : Serializable
 
 object ManagementItemDialogAddHandler : ManagementItemDialogHandler() {
 
-    fun initializeButtons(builder: AlertDialog.Builder, view: View, onAdd: (productEntity: ProductEntity) -> Unit) {
+    fun initializeButtons(
+        builder: AlertDialog.Builder,
+        view: View,
+        onAdd: (productEntity: ProductEntity) -> Unit
+    ) {
         builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
-            addProduct(
-                view,
-                onAdd
-            )
+            addProduct(view, onAdd)
         }
     }
 
     fun initializeView(view: View) {
-        view.name_et.setText("")
-        view.max_et.setText("0")
-        view.min_et.setText("0")
-        view.quantity_tv.setText("0")
+        view.management_item_dialog_measure_input.adapter = ArrayAdapter(
+            view.management_item_dialog_measure_input.context,
+            android.R.layout.simple_list_item_1,
+            Measure.values()
+        )
     }
 
-    private fun addProduct(view: View, onAdd: (productEntity: ProductEntity) -> Unit) {
-        val name = view.name_et.text.toString()
-        val quantity = if (view.quantity_tv.text.isNotBlank()) view.quantity_tv.text.toString().toInt() else 0
-        val min =if (view.min_et.text.isNotBlank()) view.min_et.text.toString().toInt() else 0
-        val max =if (view.max_et.text.isNotBlank()) view.max_et.text.toString().toInt() else 0
-        val capacity = quantity.toDouble()
+    private fun addProduct(
+        view: View,
+        onAdd: (productEntity: ProductEntity) -> Unit
+    ) {
+        val name = view.management_item_dialog_name_input.text.toString()
+        val quantity =
+            if (view.management_item_dialog_current_input.text.isNotBlank()) view.management_item_dialog_current_input.text.toString().toDouble() else 0.0
+        val min =
+            if (view.management_item_dialog_min_input.text.isNotBlank()) view.management_item_dialog_min_input.text.toString().toInt() else 0
+        val max =
+            if (view.management_item_dialog_max_input.text.isNotBlank()) view.management_item_dialog_max_input.text.toString().toInt() else 0
+        val capacity =
+            if (view.management_item_dialog_capacity_input.text.isNotBlank()) view.management_item_dialog_capacity_input.text.toString().toDouble() else 0.0
+        val measure = view.management_item_dialog_measure_input.selectedItem as Measure
+
         // TODO Add Validation
         // Example if (max < min) ...
-        onAdd(ProductEntity(name, quantity, min, max, capacity))
+
+        onAdd(ProductEntity(name, quantity, min, max, capacity, measureId = measure.ordinal))
     }
 }
 
@@ -44,38 +58,41 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
 
     fun initializeButtons(
         builder: AlertDialog.Builder, view: View,
-        onEdit: (name: String, quantity: Int, min: Int, max: Int) -> Unit,
+        onEdit: (name: String, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) -> Unit,
         onDelete: () -> Unit
     ) {
-        addUpdateButton(
-            builder,
-            view,
-            onEdit
-        )
-        addDeleteButton(
-            builder,
-            onDelete
-        )
+        addUpdateButton(builder, view, onEdit)
+        addDeleteButton(builder, onDelete)
     }
 
     fun initializeView(view: View, productEntity: ProductEntity) {
-        view.name_et.setText(productEntity.name)
-        view.max_et.setText(productEntity.max.toString())
-        view.min_et.setText(productEntity.min.toString())
-        view.quantity_tv.setText(productEntity.quantity.toString())
+        view.management_item_dialog_name_input.setText(productEntity.name)
+        view.management_item_dialog_capacity_input.setText(productEntity.capacity.toString())
+        view.management_item_dialog_measure_input.adapter =
+            ArrayAdapter(
+                view.management_item_dialog_measure_input.context,
+                android.R.layout.simple_list_item_1,
+                Measure.values()
+            )
+        if (productEntity.measureId != null) view.management_item_dialog_measure_input.setSelection(productEntity.measureId!!)
+        view.management_item_dialog_current_input.setText(productEntity.quantity.toString())
+        view.management_item_dialog_min_input.setText(productEntity.min.toString())
+        view.management_item_dialog_max_input.setText(productEntity.max.toString())
     }
 
     private fun addUpdateButton(
         builder: AlertDialog.Builder,
         view: View,
-        onEdit: (name: String, quantity: Int, min: Int, max: Int) -> Unit
+        onEdit: (name: String, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) -> Unit
     ) {
         builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
             onEdit(
-                view.name_et.text.toString(),
-                if (view.quantity_tv.text.isNotBlank()) view.quantity_tv.text.toString().toInt() else 0,
-                if (view.min_et.text.isNotBlank()) view.min_et.text.toString().toInt() else 0,
-                if (view.max_et.text.isNotBlank()) view.max_et.text.toString().toInt() else 0
+                view.management_item_dialog_name_input.text.toString(),
+                if (view.management_item_dialog_current_input.text.isNotBlank()) view.management_item_dialog_current_input.text.toString().toDouble() else 0.0,
+                view.management_item_dialog_measure_input.selectedItem as Measure,
+                if (view.management_item_dialog_min_input.text.isNotBlank()) view.management_item_dialog_min_input.text.toString().toInt() else 0,
+                if (view.management_item_dialog_max_input.text.isNotBlank()) view.management_item_dialog_max_input.text.toString().toInt() else 0,
+                if (view.management_item_dialog_capacity_input.text.isNotBlank()) view.management_item_dialog_capacity_input.text.toString().toDouble() else 0.0
             )
         }
     }

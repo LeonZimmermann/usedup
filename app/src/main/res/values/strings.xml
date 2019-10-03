@@ -7,4 +7,8 @@
     <string name="minimum_quantity">Minimum Quantity</string>
     <string name="maximum_quantity">Maximum Quantity</string>
     <string name="current_quantity">Current Quantity</string>
+    <string name="capacity">Capacity</string>
+
+    <string name="management_item_capacity">Capacity: %1$.1f %2$s</string>
+    <string name="management_item_quantity">Quantity: %1$.1f (%2$d - %3$d)</string>
 </resources>

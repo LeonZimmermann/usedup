@@ -1,7 +1,7 @@
-package com.hotmail.leon.zimmermann.homeassistant.models.product
+package com.hotmail.leon.zimmermann.homeassistant.models.tables.product
 
 class ProductRepository(private val productDao: ProductDao) {
-    val productList = productDao.getAll()
+    val productEntityList = productDao.getAll()
 
     suspend fun insert(productEntity: ProductEntity) {
         productDao.insert(productEntity)

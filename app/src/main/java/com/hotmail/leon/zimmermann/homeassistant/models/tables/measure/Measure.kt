@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.models.measure
+package com.hotmail.leon.zimmermann.homeassistant.models.tables.measure
 
 enum class Measure(
     val text: String,

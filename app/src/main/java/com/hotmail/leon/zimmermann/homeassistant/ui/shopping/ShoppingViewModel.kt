@@ -2,9 +2,9 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.shopping
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ShoppingViewModel(application: Application) : AndroidViewModel(application) {
@@ -15,7 +15,7 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
     init {
         val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
         productRepository = ProductRepository(productDao)
-        productEntityList = Transformations.map(productRepository.productList) { list ->
+        productEntityList = Transformations.map(productRepository.productEntityList) { list ->
             list.filter { product -> product.discrepancy > 0 }
         }
     }

@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.management
+package com.hotmail.leon.zimmermann.homeassistant.ui.management.fragment
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle

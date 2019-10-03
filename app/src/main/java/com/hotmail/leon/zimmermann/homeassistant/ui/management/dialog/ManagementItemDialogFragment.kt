@@ -8,7 +8,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import java.lang.RuntimeException
 
 class ManagementItemDialogFragment() : DialogFragment() {
@@ -49,41 +50,35 @@ class ManagementItemDialogFragment() : DialogFragment() {
 
     private fun initializeButtons(builder: AlertDialog.Builder, view: View) {
         when (val handler = this.handler) {
-            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeButtons(
-                builder,
-                view,
-                viewModel::insert
-            )
-            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeButtons(
-                builder,
-                view,
-                { name, quantity, min, max ->
-                    val productList = viewModel.productEntityList.value!!
-                    val product = productList.first { it.id == productId }
-                    product.name = name
-                    product.quantity = quantity
-                    product.min = min
-                    product.max = max
-                    viewModel.update(product)
-                },
-                {
-                    val productList = viewModel.productEntityList.value!!
-                    val product = productList.first { it.id == productId }
-                    viewModel.delete(product)
-                }
-            )
+            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler
+                .initializeButtons(builder, view, viewModel::insert)
+            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler
+                .initializeButtons(builder, view, ::onEdit, ::onDelete)
         }
     }
 
+    private fun onEdit(name: String, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) {
+        val productList = viewModel.productEntityList.value!!
+        val product = productList.first { it.id == productId }
+        product.name = name
+        product.quantity = quantity
+        product.min = min
+        product.max = max
+        product.capacity = capacity
+        product.measureId = measure.ordinal
+        viewModel.update(product)
+    }
+
+    private fun onDelete() {
+        val productList = viewModel.productEntityList.value!!
+        val product = productList.first { it.id == productId }
+        viewModel.delete(product)
+    }
+
     private fun initializeView(view: View, productEntity: ProductEntity?) {
-        when (val handler = this.handler) {
-            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeView(
-                view
-            )
-            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeView(
-                view,
-                productEntity!!
-            )
+        when (this.handler) {
+            is ManagementItemDialogAddHandler -> ManagementItemDialogAddHandler.initializeView(view)
+            is ManagementItemDialogEditHandler -> ManagementItemDialogEditHandler.initializeView(view, productEntity!!)
         }
     }
 

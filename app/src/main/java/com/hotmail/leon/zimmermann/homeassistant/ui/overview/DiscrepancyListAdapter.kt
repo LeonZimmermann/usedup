@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class DiscrepancyListAdapter internal constructor(context: Context) :

@@ -1,26 +1,30 @@
-package com.hotmail.leon.zimmermann.homeassistant.models
+package com.hotmail.leon.zimmermann.homeassistant.models.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.measure.Measure
-import com.hotmail.leon.zimmermann.homeassistant.models.measure.MeasureDao
-import com.hotmail.leon.zimmermann.homeassistant.models.measure.MeasureEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.packaging.PackagingEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.PackagingDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.PackagingEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.locks.ReentrantLock
 
-@Database(entities = [ProductEntity::class, MeasureEntity::class, PackagingEntity::class], version = 1)
+@Database(
+    entities = [ProductEntity::class, MeasureEntity::class, PackagingEntity::class],
+    version = 1
+)
 abstract class HomeAssistantDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
     abstract fun measureDao(): MeasureDao
+    abstract fun packagingDao(): PackagingDao
 
     private class HomeAssistantDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -48,7 +52,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
         private var lock = ReentrantLock()
 
         fun getDatabase(context: Context, scope: CoroutineScope): HomeAssistantDatabase {
-            val tempInstance = INSTANCE
+            val tempInstance =
+                INSTANCE
             if (tempInstance != null) return tempInstance
             synchronized(lock) {
                 val instance = Room.databaseBuilder(
@@ -56,7 +61,11 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     HomeAssistantDatabase::class.java,
                     "homeassistant-database"
                 )
-                    .addCallback(HomeAssistantDatabaseCallback(scope))
+                    .addCallback(
+                        HomeAssistantDatabaseCallback(
+                            scope
+                        )
+                    )
                     .build()
                 INSTANCE = instance
                 return instance

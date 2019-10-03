@@ -3,10 +3,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:context=".ui.management.dialog.ManagementItemDialogFragment">
 
     <EditText
-            android:id="@+id/name_et"
+            android:id="@+id/management_item_dialog_name_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -20,37 +21,63 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-            android:id="@+id/quantity_tv"
+            android:id="@+id/management_item_dialog_capacity_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
-            android:hint="@string/current_quantity"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/max_et"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/max_et"
-            app:layout_constraintTop_toBottomOf="@+id/name_et" />
+            android:hint="@string/capacity"
+            android:inputType="numberSigned|numberDecimal"
+            app:layout_constraintEnd_toStartOf="@+id/management_item_dialog_measure_input"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_name_input" />
+
+    <Spinner
+            android:id="@+id/management_item_dialog_measure_input"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/dropdown_arrow_icon"
+            android:backgroundTint="#00535353"
+            android:backgroundTintMode="multiply"
+            app:layout_constraintBottom_toBottomOf="@+id/management_item_dialog_capacity_input"
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintTop_toTopOf="@+id/management_item_dialog_capacity_input" />
 
     <EditText
-            android:id="@+id/min_et"
+            android:id="@+id/management_item_dialog_min_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/minimum_quantity"
             android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/name_et"
-            app:layout_constraintStart_toStartOf="@+id/name_et"
-            app:layout_constraintTop_toBottomOf="@+id/quantity_tv" />
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_current_input"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_current_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_current_input" />
 
     <EditText
-            android:id="@+id/max_et"
+            android:id="@+id/management_item_dialog_max_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/maximum_quantity"
             android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/min_et"
-            app:layout_constraintStart_toStartOf="@+id/min_et"
-            app:layout_constraintTop_toBottomOf="@+id/min_et" />
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_min_input"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_min_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_min_input" />
+
+    <EditText
+            android:id="@+id/management_item_dialog_current_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/current_quantity"
+            android:inputType="number|numberDecimal"
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_capacity_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

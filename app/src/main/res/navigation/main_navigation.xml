@@ -12,7 +12,7 @@
             tools:layout="@layout/shopping_fragment"/>
     <fragment
             android:id="@+id/management_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.management.ManagementFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.management.fragment.ManagementFragment"
             android:label="Management"
             tools:layout="@layout/management_fragment"/>
     <fragment

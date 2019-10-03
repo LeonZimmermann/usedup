@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.consumption_fragment.*
 
 class ConsumptionFragment : Fragment() {

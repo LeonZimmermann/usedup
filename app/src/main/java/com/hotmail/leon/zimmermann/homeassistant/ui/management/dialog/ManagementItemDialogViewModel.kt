@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ManagementItemDialogViewModel(application: Application): AndroidViewModel(application) {
@@ -15,9 +15,11 @@ class ManagementItemDialogViewModel(application: Application): AndroidViewModel(
     val productEntityList: LiveData<List<ProductEntity>>
 
     init {
-        val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
+        val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
+
+        val productDao = database.productDao()
         productRepository = ProductRepository(productDao)
-        productEntityList = productRepository.productList
+        productEntityList = productRepository.productEntityList
     }
 
     fun insert(productEntity: ProductEntity)  {

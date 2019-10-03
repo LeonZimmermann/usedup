@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.shopping_item.view.*
 
 class ShoppingListAdapter(context: Context) :
@@ -19,8 +19,8 @@ class ShoppingListAdapter(context: Context) :
         private set
 
     inner class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkbox = itemView.checkbox
-        val quantity = itemView.quantity_tv
+        val checkbox = itemView.shopping_item_checkbox
+        val quantity = itemView.shopping_item_quantity_input
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingViewHolder {
