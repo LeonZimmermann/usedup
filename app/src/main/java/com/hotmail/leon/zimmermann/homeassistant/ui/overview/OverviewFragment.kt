@@ -42,7 +42,7 @@ class OverviewFragment : Fragment() {
             findNavController().navigate(R.id.action_global_transaction_fragment)
         }
 
-        consumption_button.setOnClickListener {
+        consumption_consume_button.setOnClickListener {
             // TODO Implement
             Toast.makeText(context, "TODO", Toast.LENGTH_LONG).show()
         }

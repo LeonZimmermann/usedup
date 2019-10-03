@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.consumption_fragment.*
 
@@ -40,6 +41,7 @@ class ConsumptionFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
         initializeProductNameInput()
+        initializeMeasureInput()
         initializeAddButton()
         initializeConsumptionList()
         initializeConsumptionButton()
@@ -47,7 +49,7 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeProductNameInput() {
         viewModel.productEntityList.observe(this, Observer { productList ->
-            product_name_input.setAdapter(ArrayAdapter<String>(
+            cunsumption_product_name_input.setAdapter(ArrayAdapter<String>(
                 context!!,
                 android.R.layout.simple_dropdown_item_1line,
                 productList.map { it.name }
@@ -55,12 +57,17 @@ class ConsumptionFragment : Fragment() {
         })
     }
 
+    private fun initializeMeasureInput() {
+        consumption_measure_input.adapter =
+            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
+    }
+
     private fun initializeAddButton() {
-        add_button.setOnClickListener {
+        consumption_add_button.setOnClickListener {
             try {
-                val (product, quantityChange) = getProductAndQuantityChange(viewModel.productEntityList.value!!)
+                val consumption = getProductAndQuantityChange(viewModel.productEntityList.value!!)
                 val consumptionList = viewModel.consumptionList.value!!
-                consumptionList.add(Pair(product, quantityChange))
+                consumptionList.add(consumption)
                 viewModel.consumptionList.value = consumptionList
             } catch (e: ConsumptionException) {
                 Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
@@ -68,18 +75,18 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): Pair<ProductEntity, Int> {
-        val name = product_name_input.text.toString()
+    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): Consumption {
+        val name = cunsumption_product_name_input.text.toString()
         productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
-        val quantityChange = quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toInt()
+        val quantityChange = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
             ?: throw InvalidQuantityChangeException()
-        return Pair(product, quantityChange)
+        val measure = consumption_measure_input.selectedItem as Measure
+        return Consumption(product, quantityChange, measure)
     }
 
     private fun initializeConsumptionList() {
-        val adapter =
-            ConsumptionBatchListAdapter(context!!)
+        val adapter = ConsumptionBatchListAdapter(context!!)
         val layoutManager = LinearLayoutManager(context!!)
         val divider = DividerItemDecoration(consumption_list.context!!, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
@@ -92,13 +99,13 @@ class ConsumptionFragment : Fragment() {
     }
 
     private fun initializeConsumptionButton() {
-        consumption_button.setOnClickListener {
+        consumption_consume_button.setOnClickListener {
             try {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
-                for ((product, quantityChange) in consumptionList)
-                    product.quantity -= quantityChange
-                viewModel.updateAll(consumptionList.map { it.first })
+                for (consumption in consumptionList)
+                    consumption.product.reduce(consumption.value, consumption.measure)
+                viewModel.updateAll(consumptionList.map { it.product })
                 viewModel.consumptionList.value = mutableListOf()
             } catch (e: ConsumptionException) {
                 Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()

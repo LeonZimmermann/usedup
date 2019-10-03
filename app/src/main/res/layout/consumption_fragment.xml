@@ -7,7 +7,7 @@
         tools:context=".ui.consumption.ConsumptionFragment">
 
     <AutoCompleteTextView
-            android:id="@+id/product_name_input"
+            android:id="@+id/cunsumption_product_name_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -19,28 +19,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-            android:id="@+id/quantity_change_input"
+            android:id="@+id/consumption_quantity_change_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Quantity Change"
-            android:inputType="numberSigned"
-            app:layout_constraintEnd_toEndOf="@+id/product_name_input"
-            app:layout_constraintStart_toStartOf="@+id/product_name_input"
-            app:layout_constraintTop_toBottomOf="@+id/product_name_input" />
+            android:inputType="numberSigned|numberDecimal"
+            app:layout_constraintEnd_toStartOf="@+id/consumption_measure_input"
+            app:layout_constraintStart_toStartOf="@+id/cunsumption_product_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/cunsumption_product_name_input" />
 
     <Button
-            android:id="@+id/consumption_button"
+            android:id="@+id/consumption_consume_button"
             style="pr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Consume"
-            app:layout_constraintEnd_toEndOf="@+id/add_button"
+            app:layout_constraintEnd_toEndOf="@+id/consumption_add_button"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/add_button"
-            app:layout_constraintTop_toBottomOf="@+id/add_button" />
+            app:layout_constraintStart_toStartOf="@+id/consumption_add_button"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_add_button" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/consumption_list"
@@ -49,29 +49,37 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/save_button"
-            app:layout_constraintStart_toStartOf="@+id/save_button"
-            app:layout_constraintTop_toBottomOf="@+id/save_button"
+            app:layout_constraintEnd_toEndOf="@+id/consumption_save_button"
+            app:layout_constraintStart_toStartOf="@+id/consumption_save_button"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_save_button"
             tools:itemCount="10"
             tools:listitem="@layout/product_item" />
 
     <Button
-            android:id="@+id/add_button"
+            android:id="@+id/consumption_add_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Add Product To List"
-            app:layout_constraintEnd_toEndOf="@+id/quantity_change_input"
-            app:layout_constraintStart_toStartOf="@+id/quantity_change_input"
-            app:layout_constraintTop_toBottomOf="@+id/quantity_change_input" />
+            app:layout_constraintEnd_toEndOf="@+id/consumption_measure_input"
+            app:layout_constraintStart_toStartOf="@+id/consumption_quantity_change_input"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_quantity_change_input" />
 
     <Button
-            android:id="@+id/save_button"
+            android:id="@+id/consumption_save_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Save List"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_button"
-            app:layout_constraintStart_toStartOf="@+id/consumption_button"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_button" />
+            app:layout_constraintEnd_toEndOf="@+id/consumption_consume_button"
+            app:layout_constraintStart_toStartOf="@+id/consumption_consume_button"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_consume_button" />
+
+    <Spinner
+            android:id="@+id/consumption_measure_input"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/consumption_quantity_change_input"
+            app:layout_constraintEnd_toEndOf="@+id/cunsumption_product_name_input"
+            app:layout_constraintTop_toTopOf="@+id/consumption_quantity_change_input" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                    android:id="@+id/product_name_input"
+                    android:id="@+id/cunsumption_product_name_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -47,19 +47,19 @@
                     app:layout_constraintTop_toTopOf="@+id/textView3" />
 
             <EditText
-                    android:id="@+id/quantity_change_input"
+                    android:id="@+id/consumption_quantity_change_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:ems="10"
                     android:hint="Quantity Change"
                     android:inputType="numberSigned"
-                    app:layout_constraintEnd_toEndOf="@+id/product_name_input"
-                    app:layout_constraintStart_toStartOf="@+id/product_name_input"
-                    app:layout_constraintTop_toBottomOf="@+id/product_name_input" />
+                    app:layout_constraintEnd_toEndOf="@+id/cunsumption_product_name_input"
+                    app:layout_constraintStart_toStartOf="@+id/cunsumption_product_name_input"
+                    app:layout_constraintTop_toBottomOf="@+id/cunsumption_product_name_input" />
 
             <Button
-                    android:id="@+id/consumption_button"
+                    android:id="@+id/consumption_consume_button"
                     style="@style/OverviewPrimaryButton"
                     android:layout_width="0dp"
 
@@ -68,7 +68,7 @@
                     android:text="Consume"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/quantity_change_input" />
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_quantity_change_input" />
 
             <TextView
                     android:id="@+id/textView3"

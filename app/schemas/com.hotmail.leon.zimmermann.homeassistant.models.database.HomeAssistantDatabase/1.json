@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "af6e87b2dd3fe4c3b7a85940d948d7f3",
+    "identityHash": "bbbe0a50e14afaef606bb2985d7afc44",
     "entities": [
       {
         "tableName": "products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `packaging_id` INTEGER, `measure_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `measure_id` INTEGER NOT NULL, `packaging_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -45,14 +45,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "packagingId",
-            "columnName": "packaging_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "measureId",
             "columnName": "measure_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packagingId",
+            "columnName": "packaging_id",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -151,7 +151,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"af6e87b2dd3fe4c3b7a85940d948d7f3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bbbe0a50e14afaef606bb2985d7afc44\")"
     ]
   }
 }

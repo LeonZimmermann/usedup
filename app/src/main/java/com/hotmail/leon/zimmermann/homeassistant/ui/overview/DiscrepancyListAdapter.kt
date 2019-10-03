@@ -18,7 +18,7 @@ class DiscrepancyListAdapter internal constructor(context: Context) :
 
     inner class DiscrepancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
-        val discrepancyView: TextView = itemView.count_tv
+        val discrepancyView: TextView = itemView.consumption_tv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscrepancyViewHolder {

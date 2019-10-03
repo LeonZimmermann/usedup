@@ -14,7 +14,7 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
 
     private val repository: ProductRepository
     val productEntityList: LiveData<List<ProductEntity>>
-    var consumptionList: MutableLiveData<MutableList<Pair<ProductEntity, Int>>>
+    var consumptionList: MutableLiveData<MutableList<Consumption>>
 
     init {
         val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()

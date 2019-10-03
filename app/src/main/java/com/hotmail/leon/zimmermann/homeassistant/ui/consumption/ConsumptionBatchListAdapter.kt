@@ -7,18 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.product_item.view.*
 
-class ConsumptionBatchListAdapter internal constructor(context: Context) :
+class ConsumptionBatchListAdapter internal constructor(private val context: Context) :
     RecyclerView.Adapter<ConsumptionBatchListAdapter.ConsumptionBatchViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var consumptionList = mutableListOf<Pair<ProductEntity, Int>>()
+    private var consumptionList = mutableListOf<Consumption>()
 
     inner class ConsumptionBatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
-        val countView: TextView = itemView.count_tv
+        val consumptionView: TextView = itemView.consumption_tv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumptionBatchViewHolder {
@@ -28,12 +27,16 @@ class ConsumptionBatchListAdapter internal constructor(context: Context) :
     override fun getItemCount() = consumptionList.size
 
     override fun onBindViewHolder(holder: ConsumptionBatchViewHolder, position: Int) {
-        val (product, quantity) = consumptionList[position]
-        holder.productNameView.text = product.name
-        holder.countView.text = quantity.toString()
+        val consumption = consumptionList[position]
+        holder.productNameView.text = consumption.product.name
+        holder.consumptionView.text = context.resources.getString(
+            R.string.consumption_quantity,
+            consumption.value,
+            consumption.measure.abbreviation
+        )
     }
 
-    internal fun setConsumptionList(consumptionList: MutableList<Pair<ProductEntity, Int>>) {
+    internal fun setConsumptionList(consumptionList: MutableList<Consumption>) {
         this.consumptionList = consumptionList
         notifyDataSetChanged()
     }

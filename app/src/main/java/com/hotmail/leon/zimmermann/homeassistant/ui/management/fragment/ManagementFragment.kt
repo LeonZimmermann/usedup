@@ -54,7 +54,7 @@ class ManagementFragment : Fragment() {
     }
 
     private fun initializeAddButton() {
-        add_button.setOnClickListener {
+        consumption_add_button.setOnClickListener {
             ManagementItemDialogFragment(
                 ManagementItemDialogAddHandler,
                 null
