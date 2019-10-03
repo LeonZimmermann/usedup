@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
@@ -17,7 +19,12 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.locks.ReentrantLock
 
 @Database(
-    entities = [ProductEntity::class, MeasureEntity::class, PackagingEntity::class],
+    entities = [
+        ProductEntity::class,
+        MeasureEntity::class,
+        PackagingEntity::class,
+        ConsumptionEntity::class
+    ],
     version = 1
 )
 abstract class HomeAssistantDatabase : RoomDatabase() {
@@ -25,6 +32,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun measureDao(): MeasureDao
     abstract fun packagingDao(): PackagingDao
+    abstract fun consumptionDao(): ConsumptionDao
 
     private class HomeAssistantDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
