@@ -30,8 +30,8 @@ data class ProductEntity(
     var min: Int,
     var max: Int,
     var capacity: Double,
-    @ColumnInfo(name = "packaging_id") var packagingId: Int? = null,
-    @ColumnInfo(name = "measure_id") var measureId: Int? = null
+    @ColumnInfo(name = "measure_id") var measureId: Int,
+    @ColumnInfo(name = "packaging_id") var packagingId: Int? = null
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

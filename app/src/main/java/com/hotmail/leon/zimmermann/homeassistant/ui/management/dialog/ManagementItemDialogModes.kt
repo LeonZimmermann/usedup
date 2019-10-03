@@ -66,18 +66,19 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
     }
 
     fun initializeView(view: View, productEntity: ProductEntity) {
-        val capacity = if (productEntity.measureId != null) Measure.values()[productEntity.measureId!!].fromBaseMeasure(
-            productEntity.capacity
-        ).toString() else productEntity.capacity.toString()
         view.management_item_dialog_name_input.setText(productEntity.name)
-        view.management_item_dialog_capacity_input.setText(capacity)
+        view.management_item_dialog_capacity_input.setText(
+            Measure.values()[productEntity.measureId].fromBaseMeasure(
+                productEntity.capacity
+            ).toString()
+        )
         view.management_item_dialog_measure_input.adapter =
             ArrayAdapter(
                 view.management_item_dialog_measure_input.context,
                 android.R.layout.simple_list_item_1,
                 Measure.values()
             )
-        if (productEntity.measureId != null) view.management_item_dialog_measure_input.setSelection(productEntity.measureId!!)
+        view.management_item_dialog_measure_input.setSelection(productEntity.measureId)
         view.management_item_dialog_current_input.setText(productEntity.quantity.toString())
         view.management_item_dialog_min_input.setText(productEntity.min.toString())
         view.management_item_dialog_max_input.setText(productEntity.max.toString())
