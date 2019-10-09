@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class ConsumptionBatchListAdapter internal constructor(private val context: Context) :

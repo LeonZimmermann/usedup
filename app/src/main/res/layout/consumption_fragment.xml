@@ -7,7 +7,7 @@
         tools:context=".ui.consumption.ConsumptionFragment">
 
     <AutoCompleteTextView
-            android:id="@+id/cunsumption_product_name_input"
+            android:id="@+id/consumption_product_name_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -27,8 +27,8 @@
             android:hint="Quantity Change"
             android:inputType="numberSigned|numberDecimal"
             app:layout_constraintEnd_toStartOf="@+id/consumption_measure_input"
-            app:layout_constraintStart_toStartOf="@+id/cunsumption_product_name_input"
-            app:layout_constraintTop_toBottomOf="@+id/cunsumption_product_name_input" />
+            app:layout_constraintStart_toStartOf="@+id/consumption_product_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/consumption_product_name_input" />
 
     <Button
             android:id="@+id/consumption_consume_button"
@@ -80,6 +80,6 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/consumption_quantity_change_input"
-            app:layout_constraintEnd_toEndOf="@+id/cunsumption_product_name_input"
+            app:layout_constraintEnd_toEndOf="@+id/consumption_product_name_input"
             app:layout_constraintTop_toTopOf="@+id/consumption_quantity_change_input" />
 </androidx.constraintlayout.widget.ConstraintLayout>

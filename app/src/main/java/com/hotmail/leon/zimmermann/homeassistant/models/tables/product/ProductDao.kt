@@ -8,6 +8,9 @@ interface ProductDao {
     @Query("SELECT * FROM products")
     fun getAll() : LiveData<List<ProductEntity>>
 
+    @Query("SELECT * FROM products WHERE id = :id")
+    fun get(id: Int): LiveData<ProductEntity>
+
     @Insert
     suspend fun insert(productEntity: ProductEntity)
 

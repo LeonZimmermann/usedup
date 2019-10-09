@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 

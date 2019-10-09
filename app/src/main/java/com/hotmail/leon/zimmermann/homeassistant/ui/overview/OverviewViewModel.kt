@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
+import kotlinx.coroutines.launch
 
 class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,6 +20,12 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
         productRepository = ProductRepository(productDao)
         productEntityList = Transformations.map(productRepository.productEntityList) { list ->
             list.filter { it.discrepancy > 0 }
+        }
+    }
+    
+    fun update(productEntity: ProductEntity) {
+        viewModelScope.launch {
+            productRepository.update(productEntity)
         }
     }
 }

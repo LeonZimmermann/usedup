@@ -6,12 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ConsumptionException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.InvalidProductNameException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.InvalidQuantityChangeException
 import kotlinx.android.synthetic.main.overview_fragment.*
 
 class OverviewFragment : Fragment() {
@@ -41,10 +47,23 @@ class OverviewFragment : Fragment() {
         consumption_view_button.setOnClickListener {
             findNavController().navigate(R.id.action_global_transaction_fragment)
         }
-
+        consumption_measure_input.adapter =
+            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
         consumption_consume_button.setOnClickListener {
-            // TODO Implement
-            Toast.makeText(context, "TODO", Toast.LENGTH_LONG).show()
+            try {
+                val productName = consumption_product_name_input.text.toString()
+                val product = viewModel.productEntityList.value!!.firstOrNull { it.name == productName }
+                    ?: throw InvalidProductNameException()
+                val value = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
+                    ?: throw InvalidQuantityChangeException()
+                val measure = consumption_measure_input.selectedItem as Measure
+                product.reduce(value, measure)
+                viewModel.update(product)
+            } catch (e: ConsumptionException) {
+                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
+            } catch (e: ProductEntity.ProductReductionException) {
+                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
+            }
         }
     }
 

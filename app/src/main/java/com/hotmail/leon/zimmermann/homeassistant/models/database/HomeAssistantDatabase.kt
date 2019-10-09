@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
@@ -23,7 +24,8 @@ import java.util.concurrent.locks.ReentrantLock
         ProductEntity::class,
         MeasureEntity::class,
         PackagingEntity::class,
-        ConsumptionEntity::class
+        ConsumptionEntity::class,
+        ConsumptionListMetaDataEntity::class
     ],
     version = 1
 )

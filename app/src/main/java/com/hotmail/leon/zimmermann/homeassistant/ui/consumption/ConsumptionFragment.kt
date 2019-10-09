@@ -1,31 +1,23 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.consumption_fragment.*
 
 class ConsumptionFragment : Fragment() {
-
-    private open inner class ConsumptionException(message: String) : Exception(message)
-    private inner class InvalidQuantityChangeException : ConsumptionException("Invalid Quantity Change")
-    private inner class InvalidProductNameException : ConsumptionException("Invalid ProductEntity Name")
-    private inner class NoConsumptionsException : ConsumptionException("No consumptions specified")
-
     companion object {
         fun newInstance() = ConsumptionFragment()
     }
