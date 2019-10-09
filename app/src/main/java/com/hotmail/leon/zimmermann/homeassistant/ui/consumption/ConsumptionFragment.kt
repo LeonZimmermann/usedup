@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.consumption_fragment.*
@@ -69,14 +68,18 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionData {
+    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionTemplate {
         val name = consumption_product_name_input.text.toString()
         productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val quantityChange = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
             ?: throw InvalidQuantityChangeException()
         val measure = consumption_measure_input.selectedItem as Measure
-        return ConsumptionData(product, quantityChange, measure)
+        return ConsumptionTemplate(
+            product,
+            quantityChange,
+            measure
+        )
     }
 
     private fun initializeConsumptionList() {
@@ -94,7 +97,7 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeConsumptionButton() {
         consumption_consume_button.setOnClickListener {
-            val consumptionsMade = mutableListOf<ConsumptionData>()
+            val consumptionsMade = mutableListOf<ConsumptionTemplate>()
             try {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
@@ -112,7 +115,7 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun catchConsumptionException(consumptionsMade: List<ConsumptionData>, exception: Exception) {
+    private fun catchConsumptionException(consumptionsMade: List<ConsumptionTemplate>, exception: Exception) {
         consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
         viewModel.updateAll(consumptionsMade.map { it.product })
         Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()

@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionData
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
@@ -15,7 +14,7 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
 
     private val repository: ProductRepository
     val productEntityList: LiveData<List<ProductEntity>>
-    var consumptionList: MutableLiveData<MutableList<ConsumptionData>>
+    var consumptionList: MutableLiveData<MutableList<ConsumptionTemplate>>
 
     init {
         val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
@@ -29,5 +28,4 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
             repository.updateAll(productEntityList)
         }
     }
-
 }
