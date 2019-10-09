@@ -23,8 +23,9 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
     ]
 )
 class ConsumptionEntity(
-    @ColumnInfo(name = "list_id") var listId: Int,
     @ColumnInfo(name = "product_id") var productId: Int,
     @ColumnInfo(name = "measure_id") var measureId: Int,
     var value: Double
-)
+) {
+    @ColumnInfo(name = "list_id") var listId: Int = 0
+}
