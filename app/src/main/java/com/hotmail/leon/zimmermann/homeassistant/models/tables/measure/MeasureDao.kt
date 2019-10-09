@@ -12,7 +12,7 @@ interface MeasureDao {
     fun getAll(): LiveData<List<MeasureEntity>>
 
     @Query("SELECT * FROM measures WHERE id = :id")
-    fun get(id: Int): LiveData<MeasureEntity>
+    suspend fun get(id: Int): LiveData<MeasureEntity>
 
     @Insert
     suspend fun insert(measureEntity: MeasureEntity)
