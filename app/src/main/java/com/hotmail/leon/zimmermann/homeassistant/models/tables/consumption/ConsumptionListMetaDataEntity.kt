@@ -5,5 +5,5 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "consumption_list")
 class ConsumptionListMetaDataEntity(var name: String) {
-    @PrimaryKey var id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

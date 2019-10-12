@@ -43,10 +43,10 @@ class SaveDialogFragment(): DialogFragment() {
             builder.setTitle(R.string.save_consumption_list)
             builder.setView(view)
             builder.setPositiveButton(R.string.submit) { dialogInterface: DialogInterface, i: Int ->
-                onSaveHandler.onSave(viewModel.name.value!!)
+                onSaveHandler.onSave(view.save_consumption_dialog_name_input.text.toString())
             }
             builder.setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, i: Int ->
-
+                dialogInterface.cancel()
             }
             builder.create()
         } ?: throw IllegalArgumentException("Activity cannot be null")
