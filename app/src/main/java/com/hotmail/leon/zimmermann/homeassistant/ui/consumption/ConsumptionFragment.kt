@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.save.SaveDialogFragment
 import kotlinx.android.synthetic.main.consumption_fragment.*
 
 class ConsumptionFragment : Fragment() {
@@ -38,6 +39,7 @@ class ConsumptionFragment : Fragment() {
         initializeAddButton()
         initializeConsumptionList()
         initializeConsumptionButton()
+        initializeSaveButton()
     }
 
     private fun initializeProductNameInput() {
@@ -119,5 +121,15 @@ class ConsumptionFragment : Fragment() {
         consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
         viewModel.updateAll(consumptionsMade.map { it.product })
         Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun initializeSaveButton() {
+        consumption_save_button.setOnClickListener {
+            SaveDialogFragment(object : SaveDialogFragment.OnSaveHandler {
+                override fun onSave(name: String) {
+                    viewModel.save(name)
+                }
+            }).show(fragmentManager!!, "SaveDialog")
+        }
     }
 }

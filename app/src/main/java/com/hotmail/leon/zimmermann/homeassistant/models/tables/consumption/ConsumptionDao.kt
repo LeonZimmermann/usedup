@@ -1,13 +1,26 @@
 package com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface ConsumptionDao {
+abstract class ConsumptionDao {
 
     @Query("SELECT * FROM consumption_list")
-    fun getAll(): LiveData<List<ConsumptionList>>
+    abstract fun getAll(): LiveData<List<ConsumptionList>>
+
+    suspend fun insert(consumptionList: ConsumptionList) {
+        insert(consumptionList.metaData)
+        insert(consumptionList.consumptions)
+    }
+
+    @Insert
+    protected abstract suspend fun insert(consumptionEntityList: List<ConsumptionEntity>)
+
+    @Insert
+    protected abstract suspend fun insert(consumptionListMetaDataEntity: ConsumptionListMetaDataEntity)
 
 }
