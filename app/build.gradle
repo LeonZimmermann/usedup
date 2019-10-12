@@ -48,6 +48,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
+    // Debug Database
+    // TODO Remove in release
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
@@ -74,4 +78,5 @@ dependencies {
 
     // Number Picker
     implementation 'com.shawnlin:number-picker:2.4.8'
+
 }

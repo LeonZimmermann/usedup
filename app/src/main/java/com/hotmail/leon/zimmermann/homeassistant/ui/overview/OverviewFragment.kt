@@ -44,8 +44,11 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initializeTransactionCard() {
-        consumption_view_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_transaction_fragment)
+        advanced_consumption_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_consumption_fragment)
+        }
+        consumption_browser_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_consumption_browser_fragment)
         }
         consumption_measure_input.adapter =
             ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
