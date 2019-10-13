@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.save
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.save
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,17 +8,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
-import kotlinx.android.synthetic.main.save_consumption_dialog.view.*
+import kotlinx.android.synthetic.main.consumption_creation_dialog.view.*
 import java.io.Serializable
 
-class SaveDialogFragment(): DialogFragment() {
+class ConsumptionCreationDialogFragment(): DialogFragment() {
 
     @FunctionalInterface
     interface OnSaveHandler: Serializable {
         fun onSave(name: String)
     }
 
-    private lateinit var viewModel: SaveDialogViewModel
+    private lateinit var viewModel: ConsumptionCreationDialogViewModel
     private lateinit var onSaveHandler: OnSaveHandler
 
     constructor(onSaveHandler: OnSaveHandler): this() {
@@ -27,7 +27,7 @@ class SaveDialogFragment(): DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[SaveDialogViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[ConsumptionCreationDialogViewModel::class.java]
         if (savedInstanceState != null) {
             onSaveHandler = savedInstanceState.getSerializable(ON_SAVE_HANDLER_KEY) as OnSaveHandler
         }
@@ -35,7 +35,7 @@ class SaveDialogFragment(): DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val view = requireActivity().layoutInflater.inflate(R.layout.save_consumption_dialog, null)
+            val view = requireActivity().layoutInflater.inflate(R.layout.consumption_creation_dialog, null)
             viewModel.name.observe(this, Observer { name ->
                 view.save_consumption_dialog_name_input.setText(name)
             })

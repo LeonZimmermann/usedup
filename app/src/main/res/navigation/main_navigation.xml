@@ -17,9 +17,9 @@
             tools:layout="@layout/management_fragment"/>
     <fragment
             android:id="@+id/consumption_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ConsumptionFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.ConsumptionCreationFragment"
             android:label="Consumption"
-            tools:layout="@layout/consumption_fragment" />
+            tools:layout="@layout/consumption_creation_fragment" />
     <action
             android:id="@+id/action_global_shopping_fragment"
             app:destination="@id/shopping_fragment"
@@ -59,11 +59,25 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <fragment
             android:id="@+id/consumption_browser_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.browser.ConsumptionBrowserFragment"
-            android:label="ConsumptionBrowser" />
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.browser.ConsumptionBrowserFragment"
+            android:label="ConsumptionBrowser"
+            tools:layout="@layout/consumption_browser_fragment"/>
     <action
             android:id="@+id/action_global_consumption_browser_fragment"
             app:destination="@id/consumption_browser_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+            android:id="@+id/consumption_details"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.details.ConsumptionDetailsFragment"
+            android:label="ConsumptionDetails"
+            tools:layout="@layout/consumption_details_fragment"/>
+    <action
+            android:id="@+id/action_global_consumption_details"
+            app:destination="@id/consumption_details"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpToInclusive="true"

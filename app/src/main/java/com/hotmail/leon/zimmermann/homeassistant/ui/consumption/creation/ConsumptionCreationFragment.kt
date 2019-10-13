@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,26 +14,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.save.SaveDialogFragment
-import kotlinx.android.synthetic.main.consumption_fragment.*
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.save.ConsumptionCreationDialogFragment
+import kotlinx.android.synthetic.main.consumption_creation_fragment.*
 
-class ConsumptionFragment : Fragment() {
+class ConsumptionCreationFragment : Fragment() {
     companion object {
-        fun newInstance() = ConsumptionFragment()
+        fun newInstance() = ConsumptionCreationFragment()
     }
 
-    private lateinit var viewModel: ConsumptionViewModel
+    private lateinit var viewModel: ConsumptionCreationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.consumption_fragment, container, false)
+        return inflater.inflate(R.layout.consumption_creation_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
         initializeProductNameInput()
         initializeMeasureInput()
         initializeAddButton()
@@ -70,14 +70,14 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionTemplate {
+    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionCreationTemplate {
         val name = consumption_product_name_input.text.toString()
         productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
         val quantityChange = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
             ?: throw InvalidQuantityChangeException()
         val measure = consumption_measure_input.selectedItem as Measure
-        return ConsumptionTemplate(
+        return ConsumptionCreationTemplate(
             product,
             quantityChange,
             measure
@@ -85,7 +85,8 @@ class ConsumptionFragment : Fragment() {
     }
 
     private fun initializeConsumptionList() {
-        val adapter = ConsumptionBatchListAdapter(context!!)
+        val adapter =
+            ConsumptionCreationBatchListAdapter(context!!)
         val layoutManager = LinearLayoutManager(context!!)
         val divider = DividerItemDecoration(consumption_list.context!!, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
@@ -99,7 +100,7 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeConsumptionButton() {
         consumption_consume_button.setOnClickListener {
-            val consumptionsMade = mutableListOf<ConsumptionTemplate>()
+            val consumptionsMade = mutableListOf<ConsumptionCreationTemplate>()
             try {
                 val consumptionList = viewModel.consumptionList.value!!
                 if (consumptionList.isEmpty()) throw NoConsumptionsException()
@@ -117,7 +118,7 @@ class ConsumptionFragment : Fragment() {
         }
     }
 
-    private fun catchConsumptionException(consumptionsMade: List<ConsumptionTemplate>, exception: Exception) {
+    private fun catchConsumptionException(consumptionsMade: List<ConsumptionCreationTemplate>, exception: Exception) {
         consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
         viewModel.updateAll(consumptionsMade.map { it.product })
         Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
@@ -125,7 +126,8 @@ class ConsumptionFragment : Fragment() {
 
     private fun initializeSaveButton() {
         consumption_save_button.setOnClickListener {
-            SaveDialogFragment(object : SaveDialogFragment.OnSaveHandler {
+            ConsumptionCreationDialogFragment(object :
+                ConsumptionCreationDialogFragment.OnSaveHandler {
                 override fun onSave(name: String) {
                     viewModel.save(name)
                 }

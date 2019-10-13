@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.consumption.ConsumptionFragment">
+        tools:context=".ui.consumption.creation.ConsumptionCreationFragment">
 
     <AutoCompleteTextView
             android:id="@+id/consumption_product_name_input"

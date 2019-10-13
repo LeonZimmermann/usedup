@@ -1,10 +1,8 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.browser
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList

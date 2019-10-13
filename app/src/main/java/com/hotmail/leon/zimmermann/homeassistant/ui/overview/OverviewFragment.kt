@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ConsumptionException
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.InvalidProductNameException
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.InvalidQuantityChangeException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.ConsumptionException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.InvalidProductNameException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.InvalidQuantityChangeException
 import kotlinx.android.synthetic.main.overview_fragment.*
 
 class OverviewFragment : Fragment() {

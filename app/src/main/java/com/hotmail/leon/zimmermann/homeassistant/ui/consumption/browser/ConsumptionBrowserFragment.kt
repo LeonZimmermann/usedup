@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.browser
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -19,6 +20,7 @@ class ConsumptionBrowserFragment : Fragment() {
     }
 
     private lateinit var viewModel: ConsumptionBrowserViewModel
+    private lateinit var adapter: ConsumptionBrowserListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +32,7 @@ class ConsumptionBrowserFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ConsumptionBrowserViewModel::class.java)
-        val adapter = ConsumptionBrowserListAdapter(context!!)
+        adapter = ConsumptionBrowserListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
         consumption_browser_list.adapter = adapter
         consumption_browser_list.layoutManager = LinearLayoutManager(context!!)
         viewModel.consumptionLists.observe(this, Observer {
@@ -38,4 +40,8 @@ class ConsumptionBrowserFragment : Fragment() {
         })
     }
 
+    private fun onItemClicked(view: View) {
+        val consumptionList = adapter[consumption_browser_list.getChildAdapterPosition(view)]
+        findNavController().navigate(R.id.action_global_consumption_details)
+    }
 }

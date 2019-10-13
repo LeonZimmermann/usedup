@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.product_item.view.*
 
-class ConsumptionBatchListAdapter internal constructor(private val context: Context) :
-    RecyclerView.Adapter<ConsumptionBatchListAdapter.ConsumptionBatchViewHolder>() {
+class ConsumptionCreationBatchListAdapter internal constructor(private val context: Context) :
+    RecyclerView.Adapter<ConsumptionCreationBatchListAdapter.ConsumptionBatchViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var consumptionList = mutableListOf<ConsumptionTemplate>()
+    private var consumptionList = mutableListOf<ConsumptionCreationTemplate>()
 
     inner class ConsumptionBatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
@@ -36,7 +36,7 @@ class ConsumptionBatchListAdapter internal constructor(private val context: Cont
         )
     }
 
-    internal fun setConsumptionList(consumptionList: MutableList<ConsumptionTemplate>) {
+    internal fun setConsumptionList(consumptionList: MutableList<ConsumptionCreationTemplate>) {
         this.consumptionList = consumptionList
         notifyDataSetChanged()
     }

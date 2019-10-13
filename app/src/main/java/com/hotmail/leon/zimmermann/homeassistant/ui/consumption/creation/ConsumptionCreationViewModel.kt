@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -14,14 +14,14 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.Consu
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class ConsumptionViewModel(application: Application) : AndroidViewModel(application) {
+class ConsumptionCreationViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
     val productEntityList: LiveData<List<ProductEntity>>
 
     private val consumptionRepository: ConsumptionRepository
     var consumptionLists: LiveData<List<ConsumptionList>>
-    var consumptionList: MutableLiveData<MutableList<ConsumptionTemplate>>
+    var consumptionList: MutableLiveData<MutableList<ConsumptionCreationTemplate>>
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
