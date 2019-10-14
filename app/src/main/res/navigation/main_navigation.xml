@@ -61,7 +61,16 @@
             android:id="@+id/consumption_browser_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.browser.ConsumptionBrowserFragment"
             android:label="ConsumptionBrowser"
-            tools:layout="@layout/consumption_browser_fragment"/>
+            tools:layout="@layout/consumption_browser_fragment">
+        <action
+                android:id="@+id/action_consumption_browser_fragment_to_consumption_details"
+                app:destination="@id/consumption_details"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:launchSingleTop="true"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <action
             android:id="@+id/action_global_consumption_browser_fragment"
             app:destination="@id/consumption_browser_fragment"
@@ -74,13 +83,9 @@
             android:id="@+id/consumption_details"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.details.ConsumptionDetailsFragment"
             android:label="ConsumptionDetails"
-            tools:layout="@layout/consumption_details_fragment"/>
-    <action
-            android:id="@+id/action_global_consumption_details"
-            app:destination="@id/consumption_details"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            tools:layout="@layout/consumption_details_fragment">
+        <argument
+                android:name="consumptionList"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList" />
+    </fragment>
 </navigation>
