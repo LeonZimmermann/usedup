@@ -11,7 +11,7 @@
             tools:context=".ui.consumption.details.ConsumptionDetailsFragment">
 
         <ImageView
-                android:id="@+id/consumption_details_image_view"
+                android:id="@+id/consumption_creation_image_view"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:src="@drawable/consumption_list_image_placeholder"
@@ -21,7 +21,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:id="@+id/consumption_details_name_tv"
+                android:id="@+id/consumption_creation_name_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -29,16 +29,16 @@
                 android:text="Name"
                 android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_details_image_view" />
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
 
         <TextView
-                android:id="@+id/consumption_details_duration_tv"
+                android:id="@+id/consumption_creation_duration_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Duration"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/consumption_details_name_tv"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_details_name_tv" />
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
 
         <TextView
                 android:id="@+id/textView5"
@@ -67,8 +67,8 @@
                 android:layout_marginTop="16dp"
                 android:text="Description"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/consumption_details_duration_tv"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_details_duration_tv" />
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
 
         <TextView
                 android:id="@+id/consumption_details_description_tv"

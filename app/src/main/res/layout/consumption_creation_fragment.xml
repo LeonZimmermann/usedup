@@ -1,85 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.consumption.creation.ConsumptionCreationFragment">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <AutoCompleteTextView
-            android:id="@+id/consumption_product_name_input"
-            android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:hint="Product Name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingBottom="16dp"
+            tools:context=".ui.consumption.details.ConsumptionDetailsFragment">
 
-    <EditText
-            android:id="@+id/consumption_quantity_change_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Quantity Change"
-            android:inputType="numberSigned|numberDecimal"
-            app:layout_constraintEnd_toStartOf="@+id/consumption_measure_input"
-            app:layout_constraintStart_toStartOf="@+id/consumption_product_name_input"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_product_name_input" />
+        <ImageView
+                android:id="@+id/consumption_creation_image_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="#999999"
+                android:cropToPadding="true"
+                android:scaleType="center"
+                android:src="@drawable/add_photo_icon"
+                android:tint="@android:color/white"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-            android:id="@+id/consumption_consume_button"
-            style="pr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Consume"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_add_button"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/consumption_add_button"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_add_button" />
+        <EditText
+                android:id="@+id/consumption_creation_name_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="@string/name"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/consumption_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_save_button"
-            app:layout_constraintStart_toStartOf="@+id/consumption_save_button"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_save_button"
-            tools:itemCount="10"
-            tools:listitem="@layout/product_item" />
+        <EditText
+                android:id="@+id/consumption_creation_duration_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/clock_icon"
+                android:hint="Duration"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
 
-    <Button
-            android:id="@+id/consumption_add_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Add Product To List"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_measure_input"
-            app:layout_constraintStart_toStartOf="@+id/consumption_quantity_change_input"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_quantity_change_input" />
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_begin="250dp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-            android:id="@+id/consumption_save_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Save List"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_consume_button"
-            app:layout_constraintStart_toStartOf="@+id/consumption_consume_button"
-            app:layout_constraintTop_toBottomOf="@+id/consumption_consume_button" />
+        <Button
+                android:id="@+id/consumption_creation_ingredients_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="64dp"
+                android:drawableLeft="@drawable/add_icon"
+                android:text="Add Ingredients"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
 
-    <Spinner
-            android:id="@+id/consumption_measure_input"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/consumption_quantity_change_input"
-            app:layout_constraintEnd_toEndOf="@+id/consumption_product_name_input"
-            app:layout_constraintTop_toTopOf="@+id/consumption_quantity_change_input" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+                android:id="@+id/consumption_creation_description_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawableLeft="@drawable/add_icon"
+                android:text="Add Description"
+                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
+
+        <Button
+                android:id="@+id/consumption_creation_instructions_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/add_icon"
+                android:text="Add Instructions"
+                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_description_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_description_button"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
+
+        <TextView
+                android:id="@+id/consumption_creation_description_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_button" />
+
+        <TextView
+                android:id="@+id/consumption_creation_instructions_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_description_tv"
+                app:layout_constraintStart_toStartOf="@+id/consumption_creation_description_tv"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_instructions_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

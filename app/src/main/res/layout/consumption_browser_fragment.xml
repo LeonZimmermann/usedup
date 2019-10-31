@@ -16,4 +16,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/consumption_browser_item"
             tools:itemCount="10" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/consumption_browser_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/add_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

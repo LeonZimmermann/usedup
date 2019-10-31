@@ -39,6 +39,7 @@ class ConsumptionBrowserFragment : Fragment() {
         viewModel.consumptionLists.observe(this, Observer {
             adapter.setConsumptionLists(it)
         })
+        consumption_browser_add_button.setOnClickListener { findNavController().navigate(R.id.action_consumption_browser_fragment_to_consumption_creation_fragment) }
     }
 
     private fun onItemClicked(view: View) {

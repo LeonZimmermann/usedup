@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.save
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.save
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -11,14 +11,14 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.consumption_creation_dialog.view.*
 import java.io.Serializable
 
-class ConsumptionCreationDialogFragment(): DialogFragment() {
+class IngredientsDialogFragment(): DialogFragment() {
 
     @FunctionalInterface
     interface OnSaveHandler: Serializable {
         fun onSave(name: String)
     }
 
-    private lateinit var viewModel: ConsumptionCreationDialogViewModel
+    private lateinit var viewModel: IngredientsDialogViewModel
     private lateinit var onSaveHandler: OnSaveHandler
 
     constructor(onSaveHandler: OnSaveHandler): this() {
@@ -27,7 +27,7 @@ class ConsumptionCreationDialogFragment(): DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[ConsumptionCreationDialogViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[IngredientsDialogViewModel::class.java]
         if (savedInstanceState != null) {
             onSaveHandler = savedInstanceState.getSerializable(ON_SAVE_HANDLER_KEY) as OnSaveHandler
         }

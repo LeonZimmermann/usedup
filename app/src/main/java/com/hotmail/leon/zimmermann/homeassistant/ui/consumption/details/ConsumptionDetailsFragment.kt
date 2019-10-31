@@ -33,8 +33,8 @@ class ConsumptionDetailsFragment : Fragment() {
         // TODO: Use the ViewModel
         arguments?.let { bundle ->
             val consumptionList = bundle.getSerializable("consumptionList") as ConsumptionList
-            consumption_details_name_tv.text = consumptionList.metaData.name
-            consumption_details_duration_tv.text = consumptionList.metaData.duration?.toString() ?: ""
+            consumption_creation_name_input.text = consumptionList.metaData.name
+            consumption_creation_duration_input.text = consumptionList.metaData.duration?.toString() ?: ""
             consumption_details_description_tv.text = consumptionList.metaData.description ?: ""
             consumption_details_ingredients_tv.text = consumptionList.consumptions
                 .map {

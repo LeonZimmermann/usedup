@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients
 
 open class ConsumptionException(message: String) : Exception(message)
 class InvalidQuantityChangeException : ConsumptionException("Invalid Quantity Change")

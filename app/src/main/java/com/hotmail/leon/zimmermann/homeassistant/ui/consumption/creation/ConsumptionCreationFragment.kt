@@ -1,137 +1,126 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation
 
+import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.save.ConsumptionCreationDialogFragment
 import kotlinx.android.synthetic.main.consumption_creation_fragment.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ConsumptionCreationFragment : Fragment() {
+
     companion object {
         fun newInstance() = ConsumptionCreationFragment()
+
+        private const val REQUEST_IMAGE_CAPTURE = 1
+        const val REQUEST_DESCRIPTION_TEXT = 2
+        const val REQUEST_INSTRUCTIONS_TEXT = 3
     }
 
     private lateinit var viewModel: ConsumptionCreationViewModel
+    private var currentPhotoPath: String? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.consumption_creation_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
-        initializeProductNameInput()
-        initializeMeasureInput()
-        initializeAddButton()
-        initializeConsumptionList()
-        initializeConsumptionButton()
-        initializeSaveButton()
-    }
-
-    private fun initializeProductNameInput() {
-        viewModel.productEntityList.observe(this, Observer { productList ->
-            consumption_product_name_input.setAdapter(ArrayAdapter<String>(
-                context!!,
-                android.R.layout.simple_dropdown_item_1line,
-                productList.map { it.name }
-            ))
+        viewModel.descriptionString.observe(this, androidx.lifecycle.Observer {
+            consumption_creation_description_tv.text = it
         })
+        viewModel.instructionsString.observe(this, androidx.lifecycle.Observer {
+            consumption_creation_instructions_tv.text = it
+        })
+        consumption_creation_description_button.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_consumption_creation_fragment_to_text_input_fragment,
+                bundleOf("requestMode" to REQUEST_DESCRIPTION_TEXT)
+            )
+        }
+        consumption_creation_instructions_button.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_consumption_creation_fragment_to_text_input_fragment,
+                bundleOf("requestMode" to REQUEST_INSTRUCTIONS_TEXT)
+            )
+        }
+        consumption_creation_image_view.setOnClickListener { dispatchTakePictureIntent() }
+
     }
 
-    private fun initializeMeasureInput() {
-        consumption_measure_input.adapter =
-            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
-    }
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(context!!.packageManager)?.also {
+                try {
+                    val photoFile = createImageFile()
+                    photoFile.also {
+                        val photoURI: Uri =
+                            FileProvider.getUriForFile(
+                                context!!,
+                                "com.hotmail.leon.zimmermann.homeassistant.fileprovider",
+                                it
+                            )
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                } catch (exception: IOException) {
+                    val message = "Could not create image file"
+                    Toast.makeText(context!!, message, Toast.LENGTH_LONG).show()
+                    Log.e(
+                        "ConsumptionCreation",
+                        "dispatchTakePictureIntent: $message (Exception: ${exception.message}"
+                    )
+                }
 
-    private fun initializeAddButton() {
-        consumption_add_button.setOnClickListener {
-            try {
-                val consumption = getProductAndQuantityChange(viewModel.productEntityList.value!!)
-                val consumptionList = viewModel.consumptionList.value!!
-                consumptionList.add(consumption)
-                viewModel.consumptionList.value = consumptionList
-            } catch (e: ConsumptionException) {
-                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun getProductAndQuantityChange(productEntityList: List<ProductEntity>): ConsumptionCreationTemplate {
-        val name = consumption_product_name_input.text.toString()
-        productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
-        val product = productEntityList.firstOrNull { it.name == name } ?: throw InvalidProductNameException()
-        val quantityChange = consumption_quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
-            ?: throw InvalidQuantityChangeException()
-        val measure = consumption_measure_input.selectedItem as Measure
-        return ConsumptionCreationTemplate(
-            product,
-            quantityChange,
-            measure
-        )
-    }
-
-    private fun initializeConsumptionList() {
-        val adapter =
-            ConsumptionCreationBatchListAdapter(context!!)
-        val layoutManager = LinearLayoutManager(context!!)
-        val divider = DividerItemDecoration(consumption_list.context!!, layoutManager.orientation)
-        divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
-        consumption_list.addItemDecoration(divider)
-        consumption_list.adapter = adapter
-        consumption_list.layoutManager = layoutManager
-        viewModel.consumptionList.observe(this, Observer { consumptionList ->
-            adapter.setConsumptionList(consumptionList)
-        })
-    }
-
-    private fun initializeConsumptionButton() {
-        consumption_consume_button.setOnClickListener {
-            val consumptionsMade = mutableListOf<ConsumptionCreationTemplate>()
-            try {
-                val consumptionList = viewModel.consumptionList.value!!
-                if (consumptionList.isEmpty()) throw NoConsumptionsException()
-                for (consumption in consumptionList) {
-                    consumption.product.reduce(consumption.value, consumption.measure)
-                    consumptionsMade.add(consumption)
-                }
-                viewModel.updateAll(consumptionList.map { it.product })
-                viewModel.consumptionList.value = mutableListOf()
-            } catch (e: ConsumptionException) {
-                catchConsumptionException(consumptionsMade, e)
-            } catch (e: ProductEntity.ProductReductionException) {
-                catchConsumptionException(consumptionsMade, e)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Glide.with(context!!)
+                .load(currentPhotoPath)
+                .into(consumption_creation_image_view)
+            consumption_creation_image_view.apply {
+                scaleType = ImageView.ScaleType.CENTER
+                imageTintList = null
             }
         }
     }
 
-    private fun catchConsumptionException(consumptionsMade: List<ConsumptionCreationTemplate>, exception: Exception) {
-        consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
-        viewModel.updateAll(consumptionsMade.map { it.product })
-        Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
+    @SuppressLint("SimpleDateFormat")
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = context!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir).apply { currentPhotoPath = absolutePath }
     }
 
-    private fun initializeSaveButton() {
-        consumption_save_button.setOnClickListener {
-            ConsumptionCreationDialogFragment(object :
-                ConsumptionCreationDialogFragment.OnSaveHandler {
-                override fun onSave(name: String) {
-                    viewModel.save(name)
-                }
-            }).show(fragmentManager!!, "SaveDialog")
-        }
-    }
 }

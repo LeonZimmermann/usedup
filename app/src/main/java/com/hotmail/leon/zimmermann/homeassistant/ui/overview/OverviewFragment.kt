@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.ConsumptionException
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.InvalidProductNameException
-import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.InvalidQuantityChangeException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.ConsumptionException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.InvalidProductNameException
+import com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.InvalidQuantityChangeException
 import kotlinx.android.synthetic.main.overview_fragment.*
 
 class OverviewFragment : Fragment() {
@@ -45,10 +45,10 @@ class OverviewFragment : Fragment() {
 
     private fun initializeTransactionCard() {
         advanced_consumption_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_consumption_fragment)
+            // TODO Implement
         }
         consumption_browser_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_consumption_browser_fragment)
+            findNavController().navigate(R.id.action_overview_fragment_to_consumption_browser_fragment)
         }
         consumption_measure_input.adapter =
             ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
@@ -78,13 +78,13 @@ class OverviewFragment : Fragment() {
             it?.let { adapter.setProductList(it) }
         })
         shopping_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_shopping_fragment)
+            findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
         }
     }
 
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_management_fragment)
+            findNavController().navigate(R.id.action_overview_fragment_to_management_fragment)
         }
     }
 
