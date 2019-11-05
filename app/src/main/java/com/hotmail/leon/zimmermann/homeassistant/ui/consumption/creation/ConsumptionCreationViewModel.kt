@@ -6,4 +6,9 @@ import androidx.lifecycle.ViewModel
 class ConsumptionCreationViewModel : ViewModel() {
     var descriptionString = MutableLiveData<String>()
     var instructionsString = MutableLiveData<String>()
+
+    val showDescriptionButton: Boolean
+        get() = descriptionString.value.isNullOrEmpty()
+    val showInstructionsButton: Boolean
+        get() = instructionsString.value.isNullOrEmpty()
 }

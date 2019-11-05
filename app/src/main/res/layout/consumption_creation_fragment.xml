@@ -1,123 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+                name="viewModel"
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.ConsumptionCreationViewModel" />
+
+        <variable
+                name="eventHandler"
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.creation.ConsumptionCreationFragment.EventHandler" />
+    </data>
+
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            tools:context=".ui.consumption.details.ConsumptionDetailsFragment">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-                android:id="@+id/consumption_creation_image_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:adjustViewBounds="true"
-                android:background="#999999"
-                android:cropToPadding="true"
-                android:scaleType="center"
-                android:src="@drawable/add_photo_icon"
-                android:tint="@android:color/white"
-                app:layout_constraintDimensionRatio="16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-                android:id="@+id/consumption_creation_name_input"
-                android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="@string/name"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
+                android:paddingBottom="16dp"
+                tools:context=".ui.consumption.details.ConsumptionDetailsFragment">
 
-        <EditText
-                android:id="@+id/consumption_creation_duration_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/clock_icon"
-                android:hint="Duration"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
+            <ImageView
+                    android:id="@+id/consumption_creation_image_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:background="#999999"
+                    android:cropToPadding="true"
+                    android:onClick="@{eventHandler::onImageViewClicked}"
+                    android:scaleType="center"
+                    android:src="@drawable/add_photo_icon"
+                    android:tint="@android:color/white"
+                    app:layout_constraintDimensionRatio="16:9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_begin="250dp"
-                app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                    android:id="@+id/consumption_creation_name_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/name"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
 
-        <Button
-                android:id="@+id/consumption_creation_ingredients_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="64dp"
-                android:drawableLeft="@drawable/add_icon"
-                android:text="Add Ingredients"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
+            <EditText
+                    android:id="@+id/consumption_creation_duration_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/clock_icon"
+                    android:hint="Duration"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
 
-        <Button
-                android:id="@+id/consumption_creation_description_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableLeft="@drawable/add_icon"
-                android:text="Add Description"
-                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintGuide_begin="250dp"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-                android:id="@+id/consumption_creation_instructions_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawableLeft="@drawable/add_icon"
-                android:text="Add Instructions"
-                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_description_button"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_description_button"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
+            <Button
+                    android:id="@+id/consumption_creation_ingredients_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="64dp"
+                    android:drawableLeft="@drawable/add_icon"
+                    android:text="Add Ingredients"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
 
-        <TextView
-                android:id="@+id/consumption_creation_description_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_button" />
+            <Button
+                    android:id="@+id/consumption_creation_description_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableLeft="@drawable/add_icon"
+                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
+                    android:text="Add Description"
+                    android:visibility="@{viewModel.showDescriptionButton ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
+                    app:layout_constraintHorizontal_bias="0.502"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
 
-        <TextView
-                android:id="@+id/consumption_creation_instructions_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/consumption_creation_description_tv"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_description_tv"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_instructions_button" />
+            <TextView
+                    android:id="@+id/consumption_creation_description_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.descriptionString}"
+                    android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_button" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <Button
+                    android:id="@+id/consumption_creation_instructions_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableLeft="@drawable/add_icon"
+                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
+                    android:text="Add Instructions"
+                    android:visibility="@{viewModel.showInstructionsButton ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
+
+            <TextView
+                    android:id="@+id/consumption_creation_instructions_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.instructionsString}"
+                    android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_instructions_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
