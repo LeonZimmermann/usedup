@@ -34,7 +34,6 @@ class ConsumptionCreationFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.eventHandler = EventHandler()
-        binding.invalidateAll()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -43,6 +42,11 @@ class ConsumptionCreationFragment : Fragment() {
     }
 
     inner class EventHandler {
+
+        fun onIngredientsButtonClicked(view: View) {
+            findNavController().navigate(R.id.action_consumption_creation_fragment_to_ingredients_fragment)
+        }
+
         fun onDescriptionButtonClicked(view: View) {
             findNavController().navigate(
                 R.id.action_consumption_creation_fragment_to_text_input_fragment,

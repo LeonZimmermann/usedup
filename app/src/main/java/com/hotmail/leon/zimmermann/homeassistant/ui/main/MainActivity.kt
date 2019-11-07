@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui
+package com.hotmail.leon.zimmermann.homeassistant.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

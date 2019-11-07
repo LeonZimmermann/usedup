@@ -17,9 +17,9 @@
             tools:layout="@layout/management_fragment"/>
     <fragment
             android:id="@+id/ingredients_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.IngredientsFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.fragment.ConsumptionIngredientsFragment"
             android:label="Ingredients"
-            tools:layout="@layout/consumption_creation_old_fragment" />
+            tools:layout="@layout/consumption_ingredients_fragment" />
     <fragment
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.overview.OverviewFragment"
@@ -74,7 +74,7 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-                android:id="@+id/action_consumption_creation_fragment_to_consumption_fragment"
+                android:id="@+id/action_consumption_creation_fragment_to_ingredients_fragment"
                 app:destination="@id/ingredients_fragment" />
     </fragment>
     <fragment

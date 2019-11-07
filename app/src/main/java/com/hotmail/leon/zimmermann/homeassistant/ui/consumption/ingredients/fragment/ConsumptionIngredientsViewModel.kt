@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients
+package com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.fragment
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -14,14 +14,14 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.Consu
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class IngredientsViewModel(application: Application) : AndroidViewModel(application) {
+class ConsumptionIngredientsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
     val productEntityList: LiveData<List<ProductEntity>>
 
     private val consumptionRepository: ConsumptionRepository
     var consumptionLists: LiveData<List<ConsumptionList>>
-    var consumptionList: MutableLiveData<MutableList<IngredientsTemplate>>
+    var consumptionList: MutableLiveData<MutableList<ConsumptionIngredientsTemplate>> = MutableLiveData(mutableListOf())
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
@@ -33,7 +33,6 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
         val consumptionDao = database.consumptionDao()
         consumptionRepository = ConsumptionRepository(consumptionDao)
         consumptionLists = consumptionRepository.consumptionLists
-        consumptionList = MutableLiveData(mutableListOf())
     }
 
     fun updateAll(productEntityList: List<ProductEntity>) {
@@ -51,4 +50,31 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
             )
         }
     }
+
+    // TODO Use this code for advanced consumption
+    /*
+    fun consume() {
+            val consumptionsMade = mutableListOf<ConsumptionIngredientsTemplate>()
+            try {
+                val consumptionList = consumptionList.value!!
+                if (consumptionList.isEmpty()) throw NoConsumptionsException()
+                for (consumption in consumptionList) {
+                    consumption.product.reduce(consumption.value, consumption.measure)
+                    consumptionsMade.add(consumption)
+                }
+                updateAll(consumptionList.map { it.product })
+                this.consumptionList.value = mutableListOf()
+            } catch (e: ConsumptionIngredientsException) {
+                catchConsumptionException(consumptionsMade, e)
+            } catch (e: ProductEntity.ProductReductionException) {
+                catchConsumptionException(consumptionsMade, e)
+            }
+    }
+
+    private fun catchConsumptionException(consumptionsMade: List<ConsumptionIngredientsTemplate>, exception: Exception) {
+        consumptionsMade.forEach { it.product.reduce(-it.value, it.measure) }
+        updateAll(consumptionsMade.map { it.product })
+        //Toast.makeText(context!!, exception.message, Toast.LENGTH_LONG).show()
+    }
+     */
 }
