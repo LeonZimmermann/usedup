@@ -42,15 +42,15 @@ class ConsumptionIngredientsAddDialogFragment private constructor() :
             Observer { productEntityList ->
                 try {
                     val consumption = getProductAndQuantityChange(productEntityList)
-                    val consumptionList = viewModel.consumptionList.value!!
-                    val existingConsumption = consumptionList.find { it.product.id == consumption.product.id }
+                    val editConsumptionList = viewModel.editConsumptionList.value!!
+                    val existingConsumption = editConsumptionList.find { it.product.id == consumption.product.id }
                     if (existingConsumption != null) {
                         existingConsumption.value += consumption.measure.toMeasure(
                             consumption.value,
                             existingConsumption.measure
                         )
-                    } else consumptionList.add(consumption)
-                    viewModel.consumptionList.value = consumptionList
+                    } else editConsumptionList.add(consumption)
+                    viewModel.editConsumptionList.value = editConsumptionList
                 } catch (e: ConsumptionIngredientsException) {
                     Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
                 } catch (e: MeasureConversionException) {

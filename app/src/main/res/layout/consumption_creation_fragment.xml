@@ -97,9 +97,23 @@
                     app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
 
             <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{eventHandler::onIngredientsButtonClicked}"
+                    android:text="@string/ingredients"
+                    android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
+
+            <TextView
                     android:id="@+id/consumption_creation_ingredients_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:onClick="@{eventHandler::onIngredientsButtonClicked}"
                     android:text="@{ingredientsViewModel.consumptionListString}"
                     android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="@+id/textView4"
@@ -110,62 +124,17 @@
                     android:id="@+id/consumption_creation_description_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="64dp"
                     android:drawableStart="@drawable/add_icon"
                     android:onClick="@{eventHandler::onDescriptionButtonClicked}"
                     android:text="@string/add_description"
                     android:visibility="@{viewModel.showDescriptionButton ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
-                    app:layout_constraintHorizontal_bias="0.502"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_tv" />
-
-            <TextView
-                    android:id="@+id/consumption_creation_description_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.descriptionString}"
-                    android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="@+id/textView6"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <Button
-                    android:id="@+id/consumption_creation_instructions_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:drawableStart="@drawable/add_icon"
-                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
-                    android:text="@string/add_instructions"
-                    android:visibility="@{viewModel.showInstructionsButton ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="@+id/consumption_creation_ingredients_button"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_ingredients_button"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
-
-            <TextView
-                    android:id="@+id/consumption_creation_instructions_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.instructionsString}"
-                    android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="@+id/textView8"
-                    app:layout_constraintStart_toStartOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-            <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/ingredients"
-                    android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_tv" />
 
             <TextView
                     android:id="@+id/textView6"
@@ -173,6 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
                     android:text="@string/description"
                     android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -180,16 +150,57 @@
                     app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_button" />
 
             <TextView
+                    android:id="@+id/consumption_creation_description_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
+                    android:text="@{viewModel.descriptionString}"
+                    android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/textView6"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView6"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+
+            <Button
+                    android:id="@+id/consumption_creation_instructions_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="64dp"
+                    android:drawableStart="@drawable/add_icon"
+                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
+                    android:text="@string/add_instructions"
+                    android:visibility="@{viewModel.showInstructionsButton ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
+
+            <TextView
                     android:id="@+id/textView8"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
                     android:text="@string/instructions"
                     android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
                     app:layout_constraintTop_toBottomOf="@+id/consumption_creation_instructions_button" />
+
+            <TextView
+                    android:id="@+id/consumption_creation_instructions_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
+                    android:text="@{viewModel.instructionsString}"
+                    android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/textView8"
+                    app:layout_constraintStart_toStartOf="@+id/textView8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

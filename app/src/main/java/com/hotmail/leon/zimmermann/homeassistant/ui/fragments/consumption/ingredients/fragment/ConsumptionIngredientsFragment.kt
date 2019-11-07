@@ -25,6 +25,9 @@ class ConsumptionIngredientsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            discardIngredients()
+        }
     }
 
     override fun onCreateView(
@@ -57,7 +60,7 @@ class ConsumptionIngredientsFragment : Fragment() {
         ingredients_list.addItemDecoration(divider)
         ingredients_list.adapter = adapter
         ingredients_list.layoutManager = layoutManager
-        viewModel.consumptionList.observe(this, Observer { consumptionList ->
+        viewModel.editConsumptionList.observe(this, Observer { consumptionList ->
             adapter.setConsumptionList(consumptionList)
         })
     }
@@ -68,16 +71,31 @@ class ConsumptionIngredientsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.delete_option -> {
-            viewModel.consumptionList.value?.clear()
+        R.id.discard_option -> {
+            discardIngredients()
             findNavController().navigateUp()
             true
         }
         R.id.submit_option -> {
+            submitIngredients()
             findNavController().navigateUp()
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun discardIngredients() {
+        viewModel.editConsumptionList.value = mutableListOf<ConsumptionIngredientsTemplate>().apply {
+            if (viewModel.consumptionList.value != null)
+                addAll(viewModel.consumptionList.value!!)
+        }
+    }
+
+    private fun submitIngredients() {
+        viewModel.consumptionList.value = mutableListOf<ConsumptionIngredientsTemplate>().apply {
+            if (viewModel.editConsumptionList.value != null)
+                addAll(viewModel.editConsumptionList.value!!)
+        }
     }
 
     inner class EventHandler {
@@ -92,6 +110,7 @@ class ConsumptionIngredientsFragment : Fragment() {
             ConsumptionIngredientsEditDialogFragment.newInstance(item)
                 .show(fragmentManager!!, "EditDialog")
         }
+
     }
 
     companion object {

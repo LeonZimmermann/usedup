@@ -7,12 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
-import kotlinx.coroutines.launch
 
 class ConsumptionIngredientsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,6 +19,7 @@ class ConsumptionIngredientsViewModel(application: Application) : AndroidViewMod
     private val consumptionRepository: ConsumptionRepository
     private var consumptionLists: LiveData<List<ConsumptionList>>
 
+    var editConsumptionList: MutableLiveData<MutableList<ConsumptionIngredientsTemplate>> = MutableLiveData(mutableListOf())
     var consumptionList: MutableLiveData<MutableList<ConsumptionIngredientsTemplate>> = MutableLiveData(mutableListOf())
     val consumptionListEmpty: Boolean
         get() = consumptionList.value.isNullOrEmpty()
@@ -42,35 +40,37 @@ class ConsumptionIngredientsViewModel(application: Application) : AndroidViewMod
         consumptionLists = consumptionRepository.consumptionLists
     }
 
+    // TODO Use this code for advanced consumption
+    /*
     fun updateAll(productEntityList: List<ProductEntity>) {
         viewModelScope.launch {
             productRepository.updateAll(productEntityList)
         }
     }
 
+
     fun save(name: String) {
         viewModelScope.launch {
             consumptionRepository.insert(
                 ConsumptionList(
                     ConsumptionListMetaDataEntity(name),
-                    consumptionList.value!!.map { ConsumptionEntity(it.product.id, it.measure.id, it.value) })
+                    editConsumptionList.value!!.map { ConsumptionEntity(it.product.id, it.measure.id, it.value) })
             )
         }
     }
 
-    // TODO Use this code for advanced consumption
-    /*
+
     fun consume() {
             val consumptionsMade = mutableListOf<ConsumptionIngredientsTemplate>()
             try {
-                val consumptionList = consumptionList.value!!
-                if (consumptionList.isEmpty()) throw NoConsumptionsException()
-                for (consumption in consumptionList) {
+                val editConsumptionList = editConsumptionList.value!!
+                if (editConsumptionList.isEmpty()) throw NoConsumptionsException()
+                for (consumption in editConsumptionList) {
                     consumption.product.reduce(consumption.value, consumption.measure)
                     consumptionsMade.add(consumption)
                 }
-                updateAll(consumptionList.map { it.product })
-                this.consumptionList.value = mutableListOf()
+                updateAll(editConsumptionList.map { it.product })
+                this.editConsumptionList.value = mutableListOf()
             } catch (e: ConsumptionIngredientsException) {
                 catchConsumptionException(consumptionsMade, e)
             } catch (e: ProductEntity.ProductReductionException) {

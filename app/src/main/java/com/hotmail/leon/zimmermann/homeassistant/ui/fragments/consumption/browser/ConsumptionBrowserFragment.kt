@@ -45,7 +45,7 @@ class ConsumptionBrowserFragment : Fragment() {
     private fun onItemClicked(view: View) {
         findNavController().navigate(
             R.id.action_consumption_browser_fragment_to_consumption_details,
-            bundleOf("consumptionList" to adapter[consumption_browser_list.getChildAdapterPosition(view)])
+            bundleOf("editConsumptionList" to adapter[consumption_browser_list.getChildAdapterPosition(view)])
         )
     }
 }

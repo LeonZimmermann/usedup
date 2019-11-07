@@ -71,8 +71,8 @@ class ConsumptionIngredientsEditDialogFragment private constructor() :
             Observer { productEntityList ->
                 try {
                     val consumption = getProductAndQuantityChange(productEntityList)
-                    val consumptionList = viewModel.consumptionList.value!!
-                    val existingConsumption = consumptionList
+                    val editConsumptionList = viewModel.editConsumptionList.value!!
+                    val existingConsumption = editConsumptionList
                         .filter { it != selectedItem }
                         .find { it.product.id == consumption.product.id }
                     if (existingConsumption != null) {
@@ -80,9 +80,9 @@ class ConsumptionIngredientsEditDialogFragment private constructor() :
                             consumption.value,
                             existingConsumption.measure
                         )
-                    } else consumptionList.add(consumption)
-                    consumptionList.remove(selectedItem)
-                    viewModel.consumptionList.value = consumptionList
+                    } else editConsumptionList.add(consumption)
+                    editConsumptionList.remove(selectedItem)
+                    viewModel.editConsumptionList.value = editConsumptionList
                 } catch (e: ConsumptionIngredientsException) {
                     Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
                 } catch (e: MeasureConversionException) {
@@ -93,9 +93,9 @@ class ConsumptionIngredientsEditDialogFragment private constructor() :
     }
 
     private fun onDeleteButtonClicked() {
-        val consumptionList = viewModel.consumptionList.value!!
+        val consumptionList = viewModel.editConsumptionList.value!!
         consumptionList.remove(selectedItem)
-        viewModel.consumptionList.value = consumptionList
+        viewModel.editConsumptionList.value = consumptionList
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

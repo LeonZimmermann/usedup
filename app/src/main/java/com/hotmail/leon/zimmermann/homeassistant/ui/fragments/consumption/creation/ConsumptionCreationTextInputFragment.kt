@@ -55,7 +55,7 @@ class ConsumptionCreationTextInputFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.delete_option -> {
+        R.id.discard_option -> {
             applyOnSelectedField { field -> field.value = null }
             findNavController().navigateUp()
             true

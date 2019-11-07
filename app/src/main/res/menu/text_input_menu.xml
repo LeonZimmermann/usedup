@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/delete_option"
-        android:icon="@drawable/delete_icon"
+        android:id="@+id/discard_option"
+        android:icon="@drawable/cross_icon"
         android:title="@string/delete"
         app:showAsAction="ifRoom"/>
     <item
