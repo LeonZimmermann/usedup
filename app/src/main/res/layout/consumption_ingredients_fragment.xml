@@ -5,13 +5,13 @@
 
     <data>
 
-        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.fragment.ConsumptionIngredientsViewModel" />
+        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsViewModel" />
 
-        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.fragment.ConsumptionIngredientsFragment" />
+        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsFragment.EventHandler" />
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.consumption.ingredients.fragment.ConsumptionIngredientsViewModel" />
+                type="ConsumptionIngredientsViewModel" />
 
         <variable
                 name="eventHandler"
@@ -22,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.consumption.ingredients.fragment.ConsumptionIngredientsFragment">
+            tools:context=".ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsFragment">
 
 
         <androidx.recyclerview.widget.RecyclerView
