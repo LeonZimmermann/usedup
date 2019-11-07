@@ -60,6 +60,8 @@ class ConsumptionCreationPictureHandler(private val consumptionCreationFragment:
             scaleType = ImageView.ScaleType.CENTER
             imageTintList = null
         }
+        consumptionCreationFragment.context!!.deleteFile(currentPhotoPath)
+        currentPhotoPath = null
     }
 
     companion object {
