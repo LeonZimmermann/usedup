@@ -13,12 +13,14 @@ import androidx.navigation.fragment.findNavController
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionCreationFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsViewModel
 
 class ConsumptionCreationFragment : Fragment() {
 
     private val pictureHandler = ConsumptionCreationPictureHandler(this)
 
     private lateinit var viewModel: ConsumptionCreationViewModel
+    private lateinit var ingredientsViewModel: ConsumptionIngredientsViewModel
     private lateinit var binding: ConsumptionCreationFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,9 +32,13 @@ class ConsumptionCreationFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        ingredientsViewModel = activity?.run {
+            ViewModelProviders.of(this).get(ConsumptionIngredientsViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         val binding = ConsumptionCreationFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.ingredientsViewModel = ingredientsViewModel
         binding.eventHandler = EventHandler()
     }
 

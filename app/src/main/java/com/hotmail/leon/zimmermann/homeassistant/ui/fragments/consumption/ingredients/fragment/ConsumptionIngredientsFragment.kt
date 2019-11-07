@@ -1,12 +1,12 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -21,6 +21,12 @@ class ConsumptionIngredientsFragment : Fragment() {
     private lateinit var binding: ConsumptionIngredientsFragmentBinding
     private lateinit var adapter: ConsumptionIngredientsBatchListAdapter
     private var eventHandler = EventHandler()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +62,24 @@ class ConsumptionIngredientsFragment : Fragment() {
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.ingredients_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.delete_option -> {
+            viewModel.consumptionList.value?.clear()
+            findNavController().navigateUp()
+            true
+        }
+        R.id.submit_option -> {
+            findNavController().navigateUp()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
     inner class EventHandler {
 
         fun onAddButtonClicked(view: View) {
@@ -68,7 +92,6 @@ class ConsumptionIngredientsFragment : Fragment() {
             ConsumptionIngredientsEditDialogFragment.newInstance(item)
                 .show(fragmentManager!!, "EditDialog")
         }
-
     }
 
     companion object {

@@ -55,9 +55,14 @@ class ConsumptionCreationTextInputFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.delete_option -> {
+            applyOnSelectedField { field -> field.value = null }
+            findNavController().navigateUp()
+            true
+        }
         R.id.submit_option -> {
             applyOnSelectedField { field -> field.value = text_input.text.toString() }
-            findNavController().navigate(R.id.action_text_input_fragment_to_consumption_creation_fragment)
+            findNavController().navigateUp()
             true
         }
         else -> super.onOptionsItemSelected(item)

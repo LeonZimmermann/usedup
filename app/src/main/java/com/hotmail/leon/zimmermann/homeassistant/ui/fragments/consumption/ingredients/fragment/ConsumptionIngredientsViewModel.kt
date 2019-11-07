@@ -20,8 +20,15 @@ class ConsumptionIngredientsViewModel(application: Application) : AndroidViewMod
     val productEntityList: LiveData<List<ProductEntity>>
 
     private val consumptionRepository: ConsumptionRepository
-    var consumptionLists: LiveData<List<ConsumptionList>>
+    private var consumptionLists: LiveData<List<ConsumptionList>>
+
     var consumptionList: MutableLiveData<MutableList<ConsumptionIngredientsTemplate>> = MutableLiveData(mutableListOf())
+    val consumptionListEmpty: Boolean
+        get() = consumptionList.value.isNullOrEmpty()
+    val consumptionListString: String
+        get() = consumptionList.value?.joinToString("\n") {
+            "- ${it.value}${it.measure.abbreviation} ${it.product.name}"
+        } ?: ""
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
