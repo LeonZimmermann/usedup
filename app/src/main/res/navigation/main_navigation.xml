@@ -76,6 +76,9 @@
         <action
                 android:id="@+id/action_consumption_creation_fragment_to_ingredients_fragment"
                 app:destination="@id/ingredients_fragment" />
+        <action
+                android:id="@+id/action_consumption_creation_fragment_to_consumption_creation_picture_preview_fragment"
+                app:destination="@id/consumption_creation_picture_preview_fragment" />
     </fragment>
     <fragment
             android:id="@+id/text_input_fragment"
@@ -86,8 +89,10 @@
                 android:name="requestMode"
                 app:argType="integer"
                 android:defaultValue="-1" />
-        <action
-                android:id="@+id/action_text_input_fragment_to_consumption_creation_fragment"
-                app:destination="@id/consumption_creation_fragment" />
     </fragment>
+    <fragment
+            android:id="@+id/consumption_creation_picture_preview_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationPicturePreviewFragment"
+            android:label="ConsumptionCreationPicturePreview"
+            tools:layout="@layout/consumption_creation_picture_preview_fragment"/>
 </navigation>

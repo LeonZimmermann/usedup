@@ -35,6 +35,9 @@ android {
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     dataBinding {
         enabled = true
     }
