@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.PackagingEntity
@@ -16,13 +17,18 @@ import kotlin.math.max
     foreignKeys = [
         ForeignKey(
             entity = PackagingEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("packaging_id")
+            parentColumns = ["id"],
+            childColumns = ["packaging_id"]
         ),
         ForeignKey(
             entity = MeasureEntity::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("measure_id")
+            parentColumns = ["id"],
+            childColumns = ["measure_id"]
+        ),
+        ForeignKey(
+            entity = CategoryEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["category_id"]
         )
     ]
 )
@@ -33,6 +39,7 @@ data class ProductEntity(
     var max: Int,
     var capacity: Double,
     @ColumnInfo(name = "measure_id") var measureId: Int,
+    @ColumnInfo(name = "category_id") var categoryId: Int,
     @ColumnInfo(name = "packaging_id") var packagingId: Int? = null
 ) {
     @PrimaryKey(autoGenerate = true)

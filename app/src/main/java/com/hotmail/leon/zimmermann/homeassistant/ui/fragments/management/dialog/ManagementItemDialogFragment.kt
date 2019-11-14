@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import java.lang.RuntimeException
@@ -57,10 +58,11 @@ class ManagementItemDialogFragment() : DialogFragment() {
         }
     }
 
-    private fun onEdit(name: String, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) {
+    private fun onEdit(name: String, category: Category, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) {
         val productList = viewModel.productEntityList.value!!
         val product = productList.first { it.id == productId }
         product.name = name
+        product.categoryId = category.id
         product.quantity = quantity
         product.min = min
         product.max = max

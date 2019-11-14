@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bbe5a4f898c66a78498045fabee914e1",
+    "identityHash": "414c4e947e6f5f3c16de082b13970a60",
     "entities": [
       {
         "tableName": "products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `measure_id` INTEGER NOT NULL, `packaging_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `measure_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `packaging_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`category_id`) REFERENCES `categories`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -51,6 +51,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "packagingId",
             "columnName": "packaging_id",
             "affinity": "INTEGER",
@@ -82,6 +88,17 @@
             "onUpdate": "NO ACTION",
             "columns": [
               "measure_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "categories",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "category_id"
             ],
             "referencedColumns": [
               "id"
@@ -258,12 +275,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"bbe5a4f898c66a78498045fabee914e1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"414c4e947e6f5f3c16de082b13970a60\")"
     ]
   }
 }

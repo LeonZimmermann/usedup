@@ -5,6 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
@@ -26,7 +29,8 @@ import java.util.concurrent.locks.ReentrantLock
         MeasureEntity::class,
         PackagingEntity::class,
         ConsumptionEntity::class,
-        ConsumptionListMetaDataEntity::class
+        ConsumptionListMetaDataEntity::class,
+        CategoryEntity::class
     ],
     version = 1
 )
@@ -36,6 +40,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
     abstract fun measureDao(): MeasureDao
     abstract fun packagingDao(): PackagingDao
     abstract fun consumptionDao(): ConsumptionDao
+    abstract fun categoryDao(): CategoryDao
 
     private class HomeAssistantDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -43,6 +48,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch {
                     addMeasures(database)
+                    addCategories(database)
                     addMockProducts(database)
                 }
             }
@@ -52,6 +58,12 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val dao = database.measureDao()
             for (measure in Measure.values())
                 dao.insert(MeasureEntity(measure.id, measure.text, measure.abbreviation))
+        }
+
+        private suspend fun addCategories(database: HomeAssistantDatabase) {
+            val dao = database.categoryDao()
+            for (category in Category.values())
+                dao.insert(CategoryEntity(category.id, category.name))
         }
 
         private suspend fun addMockProducts(database: HomeAssistantDatabase) {
@@ -65,7 +77,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                 val quantity = 0.0
                 val capacity = random.nextDouble()
                 val measure = random.nextInt(Measure.values().size)
-                dao.insert(ProductEntity(name, quantity, min, max, capacity, measure, null))
+                val category = random.nextInt(Category.values().size)
+                dao.insert(ProductEntity(name, quantity, min, max, capacity, measure, category))
             }
         }
 

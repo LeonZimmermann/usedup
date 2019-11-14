@@ -20,6 +20,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+            android:id="@+id/management_item_dialog_category_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_name_input" />
+
     <EditText
             android:id="@+id/management_item_dialog_capacity_input"
             android:layout_width="0dp"
@@ -29,8 +38,9 @@
             android:hint="@string/capacity"
             android:inputType="numberSigned|numberDecimal"
             app:layout_constraintEnd_toStartOf="@+id/management_item_dialog_measure_input"
-            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_name_input"
-            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_name_input" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/management_item_dialog_category_input"
+            app:layout_constraintTop_toBottomOf="@+id/management_item_dialog_category_input" />
 
     <Spinner
             android:id="@+id/management_item_dialog_measure_input"
@@ -40,7 +50,7 @@
             android:backgroundTint="#00535353"
             android:backgroundTintMode="multiply"
             app:layout_constraintBottom_toBottomOf="@+id/management_item_dialog_capacity_input"
-            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_name_input"
+            app:layout_constraintEnd_toEndOf="@+id/management_item_dialog_category_input"
             app:layout_constraintTop_toTopOf="@+id/management_item_dialog_capacity_input" />
 
     <EditText
