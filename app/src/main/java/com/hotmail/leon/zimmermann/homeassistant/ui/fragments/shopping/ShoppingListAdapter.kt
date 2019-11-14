@@ -5,22 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.shopping_item.view.*
 
-class ShoppingListAdapter(context: Context) :
+class ShoppingListAdapter(private val context: Context) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var productEntityList: List<ProductEntity> = emptyList()
-    var checkedProducts: MutableList<Int> = mutableListOf()
+    private var shoppingList: MutableList<ShoppingEntry> = mutableListOf()
+    var checkedEntries: MutableList<Int> = mutableListOf()
         private set
 
     inner class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkbox = itemView.shopping_item_checkbox
-        val quantity = itemView.shopping_item_quantity_input
+        val product: TextView = itemView.shopping_item_name_tv
+        val amount: TextView = itemView.shopping_item_quantity_input
+        val checkbox: CheckBox = itemView.shopping_item_checkbox
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingViewHolder {
@@ -29,27 +31,27 @@ class ShoppingListAdapter(context: Context) :
     }
 
     override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
-        val currentProduct = productEntityList[position]
-        holder.checkbox.text = currentProduct.name
-        holder.quantity.text = currentProduct.discrepancy.toString()
-        holder.itemView.setOnClickListener { updateCheckedProductsList(currentProduct, holder.checkbox) }
+        val currentEntry = shoppingList[position]
+        holder.product.text = currentEntry.product.name
+        holder.amount.text = context.getString(R.string.shopping_entry_amount, currentEntry.amount)
+        holder.itemView.setOnClickListener { updateCheckedProductsList(currentEntry.product, holder.checkbox) }
     }
 
     private fun updateCheckedProductsList(productEntity: ProductEntity, checkbox: CheckBox) {
-        if (checkedProducts.contains(productEntity.id)) {
-            checkedProducts.remove(productEntity.id)
+        if (checkedEntries.contains(productEntity.id)) {
+            checkedEntries.remove(productEntity.id)
             checkbox.isChecked = false
         } else {
-            checkedProducts.add(productEntity.id)
+            checkedEntries.add(productEntity.id)
             checkbox.isChecked = true
         }
     }
 
-    override fun getItemCount() = productEntityList.size
+    override fun getItemCount() = shoppingList.size
 
-    internal fun setProductList(productEntityList: List<ProductEntity>) {
-        this.productEntityList = productEntityList
-        checkedProducts.clear()
+    internal fun setShoppingList(shoppingList: MutableList<ShoppingEntry>) {
+        this.shoppingList = shoppingList
+        checkedEntries.clear()
         notifyDataSetChanged()
     }
 }

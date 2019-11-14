@@ -89,5 +89,6 @@ dependencies {
 
     // Number Picker
     implementation 'com.shawnlin:number-picker:2.4.8'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
 }

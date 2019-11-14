@@ -17,6 +17,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 
 @Database(
@@ -40,7 +41,10 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             INSTANCE?.let { database ->
-                scope.launch { addMeasures(database) }
+                scope.launch {
+                    addMeasures(database)
+                    addMockProducts(database)
+                }
             }
         }
 
@@ -48,6 +52,21 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val dao = database.measureDao()
             for (measure in Measure.values())
                 dao.insert(MeasureEntity(measure.id, measure.text, measure.abbreviation))
+        }
+
+        private suspend fun addMockProducts(database: HomeAssistantDatabase) {
+            val dao = database.productDao()
+            val productList =
+                listOf("Bodywash", "Shampoo", "Toothpaste", "Toilet Paper", "Toast", "Bread", "Salami", "Ham", "Cheese")
+            val random = Random()
+            for (name in productList) {
+                val min = random.nextInt(2) + 1
+                val max = min + random.nextInt(2)
+                val quantity = 0.0
+                val capacity = random.nextDouble()
+                val measure = random.nextInt(Measure.values().size)
+                dao.insert(ProductEntity(name, quantity, min, max, capacity, measure, null))
+            }
         }
 
         companion object {

@@ -47,7 +47,7 @@ data class ProductEntity(
         val valueInBase = measure.toBaseMeasure(value)
         val reductionPercentage = valueInBase / capacity
         if (quantity < reductionPercentage) throw ProductReductionException(
-            "Canceling transaction. Otherwise the quantity " +
+            "Canceling transaction. Otherwise the amount " +
                     "would go below 0, which is impossible. Please manage the Product \"$name\" in the management view."
         )
         else quantity -= reductionPercentage

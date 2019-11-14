@@ -5,5 +5,9 @@
             android:id="@+id/submit_option"
             android:icon="@drawable/check_icon"
             android:title="@string/submit"
-            app:showAsAction="always" />
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/edit_option"
+            android:title="@string/edit"
+            app:showAsAction="never" />
 </menu>

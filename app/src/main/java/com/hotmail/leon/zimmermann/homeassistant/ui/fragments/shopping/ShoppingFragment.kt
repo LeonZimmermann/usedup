@@ -2,9 +2,13 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -39,31 +43,42 @@ class ShoppingFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.submit_option -> {
             submitTransaction()
+            findNavController().navigateUp()
+            true
+        }
+        R.id.edit_option -> {
+            findNavController().navigate(R.id.action_shopping_fragment_to_shopping_edit_fragment)
             true
         }
         else -> false
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ShoppingViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(ShoppingViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         adapter = ShoppingListAdapter(context!!)
+        initShoppingList()
+    }
+
+    private fun initShoppingList() {
         val layoutManager = LinearLayoutManager(context!!)
         val divider = DividerItemDecoration(shopping_list.context, layoutManager.orientation)
         divider.setDrawable(context!!.getDrawable(R.drawable.divider)!!)
         shopping_list.addItemDecoration(divider)
         shopping_list.adapter = adapter
         shopping_list.layoutManager = layoutManager
-        viewModel.productEntityList.observe(this, Observer { productList ->
-            adapter.setProductList(productList)
+        viewModel.shoppingList.observe(this, Observer { shoppingList ->
+            adapter.setShoppingList(shoppingList)
         })
     }
 
     private fun submitTransaction() {
-        viewModel.productEntityList.observe(this, Observer { productList ->
-            val changedProducts = productList.filter { adapter.checkedProducts.contains(it.id) }
-            changedProducts.forEach { it.quantity += it.discrepancy }
-            viewModel.updateAll(changedProducts)
+        viewModel.shoppingList.observe(this, Observer { shoppingList ->
+            val changedProducts = shoppingList.filter { adapter.checkedEntries.contains(it.product.id) }
+            changedProducts.forEach { it.product.quantity += it.amount }
+            viewModel.updateAll(changedProducts.map { it.product })
         })
     }
 }

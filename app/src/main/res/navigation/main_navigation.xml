@@ -9,7 +9,11 @@
             android:id="@+id/shopping_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.ShoppingFragment"
             android:label="Shopping"
-            tools:layout="@layout/shopping_fragment"/>
+            tools:layout="@layout/shopping_fragment">
+        <action
+                android:id="@+id/action_shopping_fragment_to_shopping_edit_fragment"
+                app:destination="@id/shopping_edit_fragment" />
+    </fragment>
     <fragment
             android:id="@+id/management_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.management.fragment.ManagementFragment"
@@ -95,4 +99,9 @@
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationPicturePreviewFragment"
             android:label="ConsumptionCreationPicturePreview"
             tools:layout="@layout/consumption_creation_picture_preview_fragment"/>
+    <fragment
+            android:id="@+id/shopping_edit_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.edit.ShoppingEditFragment"
+            android:label="ShoppingEditFragment"
+            tools:layout="@layout/shopping_edit_fragment" />
 </navigation>

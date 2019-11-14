@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.SimpleProductPreviewAdapter
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.ConsumptionIngredientsException
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.InvalidProductNameException
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.InvalidQuantityChangeException
@@ -71,11 +72,11 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initializeDiscrepancyCard() {
-        val adapter = DiscrepancyListAdapter(context!!)
+        val adapter = SimpleProductPreviewAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
         viewModel.productEntityList.observe(this, Observer {
-            it?.let { adapter.setProductList(it) }
+            it?.let { adapter.productAmountList = it.map { product -> Pair(product, product.discrepancy) } }
         })
         shopping_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)

@@ -20,7 +20,7 @@ class ConsumptionIngredientsBatchListAdapter internal constructor(
 
     inner class ConsumptionBatchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productNameView: TextView = itemView.product_name_tv
-        val consumptionView: TextView = itemView.consumption_tv
+        val consumptionView: TextView = itemView.amount_tv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumptionBatchViewHolder {
