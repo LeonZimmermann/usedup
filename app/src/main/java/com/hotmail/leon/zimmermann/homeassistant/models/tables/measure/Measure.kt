@@ -14,8 +14,7 @@ enum class Measure(
     DECILITER("deciliter", "dl", MeasureType.VOLUME, 0.1),
     LITER("liter", "l", MeasureType.VOLUME, 1.0);
 
-    val id: Int
-        get() = ordinal
+    val id: Int = ordinal
 
     fun toBaseMeasure(value: Double) = value * baseFactor
     fun fromBaseMeasure(value: Double) = value / baseFactor
