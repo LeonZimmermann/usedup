@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
@@ -12,13 +14,20 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
     private val productRepository: ProductRepository
     val productList: LiveData<List<ProductEntity>>
 
+    private val categoryRepository: CategoryRepository
+    val categoryList: LiveData<List<CategoryEntity>>
+
     val shoppingList: MutableLiveData<MutableList<ShoppingEntry>>
     var editShoppingEntryIndex: Int? = null
 
     init {
-        val productDao = HomeAssistantDatabase.getDatabase(application, viewModelScope).productDao()
+        val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
+        val productDao = database.productDao()
         productRepository = ProductRepository(productDao)
         productList = productRepository.productEntityList
+        val categoryDao = database.categoryDao()
+        categoryRepository = CategoryRepository(categoryDao)
+        categoryList = categoryRepository.categoryList
         shoppingList = Transformations.map(productRepository.productEntityList) { list ->
             list.filter { product -> product.discrepancy > 0 }
                 .map { product -> ShoppingEntry(product, product.discrepancy) }

@@ -10,4 +10,8 @@
             android:id="@+id/edit_option"
             android:title="@string/edit"
             app:showAsAction="never" />
+    <item
+            android:id="@+id/edit_categories_option"
+            android:title="Edit Categories"
+            app:showAsAction="never" />
 </menu>

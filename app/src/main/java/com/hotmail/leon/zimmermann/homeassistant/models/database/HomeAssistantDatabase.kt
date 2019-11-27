@@ -62,8 +62,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
 
         private suspend fun addCategories(database: HomeAssistantDatabase) {
             val dao = database.categoryDao()
-            for (category in Category.values())
-                dao.insert(CategoryEntity(category.id, category.name))
+            for ((index, category) in Category.values().withIndex())
+                dao.insert(CategoryEntity(category.id, category.name, index))
         }
 
         private suspend fun addMockProducts(database: HomeAssistantDatabase) {

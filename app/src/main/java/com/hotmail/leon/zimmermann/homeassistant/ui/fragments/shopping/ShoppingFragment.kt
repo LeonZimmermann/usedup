@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.*
+import android.widget.CheckBox
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.ItemKeyProvider
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.categoryOrder.CategoryOrderDialogFragment
 import kotlinx.android.synthetic.main.shopping_fragment.*
 
 class ShoppingFragment : Fragment() {
@@ -40,7 +44,7 @@ class ShoppingFragment : Fragment() {
         inflater.inflate(R.menu.shopping_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.submit_option -> {
             submitTransaction()
             findNavController().navigateUp()
@@ -50,7 +54,27 @@ class ShoppingFragment : Fragment() {
             findNavController().navigate(R.id.action_shopping_fragment_to_shopping_edit_fragment)
             true
         }
+        R.id.edit_categories_option -> {
+            CategoryOrderDialogFragment(
+                adapter.getShoppingListOrder(),
+                object : CategoryOrderDialogFragment.OnChangedListener {
+                    override fun onChanged(categoryOrder: MutableList<Pair<Int, Int>>) {
+                        adapter.setCustomShoppingListOrder(categoryOrder.toMap())
+                    }
+                }).show(fragmentManager!!, "CategoryOrderDialog")
+            true
+        }
         else -> false
+    }
+
+    private fun updateCheckedProductsList(holder: ShoppingListAdapter.ShoppingViewHolder, entry: ShoppingItem) {
+        if (adapter.checkedEntries.contains(entry.entry.product.id)) {
+            adapter.checkedEntries.remove(entry.entry.product.id)
+            holder.checkbox.isChecked = false
+        } else {
+            adapter.checkedEntries.add(entry.entry.product.id)
+            holder.checkbox.isChecked = true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +82,7 @@ class ShoppingFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(ShoppingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
-        adapter = ShoppingListAdapter(context!!)
+        adapter = ShoppingListAdapter(context!!, ::updateCheckedProductsList)
         initShoppingList()
     }
 
@@ -71,6 +95,9 @@ class ShoppingFragment : Fragment() {
         shopping_list.layoutManager = layoutManager
         viewModel.shoppingList.observe(this, Observer { shoppingList ->
             adapter.setShoppingList(shoppingList)
+        })
+        viewModel.categoryList.observe(this, Observer { categoryList ->
+            adapter.setCategoryList(categoryList)
         })
     }
 
