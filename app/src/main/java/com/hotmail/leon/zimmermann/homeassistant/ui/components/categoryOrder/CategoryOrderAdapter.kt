@@ -14,7 +14,8 @@ import java.util.*
 class CategoryOrderAdapter :
     RecyclerView.Adapter<CategoryOrderAdapter.CategoryOrderViewHolder>(), RecyclerViewHandlerAdapter {
 
-    private lateinit var categoryOrder: MutableList<Pair<Int, Int>>
+    private lateinit var categoryOrder: MutableList<Category>
+    var hasChanged: Boolean = false
 
     inner class CategoryOrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView: TextView = itemView.category_name_tv
@@ -31,13 +32,12 @@ class CategoryOrderAdapter :
     }
 
     override fun onBindViewHolder(holder: CategoryOrderViewHolder, position: Int) {
-        val item = categoryOrder[position]
-        val category = Category.values()[item.first]
-        holder.textView.text = category.name
+        holder.textView.text = categoryOrder[position].name
     }
 
     override fun onItemDismiss(position: Int) {
         categoryOrder.removeAt(position)
+        hasChanged = true
         notifyItemRemoved(position)
     }
 
@@ -46,10 +46,11 @@ class CategoryOrderAdapter :
             categoryOrder, i, i + 1
         )
         else for (i in fromPosition downTo toPosition + 1) Collections.swap(categoryOrder, i, i - 1)
+        hasChanged = true
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    internal fun setCategoryOrder(categoryOrder: MutableList<Pair<Int, Int>>) {
+    internal fun setCategoryOrder(categoryOrder: MutableList<Category>) {
         this.categoryOrder = categoryOrder
     }
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.categoryOrder.CategoryOrderDialogFragment
 import kotlinx.android.synthetic.main.shopping_fragment.*
@@ -56,11 +57,16 @@ class ShoppingFragment : Fragment() {
         }
         R.id.edit_categories_option -> {
             CategoryOrderDialogFragment(
-                adapter.getShoppingListOrder(),
+                adapter.shoppingListOrder,
                 object : CategoryOrderDialogFragment.OnChangedListener {
-                    override fun onChanged(categoryOrder: MutableList<Pair<Int, Int>>) {
-                        adapter.setCustomShoppingListOrder(categoryOrder.toMap())
+                    override fun onChanged(categoryOrder: List<Category>) {
+                        adapter.setCustomShoppingListOrder(categoryOrder)
                     }
+                }, object: CategoryOrderDialogFragment.OnResetListener {
+                    override fun onReset() {
+                        adapter.resetCustomShoppingListOrder()
+                    }
+
                 }).show(fragmentManager!!, "CategoryOrderDialog")
             true
         }

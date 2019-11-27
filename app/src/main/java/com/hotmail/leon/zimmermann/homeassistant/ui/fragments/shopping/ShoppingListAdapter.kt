@@ -8,20 +8,23 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.android.synthetic.main.shopping_category_item.view.*
 import kotlinx.android.synthetic.main.shopping_item.view.*
 
-class ShoppingListAdapter(private val context: Context,
-                          private val onClick: (holder: ShoppingViewHolder, entry: ShoppingItem) -> Unit) :
+class ShoppingListAdapter(
+    private val context: Context,
+    private val onClick: (holder: ShoppingViewHolder, entry: ShoppingItem) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
 
     private lateinit var shoppingList: MutableList<ShoppingEntry>
     private lateinit var categoryList: List<CategoryEntity>
-    private lateinit var shoppingListOrder: Map<Int, Int>
+    lateinit var shoppingListOrder: List<Category>
     private var customShoppingListOrder: Boolean = false
 
     private var adapterList = mutableListOf<ListAdapterItem>()
@@ -68,7 +71,6 @@ class ShoppingListAdapter(private val context: Context,
     }
 
 
-
     override fun getItemCount() = adapterList.size
 
     internal fun setShoppingList(shoppingList: MutableList<ShoppingEntry>) {
@@ -82,7 +84,7 @@ class ShoppingListAdapter(private val context: Context,
         update()
     }
 
-    internal fun setCustomShoppingListOrder(shoppingListOrder: Map<Int, Int>) {
+    internal fun setCustomShoppingListOrder(shoppingListOrder: List<Category>) {
         this.shoppingListOrder = shoppingListOrder
         customShoppingListOrder = true
         update()
@@ -96,18 +98,26 @@ class ShoppingListAdapter(private val context: Context,
 
     private fun setShoppingListOrderFromCategoryList() {
         shoppingListOrder = categoryList
-            .associate { Pair(it.id, it.position) }
-            .toMutableMap()
+            .toList()
+            .sortedBy { it.position }
+            .map { Category.values()[it.id] }
+        if (::shoppingList.isInitialized) {
+            val usedCategories = shoppingList
+                .map { Category.values()[it.product.categoryId] }
+                .toSet()
+            shoppingListOrder = shoppingListOrder.filter { category -> usedCategories.contains(category) }
+        }
     }
 
     private fun update() {
         if (::shoppingList.isInitialized &&
             ::categoryList.isInitialized &&
-            ::shoppingListOrder.isInitialized) {
+            ::shoppingListOrder.isInitialized
+        ) {
             adapterList = mutableListOf()
             shoppingList
                 .groupBy { it.product.categoryId }
-                .toSortedMap(compareBy { categoryId -> shoppingListOrder[categoryId] })
+                .toSortedMap(compareBy { categoryId -> shoppingListOrder.indexOf(Category.values()[categoryId]) })
                 .forEach {
                     adapterList.add(CategoryName(categoryList.first { categoryListItem -> categoryListItem.id == it.key }))
                     adapterList.addAll(it.value.map { entry -> ShoppingItem(entry) })
@@ -116,8 +126,6 @@ class ShoppingListAdapter(private val context: Context,
             notifyDataSetChanged()
         }
     }
-
-    internal fun getShoppingListOrder(): List<Pair<Int, Int>> = shoppingListOrder.toList()
 
     companion object {
         private const val SHOPPING_ITEM = 0
