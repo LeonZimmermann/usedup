@@ -50,6 +50,7 @@ class OverviewFragment : Fragment() {
         initializeTransactionCard()
         initializeDiscrepancyCard()
         initializeManagementCard()
+        initializeCalendarCard()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
@@ -102,6 +103,12 @@ class OverviewFragment : Fragment() {
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_management_fragment)
+        }
+    }
+
+    private fun initializeCalendarCard() {
+        calendar_button.setOnClickListener {
+            findNavController().navigate(R.id.action_overview_fragment_to_calendar_fragment)
         }
     }
 
