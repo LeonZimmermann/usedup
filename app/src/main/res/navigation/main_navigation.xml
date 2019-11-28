@@ -18,7 +18,7 @@
             android:id="@+id/management_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.management.fragment.ManagementFragment"
             android:label="Management"
-            tools:layout="@layout/management_fragment"/>
+            tools:layout="@layout/management_fragment" />
     <fragment
             android:id="@+id/ingredients_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsFragment"
@@ -28,7 +28,7 @@
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
             android:label="Overview"
-            tools:layout="@layout/overview_fragment" >
+            tools:layout="@layout/overview_fragment">
         <action
                 android:id="@+id/action_overview_fragment_to_shopping_fragment"
                 app:destination="@id/shopping_fragment" />
@@ -88,20 +88,28 @@
             android:id="@+id/text_input_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationTextInputFragment"
             android:label="TextInput"
-            tools:layout="@layout/text_input_fragment" >
+            tools:layout="@layout/text_input_fragment">
         <argument
                 android:name="requestMode"
-                app:argType="integer"
-                android:defaultValue="-1" />
+                android:defaultValue="-1"
+                app:argType="integer" />
     </fragment>
     <fragment
             android:id="@+id/consumption_creation_picture_preview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationPicturePreviewFragment"
             android:label="ConsumptionCreationPicturePreview"
-            tools:layout="@layout/consumption_creation_picture_preview_fragment"/>
+            tools:layout="@layout/consumption_creation_picture_preview_fragment" />
     <fragment
             android:id="@+id/shopping_edit_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.edit.ShoppingEditFragment"
             android:label="ShoppingEditFragment"
             tools:layout="@layout/shopping_edit_fragment" />
+    <fragment
+            android:id="@+id/settings_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.settings.SettingsFragment"
+            android:label="SettingsFragment" />
+    <action
+            android:id="@+id/action_global_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:launchSingleTop="true" />
 </navigation>

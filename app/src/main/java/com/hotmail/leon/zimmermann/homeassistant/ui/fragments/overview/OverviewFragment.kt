@@ -2,10 +2,8 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -29,11 +27,21 @@ class OverviewFragment : Fragment() {
 
     private lateinit var viewModel: OverviewViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.overview_fragment, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overview_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -42,6 +50,14 @@ class OverviewFragment : Fragment() {
         initializeTransactionCard()
         initializeDiscrepancyCard()
         initializeManagementCard()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.settings_option -> {
+            findNavController().navigate(R.id.action_global_settings_fragment)
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun initializeTransactionCard() {
