@@ -4,14 +4,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.calendar.CalendarFragment">
+        tools:context=".ui.fragments.calendar.TimelineFragment">
 
-    <CalendarView
-            android:id="@+id/calendar"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timeline_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="10"
+            tools:listitem="@layout/timeline_day" />
 </androidx.constraintlayout.widget.ConstraintLayout>

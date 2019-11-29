@@ -117,7 +117,7 @@
             app:launchSingleTop="true" />
     <fragment
             android:id="@+id/calendar_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.CalendarFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.TimelineFragment"
             android:label="CalendarFragment"
-            tools:layout="@layout/calendar_fragment" />
+            tools:layout="@layout/timeline_fragment" />
 </navigation>
