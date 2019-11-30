@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import kotlinx.android.synthetic.main.timeline_day.view.*
 import kotlinx.android.synthetic.main.timeline_fragment.*
 
 class TimelineFragment : Fragment() {
@@ -30,8 +30,12 @@ class TimelineFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TimelineViewModel::class.java)
-        timeline_container.adapter = TimelineAdapter(context!!, List(5) { index -> index })
+        val adapter = TimelineAdapter(context!!)
+        timeline_container.adapter = adapter
         timeline_container.layoutManager = LinearLayoutManager(context)
+        viewModel.calendarActivities.observe(this, Observer { calendarActivities ->
+            adapter.setCalendarActivities(calendarActivities)
+        })
     }
 
 }

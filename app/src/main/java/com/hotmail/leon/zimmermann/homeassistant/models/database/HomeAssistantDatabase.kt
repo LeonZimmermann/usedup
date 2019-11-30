@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
@@ -20,6 +22,8 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.sql.Date
+import java.sql.Time
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 
@@ -30,10 +34,12 @@ import java.util.concurrent.locks.ReentrantLock
         PackagingEntity::class,
         ConsumptionEntity::class,
         ConsumptionListMetaDataEntity::class,
-        CategoryEntity::class
+        CategoryEntity::class,
+        CalendarActivityEntity::class
     ],
     version = 1
 )
+@TypeConverters(Converters::class)
 abstract class HomeAssistantDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
@@ -41,6 +47,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
     abstract fun packagingDao(): PackagingDao
     abstract fun consumptionDao(): ConsumptionDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun calendarDao(): CalendarDao
 
     private class HomeAssistantDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -50,6 +57,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addMeasures(database)
                     addCategories(database)
                     addMockProducts(database)
+                    addMockCalendarEntries(database)
                 }
             }
         }
@@ -80,6 +88,20 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                 val category = random.nextInt(Category.values().size)
                 dao.insert(ProductEntity(name, quantity, min, max, capacity, measure, category))
             }
+        }
+
+        private suspend fun addMockCalendarEntries(database: HomeAssistantDatabase) {
+            val dao = database.calendarDao()
+            val random = Random()
+            dao.insertCalendarActivities(List(25) {
+                val date = Date(Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_MONTH, random.nextInt(15))
+                    set(Calendar.HOUR, random.nextInt(12))
+                    set(Calendar.MINUTE, random.nextInt(60))
+                }.timeInMillis)
+                val type = random.nextInt(CalendarActivityType.values().size)
+                CalendarActivityEntity(date, type)
+            })
         }
 
         companion object {
