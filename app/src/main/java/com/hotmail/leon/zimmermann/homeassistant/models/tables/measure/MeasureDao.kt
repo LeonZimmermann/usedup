@@ -11,6 +11,10 @@ interface MeasureDao {
     @Query("SELECT * FROM measures")
     fun getAll(): LiveData<List<MeasureEntity>>
 
+    @Query("SELECT * FROM measures")
+    suspend fun getAllStatically(): List<MeasureEntity>
+
+
     @Query("SELECT * FROM measures WHERE id = :id")
     fun get(id: Int): LiveData<MeasureEntity>
 
