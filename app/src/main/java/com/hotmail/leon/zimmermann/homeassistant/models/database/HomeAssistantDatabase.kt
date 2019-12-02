@@ -6,12 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
@@ -23,7 +25,6 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
-import java.sql.Time
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 
@@ -102,6 +103,24 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                 val type = random.nextInt(CalendarActivityType.values().size)
                 CalendarActivityEntity(date, type)
             })
+        }
+
+        private suspend fun addMockDinners(database: HomeAssistantDatabase) {
+            val consumptionDao = database.consumptionDao()
+            val products = database.productDao().getAllStatically()
+            val measures = database.measureDao().getAllStatically()
+            val names = listOf("sgjr", "sghsrh", "drhdrhdr", "shdrhdt")
+            val random = Random()
+            consumptionDao.insert(
+                ConsumptionList(ConsumptionListMetaDataEntity(names[random.nextInt(names.size)], random.nextInt(60)),
+                    List(10) {
+                        ConsumptionEntity(
+                            products[random.nextInt(products.size)].id,
+                            measures[random.nextInt(measures.size)].id,
+                            random.nextDouble()
+                        )
+                    })
+            )
         }
 
         companion object {
