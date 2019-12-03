@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_navigation.xml"
-        app:startDestination="@id/overview_fragment">
+        app:startDestination="@id/calendar_activity_dinner_fragment">
 
     <fragment
             android:id="@+id/shopping_fragment"
@@ -36,9 +36,6 @@
                 android:id="@+id/action_overview_fragment_to_management_fragment"
                 app:destination="@id/management_fragment" />
         <action
-                android:id="@+id/action_overview_fragment_to_consumption_browser_fragment"
-                app:destination="@id/consumption_browser_fragment" />
-        <action
                 android:id="@+id/action_overview_fragment_to_calendar_fragment"
                 app:destination="@id/calendar_fragment" />
     </fragment>
@@ -58,6 +55,10 @@
         <action
                 android:id="@+id/action_consumption_browser_fragment_to_consumption_creation_fragment"
                 app:destination="@id/consumption_creation_fragment" />
+        <argument
+                android:name="mode"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserFragment$Mode"
+                android:defaultValue="EDIT" />
     </fragment>
     <fragment
             android:id="@+id/consumption_details"
@@ -120,4 +121,19 @@
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.TimelineFragment"
             android:label="CalendarFragment"
             tools:layout="@layout/timeline_fragment" />
+    <fragment
+            android:id="@+id/calendar_activity_dinner_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityDinnerFragment"
+            android:label="CalendarActivityDinnerFragment"
+            tools:layout="@layout/calendar_activity_dinner_fragment">
+        <argument
+                android:name="dinner"
+                android:defaultValue="@null"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList"
+                app:nullable="true" />
+    </fragment><action android:id="@+id/action_global_consumption_browser_fragment" app:destination="@id/consumption_browser_fragment"/>
+    <action
+            android:id="@+id/action_global_calendar_activity_dinner_fragment"
+            app:destination="@id/calendar_activity_dinner_fragment"
+            app:launchSingleTop="false" />
 </navigation>

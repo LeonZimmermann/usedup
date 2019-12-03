@@ -66,7 +66,7 @@ class OverviewFragment : Fragment() {
             // TODO Implement
         }
         consumption_browser_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_consumption_browser_fragment)
+            findNavController().navigate(R.id.action_global_consumption_browser_fragment)
         }
         measure_input.adapter =
             ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())

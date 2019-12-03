@@ -1,5 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao

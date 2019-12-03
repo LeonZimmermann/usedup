@@ -59,6 +59,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addCategories(database)
                     addMockProducts(database)
                     addMockCalendarEntries(database)
+                    addMockDinners(database)
                 }
             }
         }
@@ -111,16 +112,21 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val measures = database.measureDao().getAllStatically()
             val names = listOf("sgjr", "sghsrh", "drhdrhdr", "shdrhdt")
             val random = Random()
-            consumptionDao.insert(
-                ConsumptionList(ConsumptionListMetaDataEntity(names[random.nextInt(names.size)], random.nextInt(60)),
-                    List(10) {
-                        ConsumptionEntity(
-                            products[random.nextInt(products.size)].id,
-                            measures[random.nextInt(measures.size)].id,
-                            random.nextDouble()
-                        )
-                    })
-            )
+            for (i in 1..5) {
+                consumptionDao.insert(
+                    ConsumptionList(ConsumptionListMetaDataEntity(
+                        names[random.nextInt(names.size)],
+                        random.nextInt(60)
+                    ),
+                        List(products.size) {
+                            ConsumptionEntity(
+                                products[it].id,
+                                measures[random.nextInt(measures.size)].id,
+                                random.nextDouble()
+                            )
+                        })
+                )
+            }
         }
 
         companion object {
