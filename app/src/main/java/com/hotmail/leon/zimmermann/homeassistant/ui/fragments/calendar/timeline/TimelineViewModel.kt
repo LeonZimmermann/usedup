@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

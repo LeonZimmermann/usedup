@@ -8,4 +8,5 @@
     <color name="listItemTextColor">#555555</color>
 
     <color name="dividerColor">#CCCCCC</color>
+    <color name="calendar_item_color">#FF27634E</color>
 </resources>

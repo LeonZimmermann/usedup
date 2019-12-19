@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_navigation.xml"
-        app:startDestination="@id/calendar_activity_dinner_fragment">
+        app:startDestination="@id/overview_fragment">
 
     <fragment
             android:id="@+id/shopping_fragment"
@@ -20,11 +20,6 @@
             android:label="Management"
             tools:layout="@layout/management_fragment" />
     <fragment
-            android:id="@+id/ingredients_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsFragment"
-            android:label="Ingredients"
-            tools:layout="@layout/consumption_ingredients_fragment" />
-    <fragment
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
             android:label="Overview"
@@ -37,7 +32,7 @@
                 app:destination="@id/management_fragment" />
         <action
                 android:id="@+id/action_overview_fragment_to_calendar_fragment"
-                app:destination="@id/calendar_fragment" />
+                app:destination="@id/timeline_fragment" />
     </fragment>
     <fragment
             android:id="@+id/consumption_browser_fragment"
@@ -54,7 +49,7 @@
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
                 android:id="@+id/action_consumption_browser_fragment_to_consumption_creation_fragment"
-                app:destination="@id/consumption_creation_fragment" />
+                app:destination="@id/consumption_creation" />
         <argument
                 android:name="mode"
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserFragment$Mode"
@@ -70,40 +65,6 @@
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList" />
     </fragment>
     <fragment
-            android:id="@+id/consumption_creation_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationFragment"
-            android:label="ConsumptionCreation"
-            tools:layout="@layout/consumption_creation_fragment">
-        <action
-                android:id="@+id/action_consumption_creation_fragment_to_text_input_fragment"
-                app:destination="@+id/text_input_fragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-                android:id="@+id/action_consumption_creation_fragment_to_ingredients_fragment"
-                app:destination="@id/ingredients_fragment" />
-        <action
-                android:id="@+id/action_consumption_creation_fragment_to_consumption_creation_picture_preview_fragment"
-                app:destination="@id/consumption_creation_picture_preview_fragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/text_input_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationTextInputFragment"
-            android:label="TextInput"
-            tools:layout="@layout/text_input_fragment">
-        <argument
-                android:name="requestMode"
-                android:defaultValue="-1"
-                app:argType="integer" />
-    </fragment>
-    <fragment
-            android:id="@+id/consumption_creation_picture_preview_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationPicturePreviewFragment"
-            android:label="ConsumptionCreationPicturePreview"
-            tools:layout="@layout/consumption_creation_picture_preview_fragment" />
-    <fragment
             android:id="@+id/shopping_edit_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.edit.ShoppingEditFragment"
             android:label="ShoppingEditFragment"
@@ -117,10 +78,14 @@
             app:destination="@id/settings_fragment"
             app:launchSingleTop="true" />
     <fragment
-            android:id="@+id/calendar_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.TimelineFragment"
-            android:label="CalendarFragment"
-            tools:layout="@layout/timeline_fragment" />
+            android:id="@+id/timeline_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline.TimelineFragment"
+            android:label="TimelineFragment"
+            tools:layout="@layout/timeline_fragment" >
+        <action
+                android:id="@+id/action_timeline_fragment_to_calendar_week_fragment"
+                app:destination="@id/calendar_week_fragment" />
+    </fragment>
     <fragment
             android:id="@+id/calendar_activity_dinner_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityDinnerFragment"
@@ -136,4 +101,57 @@
             android:id="@+id/action_global_calendar_activity_dinner_fragment"
             app:destination="@id/calendar_activity_dinner_fragment"
             app:launchSingleTop="false" />
+    <navigation
+            android:id="@+id/consumption_creation"
+            android:label="Consumption Creation"
+            app:startDestination="@id/consumption_creation_fragment">
+        <fragment
+                android:id="@+id/consumption_creation_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationFragment"
+                android:label="ConsumptionCreation"
+                tools:layout="@layout/consumption_creation_fragment">
+            <action
+                    android:id="@+id/action_consumption_creation_fragment_to_text_input_fragment"
+                    app:destination="@+id/text_input_fragment"
+                    app:enterAnim="@anim/nav_default_enter_anim"
+                    app:exitAnim="@anim/nav_default_exit_anim"
+                    app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                    app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            <action
+                    android:id="@+id/action_consumption_creation_fragment_to_ingredients_fragment"
+                    app:destination="@id/ingredients_fragment" />
+            <action
+                    android:id="@+id/action_consumption_creation_fragment_to_consumption_creation_picture_preview_fragment"
+                    app:destination="@id/consumption_creation_picture_preview_fragment" />
+        </fragment>
+        <fragment
+                android:id="@+id/text_input_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationTextInputFragment"
+                android:label="TextInput"
+                tools:layout="@layout/text_input_fragment">
+            <argument
+                    android:name="requestMode"
+                    android:defaultValue="-1"
+                    app:argType="integer" />
+        </fragment>
+        <fragment
+                android:id="@+id/ingredients_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsFragment"
+                android:label="Ingredients"
+                tools:layout="@layout/consumption_ingredients_fragment" />
+        <fragment
+                android:id="@+id/consumption_creation_picture_preview_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationPicturePreviewFragment"
+                android:label="ConsumptionCreationPicturePreview"
+                tools:layout="@layout/consumption_creation_picture_preview_fragment" />
+    </navigation>
+    <fragment
+            android:id="@+id/calendar_week_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.week.CalendarWeekFragment"
+            android:label="CalendarWeek"
+            tools:layout="@layout/calendar_week_fragment" >
+        <action
+                android:id="@+id/action_calendar_week_fragment_to_timeline_fragment"
+                app:destination="@id/timeline_fragment" />
+    </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline
 
 import android.content.Context
 import android.os.Build
@@ -14,15 +14,15 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.Calendar
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityType
 import kotlinx.android.synthetic.main.timeline_activity.view.*
 import kotlinx.android.synthetic.main.timeline_day.view.*
-import org.jetbrains.anko.configuration
 import org.jetbrains.anko.image
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.format.TextStyle
 import java.util.*
 
-class TimelineAdapter(private val context: Context) :
+class TimelineAdapter(
+    private val context: Context,
+    private val onClickListener: (CalendarActivityEntity) -> Unit
+) :
     RecyclerView.Adapter<TimelineAdapter.TimelineViewHolder>() {
 
     private var calendarActivities: List<List<CalendarActivityEntity>> = listOf()
@@ -47,12 +47,14 @@ class TimelineAdapter(private val context: Context) :
         val item = calendarActivities[position]
         holder.dayDateTextView.text = dateFormatter.format(item.first().date)
         holder.dayWeekdayTextView.text = weekdayFormatter.format(item.first().date)
+        holder.dayActivityContainer.removeAllViews()
         for (calendarActivity in item) {
             val activityView = LayoutInflater.from(context).inflate(R.layout.timeline_activity, null)
             val type = CalendarActivityType.values()[calendarActivity.typeId]
             activityView.activity_time_tv.text = timeFormatter.format(calendarActivity.date)
             activityView.activity_icon_image.image = context.resources.getDrawable(type.icon, null)
             activityView.activity_name_tv.text = type.name
+            activityView.setOnClickListener { onClickListener(calendarActivity) }
             holder.dayActivityContainer.addView(activityView)
         }
     }
@@ -75,4 +77,5 @@ class TimelineAdapter(private val context: Context) :
     }
 
     override fun getItemCount(): Int = calendarActivities.size
+
 }
