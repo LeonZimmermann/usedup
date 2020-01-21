@@ -84,11 +84,12 @@
             tools:layout="@layout/timeline_fragment" >
         <action
                 android:id="@+id/action_timeline_fragment_to_calendar_week_fragment"
-                app:destination="@id/calendar_week_fragment" />
+                app:destination="@id/calendar_week_fragment"
+                app:popUpTo="@+id/overview_fragment" />
     </fragment>
     <fragment
             android:id="@+id/calendar_activity_dinner_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityDinnerFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityDinnerDialogFragment"
             android:label="CalendarActivityDinnerFragment"
             tools:layout="@layout/calendar_activity_dinner_fragment">
         <argument
@@ -152,6 +153,7 @@
             tools:layout="@layout/calendar_week_fragment" >
         <action
                 android:id="@+id/action_calendar_week_fragment_to_timeline_fragment"
-                app:destination="@id/timeline_fragment" />
+                app:destination="@id/timeline_fragment"
+                app:popUpTo="@+id/overview_fragment" />
     </fragment>
 </navigation>

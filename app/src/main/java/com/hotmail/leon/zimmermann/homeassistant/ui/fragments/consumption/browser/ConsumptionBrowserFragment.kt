@@ -73,7 +73,7 @@ class ConsumptionBrowserFragment : Fragment() {
     private fun onItemClicked(view: View) {
         when (mode) {
             Mode.SELECT -> {
-                findNavController().popBackStack() // TODO Only pop till back destination
+                findNavController().popBackStack(R.id.consumption_browser_fragment, true)
                 findNavController().navigate(R.id.action_global_calendar_activity_dinner_fragment,
                     bundleOf("dinner" to adapter[consumption_browser_list.getChildAdapterPosition(view)]))
             }

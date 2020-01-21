@@ -11,6 +11,15 @@ interface CalendarDao {
     @Query("SELECT * FROM calendar_activities")
     fun getAllCalendarActivities(): LiveData<List<CalendarActivityEntity>>
 
+    @Query("SELECT * FROM cooking_activity_details")
+    fun getAllCookingActivityDetails(): LiveData<List<CookingActivityDetailsEntity>>
+
     @Insert
-    suspend fun insertCalendarActivities(calendarActivities: List<CalendarActivityEntity>)
+    suspend fun insertCalendarActivity(calendarActivity: CalendarActivityEntity)
+
+    @Insert
+    suspend fun insertCalendarActivities(calendarActivity: List<CalendarActivityEntity>)
+
+    @Insert
+    suspend fun insertCookingActivityDetails(cookingActivityDetails: List<CookingActivityDetailsEntity>)
 }

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.CalendarViewModel
 import kotlinx.android.synthetic.main.timeline_fragment.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -19,10 +20,13 @@ class TimelineFragment : Fragment() {
             TimelineFragment()
     }
 
-    private lateinit var viewModel: TimelineViewModel
+    private lateinit var viewModel: CalendarViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(CalendarViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         setHasOptionsMenu(true)
     }
 
@@ -35,18 +39,18 @@ class TimelineFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TimelineViewModel::class.java)
-        val adapter =
-            TimelineAdapter(
-                context!!
-            ) {
-                toast(it.toString())
-            }
+        val adapter = TimelineAdapter(context!!) {
+            toast(it.toString())
+        }
         timeline_container.adapter = adapter
         timeline_container.layoutManager = LinearLayoutManager(context)
         viewModel.calendarActivities.observe(this, Observer { calendarActivities ->
             adapter.setCalendarActivities(calendarActivities)
         })
+
+        add_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_calendar_activity_dinner_fragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

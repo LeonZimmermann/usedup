@@ -6,19 +6,23 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.CalendarWeekView
+import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.CalendarViewModel
 import kotlinx.android.synthetic.main.calendar_week_fragment.*
-import java.util.*
 
 class CalendarWeekFragment : Fragment() {
 
-    private lateinit var viewModel: CalendarWeekViewModel
+    private lateinit var viewModel: CalendarViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(CalendarViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         setHasOptionsMenu(true)
     }
 
@@ -31,7 +35,6 @@ class CalendarWeekFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CalendarWeekViewModel::class.java)
         calendar_week.onDateTimeSelectedListener = object : CalendarWeekView.OnDateTimeSelectedListener {
             override fun onDateTimeSelected(weekday: Int, hour: Int, minute: Int) {
                 Toast.makeText(
@@ -50,17 +53,14 @@ class CalendarWeekFragment : Fragment() {
                 ).show()
             }
         }
-        val random = Random()
-        calendar_week.setEntryList(MutableList(20) { index ->
-            val calendar = Calendar.getInstance()
-            calendar[Calendar.DAY_OF_WEEK] = random.nextInt(7)
-            calendar[Calendar.HOUR_OF_DAY] = random.nextInt(23)
-            calendar[Calendar.MINUTE] = random.nextInt(2) * 30
-            val fromDate = calendar.time
-            calendar[Calendar.HOUR_OF_DAY] += 1
-            val toDate = calendar.time
-            CalendarWeekView.Entry(fromDate, toDate)
+        viewModel.calendarActivities.observe(this, Observer { calendarActivities ->
+            calendar_week.setEntryList(calendarActivities.map {
+                CalendarWeekView.Entry(it.dateFrom, it.dateTo)
+            }.toMutableList())
         })
+        add_button.setOnClickListener {
+            findNavController().navigate(R.id.action_global_calendar_activity_dinner_fragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

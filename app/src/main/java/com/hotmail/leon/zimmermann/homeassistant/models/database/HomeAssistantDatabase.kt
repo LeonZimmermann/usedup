@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
@@ -36,7 +35,8 @@ import java.util.concurrent.locks.ReentrantLock
         ConsumptionEntity::class,
         ConsumptionListMetaDataEntity::class,
         CategoryEntity::class,
-        CalendarActivityEntity::class
+        CalendarActivityEntity::class,
+        CookingActivityDetailsEntity::class
     ],
     version = 1
 )
@@ -58,8 +58,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addMeasures(database)
                     addCategories(database)
                     addMockProducts(database)
-                    addMockCalendarEntries(database)
                     addMockDinners(database)
+                    addMockCalendarEntries(database)
                 }
             }
         }
@@ -92,20 +92,6 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun addMockCalendarEntries(database: HomeAssistantDatabase) {
-            val dao = database.calendarDao()
-            val random = Random()
-            dao.insertCalendarActivities(List(25) {
-                val date = Date(Calendar.getInstance().apply {
-                    set(Calendar.DAY_OF_MONTH, random.nextInt(15))
-                    set(Calendar.HOUR, random.nextInt(12))
-                    set(Calendar.MINUTE, random.nextInt(60))
-                }.timeInMillis)
-                val type = random.nextInt(CalendarActivityType.values().size)
-                CalendarActivityEntity(date, type)
-            })
-        }
-
         private suspend fun addMockDinners(database: HomeAssistantDatabase) {
             val consumptionDao = database.consumptionDao()
             val products = database.productDao().getAllStatically()
@@ -129,6 +115,33 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             }
         }
 
+        private suspend fun addMockCalendarEntries(database: HomeAssistantDatabase) {
+            val dao = database.calendarDao()
+            val consumptionDao = database.consumptionDao()
+            val random = Random()
+            dao.insertCookingActivityDetails(consumptionDao.getAll().value!!.map { CookingActivityDetailsEntity(it.metaData.id) })
+            dao.insertCalendarActivities(List(25) {
+                val dateFrom = Date(Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_MONTH, random.nextInt(15))
+                    set(Calendar.HOUR, random.nextInt(12))
+                    set(Calendar.MINUTE, random.nextInt(60))
+                }.timeInMillis)
+                val dateTo = Date(Calendar.getInstance().apply {
+                    set(Calendar.DAY_OF_MONTH, random.nextInt(15))
+                    set(Calendar.HOUR, random.nextInt(12))
+                    set(Calendar.MINUTE, random.nextInt(60))
+                }.timeInMillis)
+                val typeId = random.nextInt(CalendarActivityType.values().size)
+                val details = when (CalendarActivityType.values()[typeId]) {
+                    CalendarActivityType.COOKING -> dao.getAllCookingActivityDetails().value!!
+                    else -> null
+                }
+                val detailsId = if (details != null) details[random.nextInt(details.size)].id else null
+                CalendarActivityEntity(dateFrom, dateTo, typeId, detailsId)
+            })
+        }
+
+
         companion object {
             private const val TAG = "HADatabaseCallback"
         }
@@ -141,21 +154,14 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
         private var lock = ReentrantLock()
 
         fun getDatabase(context: Context, scope: CoroutineScope): HomeAssistantDatabase {
-            val tempInstance =
-                INSTANCE
+            val tempInstance = INSTANCE
             if (tempInstance != null) return tempInstance
             synchronized(lock) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     HomeAssistantDatabase::class.java,
                     "homeassistant-database"
-                )
-                    .addCallback(
-                        HomeAssistantDatabaseCallback(
-                            scope
-                        )
-                    )
-                    .build()
+                ).addCallback(HomeAssistantDatabaseCallback(scope)).build()
                 INSTANCE = instance
                 return instance
             }

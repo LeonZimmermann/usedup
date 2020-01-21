@@ -1,6 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.components
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
@@ -10,14 +11,11 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.core.graphics.withClip
 import com.hotmail.leon.zimmermann.homeassistant.R
-import org.jetbrains.anko.configuration
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
 import java.io.Serializable
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.format.TextStyle
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.pow
@@ -72,7 +70,8 @@ class CalendarWeekView @JvmOverloads constructor(
         calendar[Calendar.YEAR] = year
         calendar[Calendar.WEEK_OF_YEAR] = weekOfYear
         calendar[Calendar.DAY_OF_WEEK] = Calendar.MONDAY
-        (calendar[Calendar.DAY_OF_MONTH] + index).toString()
+        calendar[Calendar.DAY_OF_MONTH] += index
+        calendar[Calendar.DAY_OF_MONTH].toString()
     }
     private var dayTextsMaxHeight: Float
     private var topYPadding: Float
@@ -93,6 +92,7 @@ class CalendarWeekView @JvmOverloads constructor(
     private var yScrollOffset: Float = 0f
     private var yScrollScale: Float = 0.5f
     private var scrollClipRect: RectF = RectF()
+    private var flingScrollAnimator: ValueAnimator? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -199,10 +199,10 @@ class CalendarWeekView @JvmOverloads constructor(
         entryList.map {
             val calendar = Calendar.getInstance()
             calendar.time = it.dateFrom
-            val fromX = getXForWeekday(calendar[Calendar.DAY_OF_WEEK])
+            val fromX = getXForWeekday(calendar[Calendar.DAY_OF_WEEK] - 2)
             val fromY = getYForHourAndMinute(calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE])
             calendar.time = it.dateTo
-            val toX = getXForWeekday(calendar[Calendar.DAY_OF_WEEK] + 1)
+            val toX = getXForWeekday(calendar[Calendar.DAY_OF_WEEK] - 2 + 1)
             val toY = getYForHourAndMinute(calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE])
             Pair(it, RectF(fromX, fromY, toX, toY))
         }.toMutableList()
@@ -283,6 +283,8 @@ class CalendarWeekView @JvmOverloads constructor(
             distanceX: Float,
             distanceY: Float
         ): Boolean {
+            flingScrollAnimator?.cancel()
+            flingScrollAnimator = null
             yScrollOffset += distanceY
             if (yScrollOffset < -mainYPadding / 2f) yScrollOffset = -mainYPadding / 2f
             if (yScrollOffset > (weekYSpace / yScrollScale) - weekYSpace + mainYPadding / 2f)
@@ -293,7 +295,8 @@ class CalendarWeekView @JvmOverloads constructor(
         }
 
         override fun onFling(event1: MotionEvent?, event2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-            ObjectAnimator.ofFloat(velocityY).apply {
+            flingScrollAnimator?.cancel()
+            flingScrollAnimator = ObjectAnimator.ofFloat(velocityY).apply {
                 setFloatValues(velocityY, 0f)
                 duration = 2000
                 addUpdateListener {
@@ -316,7 +319,7 @@ class CalendarWeekView @JvmOverloads constructor(
         }
 
         override fun onSingleTapConfirmed(event: MotionEvent?): Boolean {
-            var x = event!!.x - leftXSpace
+            val x = event!!.x - leftXSpace
             var y = event.y - topYSpace - mainYPadding / 2f
             if (x <= 0 || y <= 0) return false
             y = (y + yScrollOffset + mainYPadding / 2f) * 24f * (yScrollScale / weekYSpace)
@@ -324,7 +327,7 @@ class CalendarWeekView @JvmOverloads constructor(
             val hour = floor(y).toInt()
             val minute = floor(60f * (y - floor(y))).toInt()
             val selectedDate = Calendar.getInstance().apply {
-                this[Calendar.DAY_OF_WEEK] = weekday
+                this[Calendar.DAY_OF_WEEK] = weekday + 2
                 this[Calendar.HOUR_OF_DAY] = hour
                 this[Calendar.MINUTE] = minute
                 this[Calendar.SECOND] = 30
@@ -374,10 +377,20 @@ class CalendarWeekView @JvmOverloads constructor(
         val color: Color = Color()
     ) : Serializable
 
+    /**
+     * Stores the raw entries in the field entryList and stores the filtered entries, where the fromDate or the toDate is
+     * not the same week as the one displayed by the view, in the entryRectList. The entryRectList is the list of the rects
+     * that are displayed in the view. Calls postInvalidate() to ensure that the view is redrawn.
+     */
     fun setEntryList(entryList: MutableList<Entry>) {
         this.entryList = entryList
         this.entryRectList = calculateRectList(entryList.filter {
-            true // TODO Filter invalid entries
+            val calendar = Calendar.getInstance()
+            calendar.time = it.dateFrom
+            val fromDateInWeek = calendar[Calendar.YEAR] == year && calendar[Calendar.WEEK_OF_YEAR] == weekOfYear
+            calendar.time = it.dateTo
+            val toDateInWeek = calendar[Calendar.YEAR] == year && calendar[Calendar.WEEK_OF_YEAR] == weekOfYear
+            fromDateInWeek && toDateInWeek
         })
         postInvalidate()
     }

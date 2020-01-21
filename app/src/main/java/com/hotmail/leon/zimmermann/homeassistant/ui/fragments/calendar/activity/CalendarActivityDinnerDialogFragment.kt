@@ -3,26 +3,29 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.CalendarActivityDinnerFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityType
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DatePickerFragment
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.TimePickerFragment
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserFragment
 import kotlinx.android.synthetic.main.calendar_activity_dinner_fragment.*
-import java.text.DateFormat
+import org.jetbrains.anko.support.v4.toast
+import java.sql.Date
 import java.util.*
 
-class CalendarActivityDinnerFragment : Fragment() {
+class CalendarActivityDinnerDialogFragment : Fragment() {
 
     private lateinit var viewModel: CalendarActivityDinnerViewModel
     private lateinit var binding: CalendarActivityDinnerFragmentBinding
@@ -30,13 +33,12 @@ class CalendarActivityDinnerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CalendarActivityDinnerViewModel::class.java)
-        initArguments()
+        arguments?.apply {
+            (getSerializable("dinner") as ConsumptionList?)?.let { viewModel.consumptionList = it }
+        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.calendar_activity_dinner_fragment, container, false)
     }
 
@@ -44,21 +46,12 @@ class CalendarActivityDinnerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = CalendarActivityDinnerFragmentBinding.bind(view)
         initDatabinding()
-        viewModel.date.observe(this, androidx.lifecycle.Observer { date ->
-            cook_time_input.text = "Cooking Time: " + DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
-            date_input.text = DateFormat.getDateInstance().format(date)
-        })
         initDateInput()
         initCookTimeInput()
+        initAddButton()
         dinner_input.setOnClickListener { navigateToBrowser() }
         dinner_card.setOnClickListener { navigateToBrowser() }
         viewModel.consumptionList?.let { initDinner(it) }
-    }
-
-    private fun initArguments() {
-        arguments?.apply {
-            (getSerializable("dinner") as ConsumptionList?)?.let { viewModel.consumptionList = it }
-        }
     }
 
     private fun initDatabinding() {
@@ -103,6 +96,27 @@ class CalendarActivityDinnerFragment : Fragment() {
         consumption_list_short_description_tv.text = consumptionList.metaData.description
     }
 
+    private fun initAddButton() {
+        add_button.setOnClickListener {
+            try {
+                if (viewModel.consumptionList == null) throw IllegalArgumentException("Select a Dinner")
+                val duration = viewModel.consumptionList!!.metaData.duration ?: 0
+                val time = viewModel.date.value?.time ?: throw IllegalArgumentException("Invalid Date")
+                val dateFrom = Date(time)
+                val dateTo = Date(time + 1000 * 60 * duration)
+                viewModel.insertCalendarActivity(CalendarActivityEntity(
+                    dateFrom,
+                    dateTo,
+                    CalendarActivityType.COOKING.id,
+                    viewModel.consumptionList!!.metaData.id
+                ))
+                findNavController().navigateUp()
+            } catch (e: IllegalArgumentException) {
+                e.message?.let { toast(it) }
+            }
+        }
+    }
+
     private fun navigateToBrowser() {
         findNavController().navigate(
             R.id.action_global_consumption_browser_fragment,
@@ -111,6 +125,6 @@ class CalendarActivityDinnerFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = CalendarActivityDinnerFragment()
+        fun newInstance() = CalendarActivityDinnerDialogFragment()
     }
 }

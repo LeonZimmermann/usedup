@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,7 +8,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarRepository
 
-class TimelineViewModel(application: Application) : AndroidViewModel(application) {
+class CalendarViewModel(application: Application) : AndroidViewModel(application) {
 
     val calendarActivities: LiveData<List<CalendarActivityEntity>>
 

@@ -7,8 +7,10 @@ import java.sql.Date
 
 @Entity(tableName = "calendar_activities")
 data class CalendarActivityEntity(
-    var date: Date,
-    @ColumnInfo(name = "type_id") var typeId: Int
+    var dateFrom: Date,
+    var dateTo: Date,
+    @ColumnInfo(name = "type_id") var typeId: Int,
+    @ColumnInfo(name = "details_id") var detailsId: Int?
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
