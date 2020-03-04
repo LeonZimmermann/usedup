@@ -68,6 +68,12 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
+    // ViewPager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
+    // MaterialComponents
+    implementation 'com.google.android.material:material:1.1.0-rc02'
+
     // Debug Database
     // TODO Remove in release
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
@@ -95,4 +101,6 @@ dependencies {
     implementation 'com.shawnlin:number-picker:2.4.8'
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
+    // Page Indicator
+    implementation 'com.romandanylyk:pageindicatorview:1.0.3'
 }

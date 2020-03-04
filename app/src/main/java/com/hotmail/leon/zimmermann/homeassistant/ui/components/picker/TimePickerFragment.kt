@@ -8,15 +8,9 @@ import androidx.fragment.app.DialogFragment
 import java.io.Serializable
 import java.util.*
 
-class TimePickerFragment() : DialogFragment() {
+class TimePickerFragment(private var onTimeSetListener: OnTimeSetListener) : DialogFragment() {
 
     interface OnTimeSetListener : TimePickerDialog.OnTimeSetListener, Serializable
-
-    private lateinit var onTimeSetListener: OnTimeSetListener
-
-    constructor(listener: OnTimeSetListener) : this() {
-        this.onTimeSetListener = listener
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -6,6 +6,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.util.*
@@ -25,10 +26,16 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
     var consumptionList: ConsumptionList? = null
     private val calendarRepository: CalendarRepository
 
+    private val consumptionRepository: ConsumptionRepository
+    val consumptionLists: LiveData<List<ConsumptionList>>
+
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
         calendarRepository = CalendarRepository(database.calendarDao())
         calendarRepository.calendarActivities
+
+        consumptionRepository = ConsumptionRepository(database.consumptionDao())
+        consumptionLists = consumptionRepository.consumptionLists
     }
 
     fun insertCalendarActivity(calendarActivities: CalendarActivityEntity) {
@@ -36,5 +43,4 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
             calendarRepository.insertCalendarActivity(calendarActivities)
         }
     }
-
 }

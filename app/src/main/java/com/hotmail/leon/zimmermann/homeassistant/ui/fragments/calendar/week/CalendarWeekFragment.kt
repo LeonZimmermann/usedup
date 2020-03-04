@@ -59,7 +59,7 @@ class CalendarWeekFragment : Fragment() {
             }.toMutableList())
         })
         add_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_calendar_activity_dinner_fragment)
+            findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment)
         }
     }
 

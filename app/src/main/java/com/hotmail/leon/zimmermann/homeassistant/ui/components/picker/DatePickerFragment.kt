@@ -7,15 +7,9 @@ import androidx.fragment.app.DialogFragment
 import java.io.Serializable
 import java.util.*
 
-class DatePickerFragment(): DialogFragment(){
+class DatePickerFragment(private var onDateSetListener: OnDateSetListener): DialogFragment(){
 
     interface OnDateSetListener: DatePickerDialog.OnDateSetListener, Serializable
-
-    private lateinit var onDateSetListener: OnDateSetListener
-
-    constructor(listener: OnDateSetListener): this() {
-        this.onDateSetListener = listener
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

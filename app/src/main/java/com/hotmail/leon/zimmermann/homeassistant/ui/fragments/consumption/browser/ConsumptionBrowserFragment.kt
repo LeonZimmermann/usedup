@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionBrowserFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DinnerListAdapter
 import kotlinx.android.synthetic.main.consumption_browser_fragment.*
 
 class ConsumptionBrowserFragment : Fragment() {
 
     private lateinit var viewModel: ConsumptionBrowserViewModel
     private lateinit var binding: ConsumptionBrowserFragmentBinding
-    private lateinit var adapter: ConsumptionBrowserListAdapter
+    private lateinit var adapter: DinnerListAdapter
     private lateinit var mode: Mode
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,9 @@ class ConsumptionBrowserFragment : Fragment() {
     }
 
     private fun initList() {
-        adapter = ConsumptionBrowserListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
+        adapter = DinnerListAdapter(
+            context!!,
+            View.OnClickListener { onItemClicked(it) })
         consumption_browser_list.adapter = adapter
         consumption_browser_list.layoutManager = LinearLayoutManager(context!!)
         viewModel.consumptionLists.observe(this, Observer {
@@ -74,7 +77,7 @@ class ConsumptionBrowserFragment : Fragment() {
         when (mode) {
             Mode.SELECT -> {
                 findNavController().popBackStack(R.id.consumption_browser_fragment, true)
-                findNavController().navigate(R.id.action_global_calendar_activity_dinner_fragment,
+                findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment,
                     bundleOf("dinner" to adapter[consumption_browser_list.getChildAdapterPosition(view)]))
             }
             Mode.EDIT -> findNavController().navigate(

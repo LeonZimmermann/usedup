@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerViewModel" />
+        <variable
+                name="viewModel"
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dinner_selection_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="5"
+                tools:listitem="@layout/dinner_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

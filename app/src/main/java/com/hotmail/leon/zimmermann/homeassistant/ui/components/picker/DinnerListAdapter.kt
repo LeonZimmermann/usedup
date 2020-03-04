@@ -1,7 +1,6 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.components.picker
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,25 +8,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
-import kotlinx.android.synthetic.main.consumption_browser_item.view.*
+import kotlinx.android.synthetic.main.dinner_item.view.*
 
-class ConsumptionBrowserListAdapter(context: Context, private val  onClickListener: View.OnClickListener) :
-    RecyclerView.Adapter<ConsumptionBrowserListAdapter.ConsumptionBrowserViewHolder>() {
+class DinnerListAdapter(context: Context, private val  onClickListener: View.OnClickListener) :
+    RecyclerView.Adapter<DinnerListAdapter.DinnerViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
     private var consumptionLists = emptyList<ConsumptionList>()
 
-    inner class ConsumptionBrowserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameView: TextView = itemView.consumption_list_name_tv
+    inner class DinnerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nameView: TextView = itemView.dinner_item_name_tv
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumptionBrowserViewHolder {
-        val itemView = inflater.inflate(R.layout.consumption_browser_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DinnerViewHolder {
+        val itemView = inflater.inflate(R.layout.dinner_item, parent, false)
         itemView.setOnClickListener(onClickListener)
-        return ConsumptionBrowserViewHolder(itemView)
+        return DinnerViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ConsumptionBrowserViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DinnerViewHolder, position: Int) {
         val current = consumptionLists[position]
         holder.nameView.text = current.metaData.name
     }

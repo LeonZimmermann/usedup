@@ -87,21 +87,7 @@
                 app:destination="@id/calendar_week_fragment"
                 app:popUpTo="@+id/overview_fragment" />
     </fragment>
-    <fragment
-            android:id="@+id/calendar_activity_dinner_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityDinnerDialogFragment"
-            android:label="CalendarActivityDinnerFragment"
-            tools:layout="@layout/calendar_activity_dinner_fragment">
-        <argument
-                android:name="dinner"
-                android:defaultValue="@null"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList"
-                app:nullable="true" />
-    </fragment><action android:id="@+id/action_global_consumption_browser_fragment" app:destination="@id/consumption_browser_fragment"/>
-    <action
-            android:id="@+id/action_global_calendar_activity_dinner_fragment"
-            app:destination="@id/calendar_activity_dinner_fragment"
-            app:launchSingleTop="false" />
+    <action android:id="@+id/action_global_consumption_browser_fragment" app:destination="@id/consumption_browser_fragment"/>
     <navigation
             android:id="@+id/consumption_creation"
             android:label="Consumption Creation"
@@ -156,4 +142,8 @@
                 app:destination="@id/timeline_fragment"
                 app:popUpTo="@+id/overview_fragment" />
     </fragment>
+    <fragment
+            android:id="@+id/calendar_activity_dialog_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityFragment"
+            android:label="CalendarActivityDialog" /><action android:id="@+id/action_global_calendar_activity_dialog_fragment" app:destination="@id/calendar_activity_dialog_fragment"/>
 </navigation>
