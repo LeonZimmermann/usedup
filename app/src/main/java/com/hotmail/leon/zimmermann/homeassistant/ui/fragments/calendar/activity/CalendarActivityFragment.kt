@@ -39,12 +39,6 @@ class CalendarActivityFragment : Fragment() {
         })
     }
 
-    /*
-    pager.postDelayed({
-            pager.currentItem += 1
-        }, 0)
-     */
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(CalendarActivityViewModel::class.java)
