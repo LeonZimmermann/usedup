@@ -5,13 +5,9 @@
             android:id="@+id/submit_option"
             android:icon="@drawable/check_icon"
             android:title="@string/submit"
-            app:showAsAction="ifRoom" />
+            app:showAsAction="always" />
     <item
-            android:id="@+id/edit_option"
-            android:title="@string/edit"
-            app:showAsAction="never" />
-    <item
-            android:id="@+id/edit_categories_option"
-            android:title="Edit Categories"
+            android:id="@+id/add_option"
+            android:title="Add Item"
             app:showAsAction="never" />
 </menu>
