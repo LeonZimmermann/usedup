@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.hotmail.leon.zimmermann.homeassistant.R
-import kotlinx.android.synthetic.main.number_picker.view.*
+import kotlinx.android.synthetic.main.shopping_product_edit_dialog.view.*
 
 class ShoppingProductEditDialog(
     private val value: Int,
@@ -15,7 +15,7 @@ class ShoppingProductEditDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(context)
-            val view = requireActivity().layoutInflater.inflate(R.layout.number_picker, null)
+            val view = requireActivity().layoutInflater.inflate(R.layout.shopping_product_edit_dialog, null)
             view.number_picker_input.let {
                 it.minValue = 0
                 it.maxValue = 20

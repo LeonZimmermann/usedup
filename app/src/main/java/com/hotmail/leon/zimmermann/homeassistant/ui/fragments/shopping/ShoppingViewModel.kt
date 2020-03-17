@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class ShoppingViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
-    private val productList: LiveData<List<ProductEntity>>
+    val productList: LiveData<List<ProductEntity>>
 
     private val categoryRepository: CategoryRepository
     val categoryList: LiveData<List<CategoryEntity>>

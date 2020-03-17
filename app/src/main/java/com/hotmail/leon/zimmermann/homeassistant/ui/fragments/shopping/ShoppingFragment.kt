@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.shopping_fragment.*
+import org.jetbrains.anko.support.v4.toast
 
+// TODO Input-Error-Handling needs to be reworked. Instead of calling toast() immediately throw exception and handle error separately
 class ShoppingFragment : Fragment() {
 
     companion object {
@@ -62,7 +64,22 @@ class ShoppingFragment : Fragment() {
             true
         }
         R.id.add_option -> {
-            TODO("Implement")
+            val productList = viewModel.productList.value!!
+            ShoppingProductAddDialog(productList.map { it.name }) { name, cartAmount ->
+                val product = productList.first { it.name == name }
+                val shoppingProduct = ShoppingProduct(product, cartAmount)
+                val shoppingList = viewModel.shoppingList.value!!
+                shoppingList.let {
+                    if (it.containsKey(product.categoryId)) {
+                        if (it[product.categoryId]!!.firstOrNull { shoppingProductInList ->
+                                shoppingProductInList.product.id == shoppingProduct.product.id
+                            } != null)
+                            toast("Product already exists")
+                        else it[product.categoryId]!!.add(shoppingProduct)
+                    } else it[product.categoryId] = mutableListOf(shoppingProduct)
+                }
+                viewModel.shoppingList.value = shoppingList
+            }.show(fragmentManager!!, "ShoppingProductAddDialog")
             true
         }
         else -> false
@@ -75,7 +92,7 @@ class ShoppingFragment : Fragment() {
             adapter.setShoppingList(shoppingList)
         })
         viewModel.categoryList.observe(this, Observer { categoryList ->
-            adapter.setShoppingListOrder(categoryList)
+            adapter.setCategories(categoryList)
         })
     }
 

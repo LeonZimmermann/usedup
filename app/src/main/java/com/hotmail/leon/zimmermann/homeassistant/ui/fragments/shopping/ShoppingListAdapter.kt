@@ -3,7 +3,6 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -17,17 +16,16 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import kotlinx.android.synthetic.main.shopping_category.view.*
 import org.jetbrains.anko.textView
 
-
 class ShoppingListAdapter(
     private val context: Context,
     itemTouchHelperReceiver: ShoppingListAdapter.() -> ItemTouchHelper,
     private val productLongClickCallback: (value: Int, editCallback: (Int) -> Unit, deleteCallback: () -> Unit) -> Unit
-) :
-    RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
+) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
     private var shoppingList: MutableMap<Int, MutableList<ShoppingProduct>> = mutableMapOf()
     private var shoppingListOrder: MutableMap<Int, CategoryEntity> = mutableMapOf()
     private var itemTouchHelper = itemTouchHelperReceiver()
+    private lateinit var categories: List<CategoryEntity>
 
     inner class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val shoppingCategoryNameTextView: TextView = itemView.shopping_category_name_tv
@@ -79,17 +77,25 @@ class ShoppingListAdapter(
 
     internal fun setShoppingList(shoppingList: MutableMap<Int, MutableList<ShoppingProduct>>) {
         this.shoppingList = shoppingList
+        updateShoppingListOrder()
         notifyDataSetChanged()
     }
 
-    internal fun setShoppingListOrder(shoppingListOrder: List<CategoryEntity>) {
-        this.shoppingListOrder = shoppingListOrder
-            .filter { shoppingList.keys.contains(it.id) }
-            .sortedBy { it.position }
-            .mapIndexed { index, categoryEntity -> index to categoryEntity }
-            .toMap()
-            .toMutableMap()
+    internal fun setCategories(categories: List<CategoryEntity>) {
+        this.categories = categories
+        updateShoppingListOrder()
         notifyDataSetChanged()
+    }
+
+    private fun updateShoppingListOrder() {
+        if (::categories.isInitialized) {
+            this.shoppingListOrder = categories
+                .filter { shoppingList.keys.contains(it.id) }
+                .sortedBy { it.position }
+                .mapIndexed { index, categoryEntity -> index to categoryEntity }
+                .toMap()
+                .toMutableMap()
+        }
     }
 
     inner class ShoppingListItemTouchHelperCallback : ItemTouchHelper.Callback() {
