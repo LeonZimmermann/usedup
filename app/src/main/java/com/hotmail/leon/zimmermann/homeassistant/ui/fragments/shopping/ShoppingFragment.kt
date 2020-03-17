@@ -6,16 +6,11 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
-import com.hotmail.leon.zimmermann.homeassistant.ui.components.categoryOrder.CategoryOrderDialogFragment
-import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.NumberPickerDialog
 import kotlinx.android.synthetic.main.shopping_fragment.*
-import java.lang.RuntimeException
 
 class ShoppingFragment : Fragment() {
 
@@ -51,8 +46,11 @@ class ShoppingFragment : Fragment() {
             ItemTouchHelper(ShoppingListItemTouchHelperCallback()).apply {
                 attachToRecyclerView(shopping_list)
             }
-        }, { value, callback ->
-            NumberPickerDialog(value, 1, 20, callback).show(fragmentManager!!, "NumberPickerDialog")
+        }, { value, editCallback, deleteCallback ->
+            ShoppingProductEditDialog(value, editCallback, deleteCallback).show(
+                fragmentManager!!,
+                "ShoppingProductEditDialog"
+            )
         })
         initShoppingList()
     }
@@ -87,7 +85,7 @@ class ShoppingFragment : Fragment() {
                 .toList()
                 .map { it.second }
                 .filter { it.isNotEmpty() }
-                .reduce { list, acc -> acc + list }
+                .reduce { list, acc -> (acc + list).toMutableList() }
                 .filter { it.checked }
             changedProducts.forEach { it.product.quantity += it.product.discrepancy }
             viewModel.updateAll(changedProducts.map { it.product })

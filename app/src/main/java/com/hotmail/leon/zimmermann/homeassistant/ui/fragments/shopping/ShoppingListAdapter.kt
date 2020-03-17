@@ -21,11 +21,11 @@ import org.jetbrains.anko.textView
 class ShoppingListAdapter(
     private val context: Context,
     itemTouchHelperReceiver: ShoppingListAdapter.() -> ItemTouchHelper,
-    private val productLongClickCallback: (value: Int, callback: (Int) -> Unit) -> Unit
+    private val productLongClickCallback: (value: Int, editCallback: (Int) -> Unit, deleteCallback: () -> Unit) -> Unit
 ) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
-    private var shoppingList: Map<Int, List<ShoppingProduct>> = mapOf()
+    private var shoppingList: MutableMap<Int, MutableList<ShoppingProduct>> = mutableMapOf()
     private var shoppingListOrder: MutableMap<Int, CategoryEntity> = mutableMapOf()
     private var itemTouchHelper = itemTouchHelperReceiver()
 
@@ -47,21 +47,24 @@ class ShoppingListAdapter(
             if (event.actionMasked == MotionEvent.ACTION_DOWN) itemTouchHelper.startDrag(holder)
             false
         }
-        products?.let {
+        products?.let { products ->
             holder.shoppingProductListContainer.removeAllViews()
             holder.shoppingProductListContainer.apply {
-                for (item in it) {
+                for (item in products) {
                     textView {
                         setOnClickListener {
                             paintFlags = paintFlags xor Paint.STRIKE_THRU_TEXT_FLAG
                             item.checked = !item.checked
-
                         }
                         setOnLongClickListener {
-                            productLongClickCallback(item.cartAmount) {
+                            productLongClickCallback(item.cartAmount, {
                                 item.cartAmount = it
                                 notifyDataSetChanged()
-                            }
+                            }, {
+                                products.remove(item)
+                                if (products.isEmpty()) shoppingList.remove(category.id)
+                                notifyDataSetChanged()
+                            })
                             true
                         }
                         text = "${item.cartAmount}x ${item.product.name}"
@@ -74,7 +77,7 @@ class ShoppingListAdapter(
 
     override fun getItemCount() = shoppingList.size
 
-    internal fun setShoppingList(shoppingList: Map<Int, List<ShoppingProduct>>) {
+    internal fun setShoppingList(shoppingList: MutableMap<Int, MutableList<ShoppingProduct>>) {
         this.shoppingList = shoppingList
         notifyDataSetChanged()
     }
@@ -112,8 +115,6 @@ class ShoppingListAdapter(
             return false
         }
 
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            TODO("not implemented")
-        }
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
     }
 }

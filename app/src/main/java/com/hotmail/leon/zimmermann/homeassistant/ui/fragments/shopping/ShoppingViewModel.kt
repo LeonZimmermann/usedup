@@ -17,8 +17,7 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
     private val categoryRepository: CategoryRepository
     val categoryList: LiveData<List<CategoryEntity>>
 
-    val shoppingList: MutableLiveData<Map<Int, List<ShoppingProduct>>>
-    var editShoppingEntryIndex: Int? = null
+    val shoppingList: MutableLiveData<MutableMap<Int, MutableList<ShoppingProduct>>>
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
@@ -33,37 +32,10 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
                 .filter { product -> product.discrepancy > 0 }
                 .groupBy { it.categoryId }
                 .toList()
-                .map { Pair(it.first, it.second.map { product -> ShoppingProduct(product) }) }
+                .map { Pair(it.first, it.second.map { product -> ShoppingProduct(product) }.toMutableList()) }
                 .toMap()
-        } as MutableLiveData<Map<Int, List<ShoppingProduct>>>
-    }
-
-    /*
-    fun addShoppingEntry(category: ShoppingCategory) {
-        performAndNotifyOnLiveData(shoppingList) { shoppingList -> shoppingList!!.add(category) }
-    }
-    */
-
-    /*
-    fun editShoppingEntry(index: Int, product: ProductEntity, amount: Int) {
-        performAndNotifyOnLiveData(shoppingList) { shoppingList ->
-            val shoppingEntry = shoppingList!![index]
-            shoppingEntry.product = product
-            shoppingEntry.amount = amount
-        }
-    }
-    */
-
-    /*
-    fun removeShoppingEntryAt(index: Int) {
-        performAndNotifyOnLiveData(shoppingList) { shoppingList -> shoppingList!!.removeAt(index) }
-    }
-    */
-
-    private fun <T> performAndNotifyOnLiveData(obj: MutableLiveData<T>, function: (T?) -> Unit) {
-        val liveDataValue = obj.value
-        function(liveDataValue)
-        obj.value = liveDataValue
+                .toMutableMap()
+        } as MutableLiveData<MutableMap<Int, MutableList<ShoppingProduct>>>
     }
 
     fun updateAll(productEntityList: List<ProductEntity>) {
