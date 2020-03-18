@@ -36,7 +36,7 @@ import java.util.concurrent.locks.ReentrantLock
         ConsumptionListMetaDataEntity::class,
         CategoryEntity::class,
         CalendarActivityEntity::class,
-        CookingActivityDetailsEntity::class
+        DinnerActivityDetailsEntity::class
     ],
     version = 1
 )
@@ -119,7 +119,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val dao = database.calendarDao()
             val consumptionDao = database.consumptionDao()
             val random = Random()
-            dao.insertCookingActivityDetails(consumptionDao.getAll().value!!.map { CookingActivityDetailsEntity(it.metaData.id) })
+            dao.insertDinnerActivityDetailsList(consumptionDao.getAll().value!!.map { DinnerActivityDetailsEntity(it.metaData.id) })
             dao.insertCalendarActivities(List(25) {
                 val dateFrom = Date(Calendar.getInstance().apply {
                     set(Calendar.DAY_OF_MONTH, random.nextInt(15))
@@ -137,7 +137,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     else -> null
                 }
                 val detailsId = if (details != null) details[random.nextInt(details.size)].id else null
-                CalendarActivityEntity(dateFrom, dateTo, typeId, detailsId)
+                CalendarActivityEntity(dateFrom, dateTo, typeId, detailsId?.toLong())
             })
         }
 

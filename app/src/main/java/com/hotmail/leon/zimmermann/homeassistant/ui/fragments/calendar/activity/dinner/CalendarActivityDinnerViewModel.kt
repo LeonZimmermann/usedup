@@ -4,11 +4,14 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityType
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.DinnerActivityDetailsEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 import kotlinx.coroutines.launch
 import java.text.DateFormat
+import java.time.Instant
 import java.util.*
 
 class CalendarActivityDinnerViewModel(application: Application) : AndroidViewModel(application) {
@@ -38,9 +41,19 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
         consumptionLists = consumptionRepository.consumptionLists
     }
 
-    fun insertCalendarActivity(calendarActivities: CalendarActivityEntity) {
+    fun insertCalendarActivity() {
         viewModelScope.launch {
-            calendarRepository.insertCalendarActivity(calendarActivities)
+            val detailsId = calendarRepository.insertDinnerActivityDetails(
+                DinnerActivityDetailsEntity(consumptionList!!.metaData.id)
+            )
+            // TODO Convert all Date usages to the Java 8 Time Standard Library
+            val date = java.sql.Date(date.value!!.time)
+            calendarRepository.insertCalendarActivity(
+                CalendarActivityEntity(
+                    date, date,
+                    CalendarActivityType.COOKING.id, detailsId
+                )
+            )
         }
     }
 }

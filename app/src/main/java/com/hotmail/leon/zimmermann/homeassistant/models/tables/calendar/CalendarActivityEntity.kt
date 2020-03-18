@@ -10,7 +10,7 @@ data class CalendarActivityEntity(
     var dateFrom: Date,
     var dateTo: Date,
     @ColumnInfo(name = "type_id") var typeId: Int,
-    @ColumnInfo(name = "details_id") var detailsId: Int?
+    @ColumnInfo(name = "details_id") var detailsId: Long?
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

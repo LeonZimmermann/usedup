@@ -29,7 +29,7 @@ class CalendarActivityFragment : Fragment() {
     }
 
     private fun initPager() {
-        calendarActivityFragmentStateAdapter = CalendarActivityFragmentStateAdapter(this)
+        calendarActivityFragmentStateAdapter = CalendarActivityFragmentStateAdapter(this, ::scrollToNextStep)
         pager.adapter = calendarActivityFragmentStateAdapter
         pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -37,6 +37,20 @@ class CalendarActivityFragment : Fragment() {
                 indicator.selection = position
             }
         })
+
+        pager.isUserInputEnabled = false
+    }
+
+    private fun scrollToStep(step: Int) {
+        pager.postDelayed({
+            pager.currentItem = step
+        }, 1)
+    }
+
+    private fun scrollToNextStep() {
+        pager.postDelayed({
+            pager.currentItem += 1
+        }, 1)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

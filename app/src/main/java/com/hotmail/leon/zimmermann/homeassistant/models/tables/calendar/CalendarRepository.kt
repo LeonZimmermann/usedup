@@ -7,4 +7,16 @@ class CalendarRepository(private val dao: CalendarDao) {
     suspend fun insertCalendarActivity(calendarActivity: CalendarActivityEntity) {
         dao.insertCalendarActivity(calendarActivity)
     }
+
+    suspend fun insertCalendarActivities(calendarActivities: List<CalendarActivityEntity>) {
+        dao.insertCalendarActivities(calendarActivities)
+    }
+
+    suspend fun insertDinnerActivityDetails(dinnerActivityDetails: DinnerActivityDetailsEntity): Long {
+        return dao.insertDinnerActivityDetails(dinnerActivityDetails)
+    }
+
+    suspend fun insertDinnerActivityDetails(dinnerActivityDetails: List<DinnerActivityDetailsEntity>) {
+        dao.insertDinnerActivityDetailsList(dinnerActivityDetails)
+    }
 }

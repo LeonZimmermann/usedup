@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerViewModel" />
+
+        <variable
+                name="viewModel"
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include
+                android:id="@+id/activity_dinner_preview"
+                layout="@layout/dinner_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+                android:id="@+id/activity_dinner_submit_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+                android:id="@+id/activity_dinner_date_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="@{viewModel.dateString}"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="@+id/activity_dinner_preview"
+                app:layout_constraintTop_toBottomOf="@+id/activity_dinner_preview"
+                tools:text="00.00.0000" />
+
+        <TextView
+                android:id="@+id/activity_dinner_time_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@{viewModel.timeString}"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="@+id/activity_dinner_date_preview"
+                app:layout_constraintTop_toBottomOf="@+id/activity_dinner_date_preview"
+                tools:text="00:00" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

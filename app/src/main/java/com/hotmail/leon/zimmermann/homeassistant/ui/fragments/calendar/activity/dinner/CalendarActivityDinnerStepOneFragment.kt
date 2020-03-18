@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.CalendarActivityDinnerStepOneFragmentBinding
-import com.hotmail.leon.zimmermann.homeassistant.databinding.CalendarActivityDinnerStepOneFragmentBindingImpl
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DinnerListAdapter
 import kotlinx.android.synthetic.main.calendar_activity_dinner_step_one_fragment.*
-import org.jetbrains.anko.support.v4.toast
+import kotlinx.android.synthetic.main.consumption_browser_fragment.*
 
-class CalendarActivityDinnerStepOneFragment : Fragment() {
+class CalendarActivityDinnerStepOneFragment(
+    private val nextStepCallback: () -> Unit
+) : Fragment() {
 
     private lateinit var viewModel: CalendarActivityDinnerViewModel
     private lateinit var binding: CalendarActivityDinnerStepOneFragmentBinding
+    private lateinit var adapter: DinnerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class CalendarActivityDinnerStepOneFragment : Fragment() {
         binding = CalendarActivityDinnerStepOneFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        val adapter = DinnerListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
+        adapter = DinnerListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
         dinner_selection_list.adapter = adapter
         dinner_selection_list.layoutManager = LinearLayoutManager(context!!)
         viewModel.consumptionLists.observe(this, Observer {
@@ -46,6 +48,7 @@ class CalendarActivityDinnerStepOneFragment : Fragment() {
     }
 
     private fun onItemClicked(view: View) {
-        toast("Item clicked!")
+        viewModel.consumptionList = adapter[dinner_selection_list.getChildAdapterPosition(view)]
+        nextStepCallback()
     }
 }

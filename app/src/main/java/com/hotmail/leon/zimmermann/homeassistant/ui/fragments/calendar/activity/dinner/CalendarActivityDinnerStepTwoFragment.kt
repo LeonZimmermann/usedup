@@ -15,7 +15,7 @@ import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.TimePicker
 import kotlinx.android.synthetic.main.calendar_activity_dinner_step_two_fragment.*
 import java.util.*
 
-class CalendarActivityDinnerStepTwoFragment : Fragment() {
+class CalendarActivityDinnerStepTwoFragment(private val nextStepCallback: () -> Unit) : Fragment() {
 
     private lateinit var viewModel: CalendarActivityDinnerViewModel
     private lateinit var binding: CalendarActivityDinnerStepTwoFragmentBinding
@@ -38,6 +38,7 @@ class CalendarActivityDinnerStepTwoFragment : Fragment() {
         binding.viewModel = viewModel
         dinner_activity_date_tv.setOnClickListener { showDatePickerDialog() }
         dinner_activity_time_tv.setOnClickListener { showTimePickerDialog() }
+        dinner_activity_next_step_button.setOnClickListener { nextStepCallback() }
     }
 
     private fun showDatePickerDialog() {
