@@ -144,6 +144,6 @@
     </fragment>
     <fragment
             android:id="@+id/calendar_activity_dialog_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.CalendarActivityFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerFragment"
             android:label="CalendarActivityDialog" /><action android:id="@+id/action_global_calendar_activity_dialog_fragment" app:destination="@id/calendar_activity_dialog_fragment"/>
 </navigation>

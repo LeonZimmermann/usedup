@@ -45,7 +45,7 @@ class CalendarWeekView @JvmOverloads constructor(
     }
     private val entryPaint = Paint().apply {
         style = Paint.Style.FILL
-        isAntiAlias
+        isAntiAlias = true
     }
 
     // Left Area

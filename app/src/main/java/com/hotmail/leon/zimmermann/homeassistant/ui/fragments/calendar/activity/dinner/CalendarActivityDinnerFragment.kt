@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +11,17 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.calendar_activity_dialog_fragment.*
 
 
-class CalendarActivityFragment : Fragment() {
+class CalendarActivityDinnerFragment : Fragment() {
 
-    private lateinit var viewModel: CalendarActivityViewModel
-    private lateinit var calendarActivityFragmentStateAdapter: CalendarActivityFragmentStateAdapter
+    private lateinit var viewModel: CalendarActivityDinnerViewModel
+    private lateinit var calendarActivityDinnerFragmentStateAdapter: CalendarActivityDinnerFragmentStateAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(CalendarActivityDinnerViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +36,12 @@ class CalendarActivityFragment : Fragment() {
     }
 
     private fun initPager() {
-        calendarActivityFragmentStateAdapter = CalendarActivityFragmentStateAdapter(this, ::scrollToNextStep)
-        pager.adapter = calendarActivityFragmentStateAdapter
+        calendarActivityDinnerFragmentStateAdapter =
+            CalendarActivityDinnerFragmentStateAdapter(
+                this,
+                ::scrollToNextStep
+            )
+        pager.adapter = calendarActivityDinnerFragmentStateAdapter
         pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -53,12 +64,8 @@ class CalendarActivityFragment : Fragment() {
         }, 1)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(CalendarActivityViewModel::class.java)
-    }
-
     companion object {
-        fun newInstance() = CalendarActivityFragment()
+        fun newInstance() =
+            CalendarActivityDinnerFragment()
     }
 }

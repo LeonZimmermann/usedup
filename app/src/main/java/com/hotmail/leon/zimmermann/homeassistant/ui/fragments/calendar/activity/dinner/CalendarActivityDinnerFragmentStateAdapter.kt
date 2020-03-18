@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -6,7 +6,7 @@ import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerStepThreeFragment
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerStepTwoFragment
 
-class CalendarActivityFragmentStateAdapter(
+class CalendarActivityDinnerFragmentStateAdapter(
     fragment: Fragment,
     private val nextStepCallback: () -> Unit
 ) : FragmentStateAdapter(fragment) {
