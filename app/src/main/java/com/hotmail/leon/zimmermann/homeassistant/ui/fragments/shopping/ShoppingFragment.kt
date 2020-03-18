@@ -55,14 +55,13 @@ class ShoppingFragment : Fragment() {
             )
         })
         initShoppingList()
+        shopping_confirm_cart_button.setOnClickListener {
+            submitTransaction()
+            findNavController().navigateUp()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.submit_option -> {
-            submitTransaction()
-            findNavController().navigateUp()
-            true
-        }
         R.id.add_option -> {
             val productList = viewModel.productList.value!!
             ShoppingProductAddDialog(productList.map { it.name }) { name, cartAmount ->
