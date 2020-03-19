@@ -21,7 +21,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:id="@+id/consumption_creation_name_input"
+                android:id="@+id/name_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -32,13 +32,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
 
         <TextView
-                android:id="@+id/consumption_creation_duration_input"
+                android:id="@+id/duration_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Duration"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
+                app:layout_constraintStart_toStartOf="@+id/name_input"
+                app:layout_constraintTop_toBottomOf="@+id/name_input" />
 
         <TextView
                 android:id="@+id/textView5"
@@ -67,8 +67,8 @@
                 android:layout_marginTop="16dp"
                 android:text="Description"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
+                app:layout_constraintStart_toStartOf="@+id/duration_input"
+                app:layout_constraintTop_toBottomOf="@+id/duration_input" />
 
         <TextView
                 android:id="@+id/consumption_details_description_tv"

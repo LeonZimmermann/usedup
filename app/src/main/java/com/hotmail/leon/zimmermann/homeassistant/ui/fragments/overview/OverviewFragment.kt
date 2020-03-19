@@ -14,9 +14,6 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.SimpleProductPreviewAdapter
-import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.ConsumptionIngredientsException
-import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.InvalidProductNameException
-import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.InvalidQuantityChangeException
 import kotlinx.android.synthetic.main.overview_fragment.*
 
 class OverviewFragment : Fragment() {
@@ -70,6 +67,7 @@ class OverviewFragment : Fragment() {
         }
         measure_input.adapter =
             ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
+        /*
         consumption_consume_button.setOnClickListener {
             try {
                 val productName = product_name_input.text.toString()
@@ -86,6 +84,7 @@ class OverviewFragment : Fragment() {
                 Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
             }
         }
+         */
     }
 
     private fun initializeDiscrepancyCard() {

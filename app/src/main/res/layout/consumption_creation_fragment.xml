@@ -12,196 +12,157 @@
                 type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationViewModel" />
 
         <variable
-                name="ingredientsViewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.ingredients.fragment.ConsumptionIngredientsViewModel" />
-
-
-        <variable
                 name="eventHandler"
                 type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationFragment.EventHandler" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+        <Button
+                android:id="@+id/save_dinner_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                tools:context=".ui.fragments.consumption.details.ConsumptionDetailsFragment">
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/pill_button"
+                android:backgroundTint="@color/colorAccent"
+                android:onClick="@{eventHandler::onSaveDinnerButtonClicked}"
+                android:text="Save Dinner"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                    android:id="@+id/consumption_creation_image_view"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:adjustViewBounds="true"
-                    android:background="#999999"
-                    android:cropToPadding="true"
-                    android:onClick="@{eventHandler::onImageViewClicked}"
-                    android:scaleType="center"
-                    android:src="@drawable/add_photo_icon"
-                    android:tint="@android:color/white"
-                    app:layout_constraintDimensionRatio="16:9"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                    android:id="@+id/consumption_creation_name_input"
-                    android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/name"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
+                    android:paddingBottom="16dp"
+                    tools:context=".ui.fragments.consumption.details.ConsumptionDetailsFragment">
 
-            <EditText
-                    android:id="@+id/consumption_creation_duration_input"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/clock_icon"
-                    android:hint="@string/duration"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_name_input"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_name_input" />
+                <ImageView
+                        android:id="@+id/consumption_creation_image_view"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:adjustViewBounds="true"
+                        android:background="#999999"
+                        android:cropToPadding="true"
+                        android:onClick="@{eventHandler::onImageViewClicked}"
+                        android:scaleType="center"
+                        android:src="@drawable/add_photo_icon"
+                        android:tint="@android:color/white"
+                        app:layout_constraintDimensionRatio="16:9"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintGuide_begin="250dp"
-                    app:layout_constraintStart_toStartOf="parent" />
+                <EditText
+                        android:id="@+id/name_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:hint="@string/name"
+                        android:text="@={viewModel.nameString}"
+                        android:textSize="22sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view" />
 
-            <Button
-                    android:id="@+id/consumption_creation_ingredients_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="64dp"
-                    android:drawableStart="@drawable/add_icon"
-                    android:onClick="@{eventHandler::onIngredientsButtonClicked}"
-                    android:text="@string/add_ingredients"
-                    android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_duration_input" />
+                <EditText
+                        android:id="@+id/duration_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/duration"
+                        android:inputType="number"
+                        android:text="@={viewModel.durationString}"
+                        android:textSize="22sp"
+                        app:layout_constraintEnd_toEndOf="@+id/name_input"
+                        app:layout_constraintStart_toStartOf="@+id/name_input"
+                        app:layout_constraintTop_toBottomOf="@+id/name_input" />
 
-            <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:onClick="@{eventHandler::onIngredientsButtonClicked}"
-                    android:text="@string/ingredients"
-                    android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_button" />
+                <Button
+                        android:id="@+id/add_ingredients_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginTop="@dimen/lMargin"
+                        android:background="@drawable/pill_button"
+                        android:backgroundTint="@color/colorAccent"
+                        android:onClick="@{eventHandler::onAddIngredientsButtonClicked}"
+                        android:text="@string/add_ingredients"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ingredients_list" />
 
-            <TextView
-                    android:id="@+id/consumption_creation_ingredients_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{eventHandler::onIngredientsButtonClicked}"
-                    android:text="@{ingredientsViewModel.consumptionListString}"
-                    android:visibility="@{ingredientsViewModel.consumptionListEmpty ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="@+id/textView4"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/ingredients"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:visibility="@{viewModel.consumptionTemplateList.empty ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintEnd_toEndOf="@+id/duration_input"
+                        app:layout_constraintStart_toStartOf="@+id/duration_input"
+                        app:layout_constraintTop_toBottomOf="@+id/duration_input" />
 
-            <Button
-                    android:id="@+id/consumption_creation_description_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="64dp"
-                    android:drawableStart="@drawable/add_icon"
-                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
-                    android:text="@string/add_description"
-                    android:visibility="@{viewModel.showDescriptionButton ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_ingredients_tv" />
+                <EditText
+                        android:id="@+id/description_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:hint="@string/description"
+                        android:inputType="textMultiLine"
+                        android:text="@={viewModel.descriptionString}"
+                        app:layout_constraintEnd_toEndOf="@+id/add_ingredients_button"
+                        app:layout_constraintStart_toStartOf="@+id/add_ingredients_button"
+                        app:layout_constraintTop_toBottomOf="@+id/add_ingredients_button" />
 
-            <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
-                    android:text="@string/description"
-                    android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_button" />
+                <EditText
+                        android:id="@+id/instructions_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:hint="@string/instructions"
+                        android:inputType="textMultiLine"
+                        android:text="@={viewModel.instructionsString}"
+                        app:layout_constraintEnd_toEndOf="@+id/description_input"
+                        app:layout_constraintStart_toStartOf="@+id/description_input"
+                        app:layout_constraintTop_toBottomOf="@+id/description_input" />
 
-            <TextView
-                    android:id="@+id/consumption_creation_description_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{eventHandler::onDescriptionButtonClicked}"
-                    android:text="@{viewModel.descriptionString}"
-                    android:visibility="@{viewModel.showDescriptionButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="@+id/textView6"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ingredients_list"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:visibility="@{viewModel.consumptionTemplateList.empty ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintEnd_toEndOf="@+id/textView4"
+                        app:layout_constraintStart_toStartOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/product_item" />
 
 
-            <Button
-                    android:id="@+id/consumption_creation_instructions_button"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="64dp"
-                    android:drawableStart="@drawable/add_icon"
-                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
-                    android:text="@string/add_instructions"
-                    android:visibility="@{viewModel.showInstructionsButton ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_description_tv" />
-
-            <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
-                    android:text="@string/instructions"
-                    android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/consumption_creation_duration_input"
-                    app:layout_constraintTop_toBottomOf="@+id/consumption_creation_instructions_button" />
-
-            <TextView
-                    android:id="@+id/consumption_creation_instructions_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{eventHandler::onInstructionsButtonClicked}"
-                    android:text="@{viewModel.instructionsString}"
-                    android:visibility="@{viewModel.showInstructionsButton ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="@+id/textView8"
-                    app:layout_constraintStart_toStartOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

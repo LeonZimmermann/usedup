@@ -3,4 +3,10 @@
     <dimen name="itemTextSizeBig">24sp</dimen>
     <dimen name="itemTextSizeMedium">20sp</dimen>
     <dimen name="itemTextSizeSmall">16sp</dimen>
+
+    <dimen name="xsMargin">4dp</dimen>
+    <dimen name="sMargin">8dp</dimen>
+    <dimen name="mMargin">12dp</dimen>
+    <dimen name="lMargin">16dp</dimen>
+    <dimen name="xlMargin">20dp</dimen>
 </resources>

@@ -3,7 +3,7 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHand
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewHandler(private val adapter: RecyclerViewHandlerAdapter): ItemTouchHelper.Callback() {
+open class RecyclerViewHandler(private val adapter: RecyclerViewHandlerAdapter): ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,

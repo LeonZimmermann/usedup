@@ -16,7 +16,7 @@ interface RecyclerViewHandlerAdapter {
      * @see RecyclerView.getAdapterPositionFor
      * @see RecyclerView.ViewHolder.getAdapterPosition
      */
-    fun onItemMove(fromPosition: Int, toPosition: Int)
+    fun onItemMove(fromPosition: Int, toPosition: Int) {}
 
     /**
      * Called when an item has been dismissed by a swipe.<br></br>
@@ -29,5 +29,5 @@ interface RecyclerViewHandlerAdapter {
      * @see RecyclerView.getAdapterPositionFor
      * @see RecyclerView.ViewHolder.getAdapterPosition
      */
-    fun onItemDismiss(position: Int)
+    fun onItemDismiss(position: Int) {}
 }
