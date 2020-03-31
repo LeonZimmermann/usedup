@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -11,13 +11,13 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class ConsumptionCreationViewModel(application: Application) : AndroidViewModel(application) {
+class DinnerCreationViewModel(application: Application) : AndroidViewModel(application) {
     var nameString = MutableLiveData<String>()
     var durationString = MutableLiveData<String>()
     var descriptionString = MutableLiveData<String>()
     var instructionsString = MutableLiveData<String>()
-    val consumptionTemplateList: MutableLiveData<MutableList<ConsumptionTemplate>> by lazy {
-        MutableLiveData<MutableList<ConsumptionTemplate>>().apply {
+    val dinnerTemplateList: MutableLiveData<MutableList<DinnerTemplate>> by lazy {
+        MutableLiveData<MutableList<DinnerTemplate>>().apply {
             value = mutableListOf()
         }
     }
@@ -41,10 +41,10 @@ class ConsumptionCreationViewModel(application: Application) : AndroidViewModel(
         productList = productRepository.productEntityList
     }
 
-    fun addConsumptionTemplate(consumptionTemplate: ConsumptionTemplate) {
-        val consumptionTemplateList = consumptionTemplateList.value
-        consumptionTemplateList?.add(consumptionTemplate)
-        this.consumptionTemplateList.value = consumptionTemplateList
+    fun addConsumptionTemplate(dinnerTemplate: DinnerTemplate) {
+        val consumptionTemplateList = dinnerTemplateList.value
+        consumptionTemplateList?.add(dinnerTemplate)
+        this.dinnerTemplateList.value = consumptionTemplateList
     }
 
     fun saveDinnerToDatabase() {
@@ -53,7 +53,7 @@ class ConsumptionCreationViewModel(application: Application) : AndroidViewModel(
             consumptionRepository.insert(
                 ConsumptionList(
                     ConsumptionListMetaDataEntity(name!!, duration, description, instructions),
-                    consumptionTemplateList.value!!.toList().map { ConsumptionEntity(it.product.id, it.measure.id, it.value) }
+                    dinnerTemplateList.value!!.toList().map { ConsumptionEntity(it.product.id, it.measure.id, it.value) }
                 )
             )
         }

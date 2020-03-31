@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -9,23 +9,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
-import kotlinx.android.synthetic.main.consumption_ingredients_dialog.view.*
-import kotlinx.android.synthetic.main.consumption_ingredients_dialog.view.measure_input
 
-class ConsumptionIngredientsDialog : DialogFragment() {
+class DinnerIngredientsDialog : DialogFragment() {
 
-    private lateinit var viewModel: ConsumptionCreationViewModel
+    private lateinit var viewModel: DinnerCreationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
+            ViewModelProviders.of(this).get(DinnerCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val view = requireActivity().layoutInflater.inflate(R.layout.consumption_ingredients_dialog, null)
+            val view = requireActivity().layoutInflater.inflate(R.layout.dinner_ingredients_dialog, null)
             viewModel.productList.observe(this, Observer { productList ->
                 view.product_name_input.setAdapter(
                     ArrayAdapter(
@@ -46,7 +44,7 @@ class ConsumptionIngredientsDialog : DialogFragment() {
                         ?: throw Exception("Product not found!")
                 val measure = view.measure_input.selectedItem as Measure
                 val value = view.quantity_change_input.text.toString().toDouble()
-                viewModel.addConsumptionTemplate(ConsumptionTemplate(product, measure, value))
+                viewModel.addConsumptionTemplate(DinnerTemplate(product, measure, value))
             }
             builder.setNegativeButton(R.string.cancel) { dialogInterface, _ -> dialogInterface.cancel() }
             builder.create()

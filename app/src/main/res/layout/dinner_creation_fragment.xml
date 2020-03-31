@@ -9,11 +9,11 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationViewModel" />
 
         <variable
                 name="eventHandler"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationFragment.EventHandler" />
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationFragment.EventHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
-                    tools:context=".ui.fragments.consumption.details.ConsumptionDetailsFragment">
+                    tools:context=".ui.fragments.dinners.details.ConsumptionDetailsFragment">
 
                 <ImageView
                         android:id="@+id/consumption_creation_image_view"

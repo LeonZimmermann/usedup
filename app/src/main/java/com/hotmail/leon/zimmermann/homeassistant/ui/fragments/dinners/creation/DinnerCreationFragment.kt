@@ -1,9 +1,8 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
 
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,19 +16,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionCreationFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.databinding.DinnerCreationFragmentBinding
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHandler.RecyclerViewHandler
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CameraFragment
-import kotlinx.android.synthetic.main.consumption_creation_fragment.*
-import kotlinx.android.synthetic.main.consumption_creation_fragment.view.*
-import kotlinx.android.synthetic.main.consumption_creation_fragment.view.consumption_creation_image_view
+import kotlinx.android.synthetic.main.dinner_creation_fragment.*
+import kotlinx.android.synthetic.main.dinner_creation_fragment.view.*
 import java.io.File
 
-class ConsumptionCreationFragment : Fragment() {
+class DinnerCreationFragment : Fragment() {
 
-    private lateinit var viewModel: ConsumptionCreationViewModel
-    private lateinit var binding: ConsumptionCreationFragmentBinding
-    private lateinit var adapter: ConsumptionIngredientsAdapter
+    private lateinit var viewModel: DinnerCreationViewModel
+    private lateinit var binding: DinnerCreationFragmentBinding
+    private lateinit var adapter: DinnerIngredientsAdapter
 
     private var file: File? = null
 
@@ -41,19 +39,19 @@ class ConsumptionCreationFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.consumption_creation_fragment, container, false)
+        return inflater.inflate(R.layout.dinner_creation_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(ConsumptionCreationViewModel::class.java)
+            ViewModelProviders.of(this).get(DinnerCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
-        binding = ConsumptionCreationFragmentBinding.bind(view)
+        binding = DinnerCreationFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.eventHandler = EventHandler()
-        adapter = ConsumptionIngredientsAdapter(context!!, ::onIngredientRemoved).apply {
+        adapter = DinnerIngredientsAdapter(context!!, ::onIngredientRemoved).apply {
             ItemTouchHelper(object : RecyclerViewHandler(this) {
                 override fun getMovementFlags(
                     recyclerView: RecyclerView,
@@ -64,7 +62,7 @@ class ConsumptionCreationFragment : Fragment() {
                 }
             }).attachToRecyclerView(view.ingredients_list)
         }
-        viewModel.consumptionTemplateList.observe(this, Observer { consumptionEntityList ->
+        viewModel.dinnerTemplateList.observe(this, Observer { consumptionEntityList ->
             adapter.setConsumptionEntityList(consumptionEntityList)
             val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
             val topMarginDimensionId = if (consumptionEntityList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
@@ -85,9 +83,9 @@ class ConsumptionCreationFragment : Fragment() {
     }
 
     private fun onIngredientRemoved(position: Int) {
-        val consumptionTemplateList = viewModel.consumptionTemplateList.value!!
+        val consumptionTemplateList = viewModel.dinnerTemplateList.value!!
         consumptionTemplateList.removeAt(position)
-        viewModel.consumptionTemplateList.value = consumptionTemplateList
+        viewModel.dinnerTemplateList.value = consumptionTemplateList
     }
 
     inner class EventHandler {
@@ -101,7 +99,7 @@ class ConsumptionCreationFragment : Fragment() {
         }
 
         fun onAddIngredientsButtonClicked(view: View) {
-            ConsumptionIngredientsDialog().show(fragmentManager!!, "ConsumptionIngredientsDialog")
+            DinnerIngredientsDialog().show(fragmentManager!!, "ConsumptionIngredientsDialog")
         }
 
         fun onSaveDinnerButtonClicked(view: View) {
@@ -117,6 +115,6 @@ class ConsumptionCreationFragment : Fragment() {
     companion object {
         private const val FILE = "file"
 
-        fun newInstance() = ConsumptionCreationFragment()
+        fun newInstance() = DinnerCreationFragment()
     }
 }

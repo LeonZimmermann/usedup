@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.details
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.details
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

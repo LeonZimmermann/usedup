@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,7 +8,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
 
-class ConsumptionBrowserViewModel(application: Application) : AndroidViewModel(application) {
+class DinnerBrowserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val consumptionRepository: ConsumptionRepository
     val consumptionLists: LiveData<List<ConsumptionList>>

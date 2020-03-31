@@ -13,7 +13,7 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.CalendarActivityDinnerStepOneFragmentBinding
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DinnerListAdapter
 import kotlinx.android.synthetic.main.calendar_activity_dinner_step_one_fragment.*
-import kotlinx.android.synthetic.main.consumption_browser_fragment.*
+import kotlinx.android.synthetic.main.dinner_browser_fragment.*
 
 class CalendarActivityDinnerStepOneFragment(
     private val nextStepCallback: () -> Unit

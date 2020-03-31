@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -12,32 +12,32 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionBrowserFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.databinding.DinnerBrowserFragmentBinding
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DinnerListAdapter
-import kotlinx.android.synthetic.main.consumption_browser_fragment.*
+import kotlinx.android.synthetic.main.dinner_browser_fragment.*
 
-class ConsumptionBrowserFragment : Fragment() {
+class DinnerBrowserFragment : Fragment() {
 
-    private lateinit var viewModel: ConsumptionBrowserViewModel
-    private lateinit var binding: ConsumptionBrowserFragmentBinding
+    private lateinit var viewModel: DinnerBrowserViewModel
+    private lateinit var binding: DinnerBrowserFragmentBinding
     private lateinit var adapter: DinnerListAdapter
     private lateinit var mode: Mode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ConsumptionBrowserViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(DinnerBrowserViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.consumption_browser_fragment, container, false)
+        return inflater.inflate(R.layout.dinner_browser_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = ConsumptionBrowserFragmentBinding.bind(view)
+        binding = DinnerBrowserFragmentBinding.bind(view)
         initArguments()
         initDatabinding()
         initList()
@@ -88,7 +88,7 @@ class ConsumptionBrowserFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = ConsumptionBrowserFragment()
+        fun newInstance() = DinnerBrowserFragment()
     }
 
     enum class Mode {

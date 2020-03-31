@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.CalendarActivityDinnerStepThreeFragmentBinding
 import kotlinx.android.synthetic.main.calendar_activity_dinner_step_three_fragment.*
-import kotlinx.android.synthetic.main.dinner_item.view.*
+import kotlinx.android.synthetic.main.dinner_browser_item.view.*
 
 class CalendarActivityDinnerStepThreeFragment : Fragment() {
 

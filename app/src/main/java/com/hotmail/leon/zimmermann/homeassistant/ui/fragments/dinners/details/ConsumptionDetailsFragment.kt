@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.details
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.details
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
-import kotlinx.android.synthetic.main.consumption_details_fragment.*
+import kotlinx.android.synthetic.main.dinner_details_fragment.*
 
 class ConsumptionDetailsFragment : Fragment() {
 
@@ -24,7 +24,7 @@ class ConsumptionDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.consumption_details_fragment, container, false)
+        return inflater.inflate(R.layout.dinner_details_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

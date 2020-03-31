@@ -36,9 +36,9 @@
     </fragment>
     <fragment
             android:id="@+id/consumption_browser_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserFragment"
             android:label="ConsumptionBrowser"
-            tools:layout="@layout/consumption_browser_fragment">
+            tools:layout="@layout/dinner_browser_fragment">
         <action
                 android:id="@+id/action_consumption_browser_fragment_to_consumption_details"
                 app:destination="@id/consumption_details"
@@ -57,9 +57,9 @@
     </fragment>
     <fragment
             android:id="@+id/consumption_details"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.details.ConsumptionDetailsFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.details.ConsumptionDetailsFragment"
             android:label="ConsumptionDetails"
-            tools:layout="@layout/consumption_details_fragment">
+            tools:layout="@layout/dinner_details_fragment">
         <argument
                 android:name="consumptionList"
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList" />
@@ -103,9 +103,9 @@
         </fragment>
         <fragment
                 android:id="@+id/consumption_creation_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.creation.ConsumptionCreationFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationFragment"
                 android:label="ConsumptionCreation"
-                tools:layout="@layout/consumption_creation_fragment">
+                tools:layout="@layout/dinner_creation_fragment">
             <action
                     android:id="@+id/action_consumption_creation_fragment_to_camera_fragment"
                     app:destination="@id/camera_fragment" />

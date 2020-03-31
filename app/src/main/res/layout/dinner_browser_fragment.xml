@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserFragment.Mode" />
+        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserFragment.Mode" />
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.consumption.browser.ConsumptionBrowserViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserViewModel" />
 
         <variable
                 name="mode"
@@ -31,7 +31,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="10"
-                tools:listitem="@layout/dinner_item" />
+                tools:listitem="@layout/dinner_browser_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/consumption_browser_add_button"
