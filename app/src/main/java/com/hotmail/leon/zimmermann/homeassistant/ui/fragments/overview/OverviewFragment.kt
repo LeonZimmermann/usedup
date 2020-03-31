@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.SimpleProductPreviewAdapter
 import kotlinx.android.synthetic.main.overview_fragment.*
 
@@ -63,7 +61,7 @@ class OverviewFragment : Fragment() {
             // TODO Implement
         }
         consumption_browser_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_consumption_browser_fragment)
+            findNavController().navigate(R.id.action_global_dinner_browser_fragment)
         }
         measure_input.adapter =
             ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())

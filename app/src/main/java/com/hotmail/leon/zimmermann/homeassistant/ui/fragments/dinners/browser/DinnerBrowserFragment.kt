@@ -21,7 +21,6 @@ class DinnerBrowserFragment : Fragment() {
     private lateinit var viewModel: DinnerBrowserViewModel
     private lateinit var binding: DinnerBrowserFragmentBinding
     private lateinit var adapter: DinnerListAdapter
-    private lateinit var mode: Mode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,22 +37,13 @@ class DinnerBrowserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = DinnerBrowserFragmentBinding.bind(view)
-        initArguments()
         initDatabinding()
         initList()
-        initAddButton()
-    }
-
-    private fun initArguments() {
-        arguments?.let {
-            mode = it.getSerializable("mode") as Mode
-        }
     }
 
     private fun initDatabinding() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.mode = mode
     }
 
     private fun initList() {
@@ -67,32 +57,13 @@ class DinnerBrowserFragment : Fragment() {
         })
     }
 
-    private fun initAddButton() {
-        consumption_browser_add_button.setOnClickListener {
-            findNavController().navigate(R.id.action_consumption_browser_fragment_to_consumption_creation_fragment)
-        }
-    }
-
     private fun onItemClicked(view: View) {
-        when (mode) {
-            Mode.SELECT -> {
-                findNavController().popBackStack(R.id.consumption_browser_fragment, true)
-                findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment,
-                    bundleOf("dinner" to adapter[consumption_browser_list.getChildAdapterPosition(view)]))
-            }
-            Mode.EDIT -> findNavController().navigate(
-                R.id.action_consumption_browser_fragment_to_consumption_details,
-                bundleOf("editConsumptionList" to adapter[consumption_browser_list.getChildAdapterPosition(view)])
-            )
-        }
+        findNavController().popBackStack(R.id.dinner_browser_fragment, true)
+        findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment,
+            bundleOf("dinner" to adapter[consumption_browser_list.getChildAdapterPosition(view)]))
     }
 
     companion object {
         fun newInstance() = DinnerBrowserFragment()
-    }
-
-    enum class Mode {
-        SELECT,
-        EDIT
     }
 }

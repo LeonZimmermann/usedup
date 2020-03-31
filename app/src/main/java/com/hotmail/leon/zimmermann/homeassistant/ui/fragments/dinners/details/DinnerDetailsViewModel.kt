@@ -8,7 +8,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDa
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 
-class ConsumptionDetailsViewModel(application: Application) : AndroidViewModel(application) {
+class DinnerDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
     val productList: LiveData<List<ProductEntity>>

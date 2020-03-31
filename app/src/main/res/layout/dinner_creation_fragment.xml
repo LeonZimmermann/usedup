@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
-                    tools:context=".ui.fragments.dinners.details.ConsumptionDetailsFragment">
+                    tools:context=".ui.fragments.dinners.details.DinnerDetailsFragment">
 
                 <ImageView
                         android:id="@+id/consumption_creation_image_view"

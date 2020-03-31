@@ -12,13 +12,13 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.Consu
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import kotlinx.android.synthetic.main.dinner_details_fragment.*
 
-class ConsumptionDetailsFragment : Fragment() {
+class DinnerDetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ConsumptionDetailsFragment()
+        fun newInstance() = DinnerDetailsFragment()
     }
 
-    private lateinit var viewModel: ConsumptionDetailsViewModel
+    private lateinit var viewModel: DinnerDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +29,7 @@ class ConsumptionDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ConsumptionDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(DinnerDetailsViewModel::class.java)
         // TODO: Use the ViewModel
         arguments?.let { bundle ->
             val consumptionList = bundle.getSerializable("editConsumptionList") as ConsumptionList

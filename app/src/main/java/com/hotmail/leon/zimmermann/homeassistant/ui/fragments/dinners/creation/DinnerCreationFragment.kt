@@ -93,7 +93,7 @@ class DinnerCreationFragment : Fragment() {
         fun onImageViewClicked(view: View) {
             file = CameraFragment.createTempPhotoFile(context!!)
             findNavController().navigate(
-                R.id.action_consumption_creation_fragment_to_camera_fragment,
+                R.id.action_dinner_creation_fragment_to_camera_fragment,
                 bundleOf("file" to file)
             )
         }

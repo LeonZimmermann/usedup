@@ -12,10 +12,6 @@
         <variable
                 name="viewModel"
                 type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserViewModel" />
-
-        <variable
-                name="mode"
-                type="Mode" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,17 +28,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="10"
                 tools:listitem="@layout/dinner_browser_item" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/consumption_browser_add_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:clickable="true"
-                android:visibility="@{mode == Mode.SELECT ? View.GONE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/add_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
