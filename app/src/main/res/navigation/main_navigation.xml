@@ -10,9 +10,6 @@
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.ShoppingFragment"
             android:label="Shopping"
             tools:layout="@layout/shopping_fragment">
-        <action
-                android:id="@+id/action_shopping_fragment_to_shopping_edit_fragment"
-                app:destination="@id/shopping_edit_fragment" />
     </fragment>
     <fragment
             android:id="@+id/management_fragment"
@@ -60,11 +57,6 @@
                 android:name="consumptionList"
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList" />
     </fragment>
-    <fragment
-            android:id="@+id/shopping_edit_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.edit.ShoppingEditFragment"
-            android:label="ShoppingEditFragment"
-            tools:layout="@layout/shopping_edit_fragment" />
     <fragment
             android:id="@+id/settings_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.settings.SettingsFragment"

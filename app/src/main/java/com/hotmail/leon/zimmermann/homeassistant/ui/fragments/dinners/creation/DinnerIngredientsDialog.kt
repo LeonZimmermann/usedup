@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import kotlinx.android.synthetic.main.dinner_ingredients_dialog.view.*
 
 class DinnerIngredientsDialog : DialogFragment() {
 

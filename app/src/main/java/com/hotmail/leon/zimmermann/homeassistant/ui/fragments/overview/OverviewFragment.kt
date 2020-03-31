@@ -57,10 +57,10 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initializeTransactionCard() {
-        advanced_consumption_button.setOnClickListener {
+        template_browser_button.setOnClickListener {
             // TODO Implement
         }
-        consumption_browser_button.setOnClickListener {
+        dinner_browser_button.setOnClickListener {
             findNavController().navigate(R.id.action_global_dinner_browser_fragment)
         }
         measure_input.adapter =

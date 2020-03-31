@@ -36,12 +36,12 @@ class DinnerBrowserFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = DinnerBrowserFragmentBinding.bind(view)
-        initDatabinding()
+        initDatabinding(view)
         initList()
     }
 
-    private fun initDatabinding() {
+    private fun initDatabinding(view: View) {
+        binding = DinnerBrowserFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
@@ -58,9 +58,7 @@ class DinnerBrowserFragment : Fragment() {
     }
 
     private fun onItemClicked(view: View) {
-        findNavController().popBackStack(R.id.dinner_browser_fragment, true)
-        findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment,
-            bundleOf("dinner" to adapter[consumption_browser_list.getChildAdapterPosition(view)]))
+        // TODO Implement
     }
 
     companion object {

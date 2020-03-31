@@ -22,7 +22,7 @@ class DinnerIngredientsAdapter(private val context: Context, private val onItemR
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsumptionIngredientsViewHolder {
         return ConsumptionIngredientsViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.dinner_ingredients_item, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.dinner_creation_ingredients_item, parent, false)
         )
     }
 

@@ -7,8 +7,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserFragment.Mode" />
-
         <variable
                 name="viewModel"
                 type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserViewModel" />

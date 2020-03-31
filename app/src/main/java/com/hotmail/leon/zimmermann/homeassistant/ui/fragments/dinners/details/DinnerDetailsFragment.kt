@@ -30,7 +30,6 @@ class DinnerDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(DinnerDetailsViewModel::class.java)
-        // TODO: Use the ViewModel
         arguments?.let { bundle ->
             val consumptionList = bundle.getSerializable("editConsumptionList") as ConsumptionList
             name_input.text = consumptionList.metaData.name

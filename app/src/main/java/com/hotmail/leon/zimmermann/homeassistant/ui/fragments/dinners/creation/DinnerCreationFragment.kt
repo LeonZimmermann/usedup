@@ -28,13 +28,12 @@ class DinnerCreationFragment : Fragment() {
     private lateinit var viewModel: DinnerCreationViewModel
     private lateinit var binding: DinnerCreationFragmentBinding
     private lateinit var adapter: DinnerIngredientsAdapter
-
-    private var file: File? = null
+    private var photoFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         savedInstanceState?.let {
-            file = it.getSerializable(FILE) as? File
+            photoFile = it.getSerializable(FILE) as? File
         }
     }
 
@@ -72,7 +71,7 @@ class DinnerCreationFragment : Fragment() {
         view.ingredients_list.adapter = adapter
         view.ingredients_list.layoutManager = LinearLayoutManager(context)
 
-        file?.let {
+        photoFile?.let {
             val bitmap = BitmapFactory.decodeStream(it.inputStream())
             consumption_creation_image_view.setImageBitmap(bitmap)
             consumption_creation_image_view.apply {
@@ -89,12 +88,11 @@ class DinnerCreationFragment : Fragment() {
     }
 
     inner class EventHandler {
-
         fun onImageViewClicked(view: View) {
-            file = CameraFragment.createTempPhotoFile(context!!)
+            photoFile = CameraFragment.createTempPhotoFile(context!!)
             findNavController().navigate(
                 R.id.action_dinner_creation_fragment_to_camera_fragment,
-                bundleOf("file" to file)
+                bundleOf("file" to photoFile)
             )
         }
 
@@ -109,7 +107,7 @@ class DinnerCreationFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (file != null) outState.putSerializable(FILE, file)
+        if (photoFile != null) outState.putSerializable(FILE, photoFile)
     }
 
     companion object {
