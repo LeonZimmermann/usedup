@@ -3,9 +3,10 @@
         package="com.hotmail.leon.zimmermann.homeassistant">
 
     <uses-feature android:name="android.hardware.camera"
-            android:required="true" />
+            android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
             android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <!-- TODO allowBackup should be true on release -->
     <application
@@ -15,6 +16,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.hotmail.leon.zimmermann.homeassistant.fileprovider"
