@@ -29,9 +29,9 @@
                         android:id="@+id/product_name_input"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="16dp"
                         android:hint="Product Name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -94,6 +94,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:text="Consumption"
+                        android:textColor="@android:color/black"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -123,27 +124,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <Button
-                        android:id="@+id/discrepancy_view_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/pill_button"
-                        android:minHeight="25dp"
-                        android:text="Details"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView" />
-
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/overview_discrepancy_container"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/discrepancy_view_button"
+                        app:layout_constraintTop_toBottomOf="@+id/textView"
                         tools:itemCount="3"
                         tools:listitem="@layout/product_item" />
 
@@ -154,6 +143,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:text="Discrepancy Overview"
+                        android:textColor="@android:color/black"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
