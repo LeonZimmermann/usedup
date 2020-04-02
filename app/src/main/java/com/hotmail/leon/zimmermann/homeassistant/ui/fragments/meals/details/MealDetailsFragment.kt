@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.details
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.details
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -8,17 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import kotlinx.android.synthetic.main.dinner_details_fragment.*
 
-class DinnerDetailsFragment : Fragment() {
+class MealDetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = DinnerDetailsFragment()
+        fun newInstance() = MealDetailsFragment()
     }
 
-    private lateinit var viewModel: DinnerDetailsViewModel
+    private lateinit var viewModel: MealDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,13 +29,13 @@ class DinnerDetailsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DinnerDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MealDetailsViewModel::class.java)
         arguments?.let { bundle ->
-            val consumptionList = bundle.getSerializable("editConsumptionList") as ConsumptionList
+            val consumptionList = bundle.getSerializable("editConsumptionList") as Meal
             name_input.text = consumptionList.metaData.name
             duration_input.text = consumptionList.metaData.duration?.toString() ?: ""
             consumption_details_description_tv.text = consumptionList.metaData.description ?: ""
-            consumption_details_ingredients_tv.text = consumptionList.consumptions
+            consumption_details_ingredients_tv.text = consumptionList.mealIngredients
                 .map {
                     Triple(
                         viewModel.productList.value?.first { product -> product.id == it.productId }?.name,

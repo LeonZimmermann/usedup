@@ -1,12 +1,11 @@
-package com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption
+package com.hotmail.leon.zimmermann.homeassistant.models.tables.meal
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "consumption_list")
-data class ConsumptionListMetaDataEntity(
+@Entity(tableName = "meals")
+data class MealMetaDataEntity(
     var name: String,
     var duration: Int? = null,
     var description: String? = null,

@@ -9,11 +9,11 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation.MealCreationViewModel" />
 
         <variable
                 name="eventHandler"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationFragment.EventHandler" />
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation.MealCreationFragment.EventHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
-                    tools:context=".ui.fragments.dinners.details.DinnerDetailsFragment">
+                    tools:context=".ui.fragments.meals.details.MealDetailsFragment">
 
                 <ImageView
                         android:id="@+id/consumption_creation_image_view"
@@ -116,7 +116,7 @@
                         android:text="@string/ingredients"
                         android:textColor="@android:color/black"
                         android:textSize="22sp"
-                        android:visibility="@{viewModel.dinnerTemplateList.empty ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{viewModel.mealTemplateList.empty ? View.GONE : View.VISIBLE}"
                         app:layout_constraintEnd_toEndOf="@+id/duration_input"
                         app:layout_constraintStart_toStartOf="@+id/duration_input"
                         app:layout_constraintTop_toBottomOf="@+id/duration_input" />
@@ -154,7 +154,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:visibility="@{viewModel.dinnerTemplateList.empty ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{viewModel.mealTemplateList.empty ? View.GONE : View.VISIBLE}"
                         app:layout_constraintEnd_toEndOf="@+id/textView4"
                         app:layout_constraintStart_toStartOf="@+id/textView4"
                         app:layout_constraintTop_toBottomOf="@+id/textView4"

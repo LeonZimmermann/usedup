@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import kotlinx.android.synthetic.main.dinner_creation_ingredients_item.view.*
 
-class DinnerIngredientsAdapter(private val context: Context, private val onItemRemoved: (Int) -> Unit) :
-    RecyclerView.Adapter<DinnerIngredientsAdapter.ConsumptionIngredientsViewHolder>(), RecyclerViewHandlerAdapter {
+class MealIngredientsAdapter(private val context: Context, private val onItemRemoved: (Int) -> Unit) :
+    RecyclerView.Adapter<MealIngredientsAdapter.ConsumptionIngredientsViewHolder>(), RecyclerViewHandlerAdapter {
 
-    private var dinnerTemplateList: MutableList<DinnerTemplate> = mutableListOf()
+    private var mealTemplateList: MutableList<MealTemplate> = mutableListOf()
 
     inner class ConsumptionIngredientsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ingredientNameTextView: TextView = itemView.ingredient_name_tv
@@ -27,15 +27,15 @@ class DinnerIngredientsAdapter(private val context: Context, private val onItemR
     }
 
     override fun onBindViewHolder(holder: ConsumptionIngredientsViewHolder, position: Int) {
-        val consumptionTemplate = dinnerTemplateList[position]
+        val consumptionTemplate = mealTemplateList[position]
         holder.ingredientNameTextView.text = consumptionTemplate.product.name
         holder.amountTextView.text = consumptionTemplate.value.toString() + consumptionTemplate.measure.abbreviation
     }
 
-    override fun getItemCount() = dinnerTemplateList.size
+    override fun getItemCount() = mealTemplateList.size
 
-    internal fun setConsumptionEntityList(dinnerTemplateList: MutableList<DinnerTemplate>) {
-        this.dinnerTemplateList = dinnerTemplateList
+    internal fun setConsumptionEntityList(mealTemplateList: MutableList<MealTemplate>) {
+        this.mealTemplateList = mealTemplateList
         notifyDataSetChanged()
     }
 

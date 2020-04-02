@@ -10,10 +10,10 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionDao
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealIngredientEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealMetaDataEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
@@ -21,6 +21,10 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.Packagi
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.PackagingEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.Template
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateDao
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateItemEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateMetaDataEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
@@ -32,8 +36,10 @@ import java.util.concurrent.locks.ReentrantLock
         ProductEntity::class,
         MeasureEntity::class,
         PackagingEntity::class,
-        ConsumptionEntity::class,
-        ConsumptionListMetaDataEntity::class,
+        MealIngredientEntity::class,
+        MealMetaDataEntity::class,
+        TemplateItemEntity::class,
+        TemplateMetaDataEntity::class,
         CategoryEntity::class,
         CalendarActivityEntity::class,
         DinnerActivityDetailsEntity::class
@@ -46,7 +52,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun measureDao(): MeasureDao
     abstract fun packagingDao(): PackagingDao
-    abstract fun consumptionDao(): ConsumptionDao
+    abstract fun mealDao(): MealDao
+    abstract fun templateDao(): TemplateDao
     abstract fun categoryDao(): CategoryDao
     abstract fun calendarDao(): CalendarDao
 
@@ -58,7 +65,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addMeasures(database)
                     addCategories(database)
                     addMockProducts(database)
-                    addMockDinners(database)
+                    addMockMeals(database)
+                    addMockTemplates(database)
                     addMockCalendarEntries(database)
                 }
             }
@@ -92,20 +100,41 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun addMockDinners(database: HomeAssistantDatabase) {
-            val consumptionDao = database.consumptionDao()
+        private suspend fun addMockMeals(database: HomeAssistantDatabase) {
+            val mealDao = database.mealDao()
             val products = database.productDao().getAllStatically()
             val measures = database.measureDao().getAllStatically()
-            val names = listOf("sgjr", "sghsrh", "drhdrhdr", "shdrhdt")
+            val names = listOf("Meal1", "Meal2", "Meal3", "Meal4")
             val random = Random()
-            for (i in 1..5) {
-                consumptionDao.insert(
-                    ConsumptionList(ConsumptionListMetaDataEntity(
-                        names[random.nextInt(names.size)],
+            for (name in names) {
+                mealDao.insert(
+                    Meal(MealMetaDataEntity(
+                        name,
                         random.nextInt(60)
                     ),
                         List(products.size) {
-                            ConsumptionEntity(
+                            MealIngredientEntity(
+                                products[it].id,
+                                measures[random.nextInt(measures.size)].id,
+                                random.nextDouble()
+                            )
+                        })
+                )
+            }
+        }
+
+        private suspend fun addMockTemplates(database: HomeAssistantDatabase) {
+            val templateDao = database.templateDao()
+            val products = database.productDao().getAllStatically()
+            val measures = database.measureDao().getAllStatically()
+            val names = listOf("Template1", "Template2", "Template3", "Template4")
+            val random = Random()
+            for (name in names) {
+                templateDao.insert(
+                    Template(
+                        TemplateMetaDataEntity(name),
+                        List(products.size) {
+                            TemplateItemEntity(
                                 products[it].id,
                                 measures[random.nextInt(measures.size)].id,
                                 random.nextDouble()
@@ -117,7 +146,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
 
         private suspend fun addMockCalendarEntries(database: HomeAssistantDatabase) {
             val dao = database.calendarDao()
-            val consumptionDao = database.consumptionDao()
+            val consumptionDao = database.mealDao()
             val random = Random()
             dao.insertDinnerActivityDetailsList(consumptionDao.getAll().value!!.map { DinnerActivityDetailsEntity(it.metaData.id) })
             dao.insertCalendarActivities(List(25) {

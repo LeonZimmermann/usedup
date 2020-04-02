@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -11,14 +11,14 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import kotlinx.android.synthetic.main.dinner_ingredients_dialog.view.*
 
-class DinnerIngredientsDialog : DialogFragment() {
+class MealIngredientsDialog : DialogFragment() {
 
-    private lateinit var viewModel: DinnerCreationViewModel
+    private lateinit var viewModel: MealCreationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(DinnerCreationViewModel::class.java)
+            ViewModelProviders.of(this).get(MealCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -26,7 +26,7 @@ class DinnerIngredientsDialog : DialogFragment() {
         return activity?.let {
             val view = requireActivity().layoutInflater.inflate(R.layout.dinner_ingredients_dialog, null)
             viewModel.productList.observe(this, Observer { productList ->
-                view.product_name_input.setAdapter(
+                view.name_input.setAdapter(
                     ArrayAdapter(
                         context!!,
                         android.R.layout.simple_list_item_1,
@@ -41,11 +41,11 @@ class DinnerIngredientsDialog : DialogFragment() {
             builder.setPositiveButton(R.string.submit) { _, _ ->
                 // TODO Add appropriate error handling
                 val product =
-                    viewModel.productList.value!!.firstOrNull { it.name == view.product_name_input.text.toString() }
+                    viewModel.productList.value!!.firstOrNull { it.name == view.name_input.text.toString() }
                         ?: throw Exception("Product not found!")
                 val measure = view.measure_input.selectedItem as Measure
                 val value = view.quantity_change_input.text.toString().toDouble()
-                viewModel.addConsumptionTemplate(DinnerTemplate(product, measure, value))
+                viewModel.addConsumptionTemplate(MealTemplate(product, measure, value))
             }
             builder.setNegativeButton(R.string.cancel) { dialogInterface, _ -> dialogInterface.cancel() }
             builder.create()

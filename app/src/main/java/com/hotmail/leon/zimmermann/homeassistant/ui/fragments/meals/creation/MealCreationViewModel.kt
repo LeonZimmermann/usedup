@@ -1,28 +1,28 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionListMetaDataEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealIngredientEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealMetaDataEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
-class DinnerCreationViewModel(application: Application) : AndroidViewModel(application) {
+class MealCreationViewModel(application: Application) : AndroidViewModel(application) {
     var nameString = MutableLiveData<String>()
     var durationString = MutableLiveData<String>()
     var descriptionString = MutableLiveData<String>()
     var instructionsString = MutableLiveData<String>()
-    val dinnerTemplateList: MutableLiveData<MutableList<DinnerTemplate>> by lazy {
-        MutableLiveData<MutableList<DinnerTemplate>>().apply {
+    val mealTemplateList: MutableLiveData<MutableList<MealTemplate>> by lazy {
+        MutableLiveData<MutableList<MealTemplate>>().apply {
             value = mutableListOf()
         }
     }
 
-    private val consumptionRepository: ConsumptionRepository
+    private val mealRepository: MealRepository
     val productList: LiveData<List<ProductEntity>>
 
     private val name: String?
@@ -36,24 +36,24 @@ class DinnerCreationViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
-        consumptionRepository = ConsumptionRepository(database.consumptionDao())
+        mealRepository = MealRepository(database.mealDao())
         val productRepository = ProductRepository(database.productDao())
         productList = productRepository.productEntityList
     }
 
-    fun addConsumptionTemplate(dinnerTemplate: DinnerTemplate) {
-        val consumptionTemplateList = dinnerTemplateList.value
-        consumptionTemplateList?.add(dinnerTemplate)
-        this.dinnerTemplateList.value = consumptionTemplateList
+    fun addConsumptionTemplate(mealTemplate: MealTemplate) {
+        val consumptionTemplateList = mealTemplateList.value
+        consumptionTemplateList?.add(mealTemplate)
+        this.mealTemplateList.value = consumptionTemplateList
     }
 
     fun saveDinnerToDatabase() {
         // TODO Check if name is null and consumptionList empty
         viewModelScope.launch {
-            consumptionRepository.insert(
-                ConsumptionList(
-                    ConsumptionListMetaDataEntity(name!!, duration, description, instructions),
-                    dinnerTemplateList.value!!.toList().map { ConsumptionEntity(it.product.id, it.measure.id, it.value) }
+            mealRepository.insert(
+                Meal(
+                    MealMetaDataEntity(name!!, duration, description, instructions),
+                    mealTemplateList.value!!.toList().map { MealIngredientEntity(it.product.id, it.measure.id, it.value) }
                 )
             )
         }

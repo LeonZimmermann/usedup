@@ -50,6 +50,7 @@ data class ProductEntity(
     val discrepancy: Int
         get() = max(max - floor(quantity).toInt(), 0)
 
+    // TODO Should not be part of the data model, as it is business logic
     fun reduce(value: Double, measure: Measure = Measure.values()[measureId]) {
         val valueInBase = measure.toBaseMeasure(value)
         val reductionPercentage = valueInBase / capacity

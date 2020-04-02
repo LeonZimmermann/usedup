@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption
+package com.hotmail.leon.zimmermann.homeassistant.models.tables.meal
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEn
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 
 @Entity(
-    tableName = "consumptions",
+    tableName = "meal_ingredients",
     primaryKeys = ["list_id", "product_id"],
     foreignKeys = [
         ForeignKey(
@@ -22,7 +22,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
         )
     ]
 )
-class ConsumptionEntity(
+data class MealIngredientEntity(
     @ColumnInfo(name = "product_id") var productId: Int,
     @ColumnInfo(name = "measure_id") var measureId: Int,
     var value: Double

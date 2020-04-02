@@ -10,104 +10,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-                android:id="@+id/consumption_card"
-                android:layout_width="0dp"
+        <fragment
+                android:id="@+id/consumption_fragment_component"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumption.ConsumptionFragmentComponent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <AutoCompleteTextView
-                        android:id="@+id/product_name_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:hint="Product Name"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dinner_browser_button" />
-
-                <Button
-                        android:id="@+id/template_browser_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/pill_button"
-                        android:minHeight="25dp"
-                        android:text="Templates"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                        app:layout_constraintEnd_toStartOf="@+id/dinner_browser_button"
-                        app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-                <Button
-                        android:id="@+id/dinner_browser_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/pill_button"
-                        android:minHeight="25dp"
-                        android:text="Dinners"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-                <EditText
-                        android:id="@+id/quantity_change_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="Quantity Change"
-                        android:inputType="numberSigned"
-                        app:layout_constraintEnd_toStartOf="@+id/measure_input"
-                        app:layout_constraintStart_toStartOf="@+id/product_name_input"
-                        app:layout_constraintTop_toBottomOf="@+id/product_name_input" />
-
-                <Button
-                        android:id="@+id/consumption_consume_button"
-                        style="@style/OverviewPrimaryButton"
-                        android:layout_width="0dp"
-
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Consume"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/quantity_change_input" />
-
-                <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Consumption"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
-                        android:id="@+id/measure_input"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/quantity_change_input"
-                        app:layout_constraintEnd_toEndOf="@+id/product_name_input"
-                        app:layout_constraintTop_toTopOf="@+id/quantity_change_input" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout="@layout/consumption_fragment_component"/>
 
         <androidx.cardview.widget.CardView
                 android:id="@+id/shopping_card"
@@ -118,7 +32,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/consumption_card">
+                app:layout_constraintTop_toBottomOf="@+id/consumption_fragment_component">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

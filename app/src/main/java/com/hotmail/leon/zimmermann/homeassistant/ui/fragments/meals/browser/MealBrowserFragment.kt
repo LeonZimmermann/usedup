@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser
+package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.browser
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -16,15 +14,15 @@ import com.hotmail.leon.zimmermann.homeassistant.databinding.DinnerBrowserFragme
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.picker.DinnerListAdapter
 import kotlinx.android.synthetic.main.dinner_browser_fragment.*
 
-class DinnerBrowserFragment : Fragment() {
+class MealBrowserFragment : Fragment() {
 
-    private lateinit var viewModel: DinnerBrowserViewModel
+    private lateinit var viewModel: MealBrowserViewModel
     private lateinit var binding: DinnerBrowserFragmentBinding
     private lateinit var adapter: DinnerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DinnerBrowserViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MealBrowserViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -62,6 +60,6 @@ class DinnerBrowserFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = DinnerBrowserFragment()
+        fun newInstance() = MealBrowserFragment()
     }
 }

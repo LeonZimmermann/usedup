@@ -7,11 +7,10 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.Calendar
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityType
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.DinnerActivityDetailsEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionRepository
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealRepository
 import kotlinx.coroutines.launch
 import java.text.DateFormat
-import java.time.Instant
 import java.util.*
 
 class CalendarActivityDinnerViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,25 +25,25 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
         if (date.value != null) timeFormatter.format(date.value!!) else "Time"
     }
 
-    var consumptionList: ConsumptionList? = null
+    var meal: Meal? = null
     private val calendarRepository: CalendarRepository
 
-    private val consumptionRepository: ConsumptionRepository
-    val consumptionLists: LiveData<List<ConsumptionList>>
+    private val mealRepository: MealRepository
+    val consumptionLists: LiveData<List<Meal>>
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
         calendarRepository = CalendarRepository(database.calendarDao())
         calendarRepository.calendarActivities
 
-        consumptionRepository = ConsumptionRepository(database.consumptionDao())
-        consumptionLists = consumptionRepository.consumptionLists
+        mealRepository = MealRepository(database.mealDao())
+        consumptionLists = mealRepository.mealList
     }
 
     fun insertCalendarActivity() {
         viewModelScope.launch {
             val detailsId = calendarRepository.insertDinnerActivityDetails(
-                DinnerActivityDetailsEntity(consumptionList!!.metaData.id)
+                DinnerActivityDetailsEntity(meal!!.metaData.id)
             )
             // TODO Convert all Date usages to the Java 8 Time Standard Library
             val date = java.sql.Date(date.value!!.time)

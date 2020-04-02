@@ -42,7 +42,6 @@ class OverviewFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        initializeTransactionCard()
         initializeDiscrepancyCard()
         initializeManagementCard()
         initializeCalendarCard()
@@ -54,35 +53,6 @@ class OverviewFragment : Fragment() {
             true
         }
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun initializeTransactionCard() {
-        template_browser_button.setOnClickListener {
-            // TODO Implement
-        }
-        dinner_browser_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_dinner_browser_fragment)
-        }
-        measure_input.adapter =
-            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, Measure.values())
-        /*
-        consumption_consume_button.setOnClickListener {
-            try {
-                val productName = product_name_input.text.toString()
-                val product = viewModel.productEntityList.value!!.firstOrNull { it.name == productName }
-                    ?: throw InvalidProductNameException()
-                val value = quantity_change_input.text.toString().takeIf { it.isNotEmpty() }?.toDouble()
-                    ?: throw InvalidQuantityChangeException()
-                val measure = measure_input.selectedItem as Measure
-                product.reduce(value, measure)
-                viewModel.update(product)
-            } catch (e: ConsumptionIngredientsException) {
-                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
-            } catch (e: ProductEntity.ProductReductionException) {
-                Toast.makeText(context!!, e.message, Toast.LENGTH_LONG).show()
-            }
-        }
-         */
     }
 
     private fun initializeDiscrepancyCard() {

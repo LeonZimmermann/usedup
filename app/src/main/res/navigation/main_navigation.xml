@@ -32,30 +32,30 @@
                 app:destination="@id/timeline_fragment" />
     </fragment>
     <fragment
-            android:id="@+id/dinner_browser_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.browser.DinnerBrowserFragment"
-            android:label="DinnerBrowser"
+            android:id="@+id/meal_browser_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.browser.MealBrowserFragment"
+            android:label="MealBrowser"
             tools:layout="@layout/dinner_browser_fragment">
         <action
-                android:id="@+id/action_dinner_browser_fragment_to_dinner_details"
-                app:destination="@id/dinner_details"
+                android:id="@+id/action_meal_browser_fragment_to_meal_details"
+                app:destination="@id/meal_details"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:launchSingleTop="true"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-                android:id="@+id/action_dinner_browser_fragment_to_dinner_creation_fragment"
-                app:destination="@id/dinner_creation_fragment" />
+                android:id="@+id/action_meal_browser_fragment_to_meal_creation_fragment"
+                app:destination="@id/meal_creation_fragment" />
     </fragment>
     <fragment
-            android:id="@+id/dinner_details"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.details.DinnerDetailsFragment"
-            android:label="DinnerDetails"
+            android:id="@+id/meal_details"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.details.MealDetailsFragment"
+            android:label="MealDetails"
             tools:layout="@layout/dinner_details_fragment">
         <argument
-                android:name="consumptionList"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.consumption.ConsumptionList" />
+                android:name="meal"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal" />
     </fragment>
     <fragment
             android:id="@+id/settings_fragment"
@@ -75,7 +75,7 @@
                 app:destination="@id/calendar_week_fragment"
                 app:popUpTo="@+id/overview_fragment" />
     </fragment>
-    <action android:id="@+id/action_global_dinner_browser_fragment" app:destination="@id/dinner_browser_fragment"/>
+    <action android:id="@+id/action_global_meal_browser_fragment" app:destination="@id/meal_browser_fragment"/>
     <fragment
             android:id="@+id/calendar_week_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.week.CalendarWeekFragment"
@@ -87,9 +87,9 @@
                 app:popUpTo="@+id/overview_fragment" />
     </fragment>
     <fragment
-            android:id="@+id/dinner_creation_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.dinners.creation.DinnerCreationFragment"
-            android:label="DinnerCreation"
+            android:id="@+id/meal_creation_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation.MealCreationFragment"
+            android:label="MealCreation"
             tools:layout="@layout/dinner_creation_fragment">
         <action
                 android:id="@+id/action_dinner_creation_fragment_to_camera_fragment"

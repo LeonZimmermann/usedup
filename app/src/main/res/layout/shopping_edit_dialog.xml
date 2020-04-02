@@ -6,7 +6,7 @@
         android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <AutoCompleteTextView
-            android:id="@+id/product_name_input"
+            android:id="@+id/name_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Product Name"
@@ -23,5 +23,5 @@
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/product_name_input" />
+            app:layout_constraintTop_toBottomOf="@+id/name_input" />
 </androidx.constraintlayout.widget.ConstraintLayout>
