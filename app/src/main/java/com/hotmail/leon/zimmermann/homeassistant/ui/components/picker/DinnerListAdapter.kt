@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealWithIngredients
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
 import kotlinx.android.synthetic.main.dinner_browser_item.view.*
 
 class DinnerListAdapter(context: Context, private val  onClickListener: View.OnClickListener) :
     RecyclerView.Adapter<DinnerListAdapter.DinnerViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private var consumptionLists = emptyList<MealWithIngredients>()
+    private var mealList = emptyList<Meal>()
 
     inner class DinnerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameView: TextView = itemView.dinner_item_name_tv
@@ -27,16 +27,16 @@ class DinnerListAdapter(context: Context, private val  onClickListener: View.OnC
     }
 
     override fun onBindViewHolder(holder: DinnerViewHolder, position: Int) {
-        val current = consumptionLists[position]
-        holder.nameView.text = current.meal.name
+        val current = mealList[position]
+        holder.nameView.text = current.name
     }
 
-    internal fun setConsumptionLists(mealWithIngredients: List<MealWithIngredients>) {
-        this.consumptionLists = mealWithIngredients
+    internal fun setMealList(mealList: List<Meal>) {
+        this.mealList = mealList
         notifyDataSetChanged()
     }
 
-    internal operator fun get(position: Int) = consumptionLists[position]
+    internal operator fun get(position: Int) = mealList[position]
 
-    override fun getItemCount(): Int = consumptionLists.size
+    override fun getItemCount(): Int = mealList.size
 }

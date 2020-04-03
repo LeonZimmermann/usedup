@@ -8,13 +8,8 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
 
 @Entity(
     tableName = "template_items",
-    primaryKeys = ["list_id", "product_id"],
+    primaryKeys = ["template_id", "product_id"],
     foreignKeys = [
-        ForeignKey(
-            entity = ProductEntity::class,
-            parentColumns = ["product_id"],
-            childColumns = ["product_id"]
-        ),
         ForeignKey(
             entity = MeasureEntity::class,
             parentColumns = ["measure_id"],
@@ -23,9 +18,8 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
     ]
 )
 data class TemplateItemEntity(
-    @ColumnInfo(name = "product_id") var productId: Int,
-    @ColumnInfo(name = "measure_id") var measureId: Int,
-    var value: Double
-) {
-    @ColumnInfo(name = "list_id") var listId: Int = 0
-}
+    @ColumnInfo(name = "template_id") var templateId: Long,
+    @ColumnInfo(name = "product_id") var productId: Long,
+    var value: Double,
+    @ColumnInfo(name = "measure_id") var measureId: Long
+)

@@ -50,8 +50,8 @@ class MealBrowserFragment : Fragment() {
             View.OnClickListener { onItemClicked(it) })
         consumption_browser_list.adapter = adapter
         consumption_browser_list.layoutManager = LinearLayoutManager(context!!)
-        viewModel.consumptionLists.observe(this, Observer {
-            adapter.setConsumptionLists(it)
+        viewModel.mealList.observe(this, Observer {
+            adapter.setMealList(it)
         })
     }
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e52ed4e116d4da93c83d176ac1944590",
+    "identityHash": "c08f699f188aac2c07875c7337ac6dd2",
     "entities": [
       {
         "tableName": "products",
@@ -165,6 +165,56 @@
         "foreignKeys": []
       },
       {
+        "tableName": "meals",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meal_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `duration` INTEGER, `description` TEXT, `instructions` TEXT, `backgroundUrl` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "meal_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "instructions",
+            "columnName": "instructions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "backgroundUrl",
+            "columnName": "backgroundUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "meal_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "meal_ingredients",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meal_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `value` REAL NOT NULL, `measure_id` INTEGER NOT NULL, PRIMARY KEY(`meal_id`, `product_id`), FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
@@ -216,12 +266,12 @@
         ]
       },
       {
-        "tableName": "meals",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meal_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `duration` INTEGER, `description` TEXT, `instructions` TEXT, `backgroundUrl` TEXT)",
+        "tableName": "templates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`template_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "meal_id",
+            "columnName": "template_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -230,35 +280,11 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "duration",
-            "columnName": "duration",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "description",
-            "columnName": "description",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "instructions",
-            "columnName": "instructions",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "backgroundUrl",
-            "columnName": "backgroundUrl",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "meal_id"
+            "template_id"
           ],
           "autoGenerate": true
         },
@@ -267,11 +293,11 @@
       },
       {
         "tableName": "template_items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `measure_id` INTEGER NOT NULL, `value` REAL NOT NULL, PRIMARY KEY(`list_id`, `product_id`), FOREIGN KEY(`product_id`) REFERENCES `products`(`product_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`template_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `value` REAL NOT NULL, `measure_id` INTEGER NOT NULL, PRIMARY KEY(`template_id`, `product_id`), FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
-            "fieldPath": "listId",
-            "columnName": "list_id",
+            "fieldPath": "templateId",
+            "columnName": "template_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -282,38 +308,27 @@
             "notNull": true
           },
           {
-            "fieldPath": "measureId",
-            "columnName": "measure_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "value",
             "columnName": "value",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "measureId",
+            "columnName": "measure_id",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "list_id",
+            "template_id",
             "product_id"
           ],
           "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
-          {
-            "table": "products",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "product_id"
-            ],
-            "referencedColumns": [
-              "product_id"
-            ]
-          },
           {
             "table": "measures",
             "onDelete": "NO ACTION",
@@ -326,32 +341,6 @@
             ]
           }
         ]
-      },
-      {
-        "tableName": "templates",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
       },
       {
         "tableName": "categories",
@@ -459,7 +448,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e52ed4e116d4da93c83d176ac1944590')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c08f699f188aac2c07875c7337ac6dd2')"
     ]
   }
 }

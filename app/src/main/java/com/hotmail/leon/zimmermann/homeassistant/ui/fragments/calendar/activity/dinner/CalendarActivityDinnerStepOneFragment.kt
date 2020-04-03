@@ -41,13 +41,13 @@ class CalendarActivityDinnerStepOneFragment(
         adapter = DinnerListAdapter(context!!, View.OnClickListener { onItemClicked(it) })
         dinner_selection_list.adapter = adapter
         dinner_selection_list.layoutManager = LinearLayoutManager(context!!)
-        viewModel.consumptionLists.observe(this, Observer {
-            adapter.setConsumptionLists(it)
+        viewModel.mealList.observe(this, Observer {
+            adapter.setMealList(it)
         })
     }
 
     private fun onItemClicked(view: View) {
-        viewModel.mealWithIngredients = adapter[dinner_selection_list.getChildAdapterPosition(view)]
+        viewModel.meal = adapter[dinner_selection_list.getChildAdapterPosition(view)]
         nextStepCallback()
     }
 }

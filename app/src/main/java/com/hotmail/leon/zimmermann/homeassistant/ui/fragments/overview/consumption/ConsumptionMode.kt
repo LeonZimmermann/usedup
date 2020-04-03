@@ -43,7 +43,7 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
 
 class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
     override val nameList: LiveData<Array<String>>
-        get() = Transformations.map(viewModel.templateList) { templateList -> templateList.map { it.metaData.name }.toTypedArray() }
+        get() = Transformations.map(viewModel.templateList) { templateList -> templateList.map { it.name }.toTypedArray() }
 
     override fun getAdditionalFieldsView(context: Context): View? = null
 
@@ -54,7 +54,7 @@ class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMod
 
 class MealMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
     override val nameList: LiveData<Array<String>>
-        get() = Transformations.map(viewModel.mealWithIngredientsList) { mealList -> mealList.map { it.meal.name }.toTypedArray() }
+        get() = Transformations.map(viewModel.mealWithIngredientsList) { mealList -> mealList.map { it.name }.toTypedArray() }
 
     override fun getAdditionalFieldsView(context: Context): View? = null
 

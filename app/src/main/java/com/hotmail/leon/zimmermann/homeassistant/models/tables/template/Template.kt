@@ -1,11 +1,19 @@
 package com.hotmail.leon.zimmermann.homeassistant.models.tables.template
 
-import androidx.room.*
-import java.io.Serializable
-
 data class Template(
-    @Embedded
-    val metaData: TemplateMetaDataEntity,
-    @Relation(parentColumn = "id", entityColumn = "list_id", entity = TemplateItemEntity::class)
-    val templateItems: List<TemplateItemEntity>
-) : Serializable
+    val name: String,
+    val items: List<TemplateItem>
+) {
+    constructor(templateWithItems: TemplateWithItems) : this(
+        templateWithItems.template.name,
+        templateWithItems.items.map {
+            TemplateItem(it.productId, it.value, it.measureId)
+        }
+    )
+}
+
+data class TemplateItem(
+    val productId: Long,
+    val value: Double,
+    val measureId: Long
+)

@@ -3,6 +3,7 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumpt
 import android.app.Application
 import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealWithIngredients
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
@@ -13,7 +14,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.Template
 class ConsumptionViewModel(application: Application) : AndroidViewModel(application) {
 
     val productList: LiveData<List<ProductEntity>>
-    val mealWithIngredientsList: LiveData<List<MealWithIngredients>>
+    val mealWithIngredientsList: LiveData<List<Meal>>
     val templateList: LiveData<List<Template>>
 
     var productMode: ProductMode

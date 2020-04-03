@@ -18,10 +18,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.Packagi
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.packaging.PackagingEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.Template
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateDao
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateItemEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.TemplateMetaDataEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.template.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
@@ -33,10 +30,10 @@ import java.util.concurrent.locks.ReentrantLock
         ProductEntity::class,
         MeasureEntity::class,
         PackagingEntity::class,
-        MealIngredientEntity::class,
         MealEntity::class,
+        MealIngredientEntity::class,
+        TemplateEntity::class,
         TemplateItemEntity::class,
-        TemplateMetaDataEntity::class,
         CategoryEntity::class,
         CalendarActivityEntity::class,
         DinnerActivityDetailsEntity::class
@@ -63,8 +60,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addCategories(database)
                     addMockProducts(database)
                     addMockMeals(database)
-                    //addMockTemplates(database)
-                    addMockCalendarEntries(database)
+                    addMockTemplates(database)
+                    //addMockCalendarEntries(database)
                 }
             }
         }
@@ -104,7 +101,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val names = listOf("Meal1", "Meal2", "Meal3", "Meal4")
             val random = Random()
             for (name in names) {
-                mealDao.insert(Meal(name, random.nextInt(60), null, null, null, List(products.size) {
+                mealDao.insert(Meal(0, name, random.nextInt(60), null, null, null, List(products.size) {
                     MealIngredient(
                         products[it].id,
                         random.nextDouble(),
@@ -122,13 +119,10 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val random = Random()
             for (name in names) {
                 templateDao.insert(
-                    Template(
-                        TemplateMetaDataEntity(name),
+                    Template(name,
                         List(products.size) {
-                            TemplateItemEntity(
-                                products[it].id.toInt(),
-                                measures[random.nextInt(measures.size)].id.toInt(),
-                                random.nextDouble()
+                            TemplateItem(
+                                products[it].id, random.nextDouble(), measures[random.nextInt(measures.size)].id
                             )
                         })
                 )

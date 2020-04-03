@@ -9,17 +9,18 @@ import androidx.room.Query
 abstract class TemplateDao {
 
     @Query("SELECT * FROM templates")
-    abstract fun getAll(): LiveData<List<Template>>
+    abstract fun getAll(): LiveData<List<TemplateWithItems>>
 
     suspend fun insert(template: Template) {
-        insert(template.metaData)
-        insert(template.templateItems)
+        val templateId = insert(TemplateEntity(template.name))
+        val items = template.items.map { TemplateItemEntity(templateId, it.productId, it.value, it.measureId) }
+        insert(items)
     }
 
     @Insert
     protected abstract suspend fun insert(templateItemEntityList: List<TemplateItemEntity>)
 
     @Insert
-    protected abstract suspend fun insert(templateMetaDataEntity: TemplateMetaDataEntity)
+    protected abstract suspend fun insert(templateEntity: TemplateEntity): Long
 
 }
