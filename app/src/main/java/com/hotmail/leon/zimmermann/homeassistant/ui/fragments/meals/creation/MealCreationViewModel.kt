@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealIngredientEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealMetaDataEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealWithIngredients
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
@@ -50,12 +50,7 @@ class MealCreationViewModel(application: Application) : AndroidViewModel(applica
     fun saveDinnerToDatabase() {
         // TODO Check if name is null and consumptionList empty
         viewModelScope.launch {
-            mealRepository.insert(
-                Meal(
-                    MealMetaDataEntity(name!!, duration, description, instructions),
-                    mealTemplateList.value!!.toList().map { MealIngredientEntity(it.product.id, it.measure.id, it.value) }
-                )
-            )
+            // TODO Implement
         }
     }
 }

@@ -22,7 +22,7 @@ class ShoppingListAdapter(
     private val productLongClickCallback: (value: Int, editCallback: (Int) -> Unit, deleteCallback: () -> Unit) -> Unit
 ) : RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
-    private var shoppingList: MutableMap<Int, MutableList<ShoppingProduct>> = mutableMapOf()
+    private var shoppingList: MutableMap<Long, MutableList<ShoppingProduct>> = mutableMapOf()
     private var shoppingListOrder: MutableMap<Int, CategoryEntity> = mutableMapOf()
     private var itemTouchHelper = itemTouchHelperReceiver()
     private lateinit var categories: List<CategoryEntity>
@@ -75,7 +75,7 @@ class ShoppingListAdapter(
 
     override fun getItemCount() = shoppingList.size
 
-    internal fun setShoppingList(shoppingList: MutableMap<Int, MutableList<ShoppingProduct>>) {
+    internal fun setShoppingList(shoppingList: MutableMap<Long, MutableList<ShoppingProduct>>) {
         this.shoppingList = shoppingList
         updateShoppingListOrder()
         notifyDataSetChanged()

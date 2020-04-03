@@ -55,7 +55,7 @@
             tools:layout="@layout/dinner_details_fragment">
         <argument
                 android:name="meal"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal" />
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealEntity" />
     </fragment>
     <fragment
             android:id="@+id/settings_fragment"

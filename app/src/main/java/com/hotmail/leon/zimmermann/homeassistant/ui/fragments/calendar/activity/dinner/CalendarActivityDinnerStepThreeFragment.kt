@@ -33,10 +33,10 @@ class CalendarActivityDinnerStepThreeFragment : Fragment() {
         binding = CalendarActivityDinnerStepThreeFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.meal!!.apply {
-            view.dinner_item_name_tv.text = metaData.name
-            view.dinner_item_duration_tv.text = metaData.duration.toString()
-            view.dinner_item_short_description_tv.text = metaData.description
+        viewModel.mealWithIngredients!!.apply {
+            view.dinner_item_name_tv.text = meal.name
+            view.dinner_item_duration_tv.text = meal.duration.toString()
+            view.dinner_item_short_description_tv.text = meal.description
         }
         activity_dinner_submit_button.setOnClickListener {
             viewModel.insertCalendarActivity()

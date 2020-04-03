@@ -12,12 +12,12 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
     foreignKeys = [
         ForeignKey(
             entity = ProductEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["product_id"],
             childColumns = ["product_id"]
         ),
         ForeignKey(
             entity = MeasureEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["measure_id"],
             childColumns = ["measure_id"]
         )
     ]

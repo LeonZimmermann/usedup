@@ -8,24 +8,18 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEn
 
 @Entity(
     tableName = "meal_ingredients",
-    primaryKeys = ["list_id", "product_id"],
+    primaryKeys = ["meal_id", "product_id"],
     foreignKeys = [
         ForeignKey(
-            entity = ProductEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["product_id"]
-        ),
-        ForeignKey(
             entity = MeasureEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["measure_id"],
             childColumns = ["measure_id"]
         )
     ]
 )
 data class MealIngredientEntity(
-    @ColumnInfo(name = "product_id") var productId: Int,
-    @ColumnInfo(name = "measure_id") var measureId: Int,
-    var value: Double
-) {
-    @ColumnInfo(name = "list_id") var listId: Int = 0
-}
+    @ColumnInfo(name = "meal_id") var mealId: Long,
+    @ColumnInfo(name = "product_id") var productId: Long,
+    var value: Double,
+    @ColumnInfo(name = "measure_id") var measureId: Long
+)

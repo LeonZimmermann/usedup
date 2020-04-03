@@ -12,5 +12,5 @@ enum class Category {
     DRINKS,
     BABY;
 
-    val id: Int = ordinal
+    val id: Long = ordinal.toLong()
 }

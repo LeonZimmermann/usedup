@@ -13,5 +13,5 @@ data class CalendarActivityEntity(
     @ColumnInfo(name = "details_id") var detailsId: Long?
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var id: Long = 0
 }

@@ -37,8 +37,8 @@ class ManagementListAdapter internal constructor(
         holder.productNameView.text = current.name
         holder.productCapacityView.text = context.resources.getString(
             R.string.management_item_capacity,
-            Measure.values()[current.measureId].fromBaseMeasure(current.capacity),
-            Measure.values()[current.measureId].abbreviation
+            Measure.values()[current.measureId.toInt()].fromBaseMeasure(current.capacity),
+            Measure.values()[current.measureId.toInt()].abbreviation
         )
         holder.productQuantityView.text = context.resources.getString(
             R.string.management_item_quantity,

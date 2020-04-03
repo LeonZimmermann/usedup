@@ -7,7 +7,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.Calendar
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarActivityType
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.CalendarRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.DinnerActivityDetailsEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealWithIngredients
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealRepository
 import kotlinx.coroutines.launch
 import java.text.DateFormat
@@ -25,11 +25,11 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
         if (date.value != null) timeFormatter.format(date.value!!) else "Time"
     }
 
-    var meal: Meal? = null
+    var mealWithIngredients: MealWithIngredients? = null
     private val calendarRepository: CalendarRepository
 
     private val mealRepository: MealRepository
-    val consumptionLists: LiveData<List<Meal>>
+    val consumptionLists: LiveData<List<MealWithIngredients>>
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
@@ -43,7 +43,7 @@ class CalendarActivityDinnerViewModel(application: Application) : AndroidViewMod
     fun insertCalendarActivity() {
         viewModelScope.launch {
             val detailsId = calendarRepository.insertDinnerActivityDetails(
-                DinnerActivityDetailsEntity(meal!!.metaData.id)
+                DinnerActivityDetailsEntity(mealWithIngredients!!.meal.id)
             )
             // TODO Convert all Date usages to the Java 8 Time Standard Library
             val date = java.sql.Date(date.value!!.time)

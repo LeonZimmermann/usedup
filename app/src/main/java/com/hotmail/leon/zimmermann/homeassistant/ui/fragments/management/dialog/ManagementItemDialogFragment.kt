@@ -17,9 +17,9 @@ class ManagementItemDialogFragment() : DialogFragment() {
 
     private lateinit var viewModel: ManagementItemDialogViewModel
     private lateinit var handler: ManagementItemDialogHandler
-    private var productId: Int? = null
+    private var productId: Long? = null
 
-    constructor(handler: ManagementItemDialogHandler, productId: Int?) : this() {
+    constructor(handler: ManagementItemDialogHandler, productId: Long?) : this() {
         this.handler = handler
         this.productId = productId
     }
@@ -30,7 +30,7 @@ class ManagementItemDialogFragment() : DialogFragment() {
         if (savedInstanceState != null) {
             handler = savedInstanceState.getSerializable("handler") as? ManagementItemDialogHandler
                 ?: throw RuntimeException("Handler not found!")
-            productId = savedInstanceState.getSerializable("productId") as Int?
+            productId = savedInstanceState.getSerializable("productId") as Long?
         }
     }
 

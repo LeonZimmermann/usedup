@@ -12,7 +12,7 @@ interface ProductDao {
     suspend fun getAllStatically() : List<ProductEntity>
 
 
-    @Query("SELECT * FROM products WHERE id = :id")
+    @Query("SELECT * FROM products WHERE product_id = :id")
     fun get(id: Int): LiveData<ProductEntity>
 
     @Insert

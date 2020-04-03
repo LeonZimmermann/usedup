@@ -10,10 +10,7 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.calendar.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealDao
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealIngredientEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.Meal
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealMetaDataEntity
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.*
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureDao
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
@@ -37,7 +34,7 @@ import java.util.concurrent.locks.ReentrantLock
         MeasureEntity::class,
         PackagingEntity::class,
         MealIngredientEntity::class,
-        MealMetaDataEntity::class,
+        MealEntity::class,
         TemplateItemEntity::class,
         TemplateMetaDataEntity::class,
         CategoryEntity::class,
@@ -66,7 +63,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     addCategories(database)
                     addMockProducts(database)
                     addMockMeals(database)
-                    addMockTemplates(database)
+                    //addMockTemplates(database)
                     addMockCalendarEntries(database)
                 }
             }
@@ -94,8 +91,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                 val max = min + random.nextInt(2)
                 val quantity = 0.0
                 val capacity = random.nextDouble()
-                val measure = random.nextInt(Measure.values().size)
-                val category = random.nextInt(Category.values().size)
+                val measure = random.nextInt(Measure.values().size).toLong()
+                val category = random.nextInt(Category.values().size).toLong()
                 dao.insert(ProductEntity(name, quantity, min, max, capacity, measure, category))
             }
         }
@@ -107,19 +104,13 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val names = listOf("Meal1", "Meal2", "Meal3", "Meal4")
             val random = Random()
             for (name in names) {
-                mealDao.insert(
-                    Meal(MealMetaDataEntity(
-                        name,
-                        random.nextInt(60)
-                    ),
-                        List(products.size) {
-                            MealIngredientEntity(
-                                products[it].id,
-                                measures[random.nextInt(measures.size)].id,
-                                random.nextDouble()
-                            )
-                        })
-                )
+                mealDao.insert(Meal(name, random.nextInt(60), null, null, null, List(products.size) {
+                    MealIngredient(
+                        products[it].id,
+                        random.nextDouble(),
+                        measures[random.nextInt(measures.size)].id
+                    )
+                }))
             }
         }
 
@@ -135,8 +126,8 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                         TemplateMetaDataEntity(name),
                         List(products.size) {
                             TemplateItemEntity(
-                                products[it].id,
-                                measures[random.nextInt(measures.size)].id,
+                                products[it].id.toInt(),
+                                measures[random.nextInt(measures.size)].id.toInt(),
                                 random.nextDouble()
                             )
                         })
@@ -148,7 +139,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
             val dao = database.calendarDao()
             val consumptionDao = database.mealDao()
             val random = Random()
-            dao.insertDinnerActivityDetailsList(consumptionDao.getAll().value!!.map { DinnerActivityDetailsEntity(it.metaData.id) })
+            dao.insertDinnerActivityDetailsList(consumptionDao.getAll().value!!.map { DinnerActivityDetailsEntity(it.meal.id) })
             dao.insertCalendarActivities(List(25) {
                 val dateFrom = Date(Calendar.getInstance().apply {
                     set(Calendar.DAY_OF_MONTH, random.nextInt(15))
@@ -166,7 +157,7 @@ abstract class HomeAssistantDatabase : RoomDatabase() {
                     else -> null
                 }
                 val detailsId = if (details != null) details[random.nextInt(details.size)].id else null
-                CalendarActivityEntity(dateFrom, dateTo, typeId, detailsId?.toLong())
+                CalendarActivityEntity(dateFrom, dateTo, typeId, detailsId)
             })
         }
 

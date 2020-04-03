@@ -1,11 +1,12 @@
 package com.hotmail.leon.zimmermann.homeassistant.models.tables.meal
 
-import androidx.room.*
-import java.io.Serializable
-
 data class Meal(
-    @Embedded
-    val metaData: MealMetaDataEntity,
-    @Relation(parentColumn = "id", entityColumn = "list_id", entity = MealIngredientEntity::class)
-    val mealIngredients: List<MealIngredientEntity>
-) : Serializable
+    val name: String,
+    val duration: Int? = null,
+    val description: String? = null,
+    val instructions: String? = null,
+    val backgroundUrl: String? = null,
+    val ingredients: List<MealIngredient>
+)
+
+data class MealIngredient(val productId: Long, val value: Double, val measureId: Long)

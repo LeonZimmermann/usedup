@@ -17,7 +17,7 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
     private val categoryRepository: CategoryRepository
     val categoryList: LiveData<List<CategoryEntity>>
 
-    val shoppingList: MutableLiveData<MutableMap<Int, MutableList<ShoppingProduct>>>
+    val shoppingList: MutableLiveData<MutableMap<Long, MutableList<ShoppingProduct>>>
 
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
@@ -35,7 +35,7 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
                 .map { Pair(it.first, it.second.map { product -> ShoppingProduct(product) }.toMutableList()) }
                 .toMap()
                 .toMutableMap()
-        } as MutableLiveData<MutableMap<Int, MutableList<ShoppingProduct>>>
+        } as MutableLiveData<MutableMap<Long, MutableList<ShoppingProduct>>>
     }
 
     fun updateAll(productEntityList: List<ProductEntity>) {

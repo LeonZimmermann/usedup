@@ -4,22 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 abstract class MealDao {
 
     @Query("SELECT * FROM meals")
-    abstract fun getAll(): LiveData<List<Meal>>
+    abstract fun getAll(): LiveData<List<MealWithIngredients>>
 
     suspend fun insert(meal: Meal) {
-        insert(meal.metaData)
-        insert(meal.mealIngredients)
+        val mealId = insert(MealEntity(meal.name, meal.duration, meal.description, meal.instructions, meal.backgroundUrl))
+        val ingredients = meal.ingredients.map { MealIngredientEntity(mealId, it.productId, it.value, it.measureId) }
+        insert(ingredients)
     }
 
     @Insert
     protected abstract suspend fun insert(mealIngredientEntityList: List<MealIngredientEntity>)
 
     @Insert
-    protected abstract suspend fun insert(mealMetaDataEntity: MealMetaDataEntity)
+    protected abstract suspend fun insert(mealEntity: MealEntity): Long
 
 }

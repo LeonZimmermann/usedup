@@ -47,7 +47,7 @@ class CalendarActivityDinnerStepOneFragment(
     }
 
     private fun onItemClicked(view: View) {
-        viewModel.meal = adapter[dinner_selection_list.getChildAdapterPosition(view)]
+        viewModel.mealWithIngredients = adapter[dinner_selection_list.getChildAdapterPosition(view)]
         nextStepCallback()
     }
 }

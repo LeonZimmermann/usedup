@@ -23,7 +23,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             categoryOrder = categoryRepository.getAllStatically()
                 .sortedBy { it.position }
-                .map { Category.values()[it.id] }
+                .map { Category.values()[it.id.toInt()] }
         }
     }
 

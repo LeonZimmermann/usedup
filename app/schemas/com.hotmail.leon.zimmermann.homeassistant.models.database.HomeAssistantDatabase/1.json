@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f624e44d1e039637a25a52bf5a9a7618",
+    "identityHash": "e52ed4e116d4da93c83d176ac1944590",
     "entities": [
       {
         "tableName": "products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `measure_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `packaging_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`category_id`) REFERENCES `categories`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`product_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `quantity` REAL NOT NULL, `min` INTEGER NOT NULL, `max` INTEGER NOT NULL, `capacity` REAL NOT NULL, `measure_id` INTEGER NOT NULL, `category_id` INTEGER NOT NULL, `packaging_id` INTEGER, FOREIGN KEY(`packaging_id`) REFERENCES `packagings`(`packaging_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`category_id`) REFERENCES `categories`(`category_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "product_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -65,7 +65,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "product_id"
           ],
           "autoGenerate": true
         },
@@ -79,7 +79,7 @@
               "packaging_id"
             ],
             "referencedColumns": [
-              "id"
+              "packaging_id"
             ]
           },
           {
@@ -90,7 +90,7 @@
               "measure_id"
             ],
             "referencedColumns": [
-              "id"
+              "measure_id"
             ]
           },
           {
@@ -101,18 +101,18 @@
               "category_id"
             ],
             "referencedColumns": [
-              "id"
+              "category_id"
             ]
           }
         ]
       },
       {
         "tableName": "measures",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `text` TEXT NOT NULL, `abbreviation` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`measure_id` INTEGER NOT NULL, `text` TEXT NOT NULL, `abbreviation` TEXT NOT NULL, PRIMARY KEY(`measure_id`))",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "measure_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -131,7 +131,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "measure_id"
           ],
           "autoGenerate": false
         },
@@ -140,11 +140,11 @@
       },
       {
         "tableName": "packagings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `text` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packaging_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `text` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "packaging_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -157,7 +157,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "packaging_id"
           ],
           "autoGenerate": true
         },
@@ -166,11 +166,11 @@
       },
       {
         "tableName": "meal_ingredients",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `measure_id` INTEGER NOT NULL, `value` REAL NOT NULL, PRIMARY KEY(`list_id`, `product_id`), FOREIGN KEY(`product_id`) REFERENCES `products`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meal_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `value` REAL NOT NULL, `measure_id` INTEGER NOT NULL, PRIMARY KEY(`meal_id`, `product_id`), FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
-            "fieldPath": "listId",
-            "columnName": "list_id",
+            "fieldPath": "mealId",
+            "columnName": "meal_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -181,38 +181,27 @@
             "notNull": true
           },
           {
-            "fieldPath": "measureId",
-            "columnName": "measure_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "value",
             "columnName": "value",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "measureId",
+            "columnName": "measure_id",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "list_id",
+            "meal_id",
             "product_id"
           ],
           "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
-          {
-            "table": "products",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "product_id"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
           {
             "table": "measures",
             "onDelete": "NO ACTION",
@@ -221,18 +210,18 @@
               "measure_id"
             ],
             "referencedColumns": [
-              "id"
+              "measure_id"
             ]
           }
         ]
       },
       {
         "tableName": "meals",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `duration` INTEGER, `description` TEXT, `instructions` TEXT, `backgroundUrl` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`meal_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `duration` INTEGER, `description` TEXT, `instructions` TEXT, `backgroundUrl` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "meal_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -269,7 +258,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "meal_id"
           ],
           "autoGenerate": true
         },
@@ -278,7 +267,7 @@
       },
       {
         "tableName": "template_items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `measure_id` INTEGER NOT NULL, `value` REAL NOT NULL, PRIMARY KEY(`list_id`, `product_id`), FOREIGN KEY(`product_id`) REFERENCES `products`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `measure_id` INTEGER NOT NULL, `value` REAL NOT NULL, PRIMARY KEY(`list_id`, `product_id`), FOREIGN KEY(`product_id`) REFERENCES `products`(`product_id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`measure_id`) REFERENCES `measures`(`measure_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "listId",
@@ -322,7 +311,7 @@
               "product_id"
             ],
             "referencedColumns": [
-              "id"
+              "product_id"
             ]
           },
           {
@@ -333,7 +322,7 @@
               "measure_id"
             ],
             "referencedColumns": [
-              "id"
+              "measure_id"
             ]
           }
         ]
@@ -366,11 +355,11 @@
       },
       {
         "tableName": "categories",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `position` INTEGER NOT NULL, PRIMARY KEY(`category_id`))",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "category_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -389,7 +378,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "category_id"
           ],
           "autoGenerate": false
         },
@@ -470,7 +459,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f624e44d1e039637a25a52bf5a9a7618\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e52ed4e116d4da93c83d176ac1944590')"
     ]
   }
 }

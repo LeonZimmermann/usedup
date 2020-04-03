@@ -76,7 +76,7 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
     fun initializeView(view: View, productEntity: ProductEntity) {
         view.management_item_dialog_name_input.setText(productEntity.name)
         view.management_item_dialog_capacity_input.setText(
-            Measure.values()[productEntity.measureId].fromBaseMeasure(
+            Measure.values()[productEntity.measureId.toInt()].fromBaseMeasure(
                 productEntity.capacity
             ).toString()
         )
@@ -85,11 +85,11 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
             android.R.layout.simple_list_item_1,
             Measure.values()
         )
-        view.management_item_dialog_measure_input.setSelection(productEntity.measureId)
+        view.management_item_dialog_measure_input.setSelection(productEntity.measureId.toInt())
         view.management_item_dialog_category_input.adapter = ArrayAdapter(
             view.management_item_dialog_category_input.context, android.R.layout.simple_list_item_1, Category.values()
         )
-        view.management_item_dialog_category_input.setSelection(productEntity.categoryId)
+        view.management_item_dialog_category_input.setSelection(productEntity.categoryId.toInt())
         view.management_item_dialog_current_input.setText(productEntity.quantity.toString())
         view.management_item_dialog_min_input.setText(productEntity.min.toString())
         view.management_item_dialog_max_input.setText(productEntity.max.toString())
@@ -100,7 +100,7 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
         view: View,
         onEdit: (name: String, category: Category, quantity: Double, measure: Measure, min: Int, max: Int, capacity: Double) -> Unit
     ) {
-        builder.setPositiveButton(R.string.submit) { dialogInterface, i ->
+        builder.setPositiveButton(R.string.submit) { _, _ ->
             val name = view.management_item_dialog_name_input.text.toString()
             val currentQuantity =
                 if (view.management_item_dialog_current_input.text.isNotBlank()) view.management_item_dialog_current_input.text.toString().toDouble() else 0.0
@@ -117,6 +117,6 @@ object ManagementItemDialogEditHandler : ManagementItemDialogHandler() {
     }
 
     private fun addDeleteButton(builder: AlertDialog.Builder, onDelete: () -> Unit) {
-        builder.setNegativeButton(R.string.delete) { dialogInterface, i -> onDelete() }
+        builder.setNegativeButton(R.string.delete) { _, _ -> onDelete() }
     }
 }

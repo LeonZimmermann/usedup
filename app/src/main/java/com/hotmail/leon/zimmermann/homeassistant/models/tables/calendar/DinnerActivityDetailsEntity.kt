@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "dinner_activity_details")
 data class DinnerActivityDetailsEntity(
-    @ColumnInfo(name = "dinner_id") var dinnerId: Int
+    @ColumnInfo(name = "dinner_id") var dinnerId: Long
 ) {
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Long = 0
 }

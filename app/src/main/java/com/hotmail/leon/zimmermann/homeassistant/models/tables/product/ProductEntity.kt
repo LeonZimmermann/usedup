@@ -17,17 +17,17 @@ import kotlin.math.max
     foreignKeys = [
         ForeignKey(
             entity = PackagingEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["packaging_id"],
             childColumns = ["packaging_id"]
         ),
         ForeignKey(
             entity = MeasureEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["measure_id"],
             childColumns = ["measure_id"]
         ),
         ForeignKey(
             entity = CategoryEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["category_id"],
             childColumns = ["category_id"]
         )
     ]
@@ -38,12 +38,13 @@ data class ProductEntity(
     var min: Int,
     var max: Int,
     var capacity: Double,
-    @ColumnInfo(name = "measure_id") var measureId: Int,
-    @ColumnInfo(name = "category_id") var categoryId: Int,
-    @ColumnInfo(name = "packaging_id") var packagingId: Int? = null
+    @ColumnInfo(name = "measure_id") var measureId: Long,
+    @ColumnInfo(name = "category_id") var categoryId: Long,
+    @ColumnInfo(name = "packaging_id") var packagingId: Long? = null
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    @ColumnInfo(name = "product_id")
+    var id: Long = 0
 
     class ProductReductionException(message: String) : Exception(message)
 
@@ -51,7 +52,7 @@ data class ProductEntity(
         get() = max(max - floor(quantity).toInt(), 0)
 
     // TODO Should not be part of the data model, as it is business logic
-    fun reduce(value: Double, measure: Measure = Measure.values()[measureId]) {
+    fun reduce(value: Double, measure: Measure = Measure.values()[measureId.toInt()]) {
         val valueInBase = measure.toBaseMeasure(value)
         val reductionPercentage = valueInBase / capacity
         if (quantity < reductionPercentage) throw ProductReductionException(

@@ -87,16 +87,16 @@ class ShoppingFragment : Fragment() {
     private fun initShoppingList() {
         shopping_list.adapter = adapter
         shopping_list.layoutManager = LinearLayoutManager(context!!)
-        viewModel.shoppingList.observe(this, Observer { shoppingList ->
+        viewModel.shoppingList.observe(viewLifecycleOwner, Observer { shoppingList ->
             adapter.setShoppingList(shoppingList)
         })
-        viewModel.categoryList.observe(this, Observer { categoryList ->
+        viewModel.categoryList.observe(viewLifecycleOwner, Observer { categoryList ->
             adapter.setCategories(categoryList)
         })
     }
 
     private fun submitTransaction() {
-        viewModel.shoppingList.observe(this, Observer { shoppingList ->
+        viewModel.shoppingList.observe(viewLifecycleOwner, Observer { shoppingList ->
             val changedProducts = shoppingList
                 .toList()
                 .map { it.second }
