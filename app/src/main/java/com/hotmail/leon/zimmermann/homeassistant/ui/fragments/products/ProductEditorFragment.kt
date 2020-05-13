@@ -40,7 +40,7 @@ class ProductEditorFragment : Fragment() {
         initDatabinding(view)
         viewModel.categoryList.observe(viewLifecycleOwner, Observer { categoryList ->
             category_input.adapter =
-                ArrayAdapter(context!!, android.R.layout.simple_list_item_1, categoryList.map { it.text })
+                ArrayAdapter(context!!, android.R.layout.simple_list_item_1, categoryList.map { it.name })
         })
         viewModel.measureList.observe(viewLifecycleOwner, Observer { measureList ->
             measure_input.adapter =

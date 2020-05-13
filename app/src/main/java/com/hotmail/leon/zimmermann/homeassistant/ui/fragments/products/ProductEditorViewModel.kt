@@ -7,14 +7,14 @@ import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryRepository
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.Product
+import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
 import kotlinx.coroutines.launch
 
 class ProductEditorViewModel(application: Application) : AndroidViewModel(application) {
 
     private val productRepository: ProductRepository
-    val productList: LiveData<List<Product>>
+    val productList: LiveData<List<ProductEntity>>
 
     val categoryList: LiveData<List<CategoryEntity>>
     val measureList: LiveData<List<MeasureEntity>>
@@ -30,20 +30,17 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
     init {
         val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
         productRepository = ProductRepository(database.productDao())
-        productList = productRepository.getProductList(
-            database.categoryDao().getAllStatically(),
-            database.measureDao().getAllStatically()
-        )
+        productList = productRepository.productEntityList
         val categoryRepository = CategoryRepository(database.categoryDao())
         categoryList = categoryRepository.categoryList
         val measureRepository = MeasureRepository(database.measureDao())
-        measureList = measureRepository.measureList
+        measureList = measureRepository.measureEntityList
     }
 
     // TODO Add Validation
     fun save(categoryText: String, measureText: String) {
         val name = nameInputValue.value!!
-        val category = categoryList.value!!.first { it.text == categoryText }
+        val category = categoryList.value!!.first { it.name == categoryText }
         val capacity = capacityInputValue.value!!.toDouble()
         val measure = measureList.value!!.first { it.text == measureText }
         val quantity = currentInputValue.value!!.toDouble()
@@ -64,7 +61,7 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
         max: Int
     ) {
         viewModelScope.launch {
-            productRepository.insert(Product(name, category, capacity, measure, quantity, min, max))
+            // TODO Implement
         }
     }
 
@@ -78,16 +75,7 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
         max: Int
     ) {
         viewModelScope.launch {
-            productRepository.getProduct(productId!!, categoryList.value!!, measureList.value!!).let {
-                it.name = name
-                it.category = category
-                it.capacity = capacity
-                it.measure = measure
-                it.quantity = quantity
-                it.min = min
-                it.max = max
-                productRepository.update(it)
-            }
+            // TODO Implement
         }
     }
 
