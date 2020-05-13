@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.products.ProductEditorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.products.ProductEditorFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_input_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName"
+                    android:text="@={viewModel.nameInputValue}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+                android:id="@+id/category_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/name_input_wrapper"
+                app:layout_constraintStart_toStartOf="@+id/name_input_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/name_input_wrapper" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/capacity_input_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/measure_input"
+                app:layout_constraintStart_toStartOf="@+id/name_input_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/category_input">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/capacity_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/capacity"
+                    android:inputType="numberSigned|numberDecimal"
+                    android:text="@={viewModel.capacityInputValue}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+                android:id="@+id/measure_input"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/dropdown_arrow_icon"
+                android:backgroundTint="#00535353"
+                android:backgroundTintMode="multiply"
+                app:layout_constraintBottom_toBottomOf="@+id/capacity_input_wrapper"
+                app:layout_constraintEnd_toEndOf="@+id/name_input_wrapper"
+                app:layout_constraintStart_toEndOf="@+id/capacity_input_wrapper"
+                app:layout_constraintTop_toTopOf="@+id/capacity_input_wrapper" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/min_input_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/current_input_wrapper"
+                app:layout_constraintStart_toStartOf="@+id/current_input_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/current_input_wrapper">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/min_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/minimum_quantity"
+                    android:inputType="number"
+                    android:text="@={viewModel.minInputValue}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/max_input_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/min_input_wrapper"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/min_input_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/min_input_wrapper">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/max_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/maximum_quantity"
+                    android:inputType="number"
+                    android:text="@={viewModel.maxInputValue}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/current_input_wrapper"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/name_input_wrapper"
+                app:layout_constraintStart_toStartOf="@+id/name_input_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/capacity_input_wrapper">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/current_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/current_quantity"
+                    android:inputType="number|numberDecimal"
+                    android:text="@={viewModel.currentInputValue}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+                android:id="@+id/save_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/pill_button"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Save Product"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
