@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,11 +31,8 @@ class OverviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         authentication = Firebase.auth
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (authentication.currentUser == null) findNavController().navigate(R.id.action_overview_fragment_to_sign_in)
+        findNavController().popBackStack(R.id.splash_screen_fragment, true)
+        Toast.makeText(context, authentication.currentUser.toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -69,7 +67,7 @@ class OverviewFragment : Fragment() {
         val adapter = SimpleProductPreviewAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        viewModel.productEntityList.observe(this, Observer {
+        viewModel.productEntityList.observe(viewLifecycleOwner, Observer {
             it?.let { adapter.productAmountList = it.map { product -> Pair(product, product.discrepancy) } }
         })
         shopping_button.setOnClickListener {

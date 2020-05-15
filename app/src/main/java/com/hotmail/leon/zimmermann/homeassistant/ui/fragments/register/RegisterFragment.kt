@@ -27,8 +27,8 @@ class RegisterFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
         activity?.let { it.title = resources.getString(R.string.register) }
-        email_button.setOnClickListener { findNavController().navigate(R.id.action_register_fragment_to_email_registration_fragment) }
-        signin_button.setOnClickListener { findNavController().navigate(R.id.action_register_fragment_to_sign_in_fragment) }
+        //email_button.setOnClickListener { findNavController().navigate(R.id.action_register_fragment_to_email_registration_fragment) }
+        //signin_button.setOnClickListener { findNavController().navigate(R.id.action_register_fragment_to_sign_in_fragment) }
     }
 
     companion object {
