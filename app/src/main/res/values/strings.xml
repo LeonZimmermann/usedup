@@ -31,4 +31,7 @@
     <string name="settings">Settings</string>
     <string name="manage_calendar">Manage Calendar</string>
     <string name="number_picker">Number Picker</string>
+    <string name="email_amp_password"><![CDATA[Email & Password]]></string>
+    <string name="register">Register</string>
+    <string name="or">or</string>
 </resources>
