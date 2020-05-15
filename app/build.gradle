@@ -102,4 +102,7 @@ dependencies {
 
     // Page Indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
 }
