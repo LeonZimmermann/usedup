@@ -34,4 +34,5 @@
     <string name="email_amp_password"><![CDATA[Email & Password]]></string>
     <string name="register">Register</string>
     <string name="or">or</string>
+    <string name="sign_in">Sign In</string>
 </resources>

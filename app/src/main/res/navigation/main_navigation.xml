@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_navigation.xml"
-        app:startDestination="@id/register_fragment">
+        app:startDestination="@id/overview_fragment">
 
     <fragment
             android:id="@+id/shopping_fragment"
@@ -30,6 +30,9 @@
         <action
                 android:id="@+id/action_overview_fragment_to_calendar_fragment"
                 app:destination="@id/timeline_fragment" />
+        <action
+                android:id="@+id/action_overview_fragment_to_sign_in"
+                app:destination="@id/sign_in" />
     </fragment>
     <fragment
             android:id="@+id/meal_browser_fragment"
@@ -108,9 +111,30 @@
             android:id="@+id/calendar_activity_dialog_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerFragment"
             android:label="CalendarActivityDialog" /><action android:id="@+id/action_global_calendar_activity_dialog_fragment" app:destination="@id/calendar_activity_dialog_fragment"/>
-    <fragment
-            android:id="@+id/register_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.register.RegisterFragment"
-            android:label="Register"
-            tools:layout="@layout/register_fragment" />
+    <navigation
+            android:id="@+id/sign_in"
+            android:label="SignInGraph"
+            app:startDestination="@id/register_fragment">
+        <fragment
+                android:id="@+id/register_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.register.RegisterFragment"
+                android:label="Register"
+                tools:layout="@layout/register_fragment">
+            <action
+                    android:id="@+id/action_register_fragment_to_sign_in_fragment"
+                    app:destination="@id/sign_in_fragment" />
+        </fragment>
+        <fragment
+                android:id="@+id/sign_in_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.signin.SignInFragment"
+                android:label="Sign In"
+                tools:layout="@layout/sign_in_fragment">
+            <action
+                    android:id="@+id/action_sign_in_fragment_to_register_fragment"
+                    app:destination="@id/register_fragment" />
+        </fragment>
+        <action
+                android:id="@+id/action_global_overview_fragment2"
+                app:destination="@id/overview_fragment" />
+    </navigation>
 </navigation>

@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
@@ -21,10 +24,17 @@ class OverviewFragment : Fragment() {
     }
 
     private lateinit var viewModel: OverviewViewModel
+    private lateinit var authentication: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        authentication = Firebase.auth
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (authentication.currentUser == null) findNavController().navigate(R.id.action_overview_fragment_to_sign_in)
     }
 
     override fun onCreateView(

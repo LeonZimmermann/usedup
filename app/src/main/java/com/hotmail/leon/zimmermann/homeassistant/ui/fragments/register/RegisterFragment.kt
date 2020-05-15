@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.consumption_fragment_component.*
+import kotlinx.android.synthetic.main.register_fragment.*
 
 class RegisterFragment : Fragment() {
 
@@ -25,6 +27,7 @@ class RegisterFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
         activity?.let { it.title = resources.getString(R.string.register) }
+        signin_button.setOnClickListener { findNavController().navigate(R.id.action_register_fragment_to_sign_in_fragment) }
     }
 
     companion object {
