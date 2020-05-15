@@ -63,8 +63,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:id="@+id/shopping_button"
-                        style="@style/OverviewPrimaryButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -93,8 +93,8 @@
                     android:layout_height="wrap_content">
 
                 <Button
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:id="@+id/management_button"
-                        style="@style/OverviewPrimaryButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="Manage Products"
@@ -120,8 +120,8 @@
                     android:layout_height="wrap_content">
 
                 <Button
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:id="@+id/calendar_button"
-                        style="@style/OverviewPrimaryButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/manage_calendar"

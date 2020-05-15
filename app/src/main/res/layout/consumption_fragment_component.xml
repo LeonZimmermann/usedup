@@ -73,8 +73,8 @@
                     app:layout_constraintTop_toTopOf="@+id/title" />
 
             <Button
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:id="@+id/consume_button"
-                    style="@style/OverviewPrimaryButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

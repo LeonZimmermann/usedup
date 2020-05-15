@@ -6,8 +6,4 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="OverviewPrimaryButton">
-        <item name="android:background">@android:color/white</item>
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
 </resources>
