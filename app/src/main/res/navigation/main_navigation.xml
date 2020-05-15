@@ -123,6 +123,9 @@
             <action
                     android:id="@+id/action_register_fragment_to_sign_in_fragment"
                     app:destination="@id/sign_in_fragment" />
+            <action
+                    android:id="@+id/action_register_fragment_to_email_registration_fragment"
+                    app:destination="@id/email_registration_fragment" />
         </fragment>
         <fragment
                 android:id="@+id/sign_in_fragment"
@@ -132,9 +135,22 @@
             <action
                     android:id="@+id/action_sign_in_fragment_to_register_fragment"
                     app:destination="@id/register_fragment" />
+            <action
+                    android:id="@+id/action_sign_in_fragment_to_email_signin_fragment"
+                    app:destination="@id/email_signin_fragment" />
         </fragment>
         <action
                 android:id="@+id/action_global_overview_fragment2"
                 app:destination="@id/overview_fragment" />
+        <fragment
+                android:id="@+id/email_registration_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.register.EmailRegistrationFragment"
+                android:label="Email Registration"
+                tools:layout="@layout/email_registration_fragment" />
+        <fragment
+                android:id="@+id/email_signin_fragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.signin.EmailSignInFragment"
+                android:label="Email Sign In"
+                tools:layout="@layout/email_sign_in_fragment" />
     </navigation>
 </navigation>

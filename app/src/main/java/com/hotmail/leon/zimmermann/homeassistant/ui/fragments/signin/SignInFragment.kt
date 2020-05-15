@@ -31,6 +31,7 @@ class SignInFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
         activity?.let { it.title = resources.getString(R.string.sign_in) }
+        email_button.setOnClickListener { findNavController().navigate(R.id.action_sign_in_fragment_to_email_signin_fragment) }
         register_button.setOnClickListener { findNavController().navigate(R.id.action_sign_in_fragment_to_register_fragment) }
     }
 
