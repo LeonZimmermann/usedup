@@ -32,7 +32,6 @@ class OverviewFragment : Fragment() {
         setHasOptionsMenu(true)
         authentication = Firebase.auth
         findNavController().popBackStack(R.id.splash_screen_fragment, true)
-        Toast.makeText(context, authentication.currentUser.toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -56,6 +55,10 @@ class OverviewFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.account_option -> {
+            findNavController().navigate(R.id.action_global_account_fragment)
+            true
+        }
         R.id.settings_option -> {
             findNavController().navigate(R.id.action_global_settings_fragment)
             true

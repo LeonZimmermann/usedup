@@ -119,4 +119,10 @@
                 app:popUpTo="@id/splash_screen_fragment"
                 app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+            android:id="@+id/account_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.account.AccountFragment"
+            android:label="Account"
+            tools:layout="@layout/account_fragment" />
+    <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
 </navigation>
