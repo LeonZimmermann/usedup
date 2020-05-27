@@ -31,11 +31,10 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
 
     override fun consume(view: View) {
         val productName = view.name_input.text.toString()
-        val product = viewModel.productList.first { it.name == productName }
+        val product = viewModel.productList.firstOrNull { it.name == productName }
         val quantity = view.quantity_input.text.toString().toFloat()
         val measure = view.measure_input.selectedItem as Measure
-        Toast.makeText(view.context!!, "product:$product, quantity:$quantity, measure:$measure", Toast.LENGTH_LONG)
-            .show()
+        TODO("Not Implemented")
     }
 }
 
