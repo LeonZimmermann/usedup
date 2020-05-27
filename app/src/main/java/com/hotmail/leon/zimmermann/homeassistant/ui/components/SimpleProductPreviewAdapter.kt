@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Product
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class SimpleProductPreviewAdapter constructor(context: Context, private val onClickListener: View.OnClickListener? = null) :
     RecyclerView.Adapter<SimpleProductPreviewAdapter.ProductViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    var productAmountList = emptyList<Pair<ProductEntity, Int>>()
+    var productAmountList = emptyList<Pair<Product, Int>>()
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -1,7 +1,5 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel
 
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealIngredient
-
 data class Meal(val name: String,
                 val duration: Int? = null,
                 val description: String? = null,

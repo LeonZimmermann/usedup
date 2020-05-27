@@ -4,36 +4,34 @@ import android.content.Context
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Measure
 import kotlinx.android.synthetic.main.product_additional_fields.view.*
 import kotlinx.android.synthetic.main.shopping_edit_dialog.view.*
 import org.jetbrains.anko.layoutInflater
 
 sealed class ConsumptionMode {
-    abstract val nameList: LiveData<Array<String>>
+    abstract val nameList: Array<String>
     abstract fun getAdditionalFieldsView(context: Context): View?
     abstract fun consume(view: View)
 }
 
 class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
-    override val nameList: LiveData<Array<String>>
-        get() = Transformations.map(viewModel.productList) { productList -> productList.map { it.name }.toTypedArray() }
+    override val nameList: Array<String>
+        get() = viewModel.productList.map { it.name }.toTypedArray()
 
     override fun getAdditionalFieldsView(context: Context): View {
         val view = context.layoutInflater.inflate(R.layout.product_additional_fields, null)
         view.measure_input.adapter = ArrayAdapter(
             context,
             android.R.layout.simple_list_item_1,
-            Measure.values().map { it.name })
+            viewModel.measures.map { it.name })
         return view
     }
 
     override fun consume(view: View) {
         val productName = view.name_input.text.toString()
-        val product = viewModel.productList.value!!.first { it.name == productName }
+        val product = viewModel.productList.first { it.name == productName }
         val quantity = view.quantity_input.text.toString().toFloat()
         val measure = view.measure_input.selectedItem as Measure
         Toast.makeText(view.context!!, "product:$product, quantity:$quantity, measure:$measure", Toast.LENGTH_LONG)
@@ -42,8 +40,8 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
 }
 
 class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
-    override val nameList: LiveData<Array<String>>
-        get() = Transformations.map(viewModel.templateList) { templateList -> templateList.map { it.name }.toTypedArray() }
+    override val nameList: Array<String>
+        get() = viewModel.templateList.map { it.name }.toTypedArray()
 
     override fun getAdditionalFieldsView(context: Context): View? = null
 
@@ -53,8 +51,9 @@ class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMod
 }
 
 class MealMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
-    override val nameList: LiveData<Array<String>>
-        get() = Transformations.map(viewModel.mealWithIngredientsList) { mealList -> mealList.map { it.name }.toTypedArray() }
+    override val nameList: Array<String>
+        get() = emptyArray()
+        //get() = viewModel.mealList.map { it.name }.toTypedArray()
 
     override fun getAdditionalFieldsView(context: Context): View? = null
 

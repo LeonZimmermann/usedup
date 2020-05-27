@@ -1,7 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel
 
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.Category
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import kotlin.math.floor
+import kotlin.math.max
 
 data class Product(
     var name: String,
@@ -11,4 +11,7 @@ data class Product(
     var capacity: Double,
     var measure: Measure,
     var category: Category
-)
+) {
+    val discrepancy: Int
+        get() = max(max - floor(quantity).toInt(), 0)
+}

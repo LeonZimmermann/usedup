@@ -1,20 +1,17 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Product
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.SimpleProductPreviewAdapter
 import kotlinx.android.synthetic.main.overview_fragment.*
 
@@ -59,10 +56,7 @@ class OverviewFragment : Fragment() {
             findNavController().navigate(R.id.action_global_account_fragment)
             true
         }
-        R.id.settings_option -> {
-            findNavController().navigate(R.id.action_global_settings_fragment)
-            true
-        }
+        // TODO Add Settings
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -70,23 +64,21 @@ class OverviewFragment : Fragment() {
         val adapter = SimpleProductPreviewAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        viewModel.productEntityList.observe(viewLifecycleOwner, Observer {
-            it?.let { adapter.productAmountList = it.map { product -> Pair(product, product.discrepancy) } }
-        })
+        // TODO Init SimpleProductPreviewAdapter
         shopping_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
+            // TODO Add Navigation
         }
     }
 
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_management_fragment)
+            // TODO Add Navigation
         }
     }
 
     private fun initializeCalendarCard() {
         calendar_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_calendar_fragment)
+            // TODO Add Navigation
         }
     }
 

@@ -6,108 +6,10 @@
         app:startDestination="@id/splash_screen_fragment">
 
     <fragment
-            android:id="@+id/shopping_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.ShoppingFragment"
-            android:label="Shopping"
-            tools:layout="@layout/shopping_fragment">
-    </fragment>
-    <fragment
-            android:id="@+id/management_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.management.fragment.ManagementFragment"
-            android:label="Management"
-            tools:layout="@layout/management_fragment" />
-    <fragment
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
             android:label="Overview"
-            tools:layout="@layout/overview_fragment">
-        <action
-                android:id="@+id/action_overview_fragment_to_shopping_fragment"
-                app:destination="@id/shopping_fragment" />
-        <action
-                android:id="@+id/action_overview_fragment_to_management_fragment"
-                app:destination="@id/management_fragment" />
-        <action
-                android:id="@+id/action_overview_fragment_to_calendar_fragment"
-                app:destination="@id/timeline_fragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/meal_browser_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.browser.MealBrowserFragment"
-            android:label="MealBrowser"
-            tools:layout="@layout/dinner_browser_fragment">
-        <action
-                android:id="@+id/action_meal_browser_fragment_to_meal_details"
-                app:destination="@id/meal_details"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:launchSingleTop="true"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-                android:id="@+id/action_meal_browser_fragment_to_meal_creation_fragment"
-                app:destination="@id/meal_creation_fragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/meal_details"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.details.MealDetailsFragment"
-            android:label="MealDetails"
-            tools:layout="@layout/dinner_details_fragment">
-        <argument
-                android:name="meal"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.models.tables.meal.MealEntity" />
-    </fragment>
-    <fragment
-            android:id="@+id/settings_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.settings.SettingsFragment"
-            android:label="SettingsFragment" />
-    <action
-            android:id="@+id/action_global_settings_fragment"
-            app:destination="@id/settings_fragment"
-            app:launchSingleTop="true" />
-    <fragment
-            android:id="@+id/timeline_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline.TimelineFragment"
-            android:label="TimelineFragment"
-            tools:layout="@layout/timeline_fragment" >
-        <action
-                android:id="@+id/action_timeline_fragment_to_calendar_week_fragment"
-                app:destination="@id/calendar_week_fragment"
-                app:popUpTo="@+id/overview_fragment" />
-    </fragment>
-    <action android:id="@+id/action_global_meal_browser_fragment" app:destination="@id/meal_browser_fragment"/>
-    <fragment
-            android:id="@+id/calendar_week_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.week.CalendarWeekFragment"
-            android:label="CalendarWeek"
-            tools:layout="@layout/calendar_week_fragment" >
-        <action
-                android:id="@+id/action_calendar_week_fragment_to_timeline_fragment"
-                app:destination="@id/timeline_fragment"
-                app:popUpTo="@+id/overview_fragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/meal_creation_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.creation.MealCreationFragment"
-            android:label="MealCreation"
-            tools:layout="@layout/dinner_creation_fragment">
-        <action
-                android:id="@+id/action_dinner_creation_fragment_to_camera_fragment"
-                app:destination="@id/camera_fragment" />
-    </fragment>
-    <fragment
-            android:id="@+id/camera_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CameraFragment"
-            android:label="Camera"
-            tools:layout="@layout/camera_fragment">
-        <argument
-                android:name="file"
-                app:argType="java.io.File" />
-    </fragment>
-    <fragment
-            android:id="@+id/calendar_activity_dialog_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.activity.dinner.CalendarActivityDinnerFragment"
-            android:label="CalendarActivityDialog" /><action android:id="@+id/action_global_calendar_activity_dialog_fragment" app:destination="@id/calendar_activity_dialog_fragment"/>
+            tools:layout="@layout/overview_fragment"/>
     <fragment
             android:id="@+id/splash_screen_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.splash.SplashScreenFragment"

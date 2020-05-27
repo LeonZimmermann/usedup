@@ -32,10 +32,14 @@ class ConsumptionFragmentComponent : Fragment() {
         template_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.templateMode }
         meal_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.mealMode }
         viewModel.consumptionMode.observe(this, Observer { consumptionMode ->
-            consumptionMode.nameList.observe(this, Observer { nameList ->
-                name_input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_list_item_1, nameList))
-                name_input.setText("")
-            })
+            name_input.setAdapter(
+                ArrayAdapter(
+                    context!!,
+                    android.R.layout.simple_list_item_1,
+                    consumptionMode.nameList
+                )
+            )
+            name_input.setText("")
             additionalFieldsContainer.removeAllViews()
             consumptionMode.getAdditionalFieldsView(context!!)?.let {
                 additionalFieldsContainer.addView(it)

@@ -2,22 +2,16 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.products
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.models.database.HomeAssistantDatabase
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.category.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.measure.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductEntity
-import com.hotmail.leon.zimmermann.homeassistant.models.tables.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.Category
 import kotlinx.coroutines.launch
 
 class ProductEditorViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val productRepository: ProductRepository
-    val productList: LiveData<List<ProductEntity>>
-
-    val categoryList: LiveData<List<CategoryEntity>>
-    val measureList: LiveData<List<MeasureEntity>>
+    val productList: List<Product> = emptyList()
+    val categoryList: List<Category> = emptyList()
+    val measureList: List<Measure> = emptyList()
 
     var nameInputValue = MutableLiveData("")
     var capacityInputValue = MutableLiveData("")
@@ -28,21 +22,15 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
     var productId: Long? = null
 
     init {
-        val database = HomeAssistantDatabase.getDatabase(application, viewModelScope)
-        productRepository = ProductRepository(database.productDao())
-        productList = productRepository.productEntityList
-        val categoryRepository = CategoryRepository(database.categoryDao())
-        categoryList = categoryRepository.categoryList
-        val measureRepository = MeasureRepository(database.measureDao())
-        measureList = measureRepository.measureEntityList
+        // TODO Init lists
     }
 
     // TODO Add Validation
     fun save(categoryText: String, measureText: String) {
         val name = nameInputValue.value!!
-        val category = categoryList.value!!.first { it.name == categoryText }
+        val category = categoryList.first { it.name == categoryText }
         val capacity = capacityInputValue.value!!.toDouble()
-        val measure = measureList.value!!.first { it.text == measureText }
+        val measure = measureList.first { it.name == measureText }
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
@@ -53,9 +41,9 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
 
     private fun saveNewProduct(
         name: String,
-        category: CategoryEntity,
+        category: Category,
         capacity: Double,
-        measure: MeasureEntity,
+        measure: Measure,
         quantity: Double,
         min: Int,
         max: Int
@@ -67,9 +55,9 @@ class ProductEditorViewModel(application: Application) : AndroidViewModel(applic
 
     private fun updateExistingProduct(
         name: String,
-        category: CategoryEntity,
+        category: Category,
         capacity: Double,
-        measure: MeasureEntity,
+        measure: Measure,
         quantity: Double,
         min: Int,
         max: Int

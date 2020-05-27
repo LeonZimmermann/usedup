@@ -38,14 +38,10 @@ class ProductEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
-        viewModel.categoryList.observe(viewLifecycleOwner, Observer { categoryList ->
-            category_input.adapter =
-                ArrayAdapter(context!!, android.R.layout.simple_list_item_1, categoryList.map { it.name })
-        })
-        viewModel.measureList.observe(viewLifecycleOwner, Observer { measureList ->
-            measure_input.adapter =
-                ArrayAdapter(context!!, android.R.layout.simple_list_item_1, measureList.map { it.text })
-        })
+        category_input.adapter =
+            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, viewModel.categoryList.map { it.name })
+        measure_input.adapter =
+            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, viewModel.measureList.map { it.name })
     }
 
     private fun initDatabinding(view: View) {
