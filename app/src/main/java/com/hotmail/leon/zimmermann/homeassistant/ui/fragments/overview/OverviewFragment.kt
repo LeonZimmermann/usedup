@@ -2,6 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -72,7 +73,9 @@ class OverviewFragment : Fragment() {
 
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
-            // TODO Add Navigation
+            findNavController().navigate(R.id.action_overview_fragment_to_product_editor_fragment, bundleOf(
+                "productId" to "nqPolU3YAE7FjreqYGwd"
+            ))
         }
     }
 

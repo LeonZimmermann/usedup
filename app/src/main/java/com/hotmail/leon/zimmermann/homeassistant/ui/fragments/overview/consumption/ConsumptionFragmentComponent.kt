@@ -31,7 +31,7 @@ class ConsumptionFragmentComponent : Fragment() {
         product_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.productMode }
         template_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.templateMode }
         meal_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.mealMode }
-        viewModel.consumptionMode.observe(this, Observer { consumptionMode ->
+        viewModel.consumptionMode.observe(viewLifecycleOwner, Observer { consumptionMode ->
             name_input.setAdapter(
                 ArrayAdapter(
                     context!!,

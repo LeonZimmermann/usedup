@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ProductEditorFragmentBinding
@@ -21,10 +20,14 @@ class ProductEditorFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this)[ProductEditorViewModel::class.java]
         arguments?.apply {
-            viewModel.productId = getSerializable(PRODUCT_ID) as? Long?
+            val productId = getSerializable(PRODUCT_ID) as? String?
+            // TODO Implement Callbacks
+            productId?.let { viewModel.setProductId(it, {}, {}) }
         }
         savedInstanceState?.apply {
-            viewModel.productId = getSerializable(PRODUCT_ID) as? Long?
+            val productId = getSerializable(PRODUCT_ID) as? String?
+            // TODO Implement Callbacks
+            productId?.let { viewModel.setProductId(it, {}, {}) }
         }
     }
 
@@ -38,16 +41,27 @@ class ProductEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
-        category_input.adapter =
-            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, viewModel.categoryList.map { it.name })
-        measure_input.adapter =
-            ArrayAdapter(context!!, android.R.layout.simple_list_item_1, viewModel.measureList.map { it.name })
+        category_input.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                R.layout.list_item,
+                viewModel.categoryList.map { it.second.name })
+        )
+        measure_input.setAdapter(
+            ArrayAdapter(
+                requireContext(),
+                R.layout.list_item,
+                viewModel.measureList.map { it.second.name })
+        )
+        save_button.setOnClickListener { viewModel.save(category_input.text.toString(), measure_input.text.toString()) }
     }
 
     private fun initDatabinding(view: View) {
         binding = ProductEditorFragmentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.buttonText = if (viewModel.productId == null)
+            resources.getString(R.string.add_product) else resources.getString(R.string.update_product)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

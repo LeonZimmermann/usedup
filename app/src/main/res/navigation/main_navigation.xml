@@ -9,7 +9,11 @@
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
             android:label="Overview"
-            tools:layout="@layout/overview_fragment"/>
+            tools:layout="@layout/overview_fragment">
+        <action
+                android:id="@+id/action_overview_fragment_to_product_editor_fragment"
+                app:destination="@id/product_editor_fragment" />
+    </fragment>
     <fragment
             android:id="@+id/splash_screen_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.splash.SplashScreenFragment"
@@ -27,4 +31,13 @@
             android:label="Account"
             tools:layout="@layout/account_fragment" />
     <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
+    <fragment
+            android:id="@+id/product_editor_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.products.ProductEditorFragment"
+            android:label="Product Editor" >
+        <argument
+                android:name="productId"
+                app:argType="string"
+                app:nullable="true" />
+    </fragment>
 </navigation>

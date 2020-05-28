@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.MeasureRepository
 import kotlinx.android.synthetic.main.product_additional_fields.view.*
 import kotlinx.android.synthetic.main.shopping_edit_dialog.view.*
 import org.jetbrains.anko.layoutInflater
@@ -22,10 +23,10 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
 
     override fun getAdditionalFieldsView(context: Context): View {
         val view = context.layoutInflater.inflate(R.layout.product_additional_fields, null)
-        view.measure_input.adapter = ArrayAdapter(
+        view.measure_input.setAdapter(ArrayAdapter(
             context,
             android.R.layout.simple_list_item_1,
-            viewModel.measures.map { it.name })
+            viewModel.measures.map { it.name }))
         return view
     }
 
@@ -33,7 +34,7 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
         val productName = view.name_input.text.toString()
         val product = viewModel.productList.firstOrNull { it.name == productName }
         val quantity = view.quantity_input.text.toString().toFloat()
-        val measure = view.measure_input.selectedItem as Measure
+        val measure = MeasureRepository.getMeasureForName(view.measure_input.text.toString())
         TODO("Not Implemented")
     }
 }
