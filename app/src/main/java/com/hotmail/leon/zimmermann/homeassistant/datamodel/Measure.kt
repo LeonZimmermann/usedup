@@ -24,3 +24,6 @@ object MeasureRepository {
     fun getMeasureForId(id: String) = measures.first { it.first == id }.second
     fun getMeasureForName(name: String) = measures.first { it.second.name == name }.second
 }
+
+fun Double.toBase(measure: Measure) = this * measure.baseFactor
+fun Double.toMeasure(measure: Measure) = this / measure.baseFactor

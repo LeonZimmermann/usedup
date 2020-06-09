@@ -52,4 +52,5 @@
 
     <string name="add_product">Add Product</string>
     <string name="update_product">Update Product</string>
+    <string name="consumption">Consumption</string>
 </resources>
