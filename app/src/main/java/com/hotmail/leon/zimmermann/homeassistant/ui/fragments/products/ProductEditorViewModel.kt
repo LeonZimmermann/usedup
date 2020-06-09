@@ -47,7 +47,6 @@ class ProductEditorViewModel : ViewModel() {
         val max = maxInputValue.value!!.toInt()
         if (productId == null) saveNewProduct(name, category, capacity, measure, quantity, min, max)
         else updateExistingProduct(name, category, capacity, measure, quantity, min, max)
-        clearInputs()
     }
 
     private fun saveNewProduct(
@@ -98,13 +97,5 @@ class ProductEditorViewModel : ViewModel() {
                 )
             )
         }
-    }
-
-    private fun clearInputs() {
-        nameInputValue.value = ""
-        capacityInputValue.value = ""
-        currentInputValue.value = ""
-        minInputValue.value = ""
-        maxInputValue.value = ""
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ProductEditorFragmentBinding
 import kotlinx.android.synthetic.main.product_editor_fragment.*
@@ -53,7 +54,10 @@ class ProductEditorFragment : Fragment() {
                 R.layout.list_item,
                 viewModel.measureList.map { it.second.name })
         )
-        save_button.setOnClickListener { viewModel.save(category_input.text.toString(), measure_input.text.toString()) }
+        save_button.setOnClickListener {
+            viewModel.save(category_input.text.toString(), measure_input.text.toString())
+            findNavController().navigateUp()
+        }
     }
 
     private fun initDatabinding(view: View) {
