@@ -31,8 +31,17 @@ class MealEditorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState?.let {
-            viewModel.photoFile = it.getSerializable(FILE) as? File
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(MealEditorViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        arguments?.apply {
+            val mealId = getSerializable(MEAL_ID) as? String?
+            mealId?.let { viewModel.setMealId(it) }
+        }
+        savedInstanceState?.apply {
+            viewModel.photoFile = getSerializable(FILE) as? File
+            val mealId = getSerializable(MEAL_ID) as? String?
+            mealId?.let { viewModel.setMealId(it) }
         }
     }
 
@@ -42,9 +51,6 @@ class MealEditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(MealEditorViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
         initDatabinding(view)
         adapter = MealTemplateAdapter(context!!, ::onIngredientRemoved).apply {
             ItemTouchHelper(object : RecyclerViewHandler(this) {
@@ -57,10 +63,10 @@ class MealEditorFragment : Fragment() {
                 }
             }).attachToRecyclerView(view.ingredients_list)
         }
-        viewModel.mealTemplateList.observe(viewLifecycleOwner, Observer { consumptionEntityList ->
-            adapter.setConsumptionEntityList(consumptionEntityList)
+        viewModel.mealTemplateList.observe(viewLifecycleOwner, Observer { mealTemplateList ->
+            adapter.setMealTemplateList(mealTemplateList)
             val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
-            val topMarginDimensionId = if (consumptionEntityList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
+            val topMarginDimensionId = if (mealTemplateList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
             params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
             view.add_ingredients_button.layoutParams = params
         })
@@ -92,7 +98,7 @@ class MealEditorFragment : Fragment() {
 
     inner class EventHandler {
         fun onImageViewClicked(view: View) {
-            viewModel.photoFile = CameraFragment.createTempPhotoFile(context!!)
+            if (viewModel.photoFile == null) viewModel.photoFile = CameraFragment.createPhotoFile(context!!)
             findNavController().navigate(
                 R.id.action_meal_editor_fragment_to_camera_fragment,
                 bundleOf("file" to viewModel.photoFile)
@@ -111,11 +117,13 @@ class MealEditorFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (viewModel.photoFile != null) outState.putSerializable(FILE, viewModel.photoFile)
+        viewModel.photoFile?.let { outState.putSerializable(FILE, it) }
+        viewModel.mealId?.let { outState.putSerializable(MEAL_ID, it) }
     }
 
     companion object {
         private const val FILE = "file"
+        const val MEAL_ID = "mealId"
 
         fun newInstance() = MealEditorFragment()
     }

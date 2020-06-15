@@ -34,7 +34,7 @@ class MealTemplateAdapter(private val context: Context, private val onItemRemove
 
     override fun getItemCount() = mealTemplateList.size
 
-    internal fun setConsumptionEntityList(mealTemplateList: MutableList<MealTemplate>) {
+    internal fun setMealTemplateList(mealTemplateList: MutableList<MealTemplate>) {
         this.mealTemplateList = mealTemplateList
         notifyDataSetChanged()
     }

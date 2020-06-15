@@ -36,6 +36,29 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
     private val instructions: String?
         get() = instructionsString.value
 
+    var mealId: String? = null
+        private set
+
+    fun setMealId(mealId: String) {
+        this.mealId = mealId
+        database.collection(Meal.COLLECTION_NAME).document(mealId).get().addOnSuccessListener { result ->
+            result.toObject<Meal>()?.apply {
+                backgroundUrl?.let { photoFile = File(it) }
+                nameString.value = name
+                durationString.value = duration.toString()
+                ingredients?.let {
+                    mealTemplateList.value = it.map { ingredient ->
+                        val product = products.value!!.first { it.first == ingredient.product!!.id }.second
+                        val measure = MeasureRepository.getMeasureForId(ingredient.measure!!.id)
+                        MealTemplate(product, Value(ingredient.value!!, measure))
+                    }.toMutableList()
+                }
+                descriptionString.value = description
+                instructionsString.value = instructions
+            } ?: throw RuntimeException("Couln't convert meal") // TODO Should not be a RuntimeException
+        }
+    }
+
     init {
         database.collection(Product.COLLECTION_NAME).get().addOnSuccessListener { documents ->
             val list = mutableListOf<Pair<String, Product>>()
@@ -64,7 +87,8 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
                 MealIngredient(
                     database.collection(Product.COLLECTION_NAME)
                         .document(products.value!!.first { it.second.name == template.product.name }.first),
-                    database.collection(Measure.COLLECTION_NAME).document(measures.first { it.second.name == template.value.measure.name}.first),
+                    database.collection(Measure.COLLECTION_NAME)
+                        .document(measures.first { it.second.name == template.value.measure.name }.first),
                     template.value.double
                 )
             }

@@ -122,7 +122,7 @@ class CameraFragment : Fragment() {
         private val timestampFormatter = SimpleDateFormat("yyyyMMdd_HHmmss")
 
         @Throws(IOException::class)
-        fun createTempPhotoFile(context: Context): File {
+        fun createPhotoFile(context: Context): File {
             val timeStamp: String = timestampFormatter.format(Date())
             val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
                 ?: throw IOException("Could not access external files dir")

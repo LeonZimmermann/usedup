@@ -74,7 +74,7 @@ class OverviewFragment : Fragment() {
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_meal_editor_fragment, bundleOf(
-                "productId" to "nqPolU3YAE7FjreqYGwd"
+                "mealId" to "BM02HLNiXLxwv6AoeOVc"
             ))
         }
     }

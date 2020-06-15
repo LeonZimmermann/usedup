@@ -50,6 +50,10 @@
         <action
                 android:id="@+id/action_meal_editor_fragment_to_camera_fragment"
                 app:destination="@id/camera_fragment" />
+        <argument
+                android:name="mealId"
+                app:argType="string"
+                app:nullable="true" />
     </fragment>
     <fragment
             android:id="@+id/camera_fragment"

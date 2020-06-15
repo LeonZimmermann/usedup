@@ -2,7 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel
 
 import com.google.firebase.firestore.DocumentReference
 
-data class Meal(val name: String,
+data class Meal(val name: String? = null,
                 val duration: Int? = null,
                 val description: String? = null,
                 val instructions: String? = null,
@@ -14,7 +14,7 @@ data class Meal(val name: String,
 }
 
 data class MealIngredient(
-    val product: DocumentReference,
-    val measure: DocumentReference,
-    var value: Double
+    val product: DocumentReference? = null,
+    val measure: DocumentReference? = null,
+    var value: Double? = null
 )
