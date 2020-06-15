@@ -73,8 +73,8 @@ class OverviewFragment : Fragment() {
 
     private fun initializeManagementCard() {
         management_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_meal_editor_fragment, bundleOf(
-                "mealId" to "BM02HLNiXLxwv6AoeOVc"
+            findNavController().navigate(R.id.action_overview_fragment_to_template_editor_fragment, bundleOf(
+                "templateId" to "v6vVpbkiqaYq2F1ZCZ6j"
             ))
         }
     }

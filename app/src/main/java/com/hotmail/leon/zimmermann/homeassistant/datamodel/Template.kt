@@ -1,8 +1,18 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel
 
-data class Template(
-    val name: String,
-    val items: List<TemplateItem>
-)
+import com.google.firebase.firestore.DocumentReference
 
-data class TemplateItem(val product: Product, val measure: Measure, val value: Double)
+data class Template(
+    val name: String? = null,
+    val components: List<TemplateComponent>? = null
+) {
+    companion object {
+        const val COLLECTION_NAME = "templates"
+    }
+}
+
+data class TemplateComponent(
+    val product: DocumentReference? = null,
+    val measure: DocumentReference? = null,
+    val value: Double? = null
+)

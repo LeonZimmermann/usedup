@@ -63,31 +63,33 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun addMealTemplate(consumptionElement: ConsumptionElement) {
-        val mealTemplateList = consumptionElementList.value
-        mealTemplateList?.let { list ->
+    fun addConsumptionElement(consumptionElement: ConsumptionElement) {
+        val consumptionElementList = consumptionElementList.value
+        consumptionElementList?.let { list ->
             list.firstOrNull { it.product == consumptionElement.product }?.apply {
                 this.value += consumptionElement.value
             }
                 ?: list.add(consumptionElement)
         }
-        this.consumptionElementList.value = mealTemplateList
+        this.consumptionElementList.value = consumptionElementList
     }
 
     fun addNewMealToDatabase() {
         // TODO Check if name is null and consumptionList empty (Validation)
         viewModelScope.launch {
-            val mealIngredientList = consumptionElementList.value!!.map { template ->
-                MealIngredient(
-                    database.collection(Product.COLLECTION_NAME)
-                        .document(products.first { it.second.name == template.product.name }.first),
-                    database.collection(Measure.COLLECTION_NAME)
-                        .document(measures.first { it.second.name == template.value.measure.name }.first),
-                    template.value.double
-                )
-            }
             database.collection(Meal.COLLECTION_NAME)
-                .add(Meal(name!!, duration, description, instructions, photoFile.toString(), mealIngredientList))
+                .add(
+                    Meal(name!!, duration, description, instructions, photoFile.toString(),
+                        consumptionElementList.value!!.map { element ->
+                            MealIngredient(
+                                database.collection(Product.COLLECTION_NAME)
+                                    .document(products.first { it.second.name == element.product.name }.first),
+                                database.collection(Measure.COLLECTION_NAME)
+                                    .document(measures.first { it.second.name == element.value.measure.name }.first),
+                                element.value.double
+                            )
+                        })
+                )
         }
     }
 }

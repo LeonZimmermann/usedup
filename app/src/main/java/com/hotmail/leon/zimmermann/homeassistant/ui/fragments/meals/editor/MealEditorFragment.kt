@@ -68,10 +68,10 @@ class MealEditorFragment : Fragment() {
                 }
             }).attachToRecyclerView(view.ingredients_list)
         }
-        viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { mealTemplateList ->
-            adapter.setConsumptionElementList(mealTemplateList)
+        viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { consumptionElementList ->
+            adapter.setConsumptionElementList(consumptionElementList)
             val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
-            val topMarginDimensionId = if (mealTemplateList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
+            val topMarginDimensionId = if (consumptionElementList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
             params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
             view.add_ingredients_button.layoutParams = params
         })
@@ -111,9 +111,9 @@ class MealEditorFragment : Fragment() {
         }
 
         fun onAddIngredientsButtonClicked(view: View) {
-            ConsumptionElementDialog { viewModel.addMealTemplate(it) }.show(
+            ConsumptionElementDialog { viewModel.addConsumptionElement(it) }.show(
                 fragmentManager!!,
-                "ConsumptionIngredientsDialog"
+                "ConsumptionElementDialog"
             )
         }
 

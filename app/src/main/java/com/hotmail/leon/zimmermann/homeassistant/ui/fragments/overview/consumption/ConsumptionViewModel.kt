@@ -6,8 +6,8 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
 
 class ConsumptionViewModel(application: Application) : AndroidViewModel(application) {
 
-    val productList: List<Product> = emptyList()
-    val mealWithIngredientsList: List<Meal> = emptyList()
+    val productList: List<Product> = ProductRepository.products.map { it.second }.toList()
+    val mealList: List<Meal> = emptyList()
     val templateList: List<Template> = emptyList()
 
     val measures: List<Measure> = emptyList()

@@ -16,6 +16,9 @@
         <action
                 android:id="@+id/action_overview_fragment_to_meal_editor_fragment"
                 app:destination="@id/meal_editor_fragment" />
+        <action
+                android:id="@+id/action_overview_fragment_to_template_editor_fragment"
+                app:destination="@id/template_editor_fragment" />
     </fragment>
     <fragment
             android:id="@+id/splash_screen_fragment"
@@ -60,4 +63,13 @@
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CameraFragment"
             android:label="Camera"
             tools:layout="@layout/camera_fragment" />
+    <fragment
+            android:id="@+id/template_editor_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.templates.TemplateEditorFragment"
+            android:label="Template Editor" >
+        <argument
+                android:name="templateId"
+                app:argType="string"
+                app:nullable="true" />
+    </fragment>
 </navigation>

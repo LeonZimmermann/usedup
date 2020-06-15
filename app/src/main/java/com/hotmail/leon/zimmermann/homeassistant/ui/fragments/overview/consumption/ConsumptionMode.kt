@@ -41,7 +41,7 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
 
 class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
     override val nameList: Array<String>
-        get() = viewModel.templateList.map { it.name }.toTypedArray()
+        get() = emptyArray()
 
     override fun getAdditionalFieldsView(context: Context): View? = null
 
