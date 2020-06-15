@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.MealEditorFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElementAdapter
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElementDialog
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHandler.RecyclerViewHandler
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CameraFragment
 import kotlinx.android.synthetic.main.meal_editor_fragment.*
@@ -27,7 +29,7 @@ class MealEditorFragment : Fragment() {
 
     private lateinit var viewModel: MealEditorViewModel
     private lateinit var binding: MealEditorFragmentBinding
-    private lateinit var adapter: MealTemplateAdapter
+    private lateinit var adapter: ConsumptionElementAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,10 @@ class MealEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
-        adapter = MealTemplateAdapter(context!!, ::onIngredientRemoved).apply {
+        adapter = ConsumptionElementAdapter(
+            context!!,
+            ::onIngredientRemoved
+        ).apply {
             ItemTouchHelper(object : RecyclerViewHandler(this) {
                 override fun getMovementFlags(
                     recyclerView: RecyclerView,
@@ -63,8 +68,8 @@ class MealEditorFragment : Fragment() {
                 }
             }).attachToRecyclerView(view.ingredients_list)
         }
-        viewModel.mealTemplateList.observe(viewLifecycleOwner, Observer { mealTemplateList ->
-            adapter.setMealTemplateList(mealTemplateList)
+        viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { mealTemplateList ->
+            adapter.setConsumptionElementList(mealTemplateList)
             val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
             val topMarginDimensionId = if (mealTemplateList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
             params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
@@ -91,9 +96,9 @@ class MealEditorFragment : Fragment() {
     }
 
     private fun onIngredientRemoved(position: Int) {
-        val consumptionTemplateList = viewModel.mealTemplateList.value!!
+        val consumptionTemplateList = viewModel.consumptionElementList.value!!
         consumptionTemplateList.removeAt(position)
-        viewModel.mealTemplateList.value = consumptionTemplateList
+        viewModel.consumptionElementList.value = consumptionTemplateList
     }
 
     inner class EventHandler {
@@ -106,7 +111,10 @@ class MealEditorFragment : Fragment() {
         }
 
         fun onAddIngredientsButtonClicked(view: View) {
-            MealIngredientsDialog().show(fragmentManager!!, "ConsumptionIngredientsDialog")
+            ConsumptionElementDialog { viewModel.addMealTemplate(it) }.show(
+                fragmentManager!!,
+                "ConsumptionIngredientsDialog"
+            )
         }
 
         fun onSaveDinnerButtonClicked(view: View) {

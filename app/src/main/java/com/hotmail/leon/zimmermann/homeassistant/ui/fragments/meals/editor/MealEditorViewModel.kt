@@ -8,20 +8,21 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElement
 import kotlinx.coroutines.launch
 import java.io.File
 
 class MealEditorViewModel(application: Application) : AndroidViewModel(application) {
     private val database = Firebase.firestore
-    val products: MutableLiveData<List<Pair<String, Product>>> = MutableLiveData(listOf())
-    val measures: MutableList<Pair<String, Measure>>
+    var products: List<Pair<String, Product>> = ProductRepository.products
+    val measures: MutableList<Pair<String, Measure>> = MeasureRepository.measures
 
     var nameString = MutableLiveData<String>()
     var durationString = MutableLiveData<String>()
     var descriptionString = MutableLiveData<String>()
     var instructionsString = MutableLiveData<String>()
-    val mealTemplateList: MutableLiveData<MutableList<MealTemplate>> by lazy {
-        MutableLiveData<MutableList<MealTemplate>>().apply {
+    val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> by lazy {
+        MutableLiveData<MutableList<ConsumptionElement>>().apply {
             value = mutableListOf()
         }
     }
@@ -47,10 +48,13 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
                 nameString.value = name
                 durationString.value = duration.toString()
                 ingredients?.let {
-                    mealTemplateList.value = it.map { ingredient ->
-                        val product = products.value!!.first { it.first == ingredient.product!!.id }.second
+                    consumptionElementList.value = it.map { ingredient ->
+                        val product = products.first { it.first == ingredient.product!!.id }.second
                         val measure = MeasureRepository.getMeasureForId(ingredient.measure!!.id)
-                        MealTemplate(product, Value(ingredient.value!!, measure))
+                        ConsumptionElement(
+                            product,
+                            Value(ingredient.value!!, measure)
+                        )
                     }.toMutableList()
                 }
                 descriptionString.value = description
@@ -59,34 +63,24 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    init {
-        database.collection(Product.COLLECTION_NAME).get().addOnSuccessListener { documents ->
-            val list = mutableListOf<Pair<String, Product>>()
-            for (document in documents)
-                list.add(Pair(document.id, document.toObject()))
-            products.value = list
-        }
-        measures = MeasureRepository.measures
-    }
-
-    fun addMealTemplate(mealTemplate: MealTemplate) {
-        val mealTemplateList = mealTemplateList.value
+    fun addMealTemplate(consumptionElement: ConsumptionElement) {
+        val mealTemplateList = consumptionElementList.value
         mealTemplateList?.let { list ->
-            list.firstOrNull { it.product == mealTemplate.product }?.apply {
-                this.value += mealTemplate.value
+            list.firstOrNull { it.product == consumptionElement.product }?.apply {
+                this.value += consumptionElement.value
             }
-                ?: list.add(mealTemplate)
+                ?: list.add(consumptionElement)
         }
-        this.mealTemplateList.value = mealTemplateList
+        this.consumptionElementList.value = mealTemplateList
     }
 
     fun addNewMealToDatabase() {
         // TODO Check if name is null and consumptionList empty (Validation)
         viewModelScope.launch {
-            val mealIngredientList = mealTemplateList.value!!.map { template ->
+            val mealIngredientList = consumptionElementList.value!!.map { template ->
                 MealIngredient(
                     database.collection(Product.COLLECTION_NAME)
-                        .document(products.value!!.first { it.second.name == template.product.name }.first),
+                        .document(products.first { it.second.name == template.product.name }.first),
                     database.collection(Measure.COLLECTION_NAME)
                         .document(measures.first { it.second.name == template.value.measure.name }.first),
                     template.value.double
