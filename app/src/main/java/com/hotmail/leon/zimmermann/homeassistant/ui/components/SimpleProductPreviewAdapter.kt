@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import kotlinx.android.synthetic.main.product_item.view.*
 
 class SimpleProductPreviewAdapter constructor(context: Context, private val onClickListener: View.OnClickListener? = null) :

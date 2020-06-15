@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.Meal
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 
 class DinnerListAdapter(context: Context, private val  onClickListener: View.OnClickListener) :

@@ -44,7 +44,7 @@
                 android:id="@+id/measure_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/category"
+                android:hint="@string/measure"
                 android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>

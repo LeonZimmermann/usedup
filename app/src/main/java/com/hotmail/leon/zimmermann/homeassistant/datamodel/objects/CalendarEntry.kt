@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel
+package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import java.sql.Date

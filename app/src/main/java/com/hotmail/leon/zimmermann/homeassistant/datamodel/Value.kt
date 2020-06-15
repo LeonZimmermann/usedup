@@ -1,6 +1,8 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel
 
-import android.util.Log
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toBase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toMeasure
 
 data class Value(var double: Double, var measure: Measure) {
     operator fun plus(other: Value): Value {

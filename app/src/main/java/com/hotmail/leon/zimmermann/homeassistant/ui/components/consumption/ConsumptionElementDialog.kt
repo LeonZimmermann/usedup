@@ -4,13 +4,11 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.Value
-import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.editor.MealEditorViewModel
 import kotlinx.android.synthetic.main.meal_ingredients_dialog.view.*
 import java.io.Serializable
 import java.lang.RuntimeException

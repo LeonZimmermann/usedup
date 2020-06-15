@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel
+package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore

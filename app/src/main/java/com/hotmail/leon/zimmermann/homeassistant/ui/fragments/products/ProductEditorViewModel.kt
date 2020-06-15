@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import kotlinx.coroutines.launch
 
 class ProductEditorViewModel : ViewModel() {
@@ -66,8 +66,18 @@ class ProductEditorViewModel : ViewModel() {
                     min,
                     max,
                     capacity,
-                    database.collection(Measure.COLLECTION_NAME).document(MeasureRepository.getId(measure.name)),
-                    database.collection(Category.COLLECTION_NAME).document(CategoryRepository.getId(category.name))
+                    database.collection(Measure.COLLECTION_NAME)
+                        .document(
+                            MeasureRepository.getId(
+                                measure.name
+                            )
+                        ),
+                    database.collection(Category.COLLECTION_NAME)
+                        .document(
+                            CategoryRepository.getId(
+                                category.name
+                            )
+                        )
                 )
             )
         }

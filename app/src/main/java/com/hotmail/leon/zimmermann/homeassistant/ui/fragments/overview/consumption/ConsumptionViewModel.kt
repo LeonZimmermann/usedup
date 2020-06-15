@@ -2,27 +2,20 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumpt
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 
 class ConsumptionViewModel(application: Application) : AndroidViewModel(application) {
+    val database = Firebase.firestore
+    val productList: MutableList<Pair<String, Product>> = ProductRepository.products
+    val mealList: MutableList<Pair<String, Meal>> = MealRepository.meals
+    val templateList: MutableList<Pair<String, Template>> = TemplateRepository.templates
+    val measures: MutableList<Pair<String, Measure>> = MeasureRepository.measures
 
-    val productList: List<Product> = ProductRepository.products.map { it.second }.toList()
-    val mealList: List<Meal> = emptyList()
-    val templateList: List<Template> = emptyList()
+    var productMode: ProductMode = ProductMode(this)
+    var templateMode: TemplateMode = TemplateMode(this)
+    var mealMode: MealMode = MealMode(this)
+    var consumptionMode: MutableLiveData<ConsumptionMode> = MutableLiveData()
 
-    val measures: List<Measure> = emptyList()
-    val categories: List<Category> = emptyList()
-
-    var productMode: ProductMode
-    var templateMode: TemplateMode
-    var mealMode: MealMode
-    var consumptionMode: MutableLiveData<ConsumptionMode>
-
-    init {
-        // TODO Init lists
-        productMode = ProductMode(this)
-        templateMode = TemplateMode(this)
-        mealMode = MealMode(this)
-        this.consumptionMode = MutableLiveData(productMode)
-    }
 }

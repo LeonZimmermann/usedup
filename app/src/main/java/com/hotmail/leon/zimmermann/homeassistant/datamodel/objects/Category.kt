@@ -1,9 +1,8 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel
+package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 
 data class Category(var name: String = "", var position: Int = 0) {

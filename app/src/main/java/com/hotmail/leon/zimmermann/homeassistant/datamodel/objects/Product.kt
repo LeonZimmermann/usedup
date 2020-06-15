@@ -1,6 +1,5 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel
+package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -9,16 +8,16 @@ import kotlin.math.floor
 import kotlin.math.max
 
 data class Product(
-    var name: String = "",
-    var quantity: Double = 0.0,
-    var min: Int = 0,
-    var max: Int = 0,
-    var capacity: Double = 0.0,
+    var name: String? = null,
+    var quantity: Double? = null,
+    var min: Int? = null,
+    var max: Int? = null,
+    var capacity: Double? = null,
     var measure: DocumentReference? = null,
     var category: DocumentReference? = null
 ) {
     val discrepancy: Int
-        get() = max(max - floor(quantity).toInt(), 0)
+        get() = max(max!! - floor(quantity!!).toInt(), 0)
 
     companion object {
         const val COLLECTION_NAME = "products"
@@ -34,4 +33,8 @@ object ProductRepository {
         }
         list
     }
+
+    fun getId(productName: String) = products.first { it.second.name == productName }.first
+    fun getProductForId(id: String) = products.first { it.first == id }.second
+    fun getProductForName(name: String) = products.first { it.second.name == name }.second
 }

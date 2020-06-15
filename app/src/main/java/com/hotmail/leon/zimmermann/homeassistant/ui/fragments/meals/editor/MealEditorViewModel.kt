@@ -8,6 +8,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElement
 import kotlinx.coroutines.launch
 import java.io.File
@@ -79,7 +80,11 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             database.collection(Meal.COLLECTION_NAME)
                 .add(
-                    Meal(name!!, duration, description, instructions, photoFile.toString(),
+                    Meal(name!!,
+                        duration,
+                        description,
+                        instructions,
+                        photoFile.toString(),
                         consumptionElementList.value!!.map { element ->
                             MealIngredient(
                                 database.collection(Product.COLLECTION_NAME)
