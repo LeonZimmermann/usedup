@@ -2,7 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions
 
 import kotlin.Exception
 
-class ConsumptionException @JvmOverloads constructor(
+open class ConsumptionException @JvmOverloads constructor(
     message: String? = null,
     cause: Throwable? = null,
     enableSuppression: Boolean = false,
