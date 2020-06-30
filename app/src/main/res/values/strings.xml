@@ -53,4 +53,7 @@
     <string name="add_product">Add Product</string>
     <string name="update_product">Update Product</string>
     <string name="consumption">Consumption</string>
+    <string name="products">Products</string>
+    <string name="templates">Templates</string>
+    <string name="meals">Meals</string>
 </resources>

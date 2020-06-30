@@ -11,14 +11,8 @@
             android:label="Overview"
             tools:layout="@layout/overview_fragment">
         <action
-                android:id="@+id/action_overview_fragment_to_product_editor_fragment"
-                app:destination="@id/product_editor_fragment" />
-        <action
-                android:id="@+id/action_overview_fragment_to_meal_editor_fragment"
-                app:destination="@id/meal_editor_fragment" />
-        <action
-                android:id="@+id/action_overview_fragment_to_template_editor_fragment"
-                app:destination="@id/template_editor_fragment" />
+                android:id="@+id/action_overview_fragment_to_management_fragment"
+                app:destination="@id/management_fragment" />
     </fragment>
     <fragment
             android:id="@+id/splash_screen_fragment"
@@ -71,5 +65,20 @@
                 android:name="templateId"
                 app:argType="string"
                 app:nullable="true" />
+    </fragment>
+    <fragment
+            android:id="@+id/management_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.management.ManagementFragment"
+            android:label="Management"
+            tools:layout="@layout/management_fragment" >
+        <action
+                android:id="@+id/action_management_fragment_to_product_editor_fragment"
+                app:destination="@id/product_editor_fragment" />
+        <action
+                android:id="@+id/action_management_fragment_to_template_editor_fragment"
+                app:destination="@id/template_editor_fragment" />
+        <action
+                android:id="@+id/action_management_fragment_to_meal_editor_fragment"
+                app:destination="@id/meal_editor_fragment" />
     </fragment>
 </navigation>
