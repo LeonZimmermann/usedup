@@ -77,7 +77,7 @@ class OverviewFragment : Fragment() {
 
     private fun initializeCalendarCard() {
         calendar_button.setOnClickListener {
-            // TODO Add Navigation
+            findNavController().navigate(R.id.action_overview_fragment_to_timeline_fragment)
         }
     }
 

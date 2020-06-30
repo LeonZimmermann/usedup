@@ -13,6 +13,10 @@
         <action
                 android:id="@+id/action_overview_fragment_to_management_fragment"
                 app:destination="@id/management_fragment" />
+        <action
+                android:id="@+id/action_overview_fragment_to_timeline_fragment"
+                app:destination="@id/timeline_fragment"
+                app:launchSingleTop="true" />
     </fragment>
     <fragment
             android:id="@+id/splash_screen_fragment"
@@ -80,5 +84,29 @@
         <action
                 android:id="@+id/action_management_fragment_to_meal_editor_fragment"
                 app:destination="@id/meal_editor_fragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/calendar_week_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.week.CalendarWeekFragment"
+            android:label="Calendar Week"
+            tools:layout="@layout/calendar_week_fragment" >
+        <action
+                android:id="@+id/action_calendar_week_fragment_to_timeline_fragment"
+                app:destination="@id/timeline_fragment"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/calendar_week_fragment"
+                app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+            android:id="@+id/timeline_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline.TimelineFragment"
+            android:label="Timeline"
+            tools:layout="@layout/timeline_fragment" >
+        <action
+                android:id="@+id/action_timeline_fragment_to_calendar_week_fragment"
+                app:destination="@id/calendar_week_fragment"
+                app:launchSingleTop="true"
+                app:popUpTo="@id/timeline_fragment"
+                app:popUpToInclusive="true" />
     </fragment>
 </navigation>
