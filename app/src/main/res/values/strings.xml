@@ -2,7 +2,7 @@
     <!-- Facebook -->
     <string name="facebook_application_id" translatable="false">535190474056037</string>
     <string name="facebook_login_protocol_scheme" translatable="false">535190474056037</string>
-    
+
     <string name="app_name">HomeAssistant</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
@@ -56,4 +56,10 @@
     <string name="products">Products</string>
     <string name="templates">Templates</string>
     <string name="meals">Meals</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">About</string>
+    <string name="imprint">Imprint</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
 </resources>

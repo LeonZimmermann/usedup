@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.about.AboutFragment"
+        android:layout_margin="8dp">
+
+    <TextView
+            android:id="@+id/tos_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/terms_of_service"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/tos_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODO..."
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tos_title"
+            app:layout_constraintStart_toStartOf="@+id/tos_title"
+            app:layout_constraintTop_toBottomOf="@+id/tos_title" />
+
+    <TextView
+            android:id="@+id/privacy_policy_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/privacy_policy"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tos_text" />
+
+    <TextView
+            android:id="@+id/privacy_policy_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODO..."
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_policy_title" />
+
+    <TextView
+            android:id="@+id/imprint_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/imprint"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_policy_text" />
+
+    <TextView
+            android:id="@+id/imprint_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="TODO..."
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imprint_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>

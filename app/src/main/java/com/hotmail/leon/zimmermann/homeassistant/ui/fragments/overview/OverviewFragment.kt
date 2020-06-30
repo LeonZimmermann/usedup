@@ -56,6 +56,10 @@ class OverviewFragment : Fragment() {
             true
         }
         // TODO Add Settings
+        R.id.about_option -> {
+            findNavController().navigate(R.id.action_global_about_fragment)
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
