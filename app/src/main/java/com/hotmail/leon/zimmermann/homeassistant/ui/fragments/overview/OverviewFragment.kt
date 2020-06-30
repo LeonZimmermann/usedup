@@ -69,7 +69,7 @@ class OverviewFragment : Fragment() {
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
         // TODO Init SimpleProductPreviewAdapter
         shopping_button.setOnClickListener {
-            // TODO Add Navigation
+            findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
         }
     }
 
