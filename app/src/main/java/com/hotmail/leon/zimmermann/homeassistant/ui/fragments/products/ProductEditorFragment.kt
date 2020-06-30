@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ProductEditorFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import kotlinx.android.synthetic.main.product_editor_fragment.*
 
 class ProductEditorFragment : Fragment() {
@@ -55,8 +57,12 @@ class ProductEditorFragment : Fragment() {
                 viewModel.measureList.map { it.second.name })
         )
         save_button.setOnClickListener {
-            viewModel.save(category_input.text.toString(), measure_input.text.toString())
-            findNavController().navigateUp()
+            try {
+                viewModel.save(category_input.text.toString(), measure_input.text.toString())
+                findNavController().navigateUp()
+            } catch (e: InvalidInputException) {
+                e.message?.let { Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()  }
+            }
         }
     }
 

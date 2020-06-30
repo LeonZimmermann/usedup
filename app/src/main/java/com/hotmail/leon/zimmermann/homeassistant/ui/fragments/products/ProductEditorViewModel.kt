@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class ProductEditorViewModel : ViewModel() {
 
     var productId: String? = null
         private set
+
     fun setProductId(productId: String, initCategory: (Category) -> Unit, initMeasure: (Measure) -> Unit) {
         this.productId = productId
         database.collection(Product.COLLECTION_NAME).document(productId).get().addOnSuccessListener { document ->
@@ -36,18 +38,31 @@ class ProductEditorViewModel : ViewModel() {
         }
     }
 
-    // TODO Add Validation
     fun save(categoryText: String, measureText: String) {
+        when {
+            nameInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a name")
+            categoryText.isBlank() -> throw InvalidInputException("Select a category")
+            capacityInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a capacity")
+            measureText.isBlank() -> throw InvalidInputException("Select a measure")
+            currentInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert the current quantity")
+            minInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a minimum quantity")
+            maxInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a maximum quantity")
+            else -> saveAfterValidation(categoryText, measureText)
+        }
+    }
+
+    private fun saveAfterValidation(categoryText: String, measureText: String) {
         val name = nameInputValue.value!!
-        val category = CategoryRepository.getCategoryForId(categoryText)
+        val category = CategoryRepository.getCategoryForName(categoryText)
         val capacity = capacityInputValue.value!!.toDouble()
-        val measure = MeasureRepository.getMeasureForId(measureText)
+        val measure = MeasureRepository.getMeasureForName(measureText)
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
         if (productId == null) saveNewProduct(name, category, capacity, measure, quantity, min, max)
         else updateExistingProduct(name, category, capacity, measure, quantity, min, max)
     }
+
 
     private fun saveNewProduct(
         name: String,

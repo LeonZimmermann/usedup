@@ -40,7 +40,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
             notifyDataSetChanged()
         }
 
-    var mode: Mode = Mode.PRODUCT
+    var mode: ManagementFragment.Mode = ManagementFragment.Mode.PRODUCT
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -107,9 +107,9 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            Mode.PRODUCT.ordinal -> ProductViewHolder(inflater.inflate(R.layout.product_browser_item, parent, false))
-            Mode.TEMPLATE.ordinal -> TemplateViewHolder(inflater.inflate(R.layout.template_browser_item, parent, false))
-            Mode.MEAL.ordinal -> MealViewHolder(inflater.inflate(R.layout.meal_browser_item, parent, false))
+            ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(inflater.inflate(R.layout.product_browser_item, parent, false))
+            ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(inflater.inflate(R.layout.template_browser_item, parent, false))
+            ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(inflater.inflate(R.layout.meal_browser_item, parent, false))
             else -> throw RuntimeException("Invalid viewType: $viewType")
         }
     }
@@ -118,19 +118,15 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (mode) {
-            Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
-            Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
-            Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
+            ManagementFragment.Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
+            ManagementFragment.Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
+            ManagementFragment.Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
         }
     }
 
     override fun getItemCount() = when (mode) {
-        Mode.PRODUCT -> products.size
-        Mode.TEMPLATE -> templates.size
-        Mode.MEAL -> meals.size
-    }
-
-    enum class Mode {
-        PRODUCT, TEMPLATE, MEAL
+        ManagementFragment.Mode.PRODUCT -> products.size
+        ManagementFragment.Mode.TEMPLATE -> templates.size
+        ManagementFragment.Mode.MEAL -> meals.size
     }
 }
