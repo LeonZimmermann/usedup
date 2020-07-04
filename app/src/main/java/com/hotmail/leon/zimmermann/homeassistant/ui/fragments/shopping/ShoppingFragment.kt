@@ -1,19 +1,17 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import kotlinx.android.synthetic.main.shopping_fragment.*
-import org.jetbrains.anko.support.v4.toast
 
 class ShoppingFragment : Fragment() {
     private lateinit var viewModel: ShoppingViewModel
@@ -46,9 +44,9 @@ class ShoppingFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = ShoppingListAdapter(context!!)
-        adapter.setData(CategoryRepository.categories.map { it.second },
+        adapter.setData(
+            CategoryRepository.categories,
             ProductRepository.products
-                .map { it.second }
                 .filter { it.discrepancy > 0 }
                 .map { ShoppingProduct(it) }
                 .groupBy { CategoryRepository.getCategoryForId(it.product.category!!.id) })

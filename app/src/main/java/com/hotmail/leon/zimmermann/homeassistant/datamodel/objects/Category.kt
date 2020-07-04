@@ -1,26 +1,27 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.PropertyName
 
-data class Category(var name: String = "", var position: Int = 0) {
+class Category(
+    @DocumentId private val _id: String? = null,
+    @PropertyName("name") private var _name: String? = null,
+    @PropertyName("position") private var _position: Int? = null
+) {
+    val id: String
+        get() = _id!!
+    var name: String
+        set(value) {
+            _name = value
+        }
+        get() = _name!!
+    var position: Int
+        set(value) {
+            _position = value
+        }
+        get() = _position!!
+
     companion object {
         const val COLLECTION_NAME = "categories"
     }
-}
-
-object CategoryRepository {
-    val categories = mutableListOf<Pair<String, Category>>()
-
-    fun init() {
-        Tasks.await(Firebase.firestore.collection(Category.COLLECTION_NAME).get()).forEach { document ->
-            categories.add(Pair(document.id, document.toObject()))
-        }
-    }
-
-    fun getId(categoryName: String) = categories.first { it.second.name == categoryName }.first
-    fun getCategoryForId(id: String) = categories.first { it.first == id }.second
-    fun getCategoryForName(name: String) = categories.first { it.second.name == name }.second
 }

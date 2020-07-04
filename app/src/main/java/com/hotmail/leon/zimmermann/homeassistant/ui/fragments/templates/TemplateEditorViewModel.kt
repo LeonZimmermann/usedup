@@ -6,15 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElement
 import kotlinx.coroutines.launch
 
 class TemplateEditorViewModel : ViewModel() {
     private val database = Firebase.firestore
-    var products: List<Pair<String, Product>> = ProductRepository.products
-    val measures: MutableList<Pair<String, Measure>> = MeasureRepository.measures
+    var products: List<Product> = ProductRepository.products
+    val measures: MutableList<Measure> = MeasureRepository.measures
 
     var nameString = MutableLiveData<String>()
     val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> by lazy {
@@ -34,13 +35,15 @@ class TemplateEditorViewModel : ViewModel() {
         database.collection(Template.COLLECTION_NAME).document(templateId).get().addOnSuccessListener { result ->
             result.toObject<Template>()?.apply {
                 nameString.value = name
-                components?.let {
+                components.let {
                     consumptionElementList.value = it.map { element ->
-                        val product = products.first { it.first == element.product!!.id }.second
-                        val measure = MeasureRepository.getMeasureForId(element.measure!!.id)
-                        ConsumptionElement(
-                            product,
-                            Value(element.value!!, measure)
+                        val product = ProductRepository.getProductForId(element.product.id)
+                        val measure = MeasureRepository.getMeasureForId(element.measure.id)
+                        ConsumptionElement(product,
+                            Value(
+                                element.value,
+                                measure
+                            )
                         )
                     }.toMutableList()
                 }
@@ -66,13 +69,12 @@ class TemplateEditorViewModel : ViewModel() {
             database.collection(Template.COLLECTION_NAME)
                 .add(
                     Template(
+                        null,
                         name!!,
                         consumptionElementList.value!!.map { element ->
                             TemplateComponent(
-                                database.collection(Product.COLLECTION_NAME)
-                                    .document(products.first { it.second.name == element.product.name }.first),
-                                database.collection(Measure.COLLECTION_NAME)
-                                    .document(measures.first { it.second.name == element.value.measure.name }.first),
+                                database.collection(Product.COLLECTION_NAME).document(element.product.id),
+                                database.collection(Measure.COLLECTION_NAME).document(element.value.measure.id),
                                 element.value.double
                             )
                         })

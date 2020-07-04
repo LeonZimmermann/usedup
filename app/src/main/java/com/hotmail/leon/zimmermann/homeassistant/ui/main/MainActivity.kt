@@ -14,8 +14,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {

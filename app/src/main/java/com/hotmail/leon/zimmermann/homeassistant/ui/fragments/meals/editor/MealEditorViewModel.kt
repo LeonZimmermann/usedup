@@ -7,16 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElement
 import kotlinx.coroutines.launch
 import java.io.File
 
 class MealEditorViewModel(application: Application) : AndroidViewModel(application) {
     private val database = Firebase.firestore
-    var products: List<Pair<String, Product>> = ProductRepository.products
-    val measures: MutableList<Pair<String, Measure>> = MeasureRepository.measures
+    var products: List<Product> = ProductRepository.products
+    val measures: MutableList<Measure> = MeasureRepository.measures
 
     var nameString = MutableLiveData<String>()
     var durationString = MutableLiveData<String>()
@@ -50,11 +51,14 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
                 durationString.value = duration.toString()
                 ingredients?.let {
                     consumptionElementList.value = it.map { ingredient ->
-                        val product = products.first { it.first == ingredient.product!!.id }.second
+                        val product = products.first { it.id == ingredient.product!!.id }
                         val measure = MeasureRepository.getMeasureForId(ingredient.measure!!.id)
                         ConsumptionElement(
                             product,
-                            Value(ingredient.value!!, measure)
+                            Value(
+                                ingredient.value!!,
+                                measure
+                            )
                         )
                     }.toMutableList()
                 }
@@ -80,17 +84,16 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             database.collection(Meal.COLLECTION_NAME)
                 .add(
-                    Meal(name!!,
+                    Meal(null,
+                        name!!,
                         duration,
                         description,
                         instructions,
                         photoFile.toString(),
                         consumptionElementList.value!!.map { element ->
                             MealIngredient(
-                                database.collection(Product.COLLECTION_NAME)
-                                    .document(products.first { it.second.name == element.product.name }.first),
-                                database.collection(Measure.COLLECTION_NAME)
-                                    .document(measures.first { it.second.name == element.value.measure.name }.first),
+                                database.collection(Product.COLLECTION_NAME).document(element.product.id),
+                                database.collection(Measure.COLLECTION_NAME).document(element.value.measure.id),
                                 element.value.double
                             )
                         })

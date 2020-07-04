@@ -1,6 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions
 
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 
 class NotEnoughException(missingQuantity: List<Pair<Product, Value>>) :

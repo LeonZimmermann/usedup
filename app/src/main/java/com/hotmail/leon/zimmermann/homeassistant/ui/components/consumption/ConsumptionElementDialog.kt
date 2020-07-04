@@ -7,8 +7,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import kotlinx.android.synthetic.main.meal_ingredients_dialog.view.*
 import java.io.Serializable
 import java.lang.RuntimeException
@@ -41,23 +41,27 @@ class ConsumptionElementDialog(callback: ((ConsumptionElement) -> Unit)? = null)
                 ArrayAdapter(
                     requireContext(),
                     R.layout.list_item,
-                    viewModel.products.map { it.second.name }
+                    viewModel.products.map { it.name }
                 )
             )
             view.measure_input.setAdapter(
                 ArrayAdapter(
                     requireContext(),
                     R.layout.list_item,
-                    MeasureRepository.measures.map { it.second.name })
+                    MeasureRepository.measures.map { it.name })
             )
             MaterialAlertDialogBuilder(context)
                 .setView(view)
                 .setPositiveButton(R.string.submit) { _, _ ->
-                    val product = viewModel.products.map { it.second }
-                        .first { it.name == view.name_input.text.toString() }
+                    val product = viewModel.products.first { it.name == view.name_input.text.toString() }
                     val measure = MeasureRepository.getMeasureForName(view.measure_input.text.toString())
                     val consumption = view.consumption_input.text.toString().toDouble()
-                    callback.call(ConsumptionElement(product, Value(consumption, measure)))
+                    callback.call(ConsumptionElement(product,
+                        Value(
+                            consumption,
+                            measure
+                        )
+                    ))
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, _ -> dialogInterface.cancel() }
                 .create()

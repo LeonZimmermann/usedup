@@ -1,40 +1,66 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.PropertyName
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.MutableNotNullDelegate
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.NotNullDelegate
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.properties.Delegates
 
-data class Product(
-    var name: String? = null,
-    var quantity: Double? = null,
-    var min: Int? = null,
-    var max: Int? = null,
-    var capacity: Double? = null,
-    var measure: DocumentReference? = null,
-    var category: DocumentReference? = null
+class Product(
+    @DocumentId private val _id: String? = null,
+    @PropertyName("name") private var _name: String? = null,
+    @PropertyName("quantity") private var _quantity: Double? = null,
+    @PropertyName("min") private var _min: Int? = null,
+    @PropertyName("max") private var _max: Int? = null,
+    @PropertyName("capacity") private var _capacity: Double? = null,
+    @PropertyName("measure") private var _measure: DocumentReference? = null,
+    @PropertyName("category") private var _category: DocumentReference? = null
 ) {
+    val id: String by NotNullDelegate(_id)
+    var name: String
+        set(value) {
+            _name = value
+        }
+        get() = _name!!
+    var quantity: Double
+        set(value) {
+            _quantity = value
+        }
+        get() = _quantity!!
+    var min: Int
+        set(value) {
+            _min = value
+        }
+        get() = _min!!
+    var max: Int
+        set(value) {
+            _max = value
+        }
+        get() = _max!!
+    var capacity: Double
+        set(value) {
+            _capacity = value
+        }
+        get() = _capacity!!
+    var measure: DocumentReference
+        set(value) {
+            _measure = value
+        }
+        get() = _measure!!
+    var category: DocumentReference
+        set(value) {
+            _category = value
+        }
+        get() = _category!!
+
     val discrepancy: Int
-        get() = max(max!! - floor(quantity!!).toInt(), 0)
+        get() = max(max - floor(quantity).toInt(), 0)
 
     companion object {
         const val COLLECTION_NAME = "products"
     }
-}
-
-object ProductRepository {
-    val products: MutableList<Pair<String, Product>> by lazy {
-        val list: MutableList<Pair<String, Product>> = mutableListOf()
-        Firebase.firestore.collection(Product.COLLECTION_NAME).get().addOnSuccessListener { documents ->
-            for (document in documents)
-                list.add(Pair(document.id, document.toObject()))
-        }
-        list
-    }
-
-    fun getId(productName: String) = products.first { it.second.name == productName }.first
-    fun getProductForId(id: String) = products.first { it.first == id }.second
-    fun getProductForName(name: String) = products.first { it.second.name == name }.second
 }

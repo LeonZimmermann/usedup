@@ -48,13 +48,13 @@ class ProductEditorFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_item,
-                viewModel.categoryList.map { it.second.name })
+                viewModel.categoryList.map { it.name })
         )
         measure_input.setAdapter(
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_item,
-                viewModel.measureList.map { it.second.name })
+                viewModel.measureList.map { it.name })
         )
         save_button.setOnClickListener {
             try {

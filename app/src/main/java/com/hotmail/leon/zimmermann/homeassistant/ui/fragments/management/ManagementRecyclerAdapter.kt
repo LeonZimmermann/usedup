@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Template
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
@@ -22,19 +21,19 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
 
     private val inflater = LayoutInflater.from(context)
 
-    var products: List<Pair<String, Product>> = emptyList()
+    var products: List<Product> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var templates: List<Pair<String, Template>> = emptyList()
+    var templates: List<Template> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var meals: List<Pair<String, Meal>> = emptyList()
+    var meals: List<Meal> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -51,15 +50,15 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
         private val managementItemQuantityTv: TextView = itemView.management_item_quantity_tv
         private val managementItemCapacityTv: TextView = itemView.management_item_capacity_tv
 
-        fun init(data: Pair<String, Product>) {
+        fun init(product: Product) {
             itemView.setOnClickListener {
                 navController.navigate(
                     R.id.action_management_fragment_to_product_editor_fragment, bundleOf(
-                        "productId" to data.first
+                        "productId" to product.id
                     )
                 )
             }
-            data.second.apply {
+            product.apply {
                 nameTv.text = name
                 managementItemQuantityTv.text = quantity.toString()
                 managementItemCapacityTv.text = capacity.toString()
@@ -70,15 +69,15 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
     inner class TemplateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val templateNameTv: TextView = itemView.template_name
 
-        fun init(data: Pair<String, Template>) {
+        fun init(template: Template) {
             itemView.setOnClickListener {
                 navController.navigate(
                     R.id.action_management_fragment_to_template_editor_fragment, bundleOf(
-                        "templateId" to data.first
+                        "templateId" to template.id
                     )
                 )
             }
-            data.second.apply {
+            template.apply {
                 templateNameTv.text = name
             }
         }
@@ -89,15 +88,15 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
         private val durationTv: TextView = itemView.dinner_item_duration_tv
         private val shortDescriptionTv: TextView = itemView.dinner_item_short_description_tv
 
-        fun init(data: Pair<String, Meal>) {
+        fun init(meal: Meal) {
             itemView.setOnClickListener {
                 navController.navigate(
                     R.id.action_management_fragment_to_meal_editor_fragment, bundleOf(
-                        "mealId" to data.first
+                        "mealId" to meal.id
                     )
                 )
             }
-            data.second.apply {
+            meal.apply {
                 nameTv.text = name
                 durationTv.text = duration.toString()
                 shortDescriptionTv.text = description

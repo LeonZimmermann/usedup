@@ -6,6 +6,9 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import kotlinx.coroutines.launch
 
 class ProductEditorViewModel : ViewModel() {
@@ -59,68 +62,9 @@ class ProductEditorViewModel : ViewModel() {
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
-        if (productId == null) saveNewProduct(name, category, capacity, measure, quantity, min, max)
-        else updateExistingProduct(name, category, capacity, measure, quantity, min, max)
-    }
-
-
-    private fun saveNewProduct(
-        name: String,
-        category: Category,
-        capacity: Double,
-        measure: Measure,
-        quantity: Double,
-        min: Int,
-        max: Int
-    ) {
         viewModelScope.launch {
-            database.collection(Product.COLLECTION_NAME).add(
-                Product(
-                    name,
-                    quantity,
-                    min,
-                    max,
-                    capacity,
-                    database.collection(Measure.COLLECTION_NAME)
-                        .document(
-                            MeasureRepository.getId(
-                                measure.name
-                            )
-                        ),
-                    database.collection(Category.COLLECTION_NAME)
-                        .document(
-                            CategoryRepository.getId(
-                                category.name
-                            )
-                        )
-                )
-            )
-        }
-    }
-
-    private fun updateExistingProduct(
-        name: String,
-        category: Category,
-        capacity: Double,
-        measure: Measure,
-        quantity: Double,
-        min: Int,
-        max: Int
-    ) {
-        viewModelScope.launch {
-            database.collection(Product.COLLECTION_NAME).document(productId!!).update(
-                mapOf(
-                    "name" to name,
-                    "category" to database.collection(Category.COLLECTION_NAME)
-                        .document(CategoryRepository.getId(category.name)),
-                    "capacity" to capacity,
-                    "measure" to database.collection(Measure.COLLECTION_NAME)
-                        .document(MeasureRepository.getId(measure.name)),
-                    "quantity" to quantity,
-                    "min" to min,
-                    "max" to max
-                )
-            )
+            if (productId == null) ProductRepository.addProduct(name, category, capacity, measure, quantity, min, max)
+            else ProductRepository.updateProduct(productId!!, name, category, capacity, measure, quantity, min, max)
         }
     }
 }
