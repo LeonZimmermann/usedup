@@ -33,9 +33,29 @@ class MealEditorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initViewModel()
+        initMealIdAndPhotoFile(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.meal_editor_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initDatabinding(view)
+        initAdapter(view)
+        initIngredientsList(view)
+        initImageView()
+    }
+
+    private fun initViewModel() {
         viewModel = activity?.run {
             ViewModelProviders.of(this).get(MealEditorViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+    }
+
+    private fun initMealIdAndPhotoFile(savedInstanceState: Bundle?) {
         arguments?.apply {
             val mealId = getSerializable(MEAL_ID) as? String?
             mealId?.let { viewModel.setMealId(it) }
@@ -47,17 +67,15 @@ class MealEditorFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.meal_editor_fragment, container, false)
+    private fun initDatabinding(view: View) {
+        binding = MealEditorFragmentBinding.bind(view)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.eventHandler = EventHandler()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initDatabinding(view)
-        adapter = ConsumptionElementAdapter(
-            context!!,
-            ::onIngredientRemoved
-        ).apply {
+    private fun initAdapter(view: View) {
+        adapter = ConsumptionElementAdapter(context!!, ::onIngredientRemoved).apply {
             ItemTouchHelper(object : RecyclerViewHandler(this) {
                 override fun getMovementFlags(
                     recyclerView: RecyclerView,
@@ -75,9 +93,14 @@ class MealEditorFragment : Fragment() {
             params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
             view.add_ingredients_button.layoutParams = params
         })
+    }
+
+    private fun initIngredientsList(view: View) {
         view.ingredients_list.adapter = adapter
         view.ingredients_list.layoutManager = LinearLayoutManager(context)
+    }
 
+    private fun initImageView() {
         viewModel.photoFile?.let {
             val bitmap = BitmapFactory.decodeStream(it.inputStream())
             consumption_creation_image_view.setImageBitmap(bitmap)
@@ -86,13 +109,6 @@ class MealEditorFragment : Fragment() {
                 scaleType = ImageView.ScaleType.FIT_CENTER
             }
         }
-    }
-
-    private fun initDatabinding(view: View) {
-        binding = MealEditorFragmentBinding.bind(view)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.eventHandler = EventHandler()
     }
 
     private fun onIngredientRemoved(position: Int) {

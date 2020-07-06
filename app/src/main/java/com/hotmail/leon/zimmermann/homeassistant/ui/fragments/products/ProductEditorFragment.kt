@@ -21,17 +21,8 @@ class ProductEditorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[ProductEditorViewModel::class.java]
-        arguments?.apply {
-            val productId = getSerializable(PRODUCT_ID) as? String?
-            // TODO Implement Callbacks
-            productId?.let { viewModel.setProductId(it, {}, {}) }
-        }
-        savedInstanceState?.apply {
-            val productId = getSerializable(PRODUCT_ID) as? String?
-            // TODO Implement Callbacks
-            productId?.let { viewModel.setProductId(it, {}, {}) }
-        }
+        initViewModel()
+        initProductId(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -44,18 +35,47 @@ class ProductEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
+        initCategoryInput()
+        initMeasureInput()
+        initSaveButton(view)
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this)[ProductEditorViewModel::class.java]
+    }
+
+    private fun initProductId(savedInstanceState: Bundle?) {
+        arguments?.apply {
+            val productId = getSerializable(PRODUCT_ID) as? String?
+            // TODO Implement Callbacks
+            productId?.let { viewModel.setProductId(it, {}, {}) }
+        }
+        savedInstanceState?.apply {
+            val productId = getSerializable(PRODUCT_ID) as? String?
+            // TODO Implement Callbacks
+            productId?.let { viewModel.setProductId(it, {}, {}) }
+        }
+    }
+
+    private fun initCategoryInput() {
         category_input.setAdapter(
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_item,
                 viewModel.categoryList.map { it.name })
         )
+    }
+
+    private fun initMeasureInput() {
         measure_input.setAdapter(
             ArrayAdapter(
                 requireContext(),
                 R.layout.list_item,
                 viewModel.measureList.map { it.name })
         )
+    }
+
+    private fun initSaveButton(view: View) {
         save_button.setOnClickListener {
             try {
                 viewModel.save(category_input.text.toString(), measure_input.text.toString())

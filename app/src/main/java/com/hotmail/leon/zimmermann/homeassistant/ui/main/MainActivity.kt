@@ -27,16 +27,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+        initNavigation()
+        initData()
+        authenticate()
+    }
+
+    private fun initNavigation() {
         navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private fun initData() {
         databaseInitThread = thread {
             CategoryRepository.init()
             MeasureRepository.init()
-            // TODO Remove
-            Log.d("DB_LOAD_DEBUG", "database init finished")
         }
-        authenticate()
     }
 
     private fun authenticate() {

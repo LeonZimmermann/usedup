@@ -32,15 +32,8 @@ class TemplateEditorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TemplateEditorViewModel::class.java)
-        arguments?.apply {
-            val templateId = getSerializable(TEMPLATE_ID) as? String?
-            templateId?.let { viewModel.setTemplateId(it) }
-        }
-        savedInstanceState?.apply {
-            val templateId = getSerializable(TEMPLATE_ID) as? String?
-            templateId?.let { viewModel.setTemplateId(it) }
-        }
+        initViewModel()
+        initTemplateId(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -53,6 +46,33 @@ class TemplateEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
+        initAdapter(view)
+        initIngredientsList(view)
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(TemplateEditorViewModel::class.java)
+    }
+
+    private fun initTemplateId(savedInstanceState: Bundle?) {
+        arguments?.apply {
+            val templateId = getSerializable(TEMPLATE_ID) as? String?
+            templateId?.let { viewModel.setTemplateId(it) }
+        }
+        savedInstanceState?.apply {
+            val templateId = getSerializable(TEMPLATE_ID) as? String?
+            templateId?.let { viewModel.setTemplateId(it) }
+        }
+    }
+
+    private fun initDatabinding(view: View) {
+        binding = TemplateEditorFragmentBinding.bind(view)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.eventHandler = EventHandler()
+    }
+
+    private fun initAdapter(view: View) {
         adapter = ConsumptionElementAdapter(
             context!!,
             ::onComponentRemoved
@@ -74,15 +94,11 @@ class TemplateEditorFragment : Fragment() {
             params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
             view.add_component_button.layoutParams = params
         })
-        view.ingredients_list.adapter = adapter
-        view.ingredients_list.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun initDatabinding(view: View) {
-        binding = TemplateEditorFragmentBinding.bind(view)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.eventHandler = EventHandler()
+    private fun initIngredientsList(view: View) {
+        view.ingredients_list.adapter = adapter
+        view.ingredients_list.layoutManager = LinearLayoutManager(context)
     }
 
     private fun onComponentRemoved(position: Int) {

@@ -22,7 +22,7 @@ class ConsumptionFragmentComponent : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
+        initViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,36 +32,56 @@ class ConsumptionFragmentComponent : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDatabinding(view)
-        product_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.productMode }
-        template_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.templateMode }
-        meal_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.mealMode }
-        viewModel.consumptionMode = MutableLiveData(viewModel.productMode)
-        viewModel.consumptionMode.observe(viewLifecycleOwner, Observer { consumptionMode ->
-            name_input.setAdapter(
-                ArrayAdapter(
-                    context!!,
-                    android.R.layout.simple_list_item_1,
-                    consumptionMode.nameList
-                )
-            )
-            name_input.setText("")
-            additionalFieldsContainer.removeAllViews()
-            consumptionMode.getAdditionalFieldsView(context!!)?.let {
-                additionalFieldsContainer.addView(it)
-            }
-            consume_button.setOnClickListener {
-                try {
-                    consumptionMode.consume(view)
-                } catch (e: ConsumptionException) {
-                    Snackbar.make(view, e.message!!, Snackbar.LENGTH_LONG).show()
-                }
-            }
-        })
+        initLayout(view)
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
     }
 
     private fun initDatabinding(view: View) {
         binding = ConsumptionFragmentComponentBinding.bind(view)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
+
+    private fun initLayout(view: View) {
+        product_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.productMode }
+        template_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.templateMode }
+        meal_mode_button.setOnClickListener { viewModel.consumptionMode.value = viewModel.mealMode }
+        viewModel.consumptionMode = MutableLiveData(viewModel.productMode)
+        viewModel.consumptionMode.observe(viewLifecycleOwner, Observer { consumptionMode ->
+            initNameInput(consumptionMode)
+            initAdditionalFields(consumptionMode)
+            initConsumeButton(view, consumptionMode)
+        })
+    }
+
+    private fun initNameInput(consumptionMode: ConsumptionMode) {
+        name_input.setAdapter(
+            ArrayAdapter(
+                context!!,
+                android.R.layout.simple_list_item_1,
+                consumptionMode.nameList
+            )
+        )
+        name_input.setText("")
+    }
+
+    private fun initAdditionalFields(consumptionMode: ConsumptionMode) {
+        additionalFieldsContainer.removeAllViews()
+        consumptionMode.getAdditionalFieldsView(context!!)?.let {
+            additionalFieldsContainer.addView(it)
+        }
+    }
+
+    private fun initConsumeButton(view: View, consumptionMode: ConsumptionMode) {
+        consume_button.setOnClickListener {
+            try {
+                consumptionMode.consume(view)
+            } catch (e: ConsumptionException) {
+                Snackbar.make(view, e.message!!, Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 }
