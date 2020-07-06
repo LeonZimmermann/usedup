@@ -2,8 +2,6 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.MutableNotNullDelegate
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.NotNullDelegate
 
 class Measure(
     @DocumentId private val _id: String? = null,

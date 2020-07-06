@@ -2,13 +2,9 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.PropertyName
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.MutableNotNullDelegate
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.NotNullDelegate
 import kotlin.math.floor
 import kotlin.math.max
-import kotlin.properties.Delegates
 
 class Product(
     @DocumentId private val _id: String? = null,
@@ -20,7 +16,8 @@ class Product(
     @PropertyName("measure") private var _measure: DocumentReference? = null,
     @PropertyName("category") private var _category: DocumentReference? = null
 ) {
-    val id: String by NotNullDelegate(_id)
+    val id: String
+        get() = _id!!
     var name: String
         set(value) {
             _name = value

@@ -3,8 +3,6 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.MutableNotNullDelegate
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.NotNullDelegate
 
 class Template(
     @DocumentId private val _id: String? = null,
