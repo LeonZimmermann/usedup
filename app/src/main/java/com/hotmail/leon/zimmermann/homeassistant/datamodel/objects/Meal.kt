@@ -5,7 +5,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
 
 class Meal(
-    @DocumentId private val _id: String? = null,
     @PropertyName("name") private var _name: String? = null,
     @PropertyName("duration") private var _duration: Int? = null,
     @PropertyName("description") private var _description: String? = null,
@@ -13,8 +12,7 @@ class Meal(
     @PropertyName("backgroundUrl") var backgroundUrl: String? = null,
     @PropertyName("ingredients") private var _ingredients: List<MealIngredient>? = null
 ) {
-    val id: String
-        get() = _id!!
+    @DocumentId lateinit var id: String
     var name: String
         set(value) {
             _name = value

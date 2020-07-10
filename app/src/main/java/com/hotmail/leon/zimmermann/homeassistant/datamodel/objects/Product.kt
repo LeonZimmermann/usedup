@@ -7,7 +7,6 @@ import kotlin.math.floor
 import kotlin.math.max
 
 class Product(
-    @DocumentId private val _id: String? = null,
     @PropertyName("name") private var _name: String? = null,
     @PropertyName("quantity") private var _quantity: Double? = null,
     @PropertyName("min") private var _min: Int? = null,
@@ -16,8 +15,7 @@ class Product(
     @PropertyName("measure") private var _measure: DocumentReference? = null,
     @PropertyName("category") private var _category: DocumentReference? = null
 ) {
-    val id: String
-        get() = _id!!
+    @DocumentId lateinit var id: String
     var name: String
         set(value) {
             _name = value

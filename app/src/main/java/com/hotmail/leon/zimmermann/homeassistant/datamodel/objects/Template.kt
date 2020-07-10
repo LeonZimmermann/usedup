@@ -5,12 +5,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.PropertyName
 
 class Template(
-    @DocumentId private val _id: String? = null,
     @PropertyName("") private var _name: String? = null,
     @PropertyName("") private var _components: List<TemplateComponent>? = null
 ) {
-    val id: String
-        get() = _id!!
+    @DocumentId lateinit var id: String
     var name: String
         set(value) {
             _name = value
