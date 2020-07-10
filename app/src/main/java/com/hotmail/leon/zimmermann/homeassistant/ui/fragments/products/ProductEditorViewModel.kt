@@ -1,5 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.products
 
+import android.widget.TextView
 import androidx.lifecycle.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -19,7 +20,9 @@ class ProductEditorViewModel : ViewModel() {
     val measureList = MeasureRepository.measures
 
     var nameInputValue = MutableLiveData("")
+    var categoryInputValue = MutableLiveData("")
     var capacityInputValue = MutableLiveData("")
+    var measureInputValue = MutableLiveData("")
     var currentInputValue = MutableLiveData("")
     var minInputValue = MutableLiveData("")
     var maxInputValue = MutableLiveData("")
@@ -27,41 +30,41 @@ class ProductEditorViewModel : ViewModel() {
     var productId: String? = null
         private set
 
-    fun setProductId(productId: String, initCategory: (Category) -> Unit, initMeasure: (Measure) -> Unit) {
+    fun setProductId(productId: String) {
         this.productId = productId
         database.collection(Product.COLLECTION_NAME).document(productId).get().addOnSuccessListener { document ->
             document.toObject<Product>()?.let { product ->
                 nameInputValue.value = product.name
                 capacityInputValue.value = product.capacity.toString()
-                initCategory(CategoryRepository.getCategoryForId(product.category.id))
+                categoryInputValue.value = CategoryRepository.getCategoryForId(product.category.id).name
                 currentInputValue.value = product.quantity.toString()
-                initMeasure(MeasureRepository.getMeasureForId(product.measure.id))
+                measureInputValue.value = MeasureRepository.getMeasureForId(product.measure.id).name
                 minInputValue.value = product.min.toString()
                 maxInputValue.value = product.max.toString()
             }
         }
     }
 
-    fun save(categoryText: String, measureText: String, callback: FirestoreCallback) {
+    fun save(callback: FirestoreCallback) {
         viewModelScope.launch {
             when {
                 nameInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a name"))
-                categoryText.isBlank() -> callback.onValidationFailed(InvalidInputException("Select a category"))
+                categoryInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Select a category"))
                 capacityInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a capacity"))
-                measureText.isBlank() -> callback.onValidationFailed(InvalidInputException("Select a measure"))
+                measureInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Select a measure"))
                 currentInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert the current quantity"))
                 minInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a minimum quantity"))
                 maxInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a maximum quantity"))
-                else -> saveAfterValidation(categoryText, measureText, callback)
+                else -> saveAfterValidation(callback)
             }
         }
     }
 
-    private fun saveAfterValidation(categoryText: String, measureText: String, callback: FirestoreCallback) {
+    private fun saveAfterValidation(callback: FirestoreCallback) {
         val name = nameInputValue.value!!
-        val category = CategoryRepository.getCategoryForName(categoryText)
+        val category = CategoryRepository.getCategoryForName(categoryInputValue.value!!)
         val capacity = capacityInputValue.value!!.toDouble()
-        val measure = MeasureRepository.getMeasureForName(measureText)
+        val measure = MeasureRepository.getMeasureForName(measureInputValue.value!!)
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()

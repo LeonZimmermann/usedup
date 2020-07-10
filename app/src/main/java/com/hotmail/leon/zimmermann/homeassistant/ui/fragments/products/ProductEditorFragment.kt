@@ -15,6 +15,7 @@ import com.hotmail.leon.zimmermann.homeassistant.databinding.ProductEditorFragme
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.callbacks.FirestoreCallback
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import kotlinx.android.synthetic.main.product_editor_fragment.*
+import kotlinx.android.synthetic.main.product_editor_fragment.view.*
 
 class ProductEditorFragment : Fragment() {
 
@@ -47,16 +48,9 @@ class ProductEditorFragment : Fragment() {
     }
 
     private fun initProductId(savedInstanceState: Bundle?) {
-        arguments?.apply {
-            val productId = getSerializable(PRODUCT_ID) as? String?
-            // TODO Implement Callbacks
-            productId?.let { viewModel.setProductId(it, {}, {}) }
-        }
-        savedInstanceState?.apply {
-            val productId = getSerializable(PRODUCT_ID) as? String?
-            // TODO Implement Callbacks
-            productId?.let { viewModel.setProductId(it, {}, {}) }
-        }
+        val productId = (savedInstanceState?.getSerializable(PRODUCT_ID) as? String?)
+            ?: (arguments?.getSerializable(PRODUCT_ID) as? String?)
+        productId?.let { viewModel.setProductId(it) }
     }
 
     private fun initCategoryInput() {
@@ -80,7 +74,7 @@ class ProductEditorFragment : Fragment() {
     private fun initSaveButton(view: View) {
         save_button.setOnClickListener {
             try {
-                viewModel.save(category_input.text.toString(), measure_input.text.toString(), firestoreCallback)
+                viewModel.save(firestoreCallback)
             } catch (e: InvalidInputException) {
                 e.message?.let { Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()  }
             }
