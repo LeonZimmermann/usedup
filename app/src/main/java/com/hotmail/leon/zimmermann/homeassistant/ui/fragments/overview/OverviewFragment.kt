@@ -67,7 +67,7 @@ class OverviewFragment : Fragment() {
         val adapter = SimpleProductPreviewAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        // TODO Init SimpleProductPreviewAdapter
+        adapter.productAmountList = viewModel.products.filter { it.discrepancy > 0 }.map { Pair(it, it.discrepancy) }
         shopping_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
         }
