@@ -17,12 +17,16 @@ object TemplateRepository {
         list
     }
 
+    fun getTemplateForId(id: String) = templates.first { it.id == id }
+    fun getTemplateForName(name: String) = templates.first { it.name == name }
+
     fun addTemplate(name: String, consumptionList: List<TemplateComponent>) {
         val template = Template(name, consumptionList)
         database.collection(Template.COLLECTION_NAME)
             .add(template)
     }
 
-    fun getTemplateForId(id: String) = templates.first { it.id == id }
-    fun getTemplateForName(name: String) = templates.first { it.name == name }
+    fun deleteTemplate(id: String) {
+        TODO("Implement")
+    }
 }

@@ -12,28 +12,32 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Template
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
 
 class ManagementRecyclerAdapter constructor(context: Context, private val navController: NavController) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
 
     private val inflater = LayoutInflater.from(context)
 
-    var products: List<Product> = emptyList()
+    var products: MutableList<Product> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var templates: List<Template> = emptyList()
+    var templates: MutableList<Template> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    var meals: List<Meal> = emptyList()
+    var meals: MutableList<Meal> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -106,9 +110,27 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(inflater.inflate(R.layout.product_browser_item, parent, false))
-            ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(inflater.inflate(R.layout.template_browser_item, parent, false))
-            ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(inflater.inflate(R.layout.meal_browser_item, parent, false))
+            ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(
+                inflater.inflate(
+                    R.layout.product_browser_item,
+                    parent,
+                    false
+                )
+            )
+            ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(
+                inflater.inflate(
+                    R.layout.template_browser_item,
+                    parent,
+                    false
+                )
+            )
+            ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(
+                inflater.inflate(
+                    R.layout.meal_browser_item,
+                    parent,
+                    false
+                )
+            )
             else -> throw RuntimeException("Invalid viewType: $viewType")
         }
     }
@@ -127,5 +149,27 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
         ManagementFragment.Mode.PRODUCT -> products.size
         ManagementFragment.Mode.TEMPLATE -> templates.size
         ManagementFragment.Mode.MEAL -> meals.size
+    }
+
+    override fun onItemDismiss(position: Int) {
+        super.onItemDismiss(position)
+        when (mode) {
+            ManagementFragment.Mode.PRODUCT -> {
+                val product = products[position]
+                ProductRepository.deleteProduct(product.id)
+                products.remove(product)
+            }
+            ManagementFragment.Mode.TEMPLATE -> {
+                val template = templates[position]
+                TemplateRepository.deleteTemplate(template.id)
+                templates.remove(template)
+            }
+            ManagementFragment.Mode.MEAL -> {
+                val meal = meals[position]
+                MealRepository.deleteMeal(meal.id)
+                meals.remove(meal)
+            }
+        }
+        notifyItemRemoved(position)
     }
 }

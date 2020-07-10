@@ -8,10 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.consumption.ConsumptionElementAdapter
+import com.hotmail.leon.zimmermann.homeassistant.ui.components.recyclerViewHandler.RecyclerViewHandler
 import kotlinx.android.synthetic.main.management_fragment.*
+import kotlinx.android.synthetic.main.management_fragment.view.*
+import kotlinx.android.synthetic.main.meal_editor_fragment.view.*
 
 
 class ManagementFragment : Fragment() {
@@ -33,6 +39,7 @@ class ManagementFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTabLayout()
+        initAdapter()
         initRecyclerView()
         initAddButton()
     }
@@ -51,14 +58,28 @@ class ManagementFragment : Fragment() {
         })
     }
 
-    private fun initRecyclerView() {
-        adapter = ManagementRecyclerAdapter(context!!, findNavController())
+    private fun initAdapter() {
+        adapter = ManagementRecyclerAdapter(context!!, findNavController()).apply {
+            ItemTouchHelper(object : RecyclerViewHandler(this) {
+                override fun getMovementFlags(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+                    return makeMovementFlags(0x00, swipeFlags)
+                }
+            }).attachToRecyclerView(requireView().recycler_view)
+        }
         adapter.products = viewModel.products
         adapter.templates = viewModel.templates
         adapter.meals = viewModel.meals
         viewModel.mode.observe(viewLifecycleOwner, Observer { mode ->
             adapter.mode = mode
         })
+    }
+
+    private fun initRecyclerView() {
+
         recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(context!!)
     }

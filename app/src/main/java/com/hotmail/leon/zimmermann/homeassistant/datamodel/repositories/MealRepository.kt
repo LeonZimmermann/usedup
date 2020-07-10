@@ -17,4 +17,8 @@ object MealRepository {
 
     fun getMealForId(id: String) = meals.first { it.id == id }
     fun getMealForName(name: String) = meals.first { it.name == name }
+
+    fun deleteMeal(id: String) {
+        TODO("Implement")
+    }
 }

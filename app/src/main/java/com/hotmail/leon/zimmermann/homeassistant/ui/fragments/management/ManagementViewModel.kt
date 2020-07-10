@@ -8,9 +8,9 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductR
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
 
 class ManagementViewModel : ViewModel() {
-    val products: List<Product> = ProductRepository.products
-    val templates: List<Template> = TemplateRepository.templates
-    val meals: List<Meal> = MealRepository.meals
+    val products: MutableList<Product> = ProductRepository.products
+    val templates: MutableList<Template> = TemplateRepository.templates
+    val meals: MutableList<Meal> = MealRepository.meals
 
     var mode: MutableLiveData<ManagementFragment.Mode> = MutableLiveData(ManagementFragment.Mode.PRODUCT)
 }
