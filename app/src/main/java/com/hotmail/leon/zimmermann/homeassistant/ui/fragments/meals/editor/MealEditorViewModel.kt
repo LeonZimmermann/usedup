@@ -84,12 +84,7 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             database.collection(Meal.COLLECTION_NAME)
                 .add(
-                    Meal(null,
-                        name!!,
-                        duration,
-                        description,
-                        instructions,
-                        photoFile.toString(),
+                    Meal(name!!, duration, description, instructions, photoFile.toString(),
                         consumptionElementList.value!!.map { element ->
                             MealIngredient(
                                 database.collection(Product.COLLECTION_NAME).document(element.product.id),

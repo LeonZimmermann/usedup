@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.callbacks.FirestoreCallback
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
@@ -32,29 +33,31 @@ class ProductEditorViewModel : ViewModel() {
             document.toObject<Product>()?.let { product ->
                 nameInputValue.value = product.name
                 capacityInputValue.value = product.capacity.toString()
-                product.category?.let { initCategory(CategoryRepository.getCategoryForId(it.id)) }
+                initCategory(CategoryRepository.getCategoryForId(product.category.id))
                 currentInputValue.value = product.quantity.toString()
-                product.measure?.let { initMeasure(MeasureRepository.getMeasureForId(it.id)) }
+                initMeasure(MeasureRepository.getMeasureForId(product.measure.id))
                 minInputValue.value = product.min.toString()
                 maxInputValue.value = product.max.toString()
             }
         }
     }
 
-    fun save(categoryText: String, measureText: String) {
-        when {
-            nameInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a name")
-            categoryText.isBlank() -> throw InvalidInputException("Select a category")
-            capacityInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a capacity")
-            measureText.isBlank() -> throw InvalidInputException("Select a measure")
-            currentInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert the current quantity")
-            minInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a minimum quantity")
-            maxInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a maximum quantity")
-            else -> saveAfterValidation(categoryText, measureText)
+    fun save(categoryText: String, measureText: String, callback: FirestoreCallback) {
+        viewModelScope.launch {
+            when {
+                nameInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a name"))
+                categoryText.isBlank() -> callback.onValidationFailed(InvalidInputException("Select a category"))
+                capacityInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a capacity"))
+                measureText.isBlank() -> callback.onValidationFailed(InvalidInputException("Select a measure"))
+                currentInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert the current quantity"))
+                minInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a minimum quantity"))
+                maxInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a maximum quantity"))
+                else -> saveAfterValidation(categoryText, measureText, callback)
+            }
         }
     }
 
-    private fun saveAfterValidation(categoryText: String, measureText: String) {
+    private fun saveAfterValidation(categoryText: String, measureText: String, callback: FirestoreCallback) {
         val name = nameInputValue.value!!
         val category = CategoryRepository.getCategoryForName(categoryText)
         val capacity = capacityInputValue.value!!.toDouble()
@@ -62,9 +65,9 @@ class ProductEditorViewModel : ViewModel() {
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
-        viewModelScope.launch {
+        callback.onFirestoreResult(
             if (productId == null) ProductRepository.addProduct(name, category, capacity, measure, quantity, min, max)
             else ProductRepository.updateProduct(productId!!, name, category, capacity, measure, quantity, min, max)
-        }
+        )
     }
 }

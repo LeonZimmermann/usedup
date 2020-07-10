@@ -30,12 +30,16 @@ object ProductRepository {
         max: Int
     ): Task<DocumentReference> {
         val product = Product(
-            null, name, quantity, min, max, capacity,
+            name, quantity, min, max, capacity,
             database.collection(Measure.COLLECTION_NAME).document(measure.id),
-            database.collection(Category.COLLECTION_NAME).document(category.id!!)
+            database.collection(Category.COLLECTION_NAME).document(category.id)
         )
-        products.add(product)
-        return database.collection(Product.COLLECTION_NAME).add(product)
+        return database.collection(Product.COLLECTION_NAME)
+            .add(product)
+            .addOnSuccessListener {
+                product.id = it.id
+                products.add(product)
+            }
     }
 
     // TODO Account for changes in templates and meals

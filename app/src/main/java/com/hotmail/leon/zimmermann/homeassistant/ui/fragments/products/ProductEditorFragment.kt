@@ -8,9 +8,11 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ProductEditorFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.callbacks.FirestoreCallback
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
 import kotlinx.android.synthetic.main.product_editor_fragment.*
 
@@ -78,8 +80,7 @@ class ProductEditorFragment : Fragment() {
     private fun initSaveButton(view: View) {
         save_button.setOnClickListener {
             try {
-                viewModel.save(category_input.text.toString(), measure_input.text.toString())
-                findNavController().navigateUp()
+                viewModel.save(category_input.text.toString(), measure_input.text.toString(), firestoreCallback)
             } catch (e: InvalidInputException) {
                 e.message?.let { Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()  }
             }
@@ -92,6 +93,21 @@ class ProductEditorFragment : Fragment() {
         binding.viewModel = viewModel
         binding.buttonText = if (viewModel.productId == null)
             resources.getString(R.string.add_product) else resources.getString(R.string.update_product)
+    }
+
+    private val firestoreCallback = object: FirestoreCallback {
+        override fun onFirestoreResult(task: Task<*>) {
+            task.addOnSuccessListener {
+                Snackbar.make(requireView(), "Added Product", Snackbar.LENGTH_LONG).show()
+                findNavController().navigateUp()
+            }.addOnFailureListener {
+                Snackbar.make(requireView(), "Could not add product", Snackbar.LENGTH_LONG).show()
+            }
+        }
+
+        override fun onValidationFailed(exception: Exception) {
+            Snackbar.make(view!!, exception.message!!, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
