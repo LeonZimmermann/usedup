@@ -43,10 +43,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/register_textview"
+                        app:layout_constraintTop_toBottomOf="@+id/infoboxView"
                         tools:itemCount="3"
                         tools:listitem="@layout/product_item" />
 
@@ -61,6 +61,17 @@
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                <com.hotmail.leon.zimmermann.homeassistant.ui.components.views.InfoboxView
+                        android:id="@+id/infoboxView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/register_textview"
+                        app:layout_constraintTop_toBottomOf="@+id/register_textview"
+                        app:text="This is where you can see the products you are missing in your home, as well as the respective discrepancy" />
 
                 <Button
                         style="@style/Widget.MaterialComponents.Button.TextButton"

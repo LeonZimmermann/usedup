@@ -6,7 +6,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.fragments.calendar.week.CalendarWeekFragment">
 
-    <com.hotmail.leon.zimmermann.homeassistant.ui.components.CalendarWeekView
+    <com.hotmail.leon.zimmermann.homeassistant.ui.components.views.CalendarWeekView
             android:id="@+id/calendar_week"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

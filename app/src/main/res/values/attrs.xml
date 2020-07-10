@@ -14,4 +14,7 @@
         <attr name="entryRectRadius" format="dimension" />
         <attr name="entryRectColor" format="color" />
     </declare-styleable>
+    <declare-styleable name="InfoboxView">
+        <attr name="text" format="string"/>
+    </declare-styleable>
 </resources>

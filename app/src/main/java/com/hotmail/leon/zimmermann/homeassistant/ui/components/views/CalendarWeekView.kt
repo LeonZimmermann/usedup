@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.ui.components
+package com.hotmail.leon.zimmermann.homeassistant.ui.components.views
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
