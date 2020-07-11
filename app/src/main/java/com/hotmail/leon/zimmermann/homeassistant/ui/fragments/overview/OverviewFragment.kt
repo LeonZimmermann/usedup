@@ -71,11 +71,11 @@ class OverviewFragment : Fragment() {
     }
 
     private fun initDiscrepancyCard() {
-        val adapter = SimpleProductPreviewAdapter(context!!)
-        overview_discrepancy_container.adapter = adapter
-        overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        Firebase.firestore.collection(Product.COLLECTION_NAME).whereGreaterThan("discrepancy", 0)
-            .get()
+        val adapter = SimpleProductPreviewAdapter(context!!, discrepancy_recyclerview)
+        discrepancy_recyclerview.adapter = adapter
+        discrepancy_recyclerview.layoutManager = LinearLayoutManager(context!!)
+        // TODO Move this to ViewModel (Maybe use RxJava)
+        Firebase.firestore.collection(Product.COLLECTION_NAME).whereGreaterThan("discrepancy", 0).get()
             .addOnSuccessListener { documents ->
                 adapter.productAmountList = documents.map { it.toObject<Product>() }
                     .map { Pair(it, it.discrepancy) }

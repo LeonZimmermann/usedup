@@ -10,7 +10,7 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import kotlinx.android.synthetic.main.product_item.view.*
 
-class SimpleProductPreviewAdapter constructor(context: Context, private val onClickListener: View.OnClickListener? = null) :
+class SimpleProductPreviewAdapter constructor(context: Context, private val recyclerView: RecyclerView, private val onClickListener: View.OnClickListener? = null) :
     RecyclerView.Adapter<SimpleProductPreviewAdapter.ProductViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -18,6 +18,7 @@ class SimpleProductPreviewAdapter constructor(context: Context, private val onCl
         set(value) {
             field = value
             notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
