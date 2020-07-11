@@ -55,29 +55,31 @@ object ProductRepository {
     ): Task<Void> {
         val data = mapOf(
             "name" to name,
-            "category" to database.collection(Category.COLLECTION_NAME).document(category.id!!),
+            "category" to database.collection(Category.COLLECTION_NAME).document(category.id),
             "capacity" to capacity,
             "measure" to database.collection(Measure.COLLECTION_NAME).document(measure.id),
             "quantity" to quantity,
             "min" to min,
             "max" to max
         )
-        getProductForId(productId).apply {
-            this.name = name
-            this.category = database.collection(Category.COLLECTION_NAME).document(category.id!!)
-            this.capacity = capacity
-            this.measure = database.collection(Measure.COLLECTION_NAME).document(measure.id)
-            this.quantity = quantity
-            this.min = min
-            this.max = max
-        }
         return database.collection(Product.COLLECTION_NAME)
             .document(productId)
             .update(data)
+            .addOnSuccessListener {
+                getProductForId(productId).apply {
+                    this.name = name
+                    this.category = database.collection(Category.COLLECTION_NAME).document(category.id)
+                    this.capacity = capacity
+                    this.measure = database.collection(Measure.COLLECTION_NAME).document(measure.id)
+                    this.quantity = quantity
+                    this.min = min
+                    this.max = max
+                }
+            }
     }
 
-    // TODO Account for changes in templates and meals
     fun deleteProduct(productId: String): Task<Void> {
+        // TODO Account for changes in templates and meals
         products.remove(getProductForId(productId))
         return database.collection(Product.COLLECTION_NAME).document(productId).delete()
     }
