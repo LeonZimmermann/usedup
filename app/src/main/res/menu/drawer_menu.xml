@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <group>
+        <item
+                android:id="@+id/shopping_option"
+                android:icon="@drawable/cart_icon"
+                android:title="@string/shopping" />
+        <item
+                android:id="@+id/calendar_option"
+                android:icon="@drawable/calendar_icon"
+                android:title="@string/calendar" />
+        <item
+                android:id="@+id/management_option"
+                android:icon="@drawable/management_icon"
+                android:title="@string/management" />
+    </group>
+    <item android:title="@string/others">
+        <menu>
+            <group>
+                <item
+                        android:id="@+id/settings_option"
+                        android:icon="@drawable/settings_icon"
+                        android:title="@string/settings" />
+                <item
+                        android:id="@+id/about_option"
+                        android:icon="@drawable/about_icon"
+                        android:title="@string/about" />
+            </group>
+        </menu>
+    </item>
 </menu>

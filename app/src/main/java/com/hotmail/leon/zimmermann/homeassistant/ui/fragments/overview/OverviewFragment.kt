@@ -38,29 +38,11 @@ class OverviewFragment : Fragment() {
         return inflater.inflate(R.layout.overview_fragment, container, false)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overview_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDiscrepancyCard()
         initManagementCard()
         initCalendarCard()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.account_option -> {
-            findNavController().navigate(R.id.action_global_account_fragment)
-            true
-        }
-        // TODO Add Settings
-        R.id.about_option -> {
-            findNavController().navigate(R.id.action_global_about_fragment)
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 
     private fun initViewModel() {
@@ -78,19 +60,19 @@ class OverviewFragment : Fragment() {
                     .map { Pair(it, it.discrepancy) }
             }
         shopping_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
+            findNavController().navigate(R.id.action_global_shopping_fragment)
         }
     }
 
     private fun initManagementCard() {
         management_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_management_fragment)
+            findNavController().navigate(R.id.action_global_management)
         }
     }
 
     private fun initCalendarCard() {
         calendar_button.setOnClickListener {
-            findNavController().navigate(R.id.action_overview_fragment_to_timeline_fragment)
+            findNavController().navigate(R.id.action_global_calendar)
         }
     }
 

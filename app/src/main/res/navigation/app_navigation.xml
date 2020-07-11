@@ -9,18 +9,7 @@
             android:id="@+id/overview_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
             android:label="Overview"
-            tools:layout="@layout/overview_fragment">
-        <action
-                android:id="@+id/action_overview_fragment_to_management_fragment"
-                app:destination="@id/management" />
-        <action
-                android:id="@+id/action_overview_fragment_to_timeline_fragment"
-                app:destination="@id/calendar"
-                app:launchSingleTop="true" />
-        <action
-                android:id="@+id/action_overview_fragment_to_shopping_fragment"
-                app:destination="@id/shopping_fragment" />
-    </fragment>
+            tools:layout="@layout/overview_fragment"/>
     <fragment
             android:id="@+id/account_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.account.AccountFragment"
@@ -126,5 +115,5 @@
                     android:id="@+id/action_management_fragment_to_meal_editor_fragment"
                     app:destination="@id/meal" />
         </fragment>
-    </navigation>
+    </navigation><action android:id="@+id/action_global_calendar" app:destination="@id/calendar"/><action android:id="@+id/action_global_management" app:destination="@id/management"/><action android:id="@+id/action_global_shopping_fragment" app:destination="@id/shopping_fragment"/>
 </navigation>
