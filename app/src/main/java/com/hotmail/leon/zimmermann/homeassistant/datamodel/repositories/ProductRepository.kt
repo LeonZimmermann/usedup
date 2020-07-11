@@ -42,7 +42,6 @@ object ProductRepository {
             }
     }
 
-    // TODO Account for changes in templates and meals
     fun updateProduct(
         productId: String,
         name: String,
