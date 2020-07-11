@@ -24,13 +24,10 @@ class OverviewFragment : Fragment() {
     }
 
     private lateinit var viewModel: OverviewViewModel
-    private lateinit var authentication: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        authentication = Firebase.auth
-        findNavController().popBackStack(R.id.splash_screen_fragment, true)
         initViewModel()
     }
 

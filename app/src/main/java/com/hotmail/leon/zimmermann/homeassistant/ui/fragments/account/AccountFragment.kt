@@ -42,8 +42,7 @@ class AccountFragment : Fragment() {
         }
         logout_button.setOnClickListener {
             authentication.signOut()
-            findNavController().navigate(R.id.splash_screen_fragment)
-            findNavController().popBackStack()
+            // TODO Navigate out of app
         }
     }
 
