@@ -63,4 +63,6 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_service">Terms of Service</string>
     <string name="confirm_cart">Confirm Cart</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
