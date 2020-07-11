@@ -65,7 +65,7 @@ class ManagementFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = ManagementRecyclerAdapter(context!!, findNavController()).apply {
+        adapter = ManagementRecyclerAdapter(context!!, recycler_view, findNavController()).apply {
             ItemTouchHelper(object : RecyclerViewHandler(this) {
                 override fun getMovementFlags(
                     recyclerView: RecyclerView,

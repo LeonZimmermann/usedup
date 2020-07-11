@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
 
-class ManagementRecyclerAdapter constructor(context: Context, private val navController: NavController) :
+class ManagementRecyclerAdapter constructor(context: Context, private val recyclerView: RecyclerView, private val navController: NavController) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
 
     private val inflater = LayoutInflater.from(context)
@@ -29,24 +29,28 @@ class ManagementRecyclerAdapter constructor(context: Context, private val navCon
         set(value) {
             field = value
             notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
 
     var templates: MutableList<Template> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
 
     var meals: MutableList<Meal> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
 
     var mode: ManagementFragment.Mode = ManagementFragment.Mode.PRODUCT
         set(value) {
             field = value
             notifyDataSetChanged()
+            recyclerView.scheduleLayoutAnimation()
         }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
