@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.account_fragment.*
+import kotlinx.android.synthetic.main.fragment_splash_screen.*
 
 class AccountFragment : Fragment() {
 
@@ -34,8 +36,14 @@ class AccountFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
         val authentication = FirebaseAuth.getInstance()
         authentication.currentUser?.let { user ->
-            name_input.setText(user.displayName)
-            email_input.setText(user.email)
+            user.photoUrl?.let {
+                Glide.with(this)
+                    .load(it)
+                    .circleCrop()
+                    .into(profile_image)
+            }
+            user.displayName?.let { name_input.setText(it) }
+            user.email?.let { email_input.setText(it) }
         } ?: run {
             Toast.makeText(context, "Cannot access account information", Toast.LENGTH_LONG).show()
             findNavController().navigateUp()
