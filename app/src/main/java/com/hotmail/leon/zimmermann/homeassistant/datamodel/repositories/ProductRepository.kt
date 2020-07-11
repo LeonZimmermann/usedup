@@ -1,14 +1,18 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories
 
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Category
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 
 object ProductRepository {
     private val database = Firebase.firestore
+
     val products: MutableList<Product> by lazy {
         val list: MutableList<Product> = mutableListOf()
         database.collection(Product.COLLECTION_NAME).get().addOnSuccessListener { documents ->

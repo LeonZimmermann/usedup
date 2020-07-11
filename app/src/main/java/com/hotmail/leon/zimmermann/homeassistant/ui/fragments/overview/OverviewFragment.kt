@@ -2,15 +2,18 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.ui.components.SimpleProductPreviewAdapter
 import kotlinx.android.synthetic.main.overview_fragment.*
 
@@ -28,6 +31,7 @@ class OverviewFragment : Fragment() {
         setHasOptionsMenu(true)
         authentication = Firebase.auth
         findNavController().popBackStack(R.id.splash_screen_fragment, true)
+        initViewModel()
     }
 
     override fun onCreateView(
@@ -42,12 +46,11 @@ class OverviewFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
-        initializeDiscrepancyCard()
-        initializeManagementCard()
-        initializeCalendarCard()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initDiscrepancyCard()
+        initManagementCard()
+        initCalendarCard()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
@@ -63,23 +66,32 @@ class OverviewFragment : Fragment() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun initializeDiscrepancyCard() {
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
+    }
+
+    private fun initDiscrepancyCard() {
         val adapter = SimpleProductPreviewAdapter(context!!)
         overview_discrepancy_container.adapter = adapter
         overview_discrepancy_container.layoutManager = LinearLayoutManager(context!!)
-        adapter.productAmountList = viewModel.products.filter { it.discrepancy > 0 }.map { Pair(it, it.discrepancy) }
+        Firebase.firestore.collection(Product.COLLECTION_NAME).whereGreaterThan("discrepancy", 0)
+            .get()
+            .addOnSuccessListener { documents ->
+                adapter.productAmountList = documents.map { it.toObject<Product>() }
+                    .map { Pair(it, it.discrepancy) }
+            }
         shopping_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_shopping_fragment)
         }
     }
 
-    private fun initializeManagementCard() {
+    private fun initManagementCard() {
         management_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_management_fragment)
         }
     }
 
-    private fun initializeCalendarCard() {
+    private fun initCalendarCard() {
         calendar_button.setOnClickListener {
             findNavController().navigate(R.id.action_overview_fragment_to_timeline_fragment)
         }
