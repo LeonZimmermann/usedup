@@ -41,8 +41,6 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDiscrepancyCard()
-        initManagementCard()
-        initCalendarCard()
     }
 
     private fun initViewModel() {
@@ -63,17 +61,4 @@ class OverviewFragment : Fragment() {
             findNavController().navigate(R.id.action_global_shopping_fragment)
         }
     }
-
-    private fun initManagementCard() {
-        management_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_management)
-        }
-    }
-
-    private fun initCalendarCard() {
-        calendar_button.setOnClickListener {
-            findNavController().navigate(R.id.action_global_calendar)
-        }
-    }
-
 }
