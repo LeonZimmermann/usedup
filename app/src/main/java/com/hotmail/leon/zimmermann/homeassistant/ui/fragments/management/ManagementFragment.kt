@@ -56,6 +56,12 @@ class ManagementFragment : Fragment() {
                 }
             }
         })
+        val tabPosition = when (viewModel.mode.value!!) {
+            Mode.PRODUCT -> 0
+            Mode.TEMPLATE -> 1
+            Mode.MEAL -> 2
+        }
+        tab_layout.selectTab(tab_layout.getTabAt(tabPosition))
     }
 
     private fun initAdapter() {
