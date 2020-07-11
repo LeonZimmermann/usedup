@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import kotlinx.android.synthetic.main.shopping_fragment.*
 
 class ShoppingFragment : Fragment() {
@@ -44,17 +42,12 @@ class ShoppingFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = ShoppingListAdapter(context!!)
-        adapter.setData(
-            CategoryRepository.categories,
-            ProductRepository.products
-                .filter { it.discrepancy > 0 }
-                .map { ShoppingProduct(it) }
-                .groupBy { CategoryRepository.getCategoryForId(it.product.category!!.id) })
+        adapter.setData(viewModel.productDiscrepancies)
     }
 
     private fun initShoppingList() {
         shopping_list.adapter = adapter
-        shopping_list.layoutManager = LinearLayoutManager(context!!)
+        shopping_list.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
     private fun initConfirmButton() {

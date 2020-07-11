@@ -11,8 +11,8 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepo
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
+import kotlinx.android.synthetic.main.consumption_fragment_component.view.*
 import kotlinx.android.synthetic.main.product_additional_fields.view.*
-import kotlinx.android.synthetic.main.shopping_edit_dialog.view.name_input
 import org.jetbrains.anko.layoutInflater
 
 sealed class ConsumptionMode {

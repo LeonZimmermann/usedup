@@ -17,8 +17,7 @@ import org.jetbrains.anko.textView
 class ShoppingListAdapter(private val context: Context) :
     RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
-    private var categories: List<Category> = listOf()
-    private var shoppingList: Map<Category, List<ShoppingProduct>> = mapOf()
+    private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
 
     inner class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val shoppingCategoryNameTextView: TextView = itemView.shopping_category_name_tv
@@ -30,21 +29,18 @@ class ShoppingListAdapter(private val context: Context) :
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
-        val category = categories[position]
-        val products = shoppingList[category]
+        val (category, products) = shoppingList[position]
         holder.shoppingCategoryNameTextView.text = category.name
-        products?.let { products ->
-            holder.shoppingProductListContainer.removeAllViews()
-            holder.shoppingProductListContainer.apply {
-                for (item in products) {
-                    textView {
-                        setOnClickListener {
-                            paintFlags = paintFlags xor Paint.STRIKE_THRU_TEXT_FLAG
-                            item.checked = !item.checked
-                        }
-                        text = "${item.cartAmount}x ${item.product.name}"
-                        textSize = 22f
+        holder.shoppingProductListContainer.removeAllViews()
+        holder.shoppingProductListContainer.apply {
+            for (item in products) {
+                textView {
+                    setOnClickListener {
+                        paintFlags = paintFlags xor Paint.STRIKE_THRU_TEXT_FLAG
+                        item.checked = !item.checked
                     }
+                    text = "${item.cartAmount}x ${item.product.name}"
+                    textSize = 22f
                 }
             }
         }
@@ -52,8 +48,7 @@ class ShoppingListAdapter(private val context: Context) :
 
     override fun getItemCount() = shoppingList.size
 
-    internal fun setData(categories: List<Category>, shoppingList: Map<Category, List<ShoppingProduct>>) {
-        this.categories = categories
+    internal fun setData(shoppingList: List<Pair<Category, List<ShoppingProduct>>>) {
         this.shoppingList = shoppingList
         notifyDataSetChanged()
     }
