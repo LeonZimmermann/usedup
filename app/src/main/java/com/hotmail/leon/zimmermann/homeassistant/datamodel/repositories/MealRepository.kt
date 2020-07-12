@@ -1,6 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories
 
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -10,13 +11,12 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 object MealRepository {
     private val database = Firebase.firestore
 
-    val meals: MutableList<Meal> by lazy {
-        val list: MutableList<Meal> = mutableListOf()
-        Firebase.firestore.collection(Meal.COLLECTION_NAME).get().addOnSuccessListener { documents ->
-            for (document in documents)
-                list.add(document.toObject())
+    val meals: MutableList<Meal> = mutableListOf()
+
+    fun init() {
+        Tasks.await(Firebase.firestore.collection(Meal.COLLECTION_NAME).get()).forEach { document ->
+            meals.add(document.toObject())
         }
-        list
     }
 
     fun getMealForId(id: String) = meals.first { it.id == id }

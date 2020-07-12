@@ -1,6 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories
 
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -12,12 +13,12 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.TemplateCompo
 object TemplateRepository {
     private val database = Firebase.firestore
 
-    val templates: MutableList<Template> by lazy {
-        val list: MutableList<Template> = mutableListOf()
-        database.collection(Template.COLLECTION_NAME).get().addOnSuccessListener { documents ->
-            for (document in documents) list.add(document.toObject())
+    val templates: MutableList<Template> = mutableListOf()
+
+    fun init() {
+        Tasks.await(database.collection(Template.COLLECTION_NAME).get()).forEach { document ->
+            templates.add(document.toObject())
         }
-        list
     }
 
     fun getTemplateForId(id: String) = templates.first { it.id == id }

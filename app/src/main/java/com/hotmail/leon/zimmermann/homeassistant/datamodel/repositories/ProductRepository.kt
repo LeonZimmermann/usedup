@@ -13,12 +13,12 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 object ProductRepository {
     private val database = Firebase.firestore
 
-    val products: MutableList<Product> by lazy {
-        val list: MutableList<Product> = mutableListOf()
-        database.collection(Product.COLLECTION_NAME).get().addOnSuccessListener { documents ->
-            for (document in documents) list.add(document.toObject())
+    val products: MutableList<Product> = mutableListOf()
+
+    fun init() {
+        Tasks.await(database.collection(Product.COLLECTION_NAME).get()).forEach { document ->
+            products.add(document.toObject())
         }
-        list
     }
 
     fun getProductForId(id: String): Product = products.first { it.id == id }

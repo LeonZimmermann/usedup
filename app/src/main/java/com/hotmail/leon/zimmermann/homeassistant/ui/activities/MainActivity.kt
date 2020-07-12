@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.*
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         databaseInitThread = thread {
             CategoryRepository.init()
             MeasureRepository.init()
+            ProductRepository.init()
+            TemplateRepository.init()
+            MealRepository.init()
         }
     }
 
