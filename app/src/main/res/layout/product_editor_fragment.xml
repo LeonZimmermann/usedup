@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/category"
                     android:inputType="none"
-                    android:text="@{viewModel.categoryInputValue}" />
+                    android:text="@={viewModel.categoryInputValue}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/measure"
                     android:inputType="none"
-                    android:text="@{viewModel.measureInputValue}" />
+                    android:text="@={viewModel.measureInputValue}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
