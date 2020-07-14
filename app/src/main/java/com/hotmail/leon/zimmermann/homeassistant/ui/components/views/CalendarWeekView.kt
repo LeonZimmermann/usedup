@@ -290,6 +290,7 @@ class CalendarWeekView @JvmOverloads constructor(
             if (yScrollOffset > (weekYSpace / yScrollScale) - weekYSpace + mainYPadding / 2f)
                 yScrollOffset = (weekYSpace / yScrollScale) - weekYSpace + mainYPadding / 2f
             entryRectList = calculateRectList(entryList)
+            onScrollListener?.onScroll(yScrollOffset)
             postInvalidate()
             return true
         }
@@ -311,6 +312,7 @@ class CalendarWeekView @JvmOverloads constructor(
                         cancel()
                     }
                     entryRectList = calculateRectList(entryList)
+                    onScrollListener?.onScroll(yScrollOffset)
                     postInvalidate()
                 }
                 start()
@@ -359,6 +361,7 @@ class CalendarWeekView @JvmOverloads constructor(
 
     var onEntryClickedListener: OnEntryClickedListener? = null
     var onDateTimeSelectedListener: OnDateTimeSelectedListener? = null
+    var onScrollListener: OnScrollListener? = null
 
     @FunctionalInterface
     interface OnEntryClickedListener {
@@ -368,6 +371,11 @@ class CalendarWeekView @JvmOverloads constructor(
     @FunctionalInterface
     interface OnDateTimeSelectedListener {
         fun onDateTimeSelected(weekday: Int, hour: Int, minute: Int)
+    }
+
+    @FunctionalInterface
+    interface OnScrollListener {
+        fun onScroll(scrollOffset: Float)
     }
 
     data class Entry(

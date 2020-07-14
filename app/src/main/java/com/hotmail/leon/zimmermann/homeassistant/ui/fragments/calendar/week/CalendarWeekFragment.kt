@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -52,6 +53,13 @@ class CalendarWeekFragment : Fragment() {
                 ).show()
             }
         }
+        calendar_week.onScrollListener = object: CalendarWeekView.OnScrollListener {
+            override fun onScroll(scrollOffset: Float) {
+                if (scrollOffset < SCROLL_THRESHOLD && !add_button.isVisible) add_button.show()
+                else if (scrollOffset > SCROLL_THRESHOLD && add_button.isVisible) add_button.hide()
+            }
+        }
+
         /*
         TODO Implement
         viewModel.calendarActivities.observe(this, Observer { calendarActivities ->
@@ -60,6 +68,7 @@ class CalendarWeekFragment : Fragment() {
             }.toMutableList())
         })
          */
+
         add_button.setOnClickListener {
             //findNavController().navigate(R.id.action_global_calendar_activity_dialog_fragment)
         }
@@ -81,5 +90,7 @@ class CalendarWeekFragment : Fragment() {
 
     companion object {
         fun newInstance() = CalendarWeekFragment()
+
+        private const val SCROLL_THRESHOLD = 20f
     }
 }
