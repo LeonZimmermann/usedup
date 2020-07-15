@@ -3,9 +3,14 @@ package com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumpt
 import android.content.Context
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.consumption.BatchConsumptionBuilder
+import com.hotmail.leon.zimmermann.homeassistant.consumption.BatchConsumptionProcessor
+import com.hotmail.leon.zimmermann.homeassistant.consumption.SingleConsumptionBuilder
+import com.hotmail.leon.zimmermann.homeassistant.consumption.SingleConsumptionProcessor
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.ConsumptionException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.NotEnoughException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
@@ -19,6 +24,7 @@ sealed class ConsumptionMode {
     abstract val nameList: Array<String>
     abstract fun getAdditionalFieldsView(context: Context): View?
     abstract fun consume(view: View)
+    abstract fun resetInputs(view: View)
 }
 
 class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() {
@@ -37,25 +43,19 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
     }
 
     override fun consume(view: View) {
-        val productName = view.name_input.text.toString()
-        val product = ProductRepository.getProductForName(productName)
+        val product = ProductRepository.getProductForName(view.name_input.text.toString())
         val measure = MeasureRepository.getMeasureForName(view.measure_input.text.toString())
         val quantity = view.quantity_input.text.toString().toDouble()
-        makeConsumption(product, measure, quantity, { newQuantity ->
-            viewModel.database.collection(Product.COLLECTION_NAME)
-                .document(product.id)
-                .update(mapOf("quantity" to newQuantity))
-            resetInputs(view)
-        }, { missingQuantity ->
-            throw NotEnoughException(listOf(product to Value(
-                missingQuantity,
-                measure
-            )
-            ))
-        })
+        SingleConsumptionBuilder()
+            .addResultHandler(SingleConsumptionProcessor(viewModel.database, viewModel.viewModelScope))
+            .addResultHandler(object : SingleConsumptionBuilder.ResultHandler {
+                override fun onSuccess(newQuantity: Pair<Product, Double>) {
+                    resetInputs(view)
+                }
+            }).consume(product, Value(quantity, measure))
     }
 
-    private fun resetInputs(view: View) {
+    override fun resetInputs(view: View) {
         view.name_input.setText("")
         view.quantity_input.setText("")
         view.measure_input.setText("")
@@ -72,23 +72,25 @@ class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMod
     override fun consume(view: View) {
         val templateName = view.name_input.text.toString()
         val template = TemplateRepository.getTemplateForName(templateName)
-        val batch = viewModel.database.batch()
-        val missingQuantities = mutableListOf<Pair<Product, Value>>()
-        template.components.forEach {
-            val product = ProductRepository.getProductForId(it.product.id)
-            val measure = MeasureRepository.getMeasureForId(it.measure.id)
-            val quantity = it.value
-            makeConsumption(product, measure, quantity, { newQuantity ->
-                val productDocumentRef = viewModel.database.collection(Product.COLLECTION_NAME).document(product.id)
-                batch.update(productDocumentRef, mapOf("quantity" to newQuantity))
-            }, { missingQuantity -> missingQuantities.add(product to Value(
-                missingQuantity,
-                measure
+        val consumptions = template.components.map {
+            Pair(
+                ProductRepository.getProductForId(it.product.id),
+                Value(it.value, MeasureRepository.getMeasureForId(it.measure.id))
             )
-            ) })
         }
-        if (missingQuantities.isEmpty()) batch.commit()
-        else throw NotEnoughException(missingQuantities)
+        BatchConsumptionBuilder()
+            .addResultHandler(BatchConsumptionProcessor(viewModel.database, viewModel.viewModelScope))
+            .addResultHandler(object : BatchConsumptionBuilder.ResultHandler {
+                override fun onSuccess(batch: List<Pair<Product, Double>>) {
+                    resetInputs(view)
+                }
+            })
+            .consume(consumptions)
+    }
+
+    override fun resetInputs(view: View) {
+        view.name_input.setText("")
+        view.name_input.requestFocus()
     }
 }
 
@@ -101,37 +103,24 @@ class MealMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() 
     override fun consume(view: View) {
         val mealName = view.name_input.text.toString()
         val meal = MealRepository.getMealForName(mealName)
-        val batch = viewModel.database.batch()
-        val missingQuantities = mutableListOf<Pair<Product, Value>>()
-        meal.ingredients.forEach {
-            val product = ProductRepository.getProductForId(it.product!!.id)
-            val measure = MeasureRepository.getMeasureForId(it.measure!!.id)
-            val quantity = it.value!!
-            makeConsumption(product, measure, quantity, { newQuantity ->
-                val productDocumentRef = viewModel.database.collection(Product.COLLECTION_NAME)
-                    .document(product.id)
-                batch.update(productDocumentRef, mapOf("quantity" to newQuantity))
-            }, { missingQuantity -> missingQuantities.add(product to Value(
-                missingQuantity,
-                measure
+        val consumptions = meal.ingredients.map {
+            Pair(
+                ProductRepository.getProductForId(it.product.id),
+                Value(it.value, MeasureRepository.getMeasureForId(it.measure.id))
             )
-            ) })
         }
-        if (missingQuantities.isEmpty()) batch.commit()
-        else throw NotEnoughException(missingQuantities)
+        BatchConsumptionBuilder()
+            .addResultHandler(BatchConsumptionProcessor(viewModel.database, viewModel.viewModelScope))
+            .addResultHandler(object : BatchConsumptionBuilder.ResultHandler {
+                override fun onSuccess(batch: List<Pair<Product, Double>>) {
+                    resetInputs(view)
+                }
+            })
+            .consume(consumptions)
     }
-}
 
-private fun makeConsumption(
-    product: Product,
-    measure: Measure,
-    quantity: Double,
-    onSuccess: (newQuantity: Double) -> Unit,
-    onFailure: (missingQuantity: Double) -> Unit
-) {
-    val existingQuantity = product.quantity * product.capacity
-    val conversionQuantity = quantity.toBase(measure)
-    val quantityDiff = existingQuantity - conversionQuantity
-    if (quantityDiff < 0) onFailure(quantityDiff.toMeasure(measure))
-    else onSuccess(product.quantity - quantity.toBase(measure) / product.capacity)
+    override fun resetInputs(view: View) {
+        view.name_input.setText("")
+        view.name_input.requestFocus()
+    }
 }

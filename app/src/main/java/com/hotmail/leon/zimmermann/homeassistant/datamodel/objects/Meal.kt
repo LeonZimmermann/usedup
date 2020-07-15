@@ -44,8 +44,12 @@ class Meal(
     }
 }
 
-data class MealIngredient(
-    val product: DocumentReference? = null,
-    val measure: DocumentReference? = null,
-    var value: Double? = null
-)
+class MealIngredient(
+    product: DocumentReference? = null,
+    measure: DocumentReference? = null,
+    value: Double? = null
+) {
+    var product: DocumentReference = product!!
+    var measure: DocumentReference = measure!!
+    var value: Double = value!!
+}

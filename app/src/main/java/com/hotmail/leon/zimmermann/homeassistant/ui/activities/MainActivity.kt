@@ -58,7 +58,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 databaseInitThread.join()
             } finally {
-                startActivity(Intent(this, AppActivity::class.java))
+                val intent = Intent(this, AppActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                }
+                startActivity(intent)
             }
         } else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
     }
