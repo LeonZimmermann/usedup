@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.shopping.ShoppingListProcessor
 import kotlinx.android.synthetic.main.shopping_fragment.*
 
 class ShoppingFragment : Fragment() {
@@ -42,7 +43,7 @@ class ShoppingFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = ShoppingListAdapter(context!!)
-        adapter.setData(viewModel.productDiscrepancies)
+        adapter.setData(viewModel.shoppingList)
     }
 
     private fun initShoppingList() {
@@ -58,18 +59,7 @@ class ShoppingFragment : Fragment() {
     }
 
     private fun submitTransaction() {
-        /*
-        viewModel.shoppingList.observe(viewLifecycleOwner, Observer { shoppingList ->
-            val changedProducts = shoppingList
-                .toList()
-                .map { it.second }
-                .filter { it.isNotEmpty() }
-                .reduce { list, acc -> (acc + list).toMutableList() }
-                .filter { it.checked }
-            changedProducts.forEach { it.product.quantity += it.product.discrepancy }
-            viewModel.updateAll(changedProducts.map { it.product })
-        })
-        */
+        ShoppingListProcessor(viewModel.database).process(viewModel.shoppingList)
     }
 
     companion object {

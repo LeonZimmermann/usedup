@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Category
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
 import kotlinx.android.synthetic.main.shopping_category.view.*
 import org.jetbrains.anko.textView
 
@@ -27,7 +28,6 @@ class ShoppingListAdapter(private val context: Context) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingListAdapter.ShoppingViewHolder =
         ShoppingViewHolder(LayoutInflater.from(context).inflate(R.layout.shopping_category, parent, false))
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
         val (category, products) = shoppingList[position]
         holder.shoppingCategoryNameTextView.text = category.name
@@ -48,8 +48,10 @@ class ShoppingListAdapter(private val context: Context) :
 
     override fun getItemCount() = shoppingList.size
 
-    internal fun setData(shoppingList: List<Pair<Category, List<ShoppingProduct>>>) {
+    internal fun setData(shoppingList: List<ShoppingProduct>) {
         this.shoppingList = shoppingList
+            .groupBy { CategoryRepository.getCategoryForId(it.product.category.id) }
+            .toList()
         notifyDataSetChanged()
     }
 }
