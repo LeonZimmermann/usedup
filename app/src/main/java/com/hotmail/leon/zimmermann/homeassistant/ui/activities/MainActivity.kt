@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initData()
         authenticate()
     }
 
@@ -56,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         val response = IdpResponse.fromResultIntent(data)
         if (resultCode == Activity.RESULT_OK) {
             try {
+                initData()
                 databaseInitThread.join()
             } finally {
                 val intent = Intent(this, AppActivity::class.java).apply {
