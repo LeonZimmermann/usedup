@@ -10,6 +10,7 @@ android {
     defaultConfig {
         applicationId "com.hotmail.leon.zimmermann.homeassistant"
         minSdkVersion 22
+        multiDexEnabled true
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -95,6 +96,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
 
-    // RxJava
-    implementation "io.reactivex.rxjava3:rxjava:3.0.4"
+    // Multidex
+    implementation 'com.android.support:multidex:1.0.3'
 }
+
+apply plugin: 'com.google.gms.google-services'
