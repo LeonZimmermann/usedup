@@ -71,9 +71,9 @@ object ProductRepository {
             .addOnSuccessListener {
                 getProductForId(productId).apply {
                     this.name = name
-                    this.category = database.collection(Category.COLLECTION_NAME).document(category.id)
+                    this.category = category
                     this.capacity = capacity
-                    this.measure = database.collection(Measure.COLLECTION_NAME).document(measure.id)
+                    this.measure = measure
                     this.quantity = quantity
                     this.min = min
                     this.max = max

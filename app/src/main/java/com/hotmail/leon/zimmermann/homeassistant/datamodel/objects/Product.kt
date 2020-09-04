@@ -1,11 +1,14 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.PropertyName
+import com.google.firebase.firestore.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import kotlin.math.floor
 import kotlin.math.max
 
+@IgnoreExtraProperties
 class Product(
     @PropertyName("name") private var _name: String? = null,
     @PropertyName("quantity") private var _quantity: Double? = null,
@@ -41,16 +44,16 @@ class Product(
             _capacity = value
         }
         get() = _capacity!!
-    var measure: DocumentReference
+    var measure: Measure
         set(value) {
-            _measure = value
+            _measure = Firebase.firestore.collection(Measure.COLLECTION_NAME).document(value.id)
         }
-        get() = _measure!!
-    var category: DocumentReference
+        get() = MeasureRepository.getMeasureForId(_measure!!.id)
+    var category: Category
         set(value) {
-            _category = value
+            _category = Firebase.firestore.collection(Category.COLLECTION_NAME).document(value.id)
         }
-        get() = _category!!
+        get() = CategoryRepository.getCategoryForId(_category!!.id)
 
     val discrepancy: Int
         get() = max(max - floor(quantity).toInt(), 0)
