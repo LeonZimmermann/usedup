@@ -8,27 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.*
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var databaseInitThread: Thread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         authenticate()
-    }
-
-    private fun initData() {
-        databaseInitThread = thread {
-            CategoryRepository.init()
-            MeasureRepository.init()
-            ProductRepository.init()
-            TemplateRepository.init()
-            MealRepository.init()
-        }
     }
 
     private fun authenticate() {
@@ -54,16 +44,22 @@ class MainActivity : AppCompatActivity() {
     private fun handleSignInResult(resultCode: Int, data: Intent?) {
         val response = IdpResponse.fromResultIntent(data)
         if (resultCode == Activity.RESULT_OK) {
-            try {
+            GlobalScope.launch {
                 initData()
-                databaseInitThread.join()
-            } finally {
-                val intent = Intent(this, AppActivity::class.java).apply {
+                val intent = Intent(this@MainActivity, AppActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 }
                 startActivity(intent)
             }
         } else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
+    }
+
+    private suspend fun initData() {
+        CategoryRepository.init()
+        MeasureRepository.init()
+        ProductRepository.init()
+        TemplateRepository.init()
+        MealRepository.init()
     }
 
     companion object {
