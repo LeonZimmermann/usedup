@@ -5,9 +5,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
-        tools:context=".ui.fragments.camera.CameraFragment">
+        tools:context=".app.ui.camera.CameraFragment">
 
-    <com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CropImageView
+    <com.hotmail.leon.zimmermann.homeassistant.app.ui.camera.CropImageView
             android:id="@+id/cropImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"

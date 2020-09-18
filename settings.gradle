@@ -1,2 +1,4 @@
+include ':common-ressources'
+include ':common-components'
 include ':datamodel'
 include ':app'

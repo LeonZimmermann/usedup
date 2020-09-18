@@ -7,7 +7,7 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumption.ConsumptionViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.app.ui.overview.consumption.ConsumptionViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -103,7 +103,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            <com.hotmail.leon.zimmermann.homeassistant.ui.components.views.InfoboxView
+            <com.hotmail.leon.zimmermann.homeassistant.components.views.InfoboxView
                     android:id="@+id/infoboxView2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

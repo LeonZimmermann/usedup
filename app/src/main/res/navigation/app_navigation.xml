@@ -7,24 +7,24 @@
 
     <fragment
             android:id="@+id/overview_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.OverviewFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.overview.OverviewFragment"
             android:label="Overview"
             tools:layout="@layout/overview_fragment"/>
     <fragment
             android:id="@+id/account_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.account.AccountFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.account.AccountFragment"
             android:label="Account"
             tools:layout="@layout/account_fragment" />
     <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
     <fragment
             android:id="@+id/about_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.about.AboutFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.about.AboutFragment"
             android:label="About"
             tools:layout="@layout/about_fragment" />
     <action android:id="@+id/action_global_about_fragment" app:destination="@id/about_fragment" />
     <fragment
             android:id="@+id/shopping_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.ShoppingFragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.shopping.ShoppingFragment"
             android:label="Shopping"
             tools:layout="@layout/shopping_fragment" />
     <navigation
@@ -33,7 +33,7 @@
             app:startDestination="@id/timeline_fragment">
         <fragment
                 android:id="@+id/timeline_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.timeline.TimelineFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.calendar.timeline.TimelineFragment"
                 android:label="Timeline"
                 tools:layout="@layout/timeline_fragment">
             <action
@@ -45,7 +45,7 @@
         </fragment>
         <fragment
                 android:id="@+id/calendar_week_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.calendar.week.CalendarWeekFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.calendar.week.CalendarWeekFragment"
                 android:label="Calendar Week"
                 tools:layout="@layout/calendar_week_fragment">
             <action
@@ -66,12 +66,12 @@
                 app:startDestination="@id/meal_editor_fragment">
             <fragment
                     android:id="@+id/camera_fragment"
-                    android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.camera.CameraFragment"
+                    android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.camera.CameraFragment"
                     android:label="Camera"
                     tools:layout="@layout/camera_fragment" />
             <fragment
                     android:id="@+id/meal_editor_fragment"
-                    android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.meals.editor.MealEditorFragment"
+                    android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.meals.editor.MealEditorFragment"
                     android:label="Meal Editor">
                 <action
                         android:id="@+id/action_meal_editor_fragment_to_camera_fragment"
@@ -84,7 +84,7 @@
         </navigation>
         <fragment
                 android:id="@+id/product_editor_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.products.ProductEditorFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.products.ProductEditorFragment"
                 android:label="Product Editor">
             <argument
                     android:name="productId"
@@ -93,7 +93,7 @@
         </fragment>
         <fragment
                 android:id="@+id/template_editor_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.templates.TemplateEditorFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.templates.TemplateEditorFragment"
                 android:label="Template Editor">
             <argument
                     android:name="templateId"
@@ -102,7 +102,7 @@
         </fragment>
         <fragment
                 android:id="@+id/management_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.management.ManagementFragment"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.management.ManagementFragment"
                 android:label="Management"
                 tools:layout="@layout/management_fragment">
             <action

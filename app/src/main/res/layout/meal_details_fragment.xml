@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.fragments.meals.details.MealDetailsFragment">
+            tools:context=".ui.meals.details.MealDetailsFragment">
 
         <ImageView
                 android:id="@+id/consumption_creation_image_view"

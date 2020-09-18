@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.overview.OverviewFragment">
+        tools:context=".app.ui.overview.OverviewFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -12,7 +12,7 @@
 
         <fragment
                 android:id="@+id/consumption_fragment_component"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.overview.consumption.ConsumptionFragmentComponent"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.overview.consumption.ConsumptionFragmentComponent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -64,7 +64,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                <com.hotmail.leon.zimmermann.homeassistant.ui.components.views.InfoboxView
+                <com.hotmail.leon.zimmermann.homeassistant.components.views.InfoboxView
                         android:id="@+id/infoboxView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

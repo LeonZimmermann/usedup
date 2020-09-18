@@ -9,16 +9,16 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.templates.TemplateEditorViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.app.ui.templates.TemplateEditorViewModel" />
         <variable
                 name="eventHandler"
-                type="com.hotmail.leon.zimmermann.homeassistant.ui.fragments.templates.TemplateEditorFragment.EventHandler" />
+                type="com.hotmail.leon.zimmermann.homeassistant.app.ui.templates.TemplateEditorFragment.EventHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.fragments.templates.TemplateEditorFragment">
+            tools:context=".app.ui.templates.TemplateEditorFragment">
 
         <ScrollView
                 android:layout_width="match_parent"
