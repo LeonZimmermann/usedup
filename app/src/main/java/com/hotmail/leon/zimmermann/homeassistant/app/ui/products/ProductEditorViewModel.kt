@@ -32,16 +32,14 @@ class ProductEditorViewModel : ViewModel() {
 
     fun setProductId(productId: String) {
         this.productId = productId
-        database.collection(FirebaseProduct.COLLECTION_NAME).document(productId).get().addOnSuccessListener { document ->
-            document.toObject<Product>()?.let { product ->
-                nameInputValue.value = product.name
-                capacityInputValue.value = product.capacity.toString()
-                categoryInputValue.value = CategoryRepository.getCategoryForId(product.categoryId).name
-                currentInputValue.value = product.quantity.toString()
-                measureInputValue.value = MeasureRepository.getMeasureForId(product.measureId).name
-                minInputValue.value = product.min.toString()
-                maxInputValue.value = product.max.toString()
-            }
+        ProductRepository.getProductForId(productId).let { product ->
+            nameInputValue.value = product.name
+            capacityInputValue.value = product.capacity.toString()
+            categoryInputValue.value = CategoryRepository.getCategoryForId(product.categoryId).name
+            currentInputValue.value = product.quantity.toString()
+            measureInputValue.value = MeasureRepository.getMeasureForId(product.measureId).name
+            minInputValue.value = product.min.toString()
+            maxInputValue.value = product.max.toString()
         }
     }
 
