@@ -1,55 +1,44 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.PropertyName
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.DataIntegrityException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeal
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMealIngredient
 
 class Meal(
-    @PropertyName("name") private var _name: String? = null,
-    @PropertyName("duration") private var _duration: Int? = null,
-    @PropertyName("description") private var _description: String? = null,
-    @PropertyName("instructions") private var _instructions: String? = null,
-    @PropertyName("backgroundUrl") var backgroundUrl: String? = null,
-    @PropertyName("ingredients") private var _ingredients: List<MealIngredient>? = null
-) {
-    @DocumentId lateinit var id: String
-    var name: String
-        set(value) {
-            _name = value
-        }
-        get() = _name!!
-    var duration: Int
-        set(value) {
-            _duration = value
-        }
-        get() = _duration!!
-    var description: String
-        set(value) {
-            _description = value
-        }
-        get() = _description!!
-    var instructions: String
-        set(value) {
-            _instructions = value
-        }
-        get() = _instructions!!
+    var id: String,
+    var name: String,
+    var duration: Int,
+    var description: String?,
+    var instructions: String?,
+    var backgroundUrl: String?,
     var ingredients: List<MealIngredient>
-        set(value) {
-            _ingredients = value
-        }
-        get() = _ingredients!!
-
+) {
     companion object {
-        const val COLLECTION_NAME = "meals"
+        fun createInstance(id: String, firebaseObject: FirebaseMeal): Meal {
+            val name = firebaseObject.name ?: throw DataIntegrityException()
+            val duration = firebaseObject.duration ?: throw DataIntegrityException()
+            val description = firebaseObject.description
+            val instructions = firebaseObject.instructions
+            val backgroundUrl = firebaseObject.backgroundUrl
+            val ingredients = firebaseObject.ingredients
+                ?.map { MealIngredient.createInstance(it) }
+                ?: throw DataIntegrityException()
+            return Meal(id, name, duration, description, instructions, backgroundUrl, ingredients)
+        }
     }
 }
 
 class MealIngredient(
-    product: DocumentReference? = null,
-    measure: DocumentReference? = null,
-    value: Double? = null
+    var productId: String,
+    var measureId: String,
+    var value: Double
 ) {
-    var product: DocumentReference = product!!
-    var measure: DocumentReference = measure!!
-    var value: Double = value!!
+    companion object {
+        fun createInstance(firebaseObject: FirebaseMealIngredient): MealIngredient {
+            val productId = firebaseObject.product?.id ?: throw DataIntegrityException()
+            val measureId = firebaseObject.measure?.id ?: throw DataIntegrityException()
+            val value = firebaseObject.value ?: throw DataIntegrityException()
+            return MealIngredient(productId, measureId, value)
+        }
+    }
 }

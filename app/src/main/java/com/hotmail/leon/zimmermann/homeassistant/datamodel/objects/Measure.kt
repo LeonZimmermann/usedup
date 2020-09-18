@@ -1,28 +1,21 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.PropertyName
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.DataIntegrityException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeasure
 
 class Measure(
-    @PropertyName("name") private var _name: String? = null,
-    @PropertyName("abbreviation") private var _abbreviation: String? = null,
-    @PropertyName("baseFactor") private var _baseFactor: Float? = null
-) {
-    @DocumentId lateinit var id: String
-    var name: String
-        set(value) {
-            _name = value
-        }
-        get() = _name!!
-    var abbreviation: String
-        set(value) { _abbreviation = value }
-        get() = _abbreviation!!
+    var id: String,
+    var name: String,
+    var abbreviation: String,
     var baseFactor: Float
-        set(value) { _baseFactor = value }
-        get() = _baseFactor!!
-
+) {
     companion object {
-        const val COLLECTION_NAME = "measures"
+        fun createInstance(id: String, firebaseObject: FirebaseMeasure): Measure {
+            val name = firebaseObject.name ?: throw DataIntegrityException()
+            val abbreviation = firebaseObject.abbreviation ?: throw DataIntegrityException()
+            val baseFactor = firebaseObject.baseFactor ?: throw DataIntegrityException()
+            return Measure(id, name, abbreviation, baseFactor)
+        }
     }
 }
 

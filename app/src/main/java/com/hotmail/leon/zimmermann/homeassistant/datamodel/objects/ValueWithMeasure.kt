@@ -1,11 +1,11 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-data class Value(var double: Double, var measure: Measure) {
-    operator fun plus(other: Value): Value {
+data class ValueWithMeasure(var double: Double, var measure: Measure) {
+    operator fun plus(other: ValueWithMeasure): ValueWithMeasure {
         // TODO Check if measures are compatible
         val baseValue = this.double.toBase(this.measure)
         val otherBaseValue = other.double.toBase(other.measure)
-        return Value(
+        return ValueWithMeasure(
             (baseValue + otherBaseValue).toMeasure(
                 measure
             ), measure

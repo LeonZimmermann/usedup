@@ -3,8 +3,9 @@ package com.hotmail.leon.zimmermann.homeassistant.consumption
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.NotEnoughException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,7 @@ class BatchConsumptionProcessor(
             batch.forEach {
                 val (product, newQuantity) = it
                 update(
-                    database.collection(Product.COLLECTION_NAME).document(product.id),
+                    database.collection(FirebaseProduct.COLLECTION_NAME).document(product.id),
                     mapOf("quantity" to newQuantity)
                 )
             }
@@ -39,7 +40,7 @@ class BatchConsumptionProcessor(
         }
     }
 
-    override fun onFailure(missingQuantities: List<Pair<Product, Value>>) {
+    override fun onFailure(missingQuantities: List<Pair<Product, ValueWithMeasure>>) {
         throw NotEnoughException(missingQuantities)
     }
 }

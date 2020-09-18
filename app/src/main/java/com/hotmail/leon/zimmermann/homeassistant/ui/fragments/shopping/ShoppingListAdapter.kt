@@ -50,7 +50,7 @@ class ShoppingListAdapter(private val context: Context) :
 
     internal fun setData(shoppingList: List<ShoppingProduct>) {
         this.shoppingList = shoppingList
-            .groupBy { CategoryRepository.getCategoryForId(it.product.category.id) }
+            .groupBy { CategoryRepository.getCategoryForId(it.product.categoryId) }
             .toList()
         notifyDataSetChanged()
     }

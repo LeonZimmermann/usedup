@@ -2,7 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.shopping
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.ui.fragments.shopping.ShoppingProduct
 
 class ShoppingListProcessor(private val database: FirebaseFirestore) {
@@ -18,7 +18,7 @@ class ShoppingListProcessor(private val database: FirebaseFirestore) {
                 .forEach {
                     val newQuantity = it.product.quantity + it.cartAmount
                     update(
-                        database.collection(Product.COLLECTION_NAME).document(it.product.id),
+                        database.collection(FirebaseProduct.COLLECTION_NAME).document(it.product.id),
                         mapOf("quantity" to newQuantity)
                     )
                 }

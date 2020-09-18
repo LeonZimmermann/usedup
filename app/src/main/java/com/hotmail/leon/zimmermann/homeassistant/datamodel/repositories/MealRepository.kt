@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 
 object MealRepository {
@@ -14,8 +15,8 @@ object MealRepository {
     val meals: MutableList<Meal> = mutableListOf()
 
     fun init() {
-        Tasks.await(Firebase.firestore.collection(Meal.COLLECTION_NAME).get()).forEach { document ->
-            meals.add(document.toObject())
+        Tasks.await(Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME).get()).forEach { document ->
+            meals.add(Meal.createInstance(document.id, document.toObject()))
         }
     }
 
@@ -25,17 +26,23 @@ object MealRepository {
     fun addMeal(
         name: String,
         duration: Int,
-        description: String,
-        instructions: String,
+        description: String?,
+        instructions: String?,
         backgroundUrl: String?,
         ingredients: List<MealIngredient>
     ): Task<DocumentReference> {
-        val meal = Meal(name, duration, description, instructions, backgroundUrl, ingredients)
-        return database.collection(Meal.COLLECTION_NAME)
-            .add(meal)
+        val firebaseIngredients = ingredients.map {
+            FirebaseMealIngredient(
+                Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+                Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+                it.value
+            )
+        }
+        val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
+        return database.collection(FirebaseMeal.COLLECTION_NAME)
+            .add(firebaseMeal)
             .addOnSuccessListener {
-                meal.id = it.id
-                meals.add(meal)
+                meals.add(Meal.createInstance(it.id, firebaseMeal))
             }
     }
 
@@ -48,15 +55,22 @@ object MealRepository {
         backgroundUrl: String?,
         ingredients: List<MealIngredient>
     ): Task<Void> {
+        val firebaseIngredients = ingredients.map {
+            FirebaseMealIngredient(
+                Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+                Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+                it.value
+            )
+        }
         val data = mapOf(
             "name" to name,
             "duration" to duration,
             "description" to description,
             "name" to instructions,
             "backgroundUrl" to backgroundUrl,
-            "ingredients" to ingredients
+            "ingredients" to firebaseIngredients
         )
-        return database.collection(Meal.COLLECTION_NAME)
+        return database.collection(FirebaseMeal.COLLECTION_NAME)
             .document(mealId)
             .update(data)
             .addOnSuccessListener {
@@ -73,6 +87,6 @@ object MealRepository {
 
     fun deleteMeal(mealId: String): Task<Void> {
         meals.remove(getMealForId(mealId))
-        return database.collection(Meal.COLLECTION_NAME).document(mealId).delete()
+        return database.collection(FirebaseMeal.COLLECTION_NAME).document(mealId).delete()
     }
 }

@@ -9,8 +9,7 @@ import com.hotmail.leon.zimmermann.homeassistant.consumption.BatchConsumptionBui
 import com.hotmail.leon.zimmermann.homeassistant.consumption.BatchConsumptionProcessor
 import com.hotmail.leon.zimmermann.homeassistant.consumption.SingleConsumptionBuilder
 import com.hotmail.leon.zimmermann.homeassistant.consumption.SingleConsumptionProcessor
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.ConsumptionException
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
@@ -52,7 +51,7 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
                 override fun onSuccess(newQuantity: Pair<Product, Double>) {
                     resetInputs(view)
                 }
-            }).consume(product, Value(quantity, measure))
+            }).consume(product, ValueWithMeasure(quantity, measure))
     }
 
     override fun resetInputs(view: View) {
@@ -74,8 +73,8 @@ class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMod
         val template = TemplateRepository.getTemplateForName(templateName)
         val consumptions = template.components.map {
             Pair(
-                ProductRepository.getProductForId(it.product.id),
-                Value(it.value, MeasureRepository.getMeasureForId(it.measure.id))
+                ProductRepository.getProductForId(it.productId),
+                ValueWithMeasure(it.value, MeasureRepository.getMeasureForId(it.measureId))
             )
         }
         BatchConsumptionBuilder()
@@ -105,8 +104,8 @@ class MealMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() 
         val meal = MealRepository.getMealForName(mealName)
         val consumptions = meal.ingredients.map {
             Pair(
-                ProductRepository.getProductForId(it.product.id),
-                Value(it.value, MeasureRepository.getMeasureForId(it.measure.id))
+                ProductRepository.getProductForId(it.productId),
+                ValueWithMeasure(it.value, MeasureRepository.getMeasureForId(it.measureId))
             )
         }
         BatchConsumptionBuilder()

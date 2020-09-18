@@ -6,8 +6,9 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Category
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseCategory
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 
 object ProductRepository {
@@ -16,8 +17,8 @@ object ProductRepository {
     val products: MutableList<Product> = mutableListOf()
 
     fun init() {
-        Tasks.await(database.collection(Product.COLLECTION_NAME).get()).forEach { document ->
-            products.add(document.toObject())
+        Tasks.await(database.collection(FirebaseProduct.COLLECTION_NAME).get()).forEach { document ->
+            products.add(Product.createInstance(document.id, document.toObject()))
         }
     }
 
@@ -26,54 +27,58 @@ object ProductRepository {
 
     fun addProduct(
         name: String,
-        category: Category,
+        categoryId: String,
         capacity: Double,
-        measure: Measure,
+        measureId: String,
         quantity: Double,
         min: Int,
         max: Int
     ): Task<DocumentReference> {
-        val product = Product(
-            name, quantity, min, max, capacity,
-            database.collection(Measure.COLLECTION_NAME).document(measure.id),
-            database.collection(Category.COLLECTION_NAME).document(category.id)
+        val measureReference = database.collection(FirebaseMeasure.COLLECTION_NAME).document(measureId)
+        val categoryReference = database.collection(FirebaseCategory.COLLECTION_NAME).document(categoryId)
+        val product = mapOf(
+            "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
+            "measureReference" to measureReference,
+            "categoryReference" to categoryReference
         )
-        return database.collection(Product.COLLECTION_NAME)
+        return database.collection(FirebaseProduct.COLLECTION_NAME)
             .add(product)
-            .addOnSuccessListener {
-                product.id = it.id
-                products.add(product)
+            .addOnSuccessListener { reference ->
+                products.add(
+                    Product.createInstance(
+                        reference.id,
+                        FirebaseProduct(name, quantity, min, max, capacity, measureReference, categoryReference)
+                    )
+                )
             }
     }
 
     fun updateProduct(
-        productId: String,
+        id: String,
         name: String,
-        category: Category,
+        categoryId: String,
         capacity: Double,
-        measure: Measure,
+        measureId: String,
         quantity: Double,
         min: Int,
         max: Int
     ): Task<Void> {
+        val measureReference = database.collection(FirebaseMeasure.COLLECTION_NAME).document(measureId)
+        val categoryReference = database.collection(FirebaseCategory.COLLECTION_NAME).document(categoryId)
         val data = mapOf(
-            "name" to name,
-            "category" to database.collection(Category.COLLECTION_NAME).document(category.id),
-            "capacity" to capacity,
-            "measure" to database.collection(Measure.COLLECTION_NAME).document(measure.id),
-            "quantity" to quantity,
-            "min" to min,
-            "max" to max
+            "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
+            "measureReference" to measureReference,
+            "categoryReference" to categoryReference
         )
-        return database.collection(Product.COLLECTION_NAME)
-            .document(productId)
+        return database.collection(FirebaseProduct.COLLECTION_NAME)
+            .document(id)
             .update(data)
             .addOnSuccessListener {
-                getProductForId(productId).apply {
+                getProductForId(id).apply {
                     this.name = name
-                    this.category = category
+                    this.categoryId = categoryId
                     this.capacity = capacity
-                    this.measure = measure
+                    this.measureId = measureId
                     this.quantity = quantity
                     this.min = min
                     this.max = max
@@ -84,7 +89,7 @@ object ProductRepository {
     fun deleteProduct(productId: String): Task<Void> {
         // TODO Account for changes in templates and meals
         products.remove(getProductForId(productId))
-        return database.collection(Product.COLLECTION_NAME).document(productId).delete()
+        return database.collection(FirebaseProduct.COLLECTION_NAME).document(productId).delete()
     }
 
 }

@@ -14,15 +14,15 @@ class SingleConsumptionBuilder {
         resultHandlerList.forEach { it.onSuccess(newQuantity) }
     }
 
-    private fun notifyOnFailure(missingQuantity: Pair<Product, Value>) {
+    private fun notifyOnFailure(missingQuantity: Pair<Product, ValueWithMeasure>) {
         resultHandlerList.forEach { it.onFailure(missingQuantity) }
     }
 
-    fun consume(product: Product, value: Value) {
+    fun consume(product: Product, value: ValueWithMeasure) {
         val existingQuantity = product.quantity * product.capacity
         val conversionQuantity = value.double.toBase(value.measure)
         val quantityDiff = existingQuantity - conversionQuantity
-        if (quantityDiff < 0) notifyOnFailure(Pair(product, Value(quantityDiff.toMeasure(value.measure), value.measure)))
+        if (quantityDiff < 0) notifyOnFailure(Pair(product, ValueWithMeasure(quantityDiff.toMeasure(value.measure), value.measure)))
         else {
             val newQuantity = product.quantity - value.double.toBase(value.measure) / product.capacity
             notifyOnSuccess(Pair(product, newQuantity))
@@ -31,6 +31,6 @@ class SingleConsumptionBuilder {
 
     interface ResultHandler {
         fun onSuccess(newQuantity: Pair<Product, Double>) {}
-        fun onFailure(missingQuantity: Pair<Product, Value>) {}
+        fun onFailure(missingQuantity: Pair<Product, ValueWithMeasure>) {}
     }
 }

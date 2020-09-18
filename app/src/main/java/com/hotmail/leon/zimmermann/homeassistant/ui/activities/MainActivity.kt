@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -44,8 +41,9 @@ class MainActivity : AppCompatActivity() {
     private fun handleSignInResult(resultCode: Int, data: Intent?) {
         val response = IdpResponse.fromResultIntent(data)
         if (resultCode == Activity.RESULT_OK) {
-            GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.IO) {
                 initData()
+            }.invokeOnCompletion {
                 val intent = Intent(this@MainActivity, AppActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 }
@@ -54,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         } else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
     }
 
-    private suspend fun initData() {
+    private fun initData() {
         CategoryRepository.init()
         MeasureRepository.init()
         ProductRepository.init()

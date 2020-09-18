@@ -1,7 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.consumption
 
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
 
 class BatchConsumptionBuilder {
     private val resultHandlerList = mutableListOf<ResultHandler>()
@@ -15,13 +15,13 @@ class BatchConsumptionBuilder {
         resultHandlerList.forEach { it.onSuccess(batch) }
     }
 
-    private fun notifyOnFailure(missingQuantities: List<Pair<Product, Value>>) {
+    private fun notifyOnFailure(missingQuantities: List<Pair<Product, ValueWithMeasure>>) {
         resultHandlerList.forEach { it.onFailure(missingQuantities) }
     }
 
-    fun consume(consumption: List<Pair<Product, Value>>) {
+    fun consume(consumption: List<Pair<Product, ValueWithMeasure>>) {
         val batch = mutableListOf<Pair<Product, Double>>()
-        val missingQuantities = mutableListOf<Pair<Product, Value>>()
+        val missingQuantities = mutableListOf<Pair<Product, ValueWithMeasure>>()
         consumption.forEach {
             val (product, value) = it
             SingleConsumptionBuilder().addResultHandler(object : SingleConsumptionBuilder.ResultHandler {
@@ -29,7 +29,7 @@ class BatchConsumptionBuilder {
                     batch.add(newQuantity)
                 }
 
-                override fun onFailure(missingQuantity: Pair<Product, Value>) {
+                override fun onFailure(missingQuantity: Pair<Product, ValueWithMeasure>) {
                     missingQuantities.add(missingQuantity)
                 }
             }).consume(product, value)
@@ -40,6 +40,6 @@ class BatchConsumptionBuilder {
 
     interface ResultHandler {
         fun onSuccess(batch: List<Pair<Product, Double>>) {}
-        fun onFailure(missingQuantities: List<Pair<Product, Value>>) {}
+        fun onFailure(missingQuantities: List<Pair<Product, ValueWithMeasure>>) {}
     }
 }

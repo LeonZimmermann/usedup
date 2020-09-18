@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemplate
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
@@ -33,7 +36,7 @@ class TemplateEditorViewModel : ViewModel() {
 
     fun setTemplateId(templateId: String) {
         this.templateId = templateId
-        database.collection(Template.COLLECTION_NAME)
+        database.collection(FirebaseTemplate.COLLECTION_NAME)
             .document(templateId)
             .get()
             .addOnSuccessListener { result ->
@@ -41,9 +44,9 @@ class TemplateEditorViewModel : ViewModel() {
                     nameString.value = name
                     components.let {
                         consumptionElementList.value = it.map { element ->
-                            val product = ProductRepository.getProductForId(element.product.id)
-                            val measure = MeasureRepository.getMeasureForId(element.measure.id)
-                            ConsumptionElement(product, Value(element.value, measure))
+                            val product = ProductRepository.getProductForId(element.productId)
+                            val measure = MeasureRepository.getMeasureForId(element.measureId)
+                            ConsumptionElement(product, ValueWithMeasure(element.value, measure))
                         }.toMutableList()
                     }
                 } ?: throw RuntimeException("Couldn't convert template") // TODO Should not be a RuntimeException
@@ -65,8 +68,8 @@ class TemplateEditorViewModel : ViewModel() {
         viewModelScope.launch {
             TemplateRepository.addTemplate(name!!, consumptionElementList.value!!.map { element ->
                 TemplateComponent(
-                    database.collection(Product.COLLECTION_NAME).document(element.product.id),
-                    database.collection(Measure.COLLECTION_NAME).document(element.value.measure.id),
+                    element.product.id,
+                    element.value.measure.id,
                     element.value.double
                 )
             })

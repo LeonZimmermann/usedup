@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Value
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import kotlinx.android.synthetic.main.meal_ingredients_dialog.view.*
 import java.io.Serializable
@@ -57,7 +57,7 @@ class ConsumptionElementDialog(callback: ((ConsumptionElement) -> Unit)? = null)
                     val measure = MeasureRepository.getMeasureForName(view.measure_input.text.toString())
                     val consumption = view.consumption_input.text.toString().toDouble()
                     callback.call(ConsumptionElement(product,
-                        Value(
+                        ValueWithMeasure(
                             consumption,
                             measure
                         )

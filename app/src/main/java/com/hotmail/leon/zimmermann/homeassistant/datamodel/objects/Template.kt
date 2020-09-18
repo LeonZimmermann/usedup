@@ -1,36 +1,36 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.objects
 
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.PropertyName
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.DataIntegrityException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemplate
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemplateComponent
 
-class Template(
-    @PropertyName("") private var _name: String? = null,
-    @PropertyName("") private var _components: List<TemplateComponent>? = null
-) {
-    @DocumentId lateinit var id: String
-    var name: String
-        set(value) {
-            _name = value
-        }
-        get() = _name!!
+data class Template(
+    var id: String,
+    var name: String,
     var components: List<TemplateComponent>
-        set(value) {
-            _components = value
-        }
-        get() = _components!!
-
+) {
     companion object {
-        const val COLLECTION_NAME = "templates"
+        fun createInstance(id: String, firebaseObject: FirebaseTemplate): Template {
+            val name = firebaseObject.name ?: throw DataIntegrityException()
+            val components = firebaseObject.components
+                ?.map { TemplateComponent.createInstance(it) }
+                ?: throw DataIntegrityException()
+            return Template(id, name, components)
+        }
     }
 }
 
-class TemplateComponent(
-    product: DocumentReference? = null,
-    measure: DocumentReference? = null,
-    value: Double? = null
+data class TemplateComponent(
+    var productId: String,
+    var measureId: String,
+    var value: Double
 ) {
-    var product: DocumentReference = product!!
-    var measure: DocumentReference = measure!!
-    var value: Double = value!!
+    companion object {
+        fun createInstance(firebaseObject: FirebaseTemplateComponent): TemplateComponent {
+            val productId = firebaseObject.product?.id ?: throw DataIntegrityException()
+            val measureId = firebaseObject.measure?.id ?: throw DataIntegrityException()
+            val value = firebaseObject.value ?: throw DataIntegrityException()
+            return TemplateComponent(productId, measureId, value)
+        }
+    }
 }

@@ -7,6 +7,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.callbacks.FirestoreCallback
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
@@ -32,13 +33,13 @@ class ProductEditorViewModel : ViewModel() {
 
     fun setProductId(productId: String) {
         this.productId = productId
-        database.collection(Product.COLLECTION_NAME).document(productId).get().addOnSuccessListener { document ->
+        database.collection(FirebaseProduct.COLLECTION_NAME).document(productId).get().addOnSuccessListener { document ->
             document.toObject<Product>()?.let { product ->
                 nameInputValue.value = product.name
                 capacityInputValue.value = product.capacity.toString()
-                categoryInputValue.value = CategoryRepository.getCategoryForId(product.category.id).name
+                categoryInputValue.value = CategoryRepository.getCategoryForId(product.categoryId).name
                 currentInputValue.value = product.quantity.toString()
-                measureInputValue.value = MeasureRepository.getMeasureForId(product.measure.id).name
+                measureInputValue.value = MeasureRepository.getMeasureForId(product.measureId).name
                 minInputValue.value = product.min.toString()
                 maxInputValue.value = product.max.toString()
             }
@@ -69,8 +70,8 @@ class ProductEditorViewModel : ViewModel() {
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
         callback.onFirestoreResult(
-            if (productId == null) ProductRepository.addProduct(name, category, capacity, measure, quantity, min, max)
-            else ProductRepository.updateProduct(productId!!, name, category, capacity, measure, quantity, min, max)
+            if (productId == null) ProductRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
+            else ProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
         )
     }
 }

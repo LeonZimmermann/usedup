@@ -27,8 +27,8 @@ class ShoppingListBuilder {
 
     fun addMeal(meal: Meal): ShoppingListBuilder {
         meal.ingredients.forEach {
-            val product = ProductRepository.getProductForId(it.product.id)
-            val measure = MeasureRepository.getMeasureForId(it.measure.id)
+            val product = ProductRepository.getProductForId(it.productId)
+            val measure = MeasureRepository.getMeasureForId(it.measureId)
             val cartAmount = ceil(product.capacity.toMeasure(measure) / it.value).toInt()
             addProduct(product, cartAmount)
         }
