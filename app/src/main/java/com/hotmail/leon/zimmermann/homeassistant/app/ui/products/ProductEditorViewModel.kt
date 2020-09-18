@@ -1,6 +1,8 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.ui.products
 
 import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -27,6 +29,8 @@ class ProductEditorViewModel : ViewModel() {
     var minInputValue = MutableLiveData("")
     var maxInputValue = MutableLiveData("")
 
+    var systemMessage = MutableLiveData("")
+
     var productId: String? = null
         private set
 
@@ -43,22 +47,26 @@ class ProductEditorViewModel : ViewModel() {
         }
     }
 
-    fun save(callback: FirestoreCallback) {
+    fun save() {
         viewModelScope.launch {
-            when {
-                nameInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a name"))
-                categoryInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Select a category"))
-                capacityInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a capacity"))
-                measureInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Select a measure"))
-                currentInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert the current quantity"))
-                minInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a minimum quantity"))
-                maxInputValue.value.isNullOrBlank() -> callback.onValidationFailed(InvalidInputException("Insert a maximum quantity"))
-                else -> saveAfterValidation(callback)
+            try {
+                when {
+                    nameInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a name")
+                    categoryInputValue.value.isNullOrBlank() -> throw InvalidInputException("Select a category")
+                    capacityInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a capacity")
+                    measureInputValue.value.isNullOrBlank() -> throw InvalidInputException("Select a measure")
+                    currentInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert the current quantity")
+                    minInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a minimum quantity")
+                    maxInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a maximum quantity")
+                    else -> saveAfterValidation()
+                }
+            } catch (e: InvalidInputException) {
+                systemMessage.value = e.message
             }
         }
     }
 
-    private fun saveAfterValidation(callback: FirestoreCallback) {
+    private fun saveAfterValidation() {
         val name = nameInputValue.value!!
         val category = CategoryRepository.getCategoryForName(categoryInputValue.value!!)
         val capacity = capacityInputValue.value!!.toDouble()
@@ -66,9 +74,31 @@ class ProductEditorViewModel : ViewModel() {
         val quantity = currentInputValue.value!!.toDouble()
         val min = minInputValue.value!!.toInt()
         val max = maxInputValue.value!!.toInt()
-        callback.onFirestoreResult(
-            if (productId == null) ProductRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
-            else ProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
-        )
+        val task =
+            if (productId == null) ProductRepository.addProduct(
+                name,
+                category.id,
+                capacity,
+                measure.id,
+                quantity,
+                min,
+                max
+            )
+            else ProductRepository.updateProduct(
+                productId!!,
+                name,
+                category.id,
+                capacity,
+                measure.id,
+                quantity,
+                min,
+                max
+            )
+        task.addOnSuccessListener {
+            systemMessage.value = "Added Product"
+            // TODO Navigate up
+        }.addOnFailureListener {
+            systemMessage.value = "Could not add product"
+        }
     }
 }

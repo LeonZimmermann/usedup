@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Task
@@ -39,6 +40,7 @@ class ProductEditorFragment : Fragment() {
         initDatabinding(view)
         initCategoryInput()
         initMeasureInput()
+        initSystemMessage()
         initSaveButton(view)
     }
 
@@ -70,13 +72,15 @@ class ProductEditorFragment : Fragment() {
         )
     }
 
+    private fun initSystemMessage() {
+        viewModel.systemMessage.observe(viewLifecycleOwner, Observer { systemMessage ->
+            if (!systemMessage.isNullOrBlank()) Snackbar.make(requireView(), systemMessage, Snackbar.LENGTH_LONG).show()
+        })
+    }
+
     private fun initSaveButton(view: View) {
         save_button.setOnClickListener {
-            try {
-                viewModel.save(firestoreCallback)
-            } catch (e: InvalidInputException) {
-                e.message?.let { Snackbar.make(view, it, Snackbar.LENGTH_LONG).show()  }
-            }
+            viewModel.save()
         }
     }
 
@@ -86,21 +90,6 @@ class ProductEditorFragment : Fragment() {
         binding.viewModel = viewModel
         binding.buttonText = if (viewModel.productId == null)
             resources.getString(R.string.add_product) else resources.getString(R.string.update_product)
-    }
-
-    private val firestoreCallback = object: FirestoreCallback {
-        override fun onFirestoreResult(task: Task<*>) {
-            task.addOnSuccessListener {
-                Snackbar.make(requireView(), "Added Product", Snackbar.LENGTH_LONG).show()
-                findNavController().navigateUp()
-            }.addOnFailureListener {
-                Snackbar.make(requireView(), "Could not add product", Snackbar.LENGTH_LONG).show()
-            }
-        }
-
-        override fun onValidationFailed(exception: Exception) {
-            Snackbar.make(view!!, exception.message!!, Snackbar.LENGTH_LONG).show()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
