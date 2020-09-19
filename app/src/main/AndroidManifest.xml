@@ -31,7 +31,9 @@
                     android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".app.ui.MainActivity">
+        <activity
+                android:name=".app.ui.MainActivity"
+                android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
