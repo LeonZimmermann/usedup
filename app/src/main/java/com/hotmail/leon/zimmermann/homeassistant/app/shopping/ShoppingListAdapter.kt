@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.app.ui.shopping
+package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
 import android.content.Context
 import android.graphics.Paint
@@ -19,7 +19,7 @@ class ShoppingListAdapter(private val context: Context) :
 
     private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
 
-    inner class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val shoppingCategoryNameTextView: TextView = itemView.shopping_category_name_tv
         val shoppingProductListContainer: LinearLayout = itemView.shopping_product_list_container
     }

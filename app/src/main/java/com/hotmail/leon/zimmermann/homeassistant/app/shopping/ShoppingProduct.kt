@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.app.ui.shopping
+package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 

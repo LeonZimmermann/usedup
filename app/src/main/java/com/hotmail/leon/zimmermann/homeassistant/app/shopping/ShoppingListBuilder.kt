@@ -5,7 +5,6 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.ProductRepository
-import com.hotmail.leon.zimmermann.homeassistant.app.ui.shopping.ShoppingProduct
 import kotlin.math.ceil
 
 class ShoppingListBuilder {

@@ -1,15 +1,16 @@
-package com.hotmail.leon.zimmermann.homeassistant.app.ui.shopping
+package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.app.shopping.ShoppingListProcessor
 import kotlinx.android.synthetic.main.shopping_fragment.*
 
 class ShoppingFragment : Fragment() {
@@ -33,6 +34,7 @@ class ShoppingFragment : Fragment() {
         initAdapter()
         initShoppingList()
         initConfirmButton()
+        initSystemMessage()
     }
 
     private fun initViewModel() {
@@ -43,7 +45,9 @@ class ShoppingFragment : Fragment() {
 
     private fun initAdapter() {
         adapter = ShoppingListAdapter(context!!)
-        adapter.setData(viewModel.shoppingList)
+        viewModel.shoppingList.observe(viewLifecycleOwner, Observer { shoppingList ->
+            adapter.setData(shoppingList)
+        })
     }
 
     private fun initShoppingList() {
@@ -53,13 +57,15 @@ class ShoppingFragment : Fragment() {
 
     private fun initConfirmButton() {
         confirm_button.setOnClickListener {
-            submitTransaction()
+            viewModel.submitTransaction()
             findNavController().navigateUp()
         }
     }
 
-    private fun submitTransaction() {
-        ShoppingListProcessor(viewModel.database).process(viewModel.shoppingList)
+    private fun initSystemMessage() {
+        viewModel.systemMessage.observe(viewLifecycleOwner, Observer { systemMessage ->
+            Snackbar.make(requireView(), systemMessage, Snackbar.LENGTH_LONG).show()
+        })
     }
 
     companion object {
