@@ -149,7 +149,7 @@ class CalendarWeekView @JvmOverloads constructor(
         }
         dayTextsMaxHeight = calculateMaxHeightOf(dayTexts, dayTextPaint)
         topYSpace = weekdayTextsMaxHeight + dayTextsMaxHeight + topYPadding
-        postInvalidate()
+        invalidate()
     }
 
     private fun getTimeTexts(): Array<String> {
@@ -192,7 +192,7 @@ class CalendarWeekView @JvmOverloads constructor(
         weekYSpace = height - topYSpace
         scrollClipRect = RectF(0f, topYSpace, width, height)
         entryRectList = calculateRectList(entryList)
-        postInvalidate()
+        invalidate()
     }
 
     private fun calculateRectList(entryList: List<Entry>): MutableList<Pair<Entry, RectF>> =
@@ -291,7 +291,7 @@ class CalendarWeekView @JvmOverloads constructor(
                 yScrollOffset = (weekYSpace / yScrollScale) - weekYSpace + mainYPadding / 2f
             entryRectList = calculateRectList(entryList)
             onScrollListener?.onScroll(yScrollOffset)
-            postInvalidate()
+            invalidate()
             return true
         }
 
@@ -313,7 +313,7 @@ class CalendarWeekView @JvmOverloads constructor(
                     }
                     entryRectList = calculateRectList(entryList)
                     onScrollListener?.onScroll(yScrollOffset)
-                    postInvalidate()
+                    invalidate()
                 }
                 start()
             }
@@ -388,7 +388,7 @@ class CalendarWeekView @JvmOverloads constructor(
     /**
      * Stores the raw entries in the field entryList and stores the filtered entries, where the fromDate or the toDate is
      * not the same week as the one displayed by the view, in the entryRectList. The entryRectList is the list of the rects
-     * that are displayed in the view. Calls postInvalidate() to ensure that the view is redrawn.
+     * that are displayed in the view. Calls invalidate() to ensure that the view is redrawn.
      */
     fun setEntryList(entryList: MutableList<Entry>) {
         this.entryList = entryList
@@ -400,6 +400,6 @@ class CalendarWeekView @JvmOverloads constructor(
             val toDateInWeek = calendar[Calendar.YEAR] == year && calendar[Calendar.WEEK_OF_YEAR] == weekOfYear
             fromDateInWeek && toDateInWeek
         })
-        postInvalidate()
+        invalidate()
     }
 }
