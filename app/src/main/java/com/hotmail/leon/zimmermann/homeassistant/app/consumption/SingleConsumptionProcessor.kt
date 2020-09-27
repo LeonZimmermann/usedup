@@ -4,7 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.NotEnoughException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,7 +22,7 @@ class SingleConsumptionProcessor(
         }
     }
 
-    override fun onFailure(missingQuantity: Pair<Product, ValueWithMeasure>) {
+    override fun onFailure(missingQuantity: Pair<Product, MeasureValue>) {
         throw NotEnoughException(listOf(missingQuantity))
     }
 }

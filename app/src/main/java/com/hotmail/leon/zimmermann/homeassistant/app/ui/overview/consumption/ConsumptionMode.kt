@@ -9,7 +9,7 @@ import com.hotmail.leon.zimmermann.homeassistant.app.consumption.BatchConsumptio
 import com.hotmail.leon.zimmermann.homeassistant.app.consumption.BatchConsumptionProcessor
 import com.hotmail.leon.zimmermann.homeassistant.app.consumption.SingleConsumptionBuilder
 import com.hotmail.leon.zimmermann.homeassistant.app.consumption.SingleConsumptionProcessor
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.ValueWithMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureValue
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
@@ -51,7 +51,7 @@ class ProductMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode
                 override fun onSuccess(newQuantity: Pair<Product, Double>) {
                     resetInputs(view)
                 }
-            }).consume(product, ValueWithMeasure(quantity, measure))
+            }).consume(product, MeasureValue(quantity, measure))
     }
 
     override fun resetInputs(view: View) {
@@ -74,7 +74,7 @@ class TemplateMode(private val viewModel: ConsumptionViewModel) : ConsumptionMod
         val consumptions = template.components.map {
             Pair(
                 ProductRepository.getProductForId(it.productId),
-                ValueWithMeasure(it.value, MeasureRepository.getMeasureForId(it.measureId))
+                MeasureValue(it.value, MeasureRepository.getMeasureForId(it.measureId))
             )
         }
         BatchConsumptionBuilder()
@@ -105,7 +105,7 @@ class MealMode(private val viewModel: ConsumptionViewModel) : ConsumptionMode() 
         val consumptions = meal.ingredients.map {
             Pair(
                 ProductRepository.getProductForId(it.productId),
-                ValueWithMeasure(it.value, MeasureRepository.getMeasureForId(it.measureId))
+                MeasureValue(it.value, MeasureRepository.getMeasureForId(it.measureId))
             )
         }
         BatchConsumptionBuilder()

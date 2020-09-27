@@ -56,7 +56,7 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
                         val measure = MeasureRepository.getMeasureForId(ingredient.measureId)
                         com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement(
                             product,
-                            ValueWithMeasure(
+                            MeasureValue(
                                 ingredient.value,
                                 measure
                             )
@@ -73,7 +73,7 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
         val consumptionElementList = consumptionElementList.value
         consumptionElementList?.let { list ->
             list.firstOrNull { it.product == consumptionElement.product }?.apply {
-                this.value += consumptionElement.value
+                this.valueValue += consumptionElement.valueValue
             }
                 ?: list.add(consumptionElement)
         }
@@ -87,8 +87,8 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
                 consumptionElementList.value!!.map { element ->
                     MealIngredient(
                         element.product.id,
-                        element.value.measure.id,
-                        element.value.double
+                        element.valueValue.measure.id,
+                        element.valueValue.double
                     )
                 })
         }

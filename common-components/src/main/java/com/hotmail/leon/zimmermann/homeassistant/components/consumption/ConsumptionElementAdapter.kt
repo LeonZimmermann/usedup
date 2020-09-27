@@ -29,7 +29,7 @@ class ConsumptionElementAdapter(private val context: Context, private val onItem
     override fun onBindViewHolder(holder: ConsumptionElementViewHolder, position: Int) {
         val consumptionTemplate = consumptionElementList[position]
         holder.ingredientNameTextView.text = consumptionTemplate.product.name
-        holder.amountTextView.text = consumptionTemplate.value.toString()
+        holder.amountTextView.text = consumptionTemplate.valueValue.toString()
     }
 
     override fun getItemCount() = consumptionElementList.size

@@ -45,7 +45,7 @@ class TemplateEditorViewModel : ViewModel() {
                             val measure = MeasureRepository.getMeasureForId(element.measureId)
                             com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement(
                                 product,
-                                ValueWithMeasure(element.value, measure)
+                                MeasureValue(element.value, measure)
                             )
                         }.toMutableList()
                     }
@@ -57,7 +57,7 @@ class TemplateEditorViewModel : ViewModel() {
         val consumptionElementList = consumptionElementList.value
         consumptionElementList?.let { list ->
             list.firstOrNull { it.product == consumptionElement.product }?.apply {
-                this.value += consumptionElement.value
+                this.valueValue += consumptionElement.valueValue
             } ?: list.add(consumptionElement)
         }
         this.consumptionElementList.value = consumptionElementList
@@ -69,8 +69,8 @@ class TemplateEditorViewModel : ViewModel() {
             TemplateRepository.addTemplate(name!!, consumptionElementList.value!!.map { element ->
                 TemplateComponent(
                     element.product.id,
-                    element.value.measure.id,
-                    element.value.double
+                    element.valueValue.measure.id,
+                    element.valueValue.double
                 )
             })
         }
