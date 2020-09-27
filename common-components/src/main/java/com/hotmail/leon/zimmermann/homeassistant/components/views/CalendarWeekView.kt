@@ -12,6 +12,7 @@ import android.view.View
 import androidx.core.graphics.withClip
 import com.hotmail.leon.zimmermann.homeassistant.components.R
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.runOnUiThread
 import org.jetbrains.anko.sp
 import java.io.Serializable
 import java.text.DateFormat
@@ -149,7 +150,8 @@ class CalendarWeekView @JvmOverloads constructor(
         }
         dayTextsMaxHeight = calculateMaxHeightOf(dayTexts, dayTextPaint)
         topYSpace = weekdayTextsMaxHeight + dayTextsMaxHeight + topYPadding
-        invalidate()
+        context.runOnUiThread { invalidate() }
+
     }
 
     private fun getTimeTexts(): Array<String> {
@@ -192,7 +194,7 @@ class CalendarWeekView @JvmOverloads constructor(
         weekYSpace = height - topYSpace
         scrollClipRect = RectF(0f, topYSpace, width, height)
         entryRectList = calculateRectList(entryList)
-        invalidate()
+        context.runOnUiThread { invalidate() }
     }
 
     private fun calculateRectList(entryList: List<Entry>): MutableList<Pair<Entry, RectF>> =
@@ -291,7 +293,7 @@ class CalendarWeekView @JvmOverloads constructor(
                 yScrollOffset = (weekYSpace / yScrollScale) - weekYSpace + mainYPadding / 2f
             entryRectList = calculateRectList(entryList)
             onScrollListener?.onScroll(yScrollOffset)
-            invalidate()
+            context.runOnUiThread { invalidate() }
             return true
         }
 
@@ -313,7 +315,7 @@ class CalendarWeekView @JvmOverloads constructor(
                     }
                     entryRectList = calculateRectList(entryList)
                     onScrollListener?.onScroll(yScrollOffset)
-                    invalidate()
+                    context.runOnUiThread { invalidate() }
                 }
                 start()
             }
@@ -400,6 +402,6 @@ class CalendarWeekView @JvmOverloads constructor(
             val toDateInWeek = calendar[Calendar.YEAR] == year && calendar[Calendar.WEEK_OF_YEAR] == weekOfYear
             fromDateInWeek && toDateInWeek
         })
-        invalidate()
+        context.runOnUiThread { invalidate() }
     }
 }
