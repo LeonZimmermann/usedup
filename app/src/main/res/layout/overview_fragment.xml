@@ -12,7 +12,7 @@
 
         <fragment
                 android:id="@+id/consumption_fragment_component"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.app.ui.overview.consumption.ConsumptionFragmentComponent"
+                android:name="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionFragmentComponent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

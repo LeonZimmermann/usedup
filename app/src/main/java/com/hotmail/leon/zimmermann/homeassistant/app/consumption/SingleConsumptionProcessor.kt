@@ -11,18 +11,18 @@ import kotlinx.coroutines.launch
 class SingleConsumptionProcessor(
     private val database: FirebaseFirestore,
     private val scope: CoroutineScope
-): SingleConsumptionBuilder.ResultHandler {
-    override fun onSuccess(newQuantity: Pair<Product, Double>) {
-        scope.launch {
-            val (product, quantityValue) = newQuantity
-            database.collection(FirebaseProduct.COLLECTION_NAME)
-                .document(product.id)
-                .update(mapOf("quantity" to quantityValue))
-                .addOnSuccessListener { product.quantity = quantityValue }
-        }
+) : SingleConsumptionBuilder.ResultHandler {
+  override fun onSuccess(newQuantity: Pair<Product, Double>) {
+    scope.launch {
+        val (product, quantityValue) = newQuantity
+      database.collection(FirebaseProduct.COLLECTION_NAME)
+        .document(product.id)
+        .update(mapOf("quantity" to quantityValue))
+        .addOnSuccessListener { product.quantity = quantityValue }
     }
+  }
 
-    override fun onFailure(missingQuantity: Pair<Product, MeasureValue>) {
-        throw NotEnoughException(listOf(missingQuantity))
-    }
+  override fun onFailure(missingQuantity: Pair<Product, MeasureValue>) {
+    throw NotEnoughException(listOf(missingQuantity))
+  }
 }

@@ -13,34 +13,34 @@ class BatchConsumptionProcessor(
     private val database: FirebaseFirestore,
     private val scope: CoroutineScope
 ) : BatchConsumptionBuilder.ResultHandler {
-    override fun onSuccess(batch: List<Pair<Product, Double>>) {
-        scope.launch {
-            updateDatabase(batch).addOnSuccessListener {
-                updateReferences(batch)
-            }
-        }
+  override fun onSuccess(batch: List<Pair<Product, Double>>) {
+    scope.launch {
+      updateDatabase(batch).addOnSuccessListener {
+        updateReferences(batch)
+      }
     }
+  }
 
-    private fun updateDatabase(batch: List<Pair<Product, Double>>): Task<Void> {
-        return database.batch().apply {
-            batch.forEach {
-                val (product, newQuantity) = it
-                update(
-                    database.collection(FirebaseProduct.COLLECTION_NAME).document(product.id),
-                    mapOf("quantity" to newQuantity)
-                )
-            }
-        }.commit()
-    }
+  private fun updateDatabase(batch: List<Pair<Product, Double>>): Task<Void> {
+    return database.batch().apply {
+      batch.forEach {
+          val (product, newQuantity) = it
+        update(
+            database.collection(FirebaseProduct.COLLECTION_NAME).document(product.id),
+            mapOf("quantity" to newQuantity)
+        )
+      }
+    }.commit()
+  }
 
-    private fun updateReferences(batch: List<Pair<Product, Double>>) {
-        batch.forEach {
-            val (product, newQuantity) = it
-            product.quantity = newQuantity
-        }
+  private fun updateReferences(batch: List<Pair<Product, Double>>) {
+    batch.forEach {
+        val (product, newQuantity) = it
+      product.quantity = newQuantity
     }
+  }
 
-    override fun onFailure(missingQuantities: List<Pair<Product, MeasureValue>>) {
-        throw NotEnoughException(missingQuantities)
-    }
+  override fun onFailure(missingQuantities: List<Pair<Product, MeasureValue>>) {
+    throw NotEnoughException(missingQuantities)
+  }
 }
