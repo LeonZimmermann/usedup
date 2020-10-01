@@ -20,12 +20,9 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
   val nameList: MutableLiveData<List<String>> = MutableLiveData()
   val nameText: MutableLiveData<String> = MutableLiveData()
 
-  val quantityVisibility: MutableLiveData<Int> = MutableLiveData(View.VISIBLE)
-
   val measureList: MutableLiveData<List<String>> = MutableLiveData()
   val measureText: MutableLiveData<String> = MutableLiveData()
   val measureInputType: MutableLiveData<Int> = MutableLiveData(InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE)
-  val measureVisibility: MutableLiveData<Int> = MutableLiveData(View.VISIBLE)
 
   val mode = MutableLiveData<Mode>()
 
@@ -51,11 +48,6 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
       this.measureList.value = measureList
       measureText.value = if (measureList.size > 1) "" else productMeasure.name
       measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
-      measureVisibility.value = View.VISIBLE
-      quantityVisibility.value = View.VISIBLE
-    } else {
-      measureVisibility.value = View.GONE
-      quantityVisibility.value = View.GONE
     }
   }
 

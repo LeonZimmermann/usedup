@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionViewModel.Mode" />
 
         <variable
@@ -86,7 +88,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.quantityVisibility}"
+                    android:visibility="@{viewModel.mode == Mode.PRODUCT ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toStartOf="@+id/measure_input_wrapper"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="1"
@@ -108,7 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:visibility="@{viewModel.measureVisibility}"
+                    android:visibility="@{viewModel.mode == Mode.PRODUCT ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="@+id/quantity_input_wrapper"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
