@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionFragmentComponentBinding
 import kotlinx.android.synthetic.main.consumption_fragment_component.*
@@ -30,7 +31,7 @@ class ConsumptionFragmentComponent : Fragment() {
     initDatabinding(view)
     initNameInput()
     initMeasureInput()
-    initModeButtons()
+    initErrorSnackbar()
   }
 
   private fun initViewModel() {
@@ -52,13 +53,13 @@ class ConsumptionFragmentComponent : Fragment() {
 
   private fun initMeasureInput() {
     viewModel.measureList.observe(viewLifecycleOwner, Observer { measureList ->
-        measure_input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_list_item_1, measureList))
+      measure_input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_list_item_1, measureList))
     })
   }
 
-  private fun initModeButtons() {
-    product_mode_button.setOnClickListener { viewModel.setMode(ConsumptionViewModel.Mode.PRODUCT) }
-    template_mode_button.setOnClickListener { viewModel.setMode(ConsumptionViewModel.Mode.TEMPLATE) }
-    meal_mode_button.setOnClickListener { viewModel.setMode(ConsumptionViewModel.Mode.MEAL) }
+  private fun initErrorSnackbar() {
+    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+      Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
+    })
   }
 }

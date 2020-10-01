@@ -2,9 +2,8 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions
 
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureValue
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
+import kotlin.math.absoluteValue
 
-class NotEnoughException(missingQuantity: List<Pair<Product, MeasureValue>>) :
+class NotEnoughException(product: Product, missingQuantity: MeasureValue) :
   ConsumptionException(
-      "Missing:\n" + missingQuantity.map { "${it.second.double}${it.second.measure.abbreviation} of ${it.first.name}" }
-          .reduce { acc, s -> "$acc\n$s" }) {
-}
+    "You are missing ${missingQuantity.double.absoluteValue}${missingQuantity.measure.abbreviation} of ${product.name}")

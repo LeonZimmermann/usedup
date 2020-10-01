@@ -30,6 +30,7 @@
                     android:layout_marginTop="8dp"
                     android:backgroundTint="@{viewModel.mode == Mode.PRODUCT ? @color/colorPrimary : @android:color/white}"
                     android:minHeight="25dp"
+                    android:onClick="@{() -> viewModel.setMode(Mode.PRODUCT)}"
                     android:text="Product"
                     android:textColor="@{viewModel.mode == Mode.PRODUCT ? @android:color/white : @color/colorPrimary}"
                     android:textSize="10sp"
@@ -43,6 +44,7 @@
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@{viewModel.mode == Mode.TEMPLATE ? @color/colorPrimary : @android:color/white}"
                     android:minHeight="25dp"
+                    android:onClick="@{() -> viewModel.setMode(Mode.TEMPLATE)}"
                     android:text="Template"
                     android:textColor="@{viewModel.mode == Mode.TEMPLATE ? @android:color/white : @color/colorPrimary}"
                     android:textSize="10sp"
@@ -57,6 +59,7 @@
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@{viewModel.mode == Mode.MEAL ? @color/colorPrimary : @android:color/white}"
                     android:minHeight="25dp"
+                    android:onClick="@{() -> viewModel.setMode(Mode.MEAL)}"
                     android:text="Meal"
                     android:textColor="@{viewModel.mode == Mode.MEAL ? @android:color/white : @color/colorPrimary}"
                     android:textSize="10sp"
@@ -101,7 +104,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/quantity"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.quantityText}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -134,6 +138,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:onClick="@{() -> viewModel.consume()}"
                     android:text="Consume"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
