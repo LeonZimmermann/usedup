@@ -15,21 +15,21 @@ data class Product(
     var measureId: String,
     var categoryId: String
 ) {
-    val discrepancy: Int
-        get() = max(max - floor(quantity).toInt(), 0)
+  val discrepancy: Int
+    get() = max(max - floor(quantity).toInt(), 0)
 
-    companion object {
-        fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {
-            val name = firebaseObject.name ?: throw DataIntegrityException()
-            val quantity = firebaseObject.quantity ?: throw DataIntegrityException()
-            val min = firebaseObject.min ?: throw DataIntegrityException()
-            val max = firebaseObject.max ?: throw DataIntegrityException()
-            val capacity = firebaseObject.capacity ?: throw DataIntegrityException()
-            val measureId = firebaseObject.measureReference?.id ?: throw DataIntegrityException()
-            val categoryId = firebaseObject.categoryReference?.id ?: throw DataIntegrityException()
-            return Product(id, name, quantity, min, max, capacity, measureId, categoryId)
-        }
-
-
+  companion object {
+    fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {
+      val name = firebaseObject.name ?: throw DataIntegrityException()
+      val quantity = firebaseObject.quantity ?: throw DataIntegrityException()
+      val min = firebaseObject.min ?: throw DataIntegrityException()
+      val max = firebaseObject.max ?: throw DataIntegrityException()
+      val capacity = firebaseObject.capacity ?: throw DataIntegrityException()
+      val measureId = firebaseObject.measureReference?.id ?: throw DataIntegrityException()
+      val categoryId = firebaseObject.categoryReference?.id ?: throw DataIntegrityException()
+      return Product(id, name, quantity, min, max, capacity, measureId, categoryId)
     }
+
+
+  }
 }

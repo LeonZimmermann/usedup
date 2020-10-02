@@ -1,17 +1,19 @@
-package com.hotmail.leon.zimmermann.homeassistant.app.consumption
+package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import kotlinx.coroutines.*
+import java.io.IOException
 
-class ConsumptionDatabaseProcessor {
+class QuantityDatabaseProcessor {
 
   fun updateSingleProductQuantity(product: Product, updatedQuantity: Double) = runBlocking(Dispatchers.IO) {
     Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME)
       .document(product.id)
       .update(mapOf("quantity" to updatedQuantity))
+      .addOnFailureListener { throw IOException() }
   }
 
   fun updateMultipleProductQuantities(data: List<Pair<Product, Double>>) = runBlocking(Dispatchers.IO) {
@@ -20,6 +22,6 @@ class ConsumptionDatabaseProcessor {
       data.forEach { (product, updatedQuantity) ->
         update(productCollection.document(product.id), mapOf("quantity" to updatedQuantity))
       }
-    }.commit()
+    }.commit().addOnFailureListener { throw IOException() }
   }
 }

@@ -15,42 +15,42 @@ import kotlinx.android.synthetic.main.shopping_category.view.*
 import org.jetbrains.anko.textView
 
 class ShoppingListAdapter(private val context: Context) :
-    RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
+  RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
-    private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
+  private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
 
-    class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val shoppingCategoryNameTextView: TextView = itemView.shopping_category_name_tv
-        val shoppingProductListContainer: LinearLayout = itemView.shopping_product_list_container
-    }
+  class ShoppingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val shoppingCategoryNameTextView: TextView = itemView.shopping_category_name_tv
+    val shoppingProductListContainer: LinearLayout = itemView.shopping_product_list_container
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingViewHolder =
-        ShoppingViewHolder(LayoutInflater.from(context).inflate(R.layout.shopping_category, parent, false))
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoppingViewHolder =
+    ShoppingViewHolder(LayoutInflater.from(context).inflate(R.layout.shopping_category, parent, false))
 
-    override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
-        val (category, products) = shoppingList[position]
-        holder.shoppingCategoryNameTextView.text = category.name
-        holder.shoppingProductListContainer.removeAllViews()
-        holder.shoppingProductListContainer.apply {
-            for (item in products) {
-                textView {
-                    setOnClickListener {
-                        paintFlags = paintFlags xor Paint.STRIKE_THRU_TEXT_FLAG
-                        item.checked = !item.checked
-                    }
-                    text = "${item.cartAmount}x ${item.product.name}"
-                    textSize = 22f
-                }
-            }
+  override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
+      val (category, products) = shoppingList[position]
+    holder.shoppingCategoryNameTextView.text = category.name
+    holder.shoppingProductListContainer.removeAllViews()
+    holder.shoppingProductListContainer.apply {
+      for (item in products) {
+        textView {
+          setOnClickListener {
+            paintFlags = paintFlags xor Paint.STRIKE_THRU_TEXT_FLAG
+            item.checked = !item.checked
+          }
+          text = "${item.cartAmount}x ${item.product.name}"
+          textSize = 22f
         }
+      }
     }
+  }
 
-    override fun getItemCount() = shoppingList.size
+  override fun getItemCount() = shoppingList.size
 
-    internal fun setData(shoppingList: List<ShoppingProduct>) {
-        this.shoppingList = shoppingList
-            .groupBy { CategoryRepository.getCategoryForId(it.product.categoryId) }
-            .toList()
-        notifyDataSetChanged()
-    }
+  internal fun setData(shoppingList: List<ShoppingProduct>) {
+    this.shoppingList = shoppingList
+      .groupBy { CategoryRepository.getCategoryForId(it.product.categoryId) }
+      .toList()
+    notifyDataSetChanged()
+  }
 }

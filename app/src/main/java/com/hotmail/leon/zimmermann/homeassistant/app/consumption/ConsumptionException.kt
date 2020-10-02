@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions
+package com.hotmail.leon.zimmermann.homeassistant.app.consumption
 
 import kotlin.Exception
 

@@ -4,25 +4,29 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ShoppingViewModel(application: Application) : AndroidViewModel(application) {
-    val database = Firebase.firestore
-    private val shoppingListProcessor = ShoppingListProcessor(this)
 
-    val shoppingList = MutableLiveData(
-        ShoppingListBuilder()
-            .addDiscrepancies()
-            .build()
-    )
+  val shoppingList: MutableLiveData<List<ShoppingProduct>> = MutableLiveData(
+    ShoppingListBuilder()
+      .addDiscrepancies()
+      .build()
+  )
 
-    val systemMessage = MutableLiveData("")
+  val systemMessage: MutableLiveData<String> = MutableLiveData()
 
-    fun submitTransaction() {
-        viewModelScope.launch {
-            shoppingList.value?.let { shoppingListProcessor.process(it) }
-        }
+  fun submitTransaction() = viewModelScope.launch(Dispatchers.Default) {
+    try {
+      shoppingList.value!!.filter { it.checked }.forEach { shoppingProduct ->
+        val updatedQuantity = shoppingProduct.product.quantity + shoppingProduct.cartAmount
+        ProductRepository.changeQuantity(shoppingProduct.product, updatedQuantity)
+      }
+    } catch (e: IOException) {
+      systemMessage.postValue("A database error occurred")
     }
+  }
 }

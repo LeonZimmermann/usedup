@@ -1,8 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories
 
-import com.google.android.gms.tasks.Task
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -12,62 +11,99 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemp
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemplateComponent
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Template
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.TemplateComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.IOException
 
 object TemplateRepository {
-    private val database = Firebase.firestore
+  private val database = Firebase.firestore
 
-    val templates: MutableList<Template> = mutableListOf()
+  val templates: MutableLiveData<MutableList<Template>> = MutableLiveData()
 
-    fun init() {
-        Tasks.await(database.collection(FirebaseTemplate.COLLECTION_NAME).get()).forEach { document ->
-            templates.add(Template.createInstance(document.id, document.toObject()))
-        }
+  init {
+    database.collection(FirebaseTemplate.COLLECTION_NAME).get().addOnSuccessListener { documents ->
+      templates.value = documents.map { Template.createInstance(it.id, it.toObject()) }.toMutableList()
     }
+  }
 
-    fun getTemplateForId(id: String) = templates.first { it.id == id }
-    fun getTemplateForName(name: String) = templates.first { it.name == name }
-
-    fun addTemplate(name: String, components: List<TemplateComponent>): Task<DocumentReference> {
-        val firebaseComponents = components.map {
-            FirebaseTemplateComponent(
-                Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
-                Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
-                it.value
-            )
-        }
-        val firebaseTemplate = FirebaseTemplate(name, firebaseComponents)
-        return database.collection(FirebaseTemplate.COLLECTION_NAME)
-            .add(firebaseTemplate)
-            .addOnSuccessListener {
-                templates.add(Template.createInstance(it.id, firebaseTemplate))
-            }
+  suspend fun getTemplateForId(id: String) = withContext(Dispatchers.IO) {
+    if (templates.value != null) templates.value!!.first { it.id == id }
+    else {
+      val document = Tasks.await(database.collection(FirebaseTemplate.COLLECTION_NAME).document(id).get())
+      val firebaseTemplate = document.toObject<FirebaseTemplate>() ?: throw IOException()
+      val template = Template.createInstance(document.id, firebaseTemplate)
+      val templateList = templates.value!!
+      templateList.add(template)
+      templates.postValue(templateList)
+      template
     }
+  }
 
-    fun updateTemplate(templateId: String, name: String, components: List<TemplateComponent>): Task<Void> {
-        val firebaseComponents = components.map {
-            FirebaseTemplateComponent(
-                Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
-                Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
-                it.value
-            )
-        }
-        val data = mapOf(
-            "name" to name,
-            "components" to firebaseComponents
+  suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
+    if (templates.value != null) templates.value!!.first { it.name == name }
+    else {
+      val document =
+        Tasks.await(database.collection(FirebaseTemplate.COLLECTION_NAME).whereEqualTo("name", name).get()).first()
+      val firebaseTemplate = document.toObject<FirebaseTemplate>()
+      val template = Template.createInstance(document.id, firebaseTemplate)
+      val templateList = templates.value!!
+      templateList.add(template)
+      templates.postValue(templateList)
+      template
+    }
+  }
+
+  suspend fun addTemplate(name: String, components: List<TemplateComponent>) = withContext(Dispatchers.IO) {
+    val firebaseComponents = components.map {
+      FirebaseTemplateComponent(
+          Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+          Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+          it.value
+      )
+    }
+    val firebaseTemplate = FirebaseTemplate(name, firebaseComponents)
+    val task = database.collection(FirebaseTemplate.COLLECTION_NAME).add(firebaseTemplate)
+    Tasks.await(task)
+    if (task.exception != null) throw task.exception!!
+    else {
+      val templateList = templates.value!!
+      templateList.add(Template.createInstance(task.result!!.id, firebaseTemplate))
+      templates.postValue(templateList)
+    }
+  }
+
+  suspend fun updateTemplate(templateId: String, name: String, components: List<TemplateComponent>) =
+    withContext(Dispatchers.IO) {
+      val firebaseComponents = components.map {
+        FirebaseTemplateComponent(
+            Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+            Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+            it.value
         )
-        return database.collection(FirebaseTemplate.COLLECTION_NAME)
-            .document(templateId)
-            .update(data)
-            .addOnSuccessListener {
-                getTemplateForId(templateId).apply {
-                    this.name = name
-                    this.components = components
-                }
-            }
+      }
+      val data = mapOf(
+          "name" to name,
+          "components" to firebaseComponents
+      )
+      val task = database.collection(FirebaseTemplate.COLLECTION_NAME)
+        .document(templateId)
+        .update(data)
+      Tasks.await(task)
+      if (task.exception != null) throw task.exception!!
+      else {
+        getTemplateForId(templateId).apply {
+          this.name = name
+          this.components = components
+        }
+        templates.postValue(templates.value)
+      }
     }
 
-    fun deleteTemplate(templateId: String): Task<Void> {
-        templates.remove(getTemplateForId(templateId))
-        return database.collection(FirebaseTemplate.COLLECTION_NAME).document(templateId).delete()
-    }
+  suspend fun deleteTemplate(templateId: String) = withContext(Dispatchers.IO) {
+    templates.value!!.remove(getTemplateForId(templateId))
+    val task = database.collection(FirebaseTemplate.COLLECTION_NAME).document(templateId).delete()
+    Tasks.await(task)
+    if (task.exception != null) throw task.exception!!
+    else templates.postValue(templates.value)
+  }
 }

@@ -1,6 +1,5 @@
 package com.hotmail.leon.zimmermann.homeassistant.components
 
-import android.app.ActionBar
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import kotlinx.android.synthetic.main.product_item.view.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.textColor
+import org.jetbrains.anko.textView
 
 class SimpleProductPreviewAdapter constructor(
     context: Context,
@@ -78,7 +79,7 @@ class SimpleProductPreviewAdapter constructor(
         }
     }
 
-    override fun getItemCount() = productAmountList.size + (if (additionalAmount != 0) 1 else 0)
+    override fun getItemCount() = productAmountList.size + (if (additionalAmount > 0) 1 else 0)
     operator fun get(index: Int) = productAmountList[index]
 
     companion object {

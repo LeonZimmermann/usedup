@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.*
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -54,9 +55,6 @@ class MainActivity : AppCompatActivity() {
     private fun initData() {
         CategoryRepository.init()
         MeasureRepository.init()
-        ProductRepository.init()
-        TemplateRepository.init()
-        MealRepository.init()
     }
 
     companion object {
