@@ -5,17 +5,20 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlin.math.ceil
 
 class ShoppingListBuilder {
   private val list = mutableListOf<ShoppingProduct>()
 
   fun addDiscrepancies(): ShoppingListBuilder {
-    /*
-    ProductRepository.products
-      .filter { it.discrepancy > 0 }
-      .forEach { addProduct(it, it.discrepancy) }
-     */
+    runBlocking(Dispatchers.Default) {
+      ProductRepository.getAllProducts()
+        .filter { it.discrepancy > 0 }
+        .forEach { addProduct(it, it.discrepancy) }
+    }
     return this
   }
 
@@ -27,14 +30,14 @@ class ShoppingListBuilder {
   }
 
   fun addMeal(meal: Meal): ShoppingListBuilder {
-    /*
-    meal.ingredients.forEach {
-      val product = ProductRepository.getProductForId(it.productId)
-      val measure = MeasureRepository.getMeasureForId(it.measureId)
-      val cartAmount = ceil(product.capacity.toMeasure(measure) / it.value).toInt()
-      addProduct(product, cartAmount)
+    runBlocking(Dispatchers.Default) {
+      meal.ingredients.forEach {
+        val product = ProductRepository.getProductForId(it.productId)
+        val measure = MeasureRepository.getMeasureForId(it.measureId)
+        val cartAmount = ceil(product.capacity.toMeasure(measure) / it.value).toInt()
+        addProduct(product, cartAmount)
+      }
     }
-     */
     return this
   }
 

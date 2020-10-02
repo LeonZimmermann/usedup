@@ -11,13 +11,15 @@ import java.io.IOException
 
 class ShoppingViewModel(application: Application) : AndroidViewModel(application) {
 
-  val shoppingList: MutableLiveData<List<ShoppingProduct>> = MutableLiveData(
-    ShoppingListBuilder()
-      .addDiscrepancies()
-      .build()
-  )
+  val shoppingList: MutableLiveData<List<ShoppingProduct>> = MutableLiveData()
 
   val systemMessage: MutableLiveData<String> = MutableLiveData()
+
+  fun createShoppingList() = viewModelScope.launch(Dispatchers.Default) {
+    shoppingList.postValue(ShoppingListBuilder()
+      .addDiscrepancies()
+      .build())
+  }
 
   fun submitTransaction() = viewModelScope.launch(Dispatchers.Default) {
     try {

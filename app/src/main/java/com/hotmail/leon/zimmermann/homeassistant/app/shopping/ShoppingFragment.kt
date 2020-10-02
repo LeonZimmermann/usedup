@@ -37,6 +37,11 @@ class ShoppingFragment : Fragment() {
     initSystemMessage()
   }
 
+  override fun onStart() {
+    super.onStart()
+    viewModel.createShoppingList()
+  }
+
   private fun initViewModel() {
     viewModel = activity?.run {
       ViewModelProviders.of(this).get(ShoppingViewModel::class.java)

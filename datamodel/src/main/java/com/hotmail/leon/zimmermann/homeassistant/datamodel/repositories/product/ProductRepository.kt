@@ -10,6 +10,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeas
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -24,6 +25,12 @@ object ProductRepository {
     database.collection(FirebaseProduct.COLLECTION_NAME).get().addOnSuccessListener { documents ->
       products.value = documents.map { Product.createInstance(it.id, it.toObject()) }.toMutableList()
     }
+  }
+
+  fun getAllProducts(): List<Product> = runBlocking(Dispatchers.IO) {
+    if (products.value != null) products.value!!
+    else Tasks.await(database.collection(FirebaseProduct.COLLECTION_NAME).get())
+      .map { Product.createInstance(it.id, it.toObject()) }
   }
 
   suspend fun getProductForId(id: String): Product = withContext(Dispatchers.IO) {
