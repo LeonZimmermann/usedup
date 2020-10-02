@@ -33,6 +33,7 @@ object ProductRepository {
       .map { Product.createInstance(it.id, it.toObject()) }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getProductForId(id: String): Product = withContext(Dispatchers.IO) {
     if (products.value != null) products.value!!.first { it.id == id }
     else {
@@ -46,6 +47,7 @@ object ProductRepository {
     }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getProductForName(name: String): Product = withContext(Dispatchers.IO) {
     if (products.value != null) products.value!!.first { it.name == name }
     else {
@@ -60,6 +62,7 @@ object ProductRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun addProduct(
     name: String,
     categoryId: String,
@@ -78,7 +81,7 @@ object ProductRepository {
     )
     val task = database.collection(FirebaseProduct.COLLECTION_NAME).add(product)
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else {
       val productList = products.value!!
       productList.add(
@@ -91,6 +94,7 @@ object ProductRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun updateProduct(
     id: String,
     name: String,
@@ -110,7 +114,7 @@ object ProductRepository {
     )
     val task = database.collection(FirebaseProduct.COLLECTION_NAME).document(id).update(data)
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else {
       getProductForId(id).apply {
         this.name = name
@@ -125,24 +129,27 @@ object ProductRepository {
     }
   }
 
-  suspend fun changeQuantity(product: Product, updatedQuantity: Double) = withContext(Dispatchers.Default) {
+  @Throws(IOException::class)
+  suspend fun changeQuantity(product: Product, updatedQuantity: Double) = withContext(Dispatchers.IO) {
     consumptionDatabaseProcessor.updateSingleProductQuantity(product, updatedQuantity)
     consumptionInMemoryProcessor.updateSingleProductQuantity(product, updatedQuantity)
     products.postValue(products.value)
   }
 
-  suspend fun changeQuantity(data: List<Pair<Product, Double>>) = withContext(Dispatchers.Default) {
+  @Throws(IOException::class)
+  suspend fun changeQuantity(data: List<Pair<Product, Double>>) = withContext(Dispatchers.IO) {
     consumptionDatabaseProcessor.updateMultipleProductQuantities(data)
     consumptionInMemoryProcessor.updateMultipleProductQuantities(data)
     products.postValue(products.value)
   }
 
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun deleteProduct(productId: String) = withContext(Dispatchers.IO) {
     // TODO Account for changes in templates and meals
     products.value!!.remove(getProductForId(productId))
     val task = database.collection(FirebaseProduct.COLLECTION_NAME).document(productId).delete()
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else products.postValue(products.value)
   }
 

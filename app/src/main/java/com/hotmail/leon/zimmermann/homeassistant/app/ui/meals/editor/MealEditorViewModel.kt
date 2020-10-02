@@ -16,6 +16,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.IOException
 
 class MealEditorViewModel(application: Application) : AndroidViewModel(application) {
   private val database = Firebase.firestore
@@ -60,11 +61,11 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
             val product = ProductRepository.getProductForId(ingredient.productId)
             val measure = MeasureRepository.getMeasureForId(ingredient.measureId)
             com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement(
-                product,
-                MeasureValue(
-                    ingredient.value,
-                    measure
-                )
+              product,
+              MeasureValue(
+                ingredient.value,
+                measure
+              )
             )
           }.toMutableList()
         }
@@ -75,7 +76,7 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
   }
 
   fun addConsumptionElement(
-      consumptionElement: com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement) {
+    consumptionElement: com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement) {
     val consumptionElementList = consumptionElementList.value
     consumptionElementList?.let { list ->
       list.firstOrNull { it.product == consumptionElement.product }?.apply {
@@ -86,17 +87,15 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
     this.consumptionElementList.value = consumptionElementList
   }
 
-  fun addNewMealToDatabase() {
+  fun addNewMealToDatabase() = viewModelScope.launch(Dispatchers.IO) {
     // TODO Check if name is null and consumptionList empty (Validation)
-    viewModelScope.launch {
-      MealRepository.addMeal(name!!, duration!!, description, instructions, photoFile.toString(),
-          consumptionElementList.value!!.map { element ->
-              MealIngredient(
-                  element.product.id,
-                  element.valueValue.measure.id,
-                  element.valueValue.double
-              )
-          })
-    }
+    MealRepository.addMeal(name!!, duration!!, description, instructions, photoFile.toString(),
+      consumptionElementList.value!!.map { element ->
+        MealIngredient(
+          element.product.id,
+          element.valueValue.measure.id,
+          element.valueValue.double
+        )
+      })
   }
 }

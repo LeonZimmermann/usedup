@@ -74,7 +74,7 @@ class ProductEditorViewModel : ViewModel() {
       else ProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
       systemMessage.value = "Added Product"
       // TODO Navigate up
-    } catch (e: Exception) {
+    } catch (e: IOException) {
       systemMessage.value = "Could not add product"
     }
   }

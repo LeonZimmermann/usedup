@@ -26,6 +26,7 @@ object TemplateRepository {
     }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getTemplateForId(id: String) = withContext(Dispatchers.IO) {
     if (templates.value != null) templates.value!!.first { it.id == id }
     else {
@@ -39,6 +40,7 @@ object TemplateRepository {
     }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
     if (templates.value != null) templates.value!!.first { it.name == name }
     else {
@@ -53,18 +55,19 @@ object TemplateRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun addTemplate(name: String, components: List<TemplateComponent>) = withContext(Dispatchers.IO) {
     val firebaseComponents = components.map {
       FirebaseTemplateComponent(
-          Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
-          Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
-          it.value
+        Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+        Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+        it.value
       )
     }
     val firebaseTemplate = FirebaseTemplate(name, firebaseComponents)
     val task = database.collection(FirebaseTemplate.COLLECTION_NAME).add(firebaseTemplate)
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else {
       val templateList = templates.value!!
       templateList.add(Template.createInstance(task.result!!.id, firebaseTemplate))
@@ -72,24 +75,25 @@ object TemplateRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun updateTemplate(templateId: String, name: String, components: List<TemplateComponent>) =
     withContext(Dispatchers.IO) {
       val firebaseComponents = components.map {
         FirebaseTemplateComponent(
-            Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
-            Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
-            it.value
+          Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME).document(it.productId),
+          Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(it.measureId),
+          it.value
         )
       }
       val data = mapOf(
-          "name" to name,
-          "components" to firebaseComponents
+        "name" to name,
+        "components" to firebaseComponents
       )
       val task = database.collection(FirebaseTemplate.COLLECTION_NAME)
         .document(templateId)
         .update(data)
       Tasks.await(task)
-      if (task.exception != null) throw task.exception!!
+      if (task.exception != null) throw IOException(task.exception!!)
       else {
         getTemplateForId(templateId).apply {
           this.name = name
@@ -99,11 +103,12 @@ object TemplateRepository {
       }
     }
 
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun deleteTemplate(templateId: String) = withContext(Dispatchers.IO) {
     templates.value!!.remove(getTemplateForId(templateId))
     val task = database.collection(FirebaseTemplate.COLLECTION_NAME).document(templateId).delete()
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else templates.postValue(templates.value)
   }
 }

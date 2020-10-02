@@ -11,11 +11,10 @@ import com.hotmail.leon.zimmermann.homeassistant.components.consumption.Consumpt
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseTemplate
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class TemplateEditorViewModel : ViewModel() {
   private val database = Firebase.firestore
@@ -64,16 +63,14 @@ class TemplateEditorViewModel : ViewModel() {
     this.consumptionElementList.value = consumptionElementList
   }
 
-  fun saveTemplateToDatabase() {
+  fun saveTemplateToDatabase() = viewModelScope.launch(Dispatchers.IO) {
     // TODO Check if name is null and consumptionList empty (Validation)
-    viewModelScope.launch {
-      TemplateRepository.addTemplate(name!!, consumptionElementList.value!!.map { element ->
-          TemplateComponent(
-              element.product.id,
-              element.valueValue.measure.id,
-              element.valueValue.double
-          )
-      })
-    }
+    TemplateRepository.addTemplate(name!!, consumptionElementList.value!!.map { element ->
+      TemplateComponent(
+        element.product.id,
+        element.valueValue.measure.id,
+        element.valueValue.double
+      )
+    })
   }
 }

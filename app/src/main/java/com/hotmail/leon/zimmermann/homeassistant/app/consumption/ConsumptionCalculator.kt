@@ -6,6 +6,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toBase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toMeasure
 
 class ConsumptionCalculator {
+  @Throws(NotEnoughException::class)
   fun calculateUpdatedQuantity(product: Product, measureValue: MeasureValue): Double {
     val existingQuantity = product.quantity * product.capacity
     val conversionQuantity = measureValue.double.toBase(measureValue.measure)

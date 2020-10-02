@@ -1,5 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product
 
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseProduct
@@ -9,6 +10,7 @@ import java.io.IOException
 
 class QuantityDatabaseProcessor {
 
+  @Throws(IOException::class)
   fun updateSingleProductQuantity(product: Product, updatedQuantity: Double) = runBlocking(Dispatchers.IO) {
     Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME)
       .document(product.id)
@@ -16,6 +18,7 @@ class QuantityDatabaseProcessor {
       .addOnFailureListener { throw IOException() }
   }
 
+  @Throws(IOException::class)
   fun updateMultipleProductQuantities(data: List<Pair<Product, Double>>) = runBlocking(Dispatchers.IO) {
     val productCollection = Firebase.firestore.collection(FirebaseProduct.COLLECTION_NAME)
     Firebase.firestore.batch().apply {

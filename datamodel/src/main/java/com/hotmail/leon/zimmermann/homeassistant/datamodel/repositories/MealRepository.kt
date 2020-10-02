@@ -24,6 +24,7 @@ object MealRepository {
     }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getMealForId(id: String): Meal = withContext(Dispatchers.IO) {
     if (meals.value != null) meals.value!!.first { it.id == id }
     else {
@@ -38,6 +39,7 @@ object MealRepository {
     }
   }
 
+  @Throws(NoSuchElementException::class)
   suspend fun getMealForName(name: String): Meal = withContext(Dispatchers.IO) {
     if (meals.value != null) meals.value!!.first { it.name == name }
     else {
@@ -52,6 +54,7 @@ object MealRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun addMeal(
       name: String,
       duration: Int,
@@ -70,7 +73,7 @@ object MealRepository {
     val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
     val task = database.collection(FirebaseMeal.COLLECTION_NAME).add(firebaseMeal)
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else {
       val mealList = meals.value!!
       mealList.add(
@@ -79,6 +82,7 @@ object MealRepository {
     }
   }
 
+  @Throws(IOException::class)
   suspend fun updateMeal(
       mealId: String,
       name: String,
@@ -107,7 +111,7 @@ object MealRepository {
       .document(mealId)
       .update(data)
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else {
       getMealForId(mealId).apply {
         this.name = name
@@ -121,11 +125,12 @@ object MealRepository {
     }
   }
 
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun deleteMeal(mealId: String) = withContext(Dispatchers.IO) {
     meals.value!!.remove(getMealForId(mealId))
     val task = database.collection(FirebaseMeal.COLLECTION_NAME).document(mealId).delete()
     Tasks.await(task)
-    if (task.exception != null) throw task.exception!!
+    if (task.exception != null) throw IOException(task.exception!!)
     else meals.postValue(meals.value)
   }
 }
