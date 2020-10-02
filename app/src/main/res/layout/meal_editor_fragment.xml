@@ -9,11 +9,11 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.ui.meals.editor.MealEditorViewModel" />
+                type="com.hotmail.leon.zimmermann.homeassistant.app.management.meals.MealEditorViewModel" />
 
         <variable
                 name="eventHandler"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.ui.meals.editor.MealEditorFragment.EventHandler" />
+                type="com.hotmail.leon.zimmermann.homeassistant.app.management.meals.MealEditorFragment.EventHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
