@@ -20,20 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/save_dinner_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:onClick="@{eventHandler::onSaveDinnerButtonClicked}"
-                android:text="Save Dinner"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
         <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -106,12 +92,12 @@
                 <Button
                         android:id="@+id/add_ingredients_button"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
-                        app:icon="@drawable/add_icon"
-                        app:iconGravity="textStart"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:onClick="@{eventHandler::onAddIngredientsButtonClicked}"
                         android:text="@string/add_ingredients"
+                        app:icon="@drawable/add_icon"
+                        app:iconGravity="textStart"
                         app:layout_constraintEnd_toEndOf="@+id/duration_input_wrapper"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/duration_input_wrapper"
@@ -180,6 +166,19 @@
                         tools:itemCount="5"
                         tools:listitem="@layout/product_item" />
 
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/save_dinner_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="32dp"
+                        android:onClick="@{eventHandler::onSaveDinnerButtonClicked}"
+                        android:text="Save Dinner"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/instructions_input_wrapper" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

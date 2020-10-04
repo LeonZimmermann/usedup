@@ -10,6 +10,7 @@
         <variable
                 name="viewModel"
                 type="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorViewModel" />
+
         <variable
                 name="eventHandler"
                 type="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorFragment.EventHandler" />
@@ -92,21 +93,23 @@
                             android:hint="@string/name"
                             android:text="@={viewModel.nameString}" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/save_template"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="32dp"
+                        android:onClick="@{eventHandler::onSaveTemplateButtonClicked}"
+                        android:text="Save Template"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/add_component_button" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/save_template"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:onClick="@{eventHandler::onSaveTemplateButtonClicked}"
-                android:text="Save Template"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
