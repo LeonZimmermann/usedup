@@ -9,23 +9,25 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.app.toFloatFormat
+import com.hotmail.leon.zimmermann.homeassistant.app.toIntFormat
+import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Template
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ManagementRecyclerAdapter constructor(context: Context, private val recyclerView: RecyclerView,
-    private val navController: NavController,
-    private val coroutineScope: CoroutineScope) :
-  RecyclerView.Adapter<RecyclerView.ViewHolder>(),
-  com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter {
+  private val navController: NavController, private val coroutineScope: CoroutineScope) :
+  RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
 
   private val inflater = LayoutInflater.from(context)
 
@@ -64,16 +66,14 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
     fun init(product: Product) {
       itemView.setOnClickListener {
-        navController.navigate(
-            R.id.action_management_fragment_to_product_editor_fragment, bundleOf(
-                "productId" to product.id
-            )
-        )
+        navController.navigate(R.id.action_management_fragment_to_product_editor_fragment,
+          bundleOf("productId" to product.id))
       }
       product.apply {
         nameTv.text = name
-        managementItemQuantityTv.text = quantity.toString()
-        managementItemCapacityTv.text = capacity.toString()
+        managementItemQuantityTv.text =
+          "Quantity: ${quantity.toFloatFormat()} (${min.toIntFormat()} - ${max.toIntFormat()})"
+        managementItemCapacityTv.text = "Capacity: ${capacity.toFloatFormat()}"
       }
     }
   }
@@ -83,11 +83,8 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
     fun init(template: Template) {
       itemView.setOnClickListener {
-        navController.navigate(
-            R.id.action_management_fragment_to_template_editor_fragment, bundleOf(
-                "templateId" to template.id
-            )
-        )
+        navController.navigate(R.id.action_management_fragment_to_template_editor_fragment,
+          bundleOf("templateId" to template.id))
       }
       template.apply {
         templateNameTv.text = name
@@ -102,11 +99,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
     fun init(meal: Meal) {
       itemView.setOnClickListener {
-        navController.navigate(
-            R.id.action_management_fragment_to_meal_editor_fragment, bundleOf(
-                "mealId" to meal.id
-            )
-        )
+        navController.navigate(R.id.action_management_fragment_to_meal_editor_fragment, bundleOf("mealId" to meal.id))
       }
       meal.apply {
         nameTv.text = name
@@ -118,27 +111,12 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return when (viewType) {
-        ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(
-            inflater.inflate(
-                R.layout.product_browser_item,
-                parent,
-                false
-            )
-        )
-        ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(
-            inflater.inflate(
-                R.layout.template_browser_item,
-                parent,
-                false
-            )
-        )
-        ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(
-            inflater.inflate(
-                R.layout.meal_browser_item,
-                parent,
-                false
-            )
-        )
+      ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(
+        inflater.inflate(R.layout.product_browser_item, parent, false))
+      ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(
+        inflater.inflate(R.layout.template_browser_item, parent, false))
+      ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(
+        inflater.inflate(R.layout.meal_browser_item, parent, false))
       else -> throw RuntimeException("Invalid viewType: $viewType")
     }
   }
@@ -147,37 +125,37 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (mode) {
-        ManagementFragment.Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
-        ManagementFragment.Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
-        ManagementFragment.Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
+      ManagementFragment.Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
+      ManagementFragment.Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
+      ManagementFragment.Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
     }
   }
 
   override fun getItemCount() = when (mode) {
-      ManagementFragment.Mode.PRODUCT -> products.size
-      ManagementFragment.Mode.TEMPLATE -> templates.size
-      ManagementFragment.Mode.MEAL -> meals.size
+    ManagementFragment.Mode.PRODUCT -> products.size
+    ManagementFragment.Mode.TEMPLATE -> templates.size
+    ManagementFragment.Mode.MEAL -> meals.size
   }
 
   override fun onItemDismiss(position: Int) {
     super.onItemDismiss(position)
-    coroutineScope.launch {
+    coroutineScope.launch(Dispatchers.IO) {
       when (mode) {
-          ManagementFragment.Mode.PRODUCT -> {
-              val product = products[position]
-              ProductRepository.deleteProduct(product.id)
-              products.remove(product)
-          }
-          ManagementFragment.Mode.TEMPLATE -> {
-              val template = templates[position]
-              TemplateRepository.deleteTemplate(template.id)
-              templates.remove(template)
-          }
-          ManagementFragment.Mode.MEAL -> {
-              val meal = meals[position]
-              MealRepository.deleteMeal(meal.id)
-              meals.remove(meal)
-          }
+        ManagementFragment.Mode.PRODUCT -> {
+          val product = products[position]
+          ProductRepository.deleteProduct(product.id)
+          products.remove(product)
+        }
+        ManagementFragment.Mode.TEMPLATE -> {
+          val template = templates[position]
+          TemplateRepository.deleteTemplate(template.id)
+          templates.remove(template)
+        }
+        ManagementFragment.Mode.MEAL -> {
+          val meal = meals[position]
+          MealRepository.deleteMeal(meal.id)
+          meals.remove(meal)
+        }
       }
       notifyItemRemoved(position)
     }
