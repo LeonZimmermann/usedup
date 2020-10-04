@@ -59,6 +59,7 @@ dependencies {
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"

@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
                 name="viewModel"
                 type="com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogViewModel" />

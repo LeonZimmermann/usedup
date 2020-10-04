@@ -22,6 +22,8 @@ class ConsumptionElementDialogViewModel : ViewModel() {
   val consumptionText: MutableLiveData<String> = MutableLiveData()
   val measureText: MutableLiveData<String> = MutableLiveData()
 
+  lateinit var callback: (consumptionElement: ConsumptionElement) -> Unit
+
   fun onPositiveButtonClicked() {
     viewModelScope.launch {
       val product = nameText.value?.let { ProductRepository.getProductForName(it) } ?: throw InvalidInputException(
@@ -29,7 +31,7 @@ class ConsumptionElementDialogViewModel : ViewModel() {
       val measure = measureText.value?.let { MeasureRepository.getMeasureForName(it) } ?: throw InvalidInputException(
         "Invalid measure")
       val consumption = consumptionText.value?.toDouble() ?: throw InvalidInputException("Invalid consumption value")
-      //callback.call(ConsumptionElement(product, MeasureValue(consumption, measure)))
+      callback(ConsumptionElement(product, MeasureValue(consumption, measure)))
     }
   }
 
