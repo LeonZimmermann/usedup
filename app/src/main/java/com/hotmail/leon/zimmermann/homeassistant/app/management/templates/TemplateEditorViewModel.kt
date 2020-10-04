@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 class TemplateEditorViewModel : ViewModel() {
   private val database = Firebase.firestore
   var products: MutableLiveData<MutableList<Product>> = ProductRepository.products
-  val measures: MutableList<Measure> = MeasureRepository.measures
 
   var nameString = MutableLiveData<String>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> by lazy {
@@ -41,13 +40,13 @@ class TemplateEditorViewModel : ViewModel() {
     if (task.exception != null) throw task.exception!!
     else {
       task.result!!.toObject<Template>()?.apply {
-        nameString.value = name
+        nameString.postValue(name)
         components.let {
-          consumptionElementList.value = it.map { element ->
+          consumptionElementList.postValue(it.map { element ->
             val product = ProductRepository.getProductForId(element.productId)
             val measure = MeasureRepository.getMeasureForId(element.measureId)
             ConsumptionElement(product, MeasureValue(element.value, measure))
-          }.toMutableList()
+          }.toMutableList())
         }
       } ?: throw RuntimeException("Couldn't convert template") // TODO Should not be a RuntimeException
     }

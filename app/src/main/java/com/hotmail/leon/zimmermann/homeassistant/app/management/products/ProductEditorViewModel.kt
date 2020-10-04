@@ -29,13 +29,13 @@ class ProductEditorViewModel : ViewModel() {
   fun setProductId(productId: String) = viewModelScope.launch(Dispatchers.Default) {
     this@ProductEditorViewModel.productId = productId
     ProductRepository.getProductForId(productId).let { product ->
-      nameInputValue.value = product.name
-      capacityInputValue.value = product.capacity.toString()
-      categoryInputValue.value = CategoryRepository.getCategoryForId(product.categoryId).name
-      currentInputValue.value = product.quantity.toString()
-      measureInputValue.value = MeasureRepository.getMeasureForId(product.measureId).name
-      minInputValue.value = product.min.toString()
-      maxInputValue.value = product.max.toString()
+      nameInputValue.postValue(product.name)
+      capacityInputValue.postValue(product.capacity.toString())
+      categoryInputValue.postValue(CategoryRepository.getCategoryForId(product.categoryId).name)
+      currentInputValue.postValue(product.quantity.toString())
+      measureInputValue.postValue(MeasureRepository.getMeasureForId(product.measureId).name)
+      minInputValue.postValue(product.min.toString())
+      maxInputValue.postValue(product.max.toString())
     }
   }
 

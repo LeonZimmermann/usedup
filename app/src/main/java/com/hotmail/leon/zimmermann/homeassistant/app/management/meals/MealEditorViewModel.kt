@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.internal.FirebaseMeal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
@@ -20,14 +21,13 @@ import java.io.File
 class MealEditorViewModel(application: Application) : AndroidViewModel(application) {
   private val database = Firebase.firestore
   var products: MutableLiveData<MutableList<Product>> = ProductRepository.products
-  val measures: MutableList<Measure> = MeasureRepository.measures
 
   var nameString = MutableLiveData<String>()
   var durationString = MutableLiveData<String>()
   var descriptionString = MutableLiveData<String>()
   var instructionsString = MutableLiveData<String>()
-  val consumptionElementList: MutableLiveData<MutableList<com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement>> by lazy {
-    MutableLiveData<MutableList<com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement>>().apply {
+  val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> by lazy {
+    MutableLiveData<MutableList<ConsumptionElement>>().apply {
       value = mutableListOf()
     }
   }
@@ -53,20 +53,14 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
     else {
       task.result!!.toObject<Meal>()?.apply {
         backgroundUrl?.let { photoFile = File(it) }
-        nameString.value = name
-        durationString.value = duration.toString()
+        nameString.postValue(name)
+        durationString.postValue(duration.toString())
         ingredients.let {
-          consumptionElementList.value = it.map { ingredient ->
+          consumptionElementList.postValue(it.map { ingredient ->
             val product = ProductRepository.getProductForId(ingredient.productId)
             val measure = MeasureRepository.getMeasureForId(ingredient.measureId)
-            com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement(
-              product,
-              MeasureValue(
-                ingredient.value,
-                measure
-              )
-            )
-          }.toMutableList()
+            ConsumptionElement(product, MeasureValue(ingredient.value, measure))
+          }.toMutableList())
         }
         descriptionString.value = description
         instructionsString.value = instructions
@@ -74,8 +68,7 @@ class MealEditorViewModel(application: Application) : AndroidViewModel(applicati
     }
   }
 
-  fun addConsumptionElement(
-    consumptionElement: com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement) {
+  fun addConsumptionElement(consumptionElement: ConsumptionElement) {
     val consumptionElementList = consumptionElementList.value
     consumptionElementList?.let { list ->
       list.firstOrNull { it.product == consumptionElement.product }?.apply {
