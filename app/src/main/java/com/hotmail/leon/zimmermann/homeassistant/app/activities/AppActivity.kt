@@ -69,7 +69,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
             drawer.closeDrawer(navigation_view)
             true
         }
-        // TODO Add Settings
+        R.id.settings_option -> {
+            navController.navigate(R.id.action_global_settings_fragment)
+            drawer.closeDrawer(navigation_view)
+            true
+        }
         R.id.about_option -> {
             navController.navigate(R.id.action_global_about_fragment)
             drawer.closeDrawer(navigation_view)

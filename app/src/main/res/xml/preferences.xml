@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:key="category_order"
-        android:title="Category Order"/>
+    <MultiSelectListPreference
+            android:dialogIcon="@drawable/calendar_icon"
+            android:dialogTitle="Select Shopping Weekdays"
+            android:icon="@drawable/calendar_icon"
+            android:key="shopping_weekdays"
+            android:summary="Select the weekdays on which you go shopping"
+            android:title="Shopping Weekdays" />
+    <Preference
+            android:icon="@drawable/clock_icon"
+            android:key="dinner_time"
+            android:summary="Select the time at which you usually eat for dinner"
+            android:title="Dinner Time" />
 </PreferenceScreen>

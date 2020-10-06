@@ -115,4 +115,8 @@
                     app:destination="@id/meal" />
         </fragment>
     </navigation><action android:id="@+id/action_global_calendar" app:destination="@id/calendar"/><action android:id="@+id/action_global_management" app:destination="@id/management"/><action android:id="@+id/action_global_shopping_fragment" app:destination="@id/shopping_fragment"/>
+    <fragment
+            android:id="@+id/settings_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.settings.HomeAssistantSettingsFragment"
+            android:label="Settings" /><action android:id="@+id/action_global_settings_fragment" app:destination="@id/settings_fragment"/>
 </navigation>
