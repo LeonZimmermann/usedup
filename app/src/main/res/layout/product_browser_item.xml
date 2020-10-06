@@ -10,10 +10,9 @@
 
     <TextView
             android:id="@+id/name_tv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:textAlignment="center"
             android:textColor="@color/listItemTextColor"
             android:textSize="@dimen/itemTextSizeBig"
             app:layout_constraintStart_toStartOf="parent"
