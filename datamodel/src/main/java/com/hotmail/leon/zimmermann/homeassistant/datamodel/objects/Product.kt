@@ -16,7 +16,7 @@ data class Product(
     var categoryId: String
 ) {
   val discrepancy: Int
-    get() = max(max - floor(quantity).toInt(), 0)
+    get() = max(min - floor(quantity).toInt(), 0)
 
   companion object {
     fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {
