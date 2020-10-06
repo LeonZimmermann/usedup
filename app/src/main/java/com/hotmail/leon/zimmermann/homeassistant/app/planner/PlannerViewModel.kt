@@ -32,6 +32,10 @@ class PlannerViewModel : ViewModel(), PlannerRecyclerAdapter.Callbacks {
       bundleOf("mealId" to plannerItem.meal.id))
   }
 
+  override fun onAddButtonClicked(view: View, date: LocalDate) {
+    TODO("not implemented")
+  }
+
   override fun onChangeButtonClicked(view: View, plannerItem: PlannerItem) {
     TODO("not implemented")
   }
