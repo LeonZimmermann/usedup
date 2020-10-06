@@ -6,9 +6,9 @@
                 android:icon="@drawable/cart_icon"
                 android:title="@string/shopping" />
         <item
-                android:id="@+id/calendar_option"
+                android:id="@+id/planner_option"
                 android:icon="@drawable/calendar_icon"
-                android:title="@string/calendar" />
+                android:title="@string/planner" />
         <item
                 android:id="@+id/management_option"
                 android:icon="@drawable/management_icon"

@@ -9,4 +9,10 @@
     <dimen name="mMargin">12dp</dimen>
     <dimen name="lMargin">16dp</dimen>
     <dimen name="xlMargin">20dp</dimen>
+
+    <dimen name="xsPadding">4dp</dimen>
+    <dimen name="sPadding">8dp</dimen>
+    <dimen name="mPadding">12dp</dimen>
+    <dimen name="lPadding">16dp</dimen>
+    <dimen name="xlPadding">20dp</dimen>
 </resources>

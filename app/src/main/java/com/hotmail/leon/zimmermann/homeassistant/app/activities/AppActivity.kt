@@ -59,8 +59,8 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
             drawer.closeDrawer(navigation_view)
             true
         }
-        R.id.calendar_option -> {
-            navController.navigate(R.id.action_global_calendar)
+        R.id.planner_option -> {
+            navController.navigate(R.id.action_global_planner_fragment)
             drawer.closeDrawer(navigation_view)
             true
         }
