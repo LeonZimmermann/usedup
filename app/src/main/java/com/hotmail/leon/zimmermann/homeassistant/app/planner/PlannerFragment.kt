@@ -39,7 +39,7 @@ class PlannerFragment : Fragment() {
   }
 
   private fun initRecyclerView() {
-    val adapter = PlannerRecyclerAdapter(requireContext(), viewModel::onPlannerItemClicked)
+    val adapter = PlannerRecyclerAdapter(requireContext(), viewModel)
     recycler_view.adapter = adapter
     recycler_view.layoutManager = LinearLayoutManager(requireContext())
     viewModel.plannerItems.observe(viewLifecycleOwner, Observer { plannerItems ->

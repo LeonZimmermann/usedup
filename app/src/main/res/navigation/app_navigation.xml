@@ -96,6 +96,18 @@
     <fragment
             android:id="@+id/planner_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.app.planner.PlannerFragment"
-            android:label="Planner" />
+            android:label="Planner" >
+        <action
+                android:id="@+id/action_planner_fragment_to_meal_details_fragment"
+                app:destination="@id/meal_details_fragment" />
+    </fragment>
     <action android:id="@+id/action_global_planner_fragment" app:destination="@id/planner_fragment" />
+    <fragment
+            android:id="@+id/meal_details_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.mealdetails.MealDetailsFragment"
+            android:label="Meal Details" >
+        <argument
+                android:name="mealId"
+                app:argType="string" />
+    </fragment>
 </navigation>

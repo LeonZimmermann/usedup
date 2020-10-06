@@ -9,4 +9,6 @@
 
     <color name="dividerColor">#CCCCCC</color>
     <color name="calendar_item_color">#FF27634E</color>
+
+    <color name="neutral">#A66F00</color>
 </resources>

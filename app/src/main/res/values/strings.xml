@@ -6,4 +6,9 @@
     <string name="go_shopping">Go Shopping</string>
     <string name="discrepancy_overview">Discrepancy Overview</string>
     <string name="planner">Dinner Planner</string>
+    <string name="change">Change</string>
+    <string name="preview">Preview</string>
+    <string name="description">Description</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
 </resources>

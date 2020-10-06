@@ -4,25 +4,33 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.*
 
-class PlannerRecyclerAdapter(private val context: Context, private val onClickCallback: (PlannerItem) -> Unit) :
+class PlannerRecyclerAdapter(private val context: Context, private val callbacks: Callbacks) :
   RecyclerView.Adapter<PlannerRecyclerAdapter.PlannerItemViewHolder>(), RecyclerViewHandlerAdapter {
 
   private var plannerItems: List<PlannerItem> = listOf()
+
+  interface Callbacks {
+    fun onPreviewButtonClicked(view: View, plannerItem: PlannerItem)
+    fun onChangeButtonClicked(view: View, plannerItem: PlannerItem)
+  }
 
   inner class PlannerItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val weekdayDateTextView: TextView = itemView.weekday_date_tv
     val dinnerItemNameTextView: TextView = itemView.dinner_item_name_tv
     val dinnerItemDurationTextView: TextView = itemView.dinner_item_duration_tv
     val dinnerItemImageView: ImageView = itemView.dinner_item_image
+    val previewButton: Button = itemView.preview_button
+    val changeButton: Button = itemView.change_button
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlannerItemViewHolder {
@@ -38,7 +46,8 @@ class PlannerRecyclerAdapter(private val context: Context, private val onClickCa
     holder.dinnerItemDurationTextView.text = "${plannerItem.meal.duration}"
     // TODO Init image
     // holder.dinnerItemImageView.image =
-    holder.itemView.setOnClickListener { onClickCallback(plannerItem) }
+    holder.previewButton.setOnClickListener { callbacks.onPreviewButtonClicked(it, plannerItem) }
+    holder.changeButton.setOnClickListener { callbacks.onChangeButtonClicked(it, plannerItem) }
   }
 
   override fun getItemCount() = plannerItems.size
