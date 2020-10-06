@@ -95,7 +95,6 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
   inner class MealViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val nameTv: TextView = itemView.dinner_item_name_tv
     private val durationTv: TextView = itemView.dinner_item_duration_tv
-    private val shortDescriptionTv: TextView = itemView.dinner_item_short_description_tv
 
     fun init(meal: Meal) {
       itemView.setOnClickListener {
@@ -103,8 +102,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       }
       meal.apply {
         nameTv.text = name
-        durationTv.text = duration.toString()
-        shortDescriptionTv.text = description
+        durationTv.text = "${duration.toIntFormat()}min"
       }
     }
   }

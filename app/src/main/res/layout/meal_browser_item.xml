@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -14,13 +15,10 @@
                 android:id="@+id/dinner_item_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/consumption_list_image_placeholder" />
 
         <TextView
@@ -28,51 +26,34 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:shadowColor="#555555"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="Name"
-                android:textSize="22sp"
-                android:textColor="#DDDDDD"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="@dimen/itemTextSizeMedium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/dinner_item_image"
+                app:layout_constraintTop_toBottomOf="@id/dinner_item_image"
+                tools:text="Name" />
 
         <TextView
                 android:id="@+id/dinner_item_duration_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="#555555"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="Duration"
-                android:textSize="18sp"
-                android:textColor="#DDDDDD"
-                app:layout_constraintStart_toStartOf="@+id/dinner_item_name_tv"
-                app:layout_constraintTop_toBottomOf="@+id/dinner_item_name_tv" />
+                android:layout_marginEnd="8dp"
+                android:textSize="@dimen/itemTextSizeSmall"
+                app:layout_constraintBottom_toBottomOf="@+id/dinner_item_name_tv"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/dinner_item_name_tv"
+                tools:text="Duration" />
 
-        <TextView
-                android:id="@+id/dinner_item_short_description_tv"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="16dp"
+        <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:maxLines="5"
-                android:ellipsize="end"
-                android:shadowColor="#555555"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-                android:textColor="#DDDDDD"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/dinner_item_image"
+                app:layout_constraintBottom_toBottomOf="@+id/dinner_item_duration_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/dinner_item_duration_tv"
-                app:layout_constraintTop_toBottomOf="@+id/dinner_item_duration_tv" />
-
+                app:layout_constraintTop_toTopOf="@+id/dinner_item_duration_tv"
+                app:srcCompat="@drawable/clock_icon"
+                app:tint="@android:color/darker_gray" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
