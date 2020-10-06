@@ -82,7 +82,7 @@ object MealRepository {
     }
   }
 
-  @Throws(IOException::class)
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun updateMeal(
       mealId: String,
       name: String,

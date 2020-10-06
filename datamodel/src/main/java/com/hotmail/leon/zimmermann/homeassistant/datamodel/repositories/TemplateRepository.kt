@@ -75,7 +75,7 @@ object TemplateRepository {
     }
   }
 
-  @Throws(IOException::class)
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun updateTemplate(templateId: String, name: String, components: List<TemplateComponent>) =
     withContext(Dispatchers.IO) {
       val firebaseComponents = components.map {

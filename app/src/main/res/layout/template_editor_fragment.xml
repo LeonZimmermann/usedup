@@ -10,10 +10,6 @@
         <variable
                 name="viewModel"
                 type="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorViewModel" />
-
-        <variable
-                name="eventHandler"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorFragment.EventHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,9 +35,9 @@
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@{viewModel.buttonTopMargin}"
                         android:layout_weight="1"
-                        android:onClick="@{eventHandler::onAddComponentButtonClicked}"
-                        android:text="Add Component"
+                        android:text="@string/add_component"
                         app:icon="@drawable/add_icon"
                         app:iconGravity="textStart"
                         app:layout_constraintEnd_toEndOf="@+id/textView6"
@@ -55,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:text="Components"
+                        android:text="@string/components"
                         android:textColor="@android:color/black"
                         android:textSize="22sp"
                         app:layout_constraintEnd_toEndOf="@+id/name_input_wrapper"
@@ -101,8 +97,8 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="32dp"
-                        android:onClick="@{eventHandler::onSaveTemplateButtonClicked}"
-                        android:text="Save Template"
+                        android:onClick="@{(view) -> viewModel.onSaveTemplateButtonClicked(view)}"
+                        android:text="@{viewModel.actionButtonText}"
                         android:textAlignment="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

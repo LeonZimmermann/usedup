@@ -94,7 +94,7 @@ object ProductRepository {
     }
   }
 
-  @Throws(IOException::class)
+  @Throws(IOException::class, NoSuchElementException::class)
   suspend fun updateProduct(
     id: String,
     name: String,

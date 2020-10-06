@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.MealEditorFragmentBinding
 import com.hotmail.leon.zimmermann.homeassistant.app.camera.CameraFragment
+import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogFragment
+import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
 import kotlinx.android.synthetic.main.meal_editor_fragment.*
 import kotlinx.android.synthetic.main.meal_editor_fragment.view.*
 import java.io.File
@@ -27,7 +29,7 @@ class MealEditorFragment : Fragment() {
 
   private lateinit var viewModel: MealEditorViewModel
   private lateinit var binding: MealEditorFragmentBinding
-  private lateinit var adapter: com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter
+  private lateinit var adapter: ConsumptionElementAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -73,12 +75,9 @@ class MealEditorFragment : Fragment() {
   }
 
   private fun initAdapter(view: View) {
-    adapter = com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter(
-        context!!,
-        ::onIngredientRemoved
-    ).apply {
+    adapter = ConsumptionElementAdapter(requireContext(), ::onIngredientRemoved).apply {
       ItemTouchHelper(object :
-          com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler(this) {
+          RecyclerViewHandler(this) {
           override fun getMovementFlags(
               recyclerView: RecyclerView,
               viewHolder: RecyclerView.ViewHolder
@@ -92,7 +91,7 @@ class MealEditorFragment : Fragment() {
         adapter.setConsumptionElementList(consumptionElementList)
         val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
         val topMarginDimensionId = if (consumptionElementList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
-        params.topMargin = context!!.resources.getDimension(topMarginDimensionId).toInt()
+        params.topMargin = requireContext().resources.getDimension(topMarginDimensionId).toInt()
         view.add_ingredients_button.layoutParams = params
     })
   }
