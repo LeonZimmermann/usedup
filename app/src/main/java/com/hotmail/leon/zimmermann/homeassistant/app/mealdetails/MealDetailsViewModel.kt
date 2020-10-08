@@ -1,37 +1,43 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.mealdetails
 
-import android.app.Application
 import android.text.Html
 import android.text.Spanned
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureValue
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MealDetailsViewModel(application: Application) : AndroidViewModel(application) {
+class MealDetailsViewModel @ViewModelInject constructor(
+  private val productRepository: ProductRepository,
+  private val measureRepository: MeasureRepository,
+  private val mealRepository: MealRepository
+) : ViewModel() {
+
   var nameString = MutableLiveData<String>()
   var durationString = MutableLiveData<String>()
   var descriptionString = MutableLiveData<String>()
   var instructionsString = MutableLiveData<String>()
   val ingredientsString: MutableLiveData<Spanned> = MutableLiveData()
 
-  var mealId: String? = null
+  var mealId: Id? = null
     private set
 
-  fun setMealId(mealId: String) = viewModelScope.launch(Dispatchers.IO) {
+  fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealDetailsViewModel.mealId = mealId
-    MealRepository.getMealForId(mealId).apply {
+    mealRepository.getMealForId(mealId).apply {
       nameString.postValue(name)
       durationString.postValue(duration.toString())
       ingredientsString.postValue(createIngredientsString(ingredients.map { ingredient ->
-        val product = ProductRepository.getProductForId(ingredient.productId)
-        val measure = MeasureRepository.getMeasureForId(ingredient.measureId)
+        val product = productRepository.getProductForId(ingredient.productId)
+        val measure = measureRepository.getMeasureForId(ingredient.measureId)
         ConsumptionElement(product, MeasureValue(ingredient.value, measure))
       }))
       descriptionString.postValue(description)

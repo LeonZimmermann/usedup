@@ -1,15 +1,15 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ShoppingViewModel(application: Application) : AndroidViewModel(application) {
+class ShoppingViewModel @ViewModelInject constructor(private val productRepository: ProductRepository) : ViewModel() {
 
   val shoppingList: MutableLiveData<List<ShoppingProduct>> = MutableLiveData()
 
@@ -25,7 +25,7 @@ class ShoppingViewModel(application: Application) : AndroidViewModel(application
     try {
       shoppingList.value!!.filter { it.checked }.forEach { shoppingProduct ->
         val updatedQuantity = shoppingProduct.product.quantity + shoppingProduct.cartAmount
-        ProductRepository.changeQuantity(shoppingProduct.product, updatedQuantity)
+        productRepository.changeQuantity(shoppingProduct.product, updatedQuantity)
       }
     } catch (e: IOException) {
       systemMessage.postValue("A database error occurred")

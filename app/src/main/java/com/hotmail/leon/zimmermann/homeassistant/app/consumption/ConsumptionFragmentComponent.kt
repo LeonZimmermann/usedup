@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ConsumptionFragmentComponentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.consumption_fragment_component.*
 
+@AndroidEntryPoint
 class ConsumptionFragmentComponent : Fragment() {
-  private lateinit var viewModel: ConsumptionViewModel
-  private lateinit var binding: ConsumptionFragmentComponentBinding
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    initViewModel()
-  }
+  private val viewModel: ConsumptionViewModel by viewModels()
+  private lateinit var binding: ConsumptionFragmentComponentBinding
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.consumption_fragment_component, container, false)
@@ -32,10 +30,6 @@ class ConsumptionFragmentComponent : Fragment() {
     initNameInput()
     initMeasureInput()
     initErrorSnackbar()
-  }
-
-  private fun initViewModel() {
-    viewModel = ViewModelProviders.of(this).get(ConsumptionViewModel::class.java)
   }
 
   private fun initDatabinding(view: View) {

@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,10 +16,12 @@ import com.hotmail.leon.zimmermann.homeassistant.components.consumption.Consumpt
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogFragment
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
 import com.hotmail.leon.zimmermann.homeassistant.databinding.TemplateEditorFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.meal_editor_fragment.view.ingredients_list
 import kotlinx.android.synthetic.main.template_editor_fragment.view.*
 
-
+@AndroidEntryPoint
 class TemplateEditorFragment : Fragment() {
 
   private val viewModel: TemplateEditorViewModel by viewModels()
@@ -49,7 +48,7 @@ class TemplateEditorFragment : Fragment() {
 
   private fun initTemplateId() {
     arguments?.apply {
-      val templateId = getSerializable(TEMPLATE_ID) as? String?
+      val templateId = getSerializable(TEMPLATE_ID) as? Id?
       templateId?.let { viewModel.setTemplateId(it) }
     }
   }
@@ -81,7 +80,7 @@ class TemplateEditorFragment : Fragment() {
 
   private fun initAddComponentButton(view: View) {
     view.add_component_button.setOnClickListener {
-      ConsumptionElementDialogFragment { viewModel.addConsumptionElement(it) }
+      ConsumptionElementDialogFragment().setCallback { viewModel.addConsumptionElement(it) }
         .show(parentFragmentManager, "ConsumptionElementDialog")
     }
   }

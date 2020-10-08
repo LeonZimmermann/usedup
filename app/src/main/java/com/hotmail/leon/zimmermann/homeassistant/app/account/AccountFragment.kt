@@ -12,8 +12,10 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
 import com.hotmail.leon.zimmermann.homeassistant.R
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.account_fragment.*
 
+@AndroidEntryPoint
 class AccountFragment : Fragment() {
 
     companion object {

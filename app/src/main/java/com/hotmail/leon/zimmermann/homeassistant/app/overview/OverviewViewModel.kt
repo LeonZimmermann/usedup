@@ -1,19 +1,20 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.overview
 
-import android.app.Application
 import android.view.View
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlin.math.max
 
-class OverviewViewModel(application: Application) : AndroidViewModel(application) {
-  val products: MutableLiveData<MutableList<Product>> = ProductRepository.products
+class OverviewViewModel @ViewModelInject constructor(productRepository: ProductRepository) : ViewModel() {
+
+  val products: MutableLiveData<MutableList<Product>> = productRepository.products
 
   val discrepancyProductList: LiveData<List<Pair<Product, Int>>> = Transformations.map(products) { products ->
     products.filter { it.discrepancy > 0 }

@@ -1,16 +1,24 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.management
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Template
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 
-class ManagementViewModel : ViewModel() {
-    val products: MutableLiveData<MutableList<Product>> = ProductRepository.products
-    val templates: MutableLiveData<MutableList<Template>> = TemplateRepository.templates
-    val meals: MutableLiveData<MutableList<Meal>> = MealRepository.meals
+class ManagementViewModel @ViewModelInject constructor(
+    productRepository: ProductRepository,
+    templateRepository: TemplateRepository,
+    mealRepository: MealRepository
+) : ViewModel() {
 
-    var mode: MutableLiveData<ManagementFragment.Mode> = MutableLiveData(ManagementFragment.Mode.PRODUCT)
+  val products: MutableLiveData<MutableList<Product>> = productRepository.products
+  val templates: MutableLiveData<MutableList<Template>> = templateRepository.templates
+  val meals: MutableLiveData<MutableList<Meal>> = mealRepository.meals
+
+  var mode: MutableLiveData<ManagementFragment.Mode> = MutableLiveData(ManagementFragment.Mode.PRODUCT)
 }

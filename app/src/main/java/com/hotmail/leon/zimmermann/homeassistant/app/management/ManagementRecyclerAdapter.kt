@@ -12,12 +12,12 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.toFloatFormat
 import com.hotmail.leon.zimmermann.homeassistant.app.toIntFormat
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Template
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Template
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
@@ -28,6 +28,10 @@ import kotlinx.coroutines.launch
 class ManagementRecyclerAdapter constructor(context: Context, private val recyclerView: RecyclerView,
   private val navController: NavController, private val coroutineScope: CoroutineScope) :
   RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
+
+  private val productRepository: ProductRepository = TODO()
+  private val templateRepository: TemplateRepository = TODO()
+  private val mealRepository: MealRepository = TODO()
 
   private val inflater = LayoutInflater.from(context)
 
@@ -141,17 +145,17 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       when (mode) {
         ManagementFragment.Mode.PRODUCT -> {
           val product = products[position]
-          ProductRepository.deleteProduct(product.id)
+          productRepository.deleteProduct(product.id)
           products.remove(product)
         }
         ManagementFragment.Mode.TEMPLATE -> {
           val template = templates[position]
-          TemplateRepository.deleteTemplate(template.id)
+          templateRepository.deleteTemplate(template.id)
           templates.remove(template)
         }
         ManagementFragment.Mode.MEAL -> {
           val meal = meals[position]
-          MealRepository.deleteMeal(meal.id)
+          mealRepository.deleteMeal(meal.id)
           meals.remove(meal)
         }
       }

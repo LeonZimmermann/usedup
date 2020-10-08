@@ -1,6 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
 
 data class ShoppingProduct(
     val product: Product,

@@ -1,17 +1,26 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.management.products
 
-import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.InvalidInputException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 
-class ProductEditorViewModel : ViewModel() {
-  val categoryList = CategoryRepository.categories
-  val measureList = MeasureRepository.measures
+class ProductEditorViewModel @ViewModelInject constructor(
+  private val productRepository: ProductRepository,
+  private val measureRepository: MeasureRepository,
+  private val categoryRepository: CategoryRepository
+) : ViewModel() {
+
+
+  val categoryList = categoryRepository.categories
+  val measureList = measureRepository.measures
 
   var nameInputValue = MutableLiveData("")
   var categoryInputValue = MutableLiveData("")
@@ -23,17 +32,17 @@ class ProductEditorViewModel : ViewModel() {
 
   var systemMessage = MutableLiveData("")
 
-  var productId: String? = null
+  var productId: Id? = null
     private set
 
-  fun setProductId(productId: String) = viewModelScope.launch(Dispatchers.Default) {
+  fun setProductId(productId: Id) = viewModelScope.launch(Dispatchers.Default) {
     this@ProductEditorViewModel.productId = productId
-    ProductRepository.getProductForId(productId).let { product ->
+    productRepository.getProductForId(productId).let { product ->
       nameInputValue.postValue(product.name)
       capacityInputValue.postValue(product.capacity.toString())
-      categoryInputValue.postValue(CategoryRepository.getCategoryForId(product.categoryId).name)
+      categoryInputValue.postValue(categoryRepository.getCategoryForId(product.categoryId).name)
       currentInputValue.postValue(product.quantity.toString())
-      measureInputValue.postValue(MeasureRepository.getMeasureForId(product.measureId).name)
+      measureInputValue.postValue(measureRepository.getMeasureForId(product.measureId).name)
       minInputValue.postValue(product.min.toString())
       maxInputValue.postValue(product.max.toString())
     }
@@ -57,21 +66,26 @@ class ProductEditorViewModel : ViewModel() {
   }
 
   private fun saveAfterValidation() = viewModelScope.launch(Dispatchers.Default) {
+    TODO("Implement")
+    /*
     val name = nameInputValue.value!!
-    val category = CategoryRepository.getCategoryForName(categoryInputValue.value!!)
+    val category = FirebaseCategoryRepository.getCategoryForName(categoryInputValue.value!!)
     val capacity = capacityInputValue.value!!.toDouble()
-    val measure = MeasureRepository.getMeasureForName(measureInputValue.value!!)
+    val measure = FirebaseMeasureRepository.getMeasureForName(measureInputValue.value!!)
     val quantity = currentInputValue.value!!.toDouble()
     val min = minInputValue.value!!.toInt()
     val max = maxInputValue.value!!.toInt()
     try {
-      if (productId == null) ProductRepository.addProduct(name, category.id, capacity, measure.id, quantity, min,
-          max)
-      else ProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
+      if (productId == null) FirebaseProductRepository.addProduct(name, category.id, capacity, measure.id, quantity,
+        min,
+        max)
+      else FirebaseProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min,
+        max)
       systemMessage.value = "Added Product"
       // TODO Navigate up
     } catch (e: IOException) {
       systemMessage.value = "Could not add product"
     }
+     */
   }
 }

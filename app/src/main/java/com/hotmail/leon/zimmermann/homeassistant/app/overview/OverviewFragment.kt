@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.components.SimpleProductPreviewAdapter
 import com.hotmail.leon.zimmermann.homeassistant.databinding.OverviewFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.overview_fragment.*
 
+@AndroidEntryPoint
 class OverviewFragment : Fragment() {
 
   private val viewModel: OverviewViewModel by viewModels()

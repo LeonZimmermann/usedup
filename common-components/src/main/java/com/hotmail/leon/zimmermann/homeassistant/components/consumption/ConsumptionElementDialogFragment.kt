@@ -10,18 +10,14 @@ import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hotmail.leon.zimmermann.homeassistant.components.R
 import com.hotmail.leon.zimmermann.homeassistant.components.databinding.ConsumptionElementDialogFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.consumption_element_dialog_fragment.view.*
 
-class ConsumptionElementDialogFragment(private val callback: (consumptionElement: ConsumptionElement) -> Unit) :
-  DialogFragment() {
+@AndroidEntryPoint
+class ConsumptionElementDialogFragment : DialogFragment() {
 
   private val viewModel: ConsumptionElementDialogViewModel by viewModels()
   private lateinit var binding: ConsumptionElementDialogFragmentBinding
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    initCallback()
-  }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return activity?.let {
@@ -37,9 +33,9 @@ class ConsumptionElementDialogFragment(private val callback: (consumptionElement
     } ?: throw IllegalArgumentException("Activity cannot be null")
   }
 
-
-  private fun initCallback() {
+  fun setCallback(callback: (consumptionElement: ConsumptionElement) -> Unit): ConsumptionElementDialogFragment {
     viewModel.callback = callback
+    return this
   }
 
   private fun initDatabinding(view: View) {

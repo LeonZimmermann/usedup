@@ -4,27 +4,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import com.hotmail.leon.zimmermann.homeassistant.components.R.dimen.lMargin
-import com.hotmail.leon.zimmermann.homeassistant.components.R.dimen.sMargin
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.MeasureValue
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.TemplateComponent
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.InvalidInputException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.TemplateComponent
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
 
-class TemplateEditorViewModel : ViewModel() {
-  var products: MutableLiveData<MutableList<Product>> = ProductRepository.products
+class TemplateEditorViewModel @ViewModelInject constructor(
+  private val productRepository: ProductRepository,
+  private val measureRepository: MeasureRepository,
+  private val templateRepository: TemplateRepository
+) : ViewModel() {
+
+  var products: MutableLiveData<MutableList<Product>> = productRepository.products
 
   var nameString = MutableLiveData<String>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> = MutableLiveData(mutableListOf())
@@ -32,18 +38,18 @@ class TemplateEditorViewModel : ViewModel() {
   val actionButtonText: MutableLiveData<String> = MutableLiveData("Add Template")
   val errorMessage: MutableLiveData<String> = MutableLiveData()
 
-  var templateId: String? = null
+  var templateId: Id? = null
     private set
 
-  fun setTemplateId(templateId: String) = viewModelScope.launch(Dispatchers.IO) {
+  fun setTemplateId(templateId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@TemplateEditorViewModel.templateId = templateId
     actionButtonText.postValue("Update Template")
-    TemplateRepository.getTemplateForId(templateId).apply {
+    templateRepository.getTemplateForId(templateId).apply {
       nameString.postValue(name)
       components.let {
         consumptionElementList.postValue(it.map { element ->
-          val product = ProductRepository.getProductForId(element.productId)
-          val measure = MeasureRepository.getMeasureForId(element.measureId)
+          val product = productRepository.getProductForId(element.productId)
+          val measure = measureRepository.getMeasureForId(element.measureId)
           ConsumptionElement(product, MeasureValue(element.value, measure))
         }.toMutableList())
       }
@@ -57,8 +63,8 @@ class TemplateEditorViewModel : ViewModel() {
         TemplateComponent(element.product.id, element.valueValue.measure.id, element.valueValue.double)
       }
       if (consumptionElementList.isNullOrEmpty()) throw InvalidInputException("You need to give at least one component")
-      if (templateId == null) TemplateRepository.addTemplate(name, consumptionElementList)
-      else TemplateRepository.updateTemplate(templateId!!, name, consumptionElementList)
+      if (templateId == null) templateRepository.addTemplate(name, consumptionElementList)
+      else templateRepository.updateTemplate(templateId!!, name, consumptionElementList)
       Navigation.findNavController(view).navigateUp()
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)

@@ -21,10 +21,13 @@ import com.hotmail.leon.zimmermann.homeassistant.app.camera.CameraFragment
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogFragment
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.meal_editor_fragment.*
 import kotlinx.android.synthetic.main.meal_editor_fragment.view.*
 import java.io.File
 
+@AndroidEntryPoint
 class MealEditorFragment : Fragment() {
 
   private lateinit var viewModel: MealEditorViewModel
@@ -57,12 +60,12 @@ class MealEditorFragment : Fragment() {
 
   private fun initMealIdAndPhotoFile(savedInstanceState: Bundle?) {
     arguments?.apply {
-      val mealId = getSerializable(MEAL_ID) as? String?
+      val mealId = getSerializable(MEAL_ID) as? Id?
       mealId?.let { viewModel.setMealId(it) }
     }
     savedInstanceState?.apply {
       viewModel.photoFile = getSerializable(FILE) as? File
-      val mealId = getSerializable(MEAL_ID) as? String?
+      val mealId = getSerializable(MEAL_ID) as? Id?
       mealId?.let { viewModel.setMealId(it) }
     }
   }
@@ -128,7 +131,7 @@ class MealEditorFragment : Fragment() {
     }
 
     fun onAddIngredientsButtonClicked(view: View) {
-      ConsumptionElementDialogFragment { viewModel.addConsumptionElement(it) }.show(parentFragmentManager,
+      ConsumptionElementDialogFragment().setCallback { viewModel.addConsumptionElement(it) }.show(parentFragmentManager,
           "ConsumptionElementDialog")
     }
 

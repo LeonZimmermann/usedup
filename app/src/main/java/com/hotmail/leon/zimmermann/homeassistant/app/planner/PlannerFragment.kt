@@ -10,8 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.PlannerFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.planner_fragment.*
 
+@AndroidEntryPoint
 class PlannerFragment : Fragment() {
 
   companion object {

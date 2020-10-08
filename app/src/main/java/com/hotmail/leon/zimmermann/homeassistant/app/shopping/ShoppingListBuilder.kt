@@ -1,21 +1,23 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping
 
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Meal
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.toMeasure
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import kotlin.math.ceil
 
 class ShoppingListBuilder {
   private val list = mutableListOf<ShoppingProduct>()
 
+  private val productRepository: ProductRepository = TODO()
+  private val measureRepository: MeasureRepository = TODO()
+
   fun addDiscrepancies(): ShoppingListBuilder {
     runBlocking(Dispatchers.Default) {
-      ProductRepository.getAllProducts()
+      productRepository.getAllProducts()
         .filter { it.discrepancy > 0 }
         .forEach { addProduct(it, it.discrepancy) }
     }
@@ -32,8 +34,8 @@ class ShoppingListBuilder {
   fun addMeal(meal: Meal): ShoppingListBuilder {
     runBlocking(Dispatchers.Default) {
       meal.ingredients.forEach {
-        val product = ProductRepository.getProductForId(it.productId)
-        val measure = MeasureRepository.getMeasureForId(it.measureId)
+        val product = productRepository.getProductForId(it.productId)
+        val measure = measureRepository.getMeasureForId(it.measureId)
         val cartAmount = ceil(product.capacity.toMeasure(measure) / it.value).toInt()
         addProduct(product, cartAmount)
       }

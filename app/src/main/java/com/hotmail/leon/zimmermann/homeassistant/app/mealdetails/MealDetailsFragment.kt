@@ -9,7 +9,10 @@ import androidx.fragment.app.viewModels
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.management.meals.MealEditorFragment
 import com.hotmail.leon.zimmermann.homeassistant.databinding.MealDetailsFragmentBinding
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MealDetailsFragment : Fragment() {
 
   private val viewModel: MealDetailsViewModel by viewModels()
@@ -17,7 +20,7 @@ class MealDetailsFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     requireNotNull(arguments).apply {
-      val mealId = getSerializable(MealEditorFragment.MEAL_ID) as? String?
+      val mealId = getSerializable(MealEditorFragment.MEAL_ID) as? Id?
       viewModel.setMealId(requireNotNull(mealId))
     }
   }

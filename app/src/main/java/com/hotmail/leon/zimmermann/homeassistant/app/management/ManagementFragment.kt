@@ -15,10 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.management_fragment.*
 import kotlinx.android.synthetic.main.management_fragment.view.*
 
-
+@AndroidEntryPoint
 class ManagementFragment : Fragment() {
   private lateinit var viewModel: ManagementViewModel
   private lateinit var adapter: ManagementRecyclerAdapter

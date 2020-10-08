@@ -4,23 +4,31 @@ import android.app.Application
 import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.exceptions.InvalidInputException
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.*
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MealRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.TemplateRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.InvalidInputException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Measure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ConsumptionViewModel(application: Application) : AndroidViewModel(application), AdapterView.OnItemClickListener {
-  private val productNameList = Transformations.map(ProductRepository.products) { products -> products.map { it.name } }
+class ConsumptionViewModel @ViewModelInject constructor(
+  private val mealRepository: MealRepository,
+  private val measureRepository: MeasureRepository,
+  private val templateRepository: TemplateRepository,
+  private val productRepository: ProductRepository
+) : ViewModel(), AdapterView.OnItemClickListener {
+
+  private val productNameList = Transformations.map(productRepository.products) { products -> products.map { it.name } }
   private val templateNameList =
-    Transformations.map(TemplateRepository.templates) { templates -> templates.map { it.name } }
-  private val mealNameList = Transformations.map(MealRepository.meals) { meals -> meals.map { it.name } }
-  private val measures: MutableList<Measure> = MeasureRepository.measures
+    Transformations.map(templateRepository.templates) { templates -> templates.map { it.name } }
+  private val mealNameList = Transformations.map(mealRepository.meals) { meals -> meals.map { it.name } }
+  private val measures: MutableList<Measure> = measureRepository.measures
 
   private val consumptionCalculator = ConsumptionCalculator()
 
@@ -71,37 +79,37 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
   }
 
   private suspend fun consumeProduct() {
-    val product = nameText.value?.let { ProductRepository.getProductForName(it) } ?: throw InvalidInputException(
+    val product = nameText.value?.let { productRepository.getProductForName(it) } ?: throw InvalidInputException(
       "The product name is invalid")
     val quantity = quantityText.value?.toDouble() ?: throw InvalidInputException("The quantity is invalid")
     val measure =
       measures.find { it.name == measureText.value } ?: throw InvalidInputException("The measure is invalid")
     val updatedQuantity = consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure))
-    ProductRepository.changeQuantity(product, updatedQuantity)
+    productRepository.changeQuantity(product, updatedQuantity)
   }
 
   private suspend fun consumeTemplate() {
-    val template = nameText.value?.let { TemplateRepository.getTemplateForName(it) } ?: throw InvalidInputException(
+    val template = nameText.value?.let { templateRepository.getTemplateForName(it) } ?: throw InvalidInputException(
       "The template name is invalid")
     val data = template.components.map { element ->
-      val product = ProductRepository.getProductForId(element.productId)
+      val product = productRepository.getProductForId(element.productId)
       val quantity = element.value
       val measure = measures.find { it.name == measureText.value } ?: throw RuntimeException()
       Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
     }
-    ProductRepository.changeQuantity(data)
+    productRepository.changeQuantity(data)
   }
 
   private suspend fun consumeMeal() {
-    val meal = nameText.value?.let { MealRepository.getMealForName(it) } ?: throw InvalidInputException(
+    val meal = nameText.value?.let { mealRepository.getMealForName(it) } ?: throw InvalidInputException(
       "The meal name is invalid")
     val data = meal.ingredients.map { element ->
-      val product = ProductRepository.getProductForId(element.productId)
+      val product = productRepository.getProductForId(element.productId)
       val quantity = element.value
       val measure = measures.find { it.name == measureText.value } ?: throw RuntimeException()
       Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
     }
-    ProductRepository.changeQuantity(data)
+    productRepository.changeQuantity(data)
   }
 
   private fun clearInputs() {
@@ -114,8 +122,8 @@ class ConsumptionViewModel(application: Application) : AndroidViewModel(applicat
   override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
     viewModelScope.launch {
       if (mode.value == Mode.PRODUCT) {
-        val product = ProductRepository.getProductForName(productNameList.value!![position])
-        val productMeasure = MeasureRepository.getMeasureForId(product.measureId)
+        val product = productRepository.getProductForName(productNameList.value!![position])
+        val productMeasure = measureRepository.getMeasureForId(product.measureId)
         val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
         this@ConsumptionViewModel.measureNameList.value = measureList
         measureText.value = if (measureList.size > 1) "" else productMeasure.name

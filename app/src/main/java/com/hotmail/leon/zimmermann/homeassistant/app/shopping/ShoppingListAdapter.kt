@@ -9,13 +9,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.objects.Category
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Category
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
 import kotlinx.android.synthetic.main.shopping_category.view.*
 import org.jetbrains.anko.textView
 
 class ShoppingListAdapter(private val context: Context) :
   RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
+
+  private val categoryRepository: CategoryRepository = TODO()
 
   private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
 
@@ -49,7 +51,7 @@ class ShoppingListAdapter(private val context: Context) :
 
   internal fun setData(shoppingList: List<ShoppingProduct>) {
     this.shoppingList = shoppingList
-      .groupBy { CategoryRepository.getCategoryForId(it.product.categoryId) }
+      .groupBy { categoryRepository.getCategoryForId(it.product.categoryId) }
       .toList()
     notifyDataSetChanged()
   }

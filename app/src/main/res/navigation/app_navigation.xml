@@ -49,7 +49,7 @@
                         app:destination="@id/camera_fragment" />
                 <argument
                         android:name="mealId"
-                        app:argType="string"
+                        app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
                         app:nullable="true" />
             </fragment>
         </navigation>
@@ -59,7 +59,7 @@
                 android:label="Product Editor">
             <argument
                     android:name="productId"
-                    app:argType="string"
+                    app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
                     app:nullable="true" />
         </fragment>
         <fragment
@@ -68,7 +68,7 @@
                 android:label="Template Editor">
             <argument
                     android:name="templateId"
-                    app:argType="string"
+                    app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
                     app:nullable="true" />
         </fragment>
         <fragment
@@ -108,6 +108,6 @@
             android:label="Meal Details" >
         <argument
                 android:name="mealId"
-                app:argType="string" />
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id" />
     </fragment>
 </navigation>
