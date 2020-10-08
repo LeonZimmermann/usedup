@@ -4,19 +4,23 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class ShoppingViewModel @ViewModelInject constructor(private val productRepository: ProductRepository) : ViewModel() {
+class ShoppingViewModel @ViewModelInject constructor(
+  private val productRepository: ProductRepository,
+  private val measureRepository: MeasureRepository
+) : ViewModel() {
 
   val shoppingList: MutableLiveData<List<ShoppingProduct>> = MutableLiveData()
 
   val systemMessage: MutableLiveData<String> = MutableLiveData()
 
   fun createShoppingList() = viewModelScope.launch(Dispatchers.Default) {
-    shoppingList.postValue(ShoppingListBuilder()
+    shoppingList.postValue(ShoppingListBuilder(productRepository, measureRepository)
       .addDiscrepancies()
       .build())
   }

@@ -9,11 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlin.math.ceil
 
-class ShoppingListBuilder {
-  private val list = mutableListOf<ShoppingProduct>()
+class ShoppingListBuilder(
+  private val productRepository: ProductRepository,
+  private val measureRepository: MeasureRepository
+) {
 
-  private val productRepository: ProductRepository = TODO()
-  private val measureRepository: MeasureRepository = TODO()
+  private val list = mutableListOf<ShoppingProduct>()
 
   fun addDiscrepancies(): ShoppingListBuilder {
     runBlocking(Dispatchers.Default) {

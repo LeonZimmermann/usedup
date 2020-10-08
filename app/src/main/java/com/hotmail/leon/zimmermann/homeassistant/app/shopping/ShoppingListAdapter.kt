@@ -11,13 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Category
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.android.synthetic.main.shopping_category.view.*
 import org.jetbrains.anko.textView
 
 class ShoppingListAdapter(private val context: Context) :
   RecyclerView.Adapter<ShoppingListAdapter.ShoppingViewHolder>() {
 
-  private val categoryRepository: CategoryRepository = TODO()
+  private val entryPoint = EntryPointAccessors.fromApplication(context, ShoppingListAdapterEntryPoint::class.java)
+  private val categoryRepository: CategoryRepository = entryPoint.getCategoryRepository()
 
   private var shoppingList: List<Pair<Category, List<ShoppingProduct>>> = listOf()
 
@@ -30,7 +35,7 @@ class ShoppingListAdapter(private val context: Context) :
     ShoppingViewHolder(LayoutInflater.from(context).inflate(R.layout.shopping_category, parent, false))
 
   override fun onBindViewHolder(holder: ShoppingViewHolder, position: Int) {
-      val (category, products) = shoppingList[position]
+    val (category, products) = shoppingList[position]
     holder.shoppingCategoryNameTextView.text = category.name
     holder.shoppingProductListContainer.removeAllViews()
     holder.shoppingProductListContainer.apply {
@@ -54,5 +59,11 @@ class ShoppingListAdapter(private val context: Context) :
       .groupBy { categoryRepository.getCategoryForId(it.product.categoryId) }
       .toList()
     notifyDataSetChanged()
+  }
+
+  @EntryPoint
+  @InstallIn(ApplicationComponent::class)
+  interface ShoppingListAdapterEntryPoint {
+    fun getCategoryRepository(): CategoryRepository
   }
 }

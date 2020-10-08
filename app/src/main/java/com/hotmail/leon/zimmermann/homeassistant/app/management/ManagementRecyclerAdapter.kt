@@ -18,6 +18,10 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Template
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
@@ -29,9 +33,10 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
   private val navController: NavController, private val coroutineScope: CoroutineScope) :
   RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
 
-  private val productRepository: ProductRepository = TODO()
-  private val templateRepository: TemplateRepository = TODO()
-  private val mealRepository: MealRepository = TODO()
+  private val entryPoint = EntryPointAccessors.fromApplication(context, ManagementRecyclerAdapterEntryPoint::class.java)
+  private val productRepository: ProductRepository = entryPoint.getProductRepository()
+  private val templateRepository: TemplateRepository = entryPoint.getTemplateRepository()
+  private val mealRepository: MealRepository = entryPoint.getMealRepository()
 
   private val inflater = LayoutInflater.from(context)
 
@@ -161,5 +166,13 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       }
       notifyItemRemoved(position)
     }
+  }
+
+  @EntryPoint
+  @InstallIn(ApplicationComponent::class)
+  interface ManagementRecyclerAdapterEntryPoint {
+    fun getProductRepository(): ProductRepository
+    fun getTemplateRepository(): TemplateRepository
+    fun getMealRepository(): MealRepository
   }
 }
