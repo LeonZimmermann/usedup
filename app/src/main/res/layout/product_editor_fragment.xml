@@ -176,6 +176,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="32dp"
                 android:text="@{buttonText}"
+                android:onClick="@{(view) -> viewModel.save(view)}"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

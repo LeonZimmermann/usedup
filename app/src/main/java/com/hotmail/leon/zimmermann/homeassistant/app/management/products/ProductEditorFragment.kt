@@ -40,7 +40,6 @@ class ProductEditorFragment : Fragment() {
     initCategoryInput()
     initMeasureInput()
     initSystemMessage()
-    initSaveButton(view)
   }
 
   private fun initViewModel() {
@@ -75,12 +74,6 @@ class ProductEditorFragment : Fragment() {
     viewModel.systemMessage.observe(viewLifecycleOwner, Observer { systemMessage ->
         if (!systemMessage.isNullOrBlank()) Snackbar.make(requireView(), systemMessage, Snackbar.LENGTH_LONG).show()
     })
-  }
-
-  private fun initSaveButton(view: View) {
-    save_button.setOnClickListener {
-      viewModel.save()
-    }
   }
 
   private fun initDatabinding(view: View) {

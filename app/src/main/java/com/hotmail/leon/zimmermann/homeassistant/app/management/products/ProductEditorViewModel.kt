@@ -1,9 +1,11 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.management.products
 
+import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.InvalidInputException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
@@ -11,6 +13,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.Meas
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class ProductEditorViewModel @ViewModelInject constructor(
   private val productRepository: ProductRepository,
@@ -48,7 +51,7 @@ class ProductEditorViewModel @ViewModelInject constructor(
     }
   }
 
-  fun save() = viewModelScope.launch(Dispatchers.Default) {
+  fun save(view: View) = viewModelScope.launch(Dispatchers.Default) {
     try {
       when {
         nameInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a name")
@@ -58,34 +61,28 @@ class ProductEditorViewModel @ViewModelInject constructor(
         currentInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert the current quantity")
         minInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a minimum quantity")
         maxInputValue.value.isNullOrBlank() -> throw InvalidInputException("Insert a maximum quantity")
-        else -> saveAfterValidation()
+        else -> saveAfterValidation(view)
       }
     } catch (e: InvalidInputException) {
       systemMessage.value = e.message
     }
   }
 
-  private fun saveAfterValidation() = viewModelScope.launch(Dispatchers.Default) {
-    TODO("Implement")
-    /*
+  private fun saveAfterValidation(view: View) = viewModelScope.launch(Dispatchers.Default) {
     val name = nameInputValue.value!!
-    val category = FirebaseCategoryRepository.getCategoryForName(categoryInputValue.value!!)
+    val category = categoryRepository.getCategoryForName(categoryInputValue.value!!)
     val capacity = capacityInputValue.value!!.toDouble()
-    val measure = FirebaseMeasureRepository.getMeasureForName(measureInputValue.value!!)
+    val measure = measureRepository.getMeasureForName(measureInputValue.value!!)
     val quantity = currentInputValue.value!!.toDouble()
     val min = minInputValue.value!!.toInt()
     val max = maxInputValue.value!!.toInt()
     try {
-      if (productId == null) FirebaseProductRepository.addProduct(name, category.id, capacity, measure.id, quantity,
-        min,
-        max)
-      else FirebaseProductRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min,
-        max)
+      if (productId == null) productRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
+      else productRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
       systemMessage.value = "Added Product"
-      // TODO Navigate up
+      Navigation.findNavController(view).navigateUp()
     } catch (e: IOException) {
       systemMessage.value = "Could not add product"
     }
-     */
   }
 }

@@ -21,7 +21,7 @@ interface ProductRepository {
     min: Int, max: Int)
 
   @Throws(IOException::class, NoSuchElementException::class)
-  suspend fun updateProduct(id: Id, name: String, categoryId: String, capacity: Double, measureId: String,
+  suspend fun updateProduct(id: Id, name: String, categoryId: Id, capacity: Double, measureId: Id,
     quantity: Double, min: Int, max: Int)
 
   @Throws(IOException::class)

@@ -103,15 +103,17 @@ object FirebaseProductRepository : ProductRepository {
   override suspend fun updateProduct(
     id: Id,
     name: String,
-    categoryId: String,
+    categoryId: Id,
     capacity: Double,
-    measureId: String,
+    measureId: Id,
     quantity: Double,
     min: Int,
     max: Int
   ) = withContext(Dispatchers.IO) {
-    val measureReference = Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document(measureId)
-    val categoryReference = Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document(categoryId)
+    val measureReference =
+      Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document((measureId as FirebaseId).value)
+    val categoryReference =
+      Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document((categoryId as FirebaseId).value)
     val data = mapOf(
       "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
       "measureReference" to measureReference,
@@ -122,9 +124,9 @@ object FirebaseProductRepository : ProductRepository {
     else {
       getProductForId(id).apply {
         this.name = name
-        this.categoryId = FirebaseId(categoryId)
+        this.categoryId = categoryId
         this.capacity = capacity
-        this.measureId = FirebaseId(measureId)
+        this.measureId = measureId
         this.quantity = quantity
         this.min = min
         this.max = max
