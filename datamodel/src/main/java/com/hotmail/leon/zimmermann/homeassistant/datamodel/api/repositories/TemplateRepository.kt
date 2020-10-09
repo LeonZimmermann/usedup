@@ -7,7 +7,10 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.TemplateC
 import java.io.IOException
 
 interface TemplateRepository {
+
   val templates: MutableLiveData<MutableList<Template>>
+
+  suspend fun init()
 
   @Throws(NoSuchElementException::class)
   suspend fun getTemplateForId(id: Id): Template

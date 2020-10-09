@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,10 +18,20 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    authenticate()
+    initActivityToStart()
+    dispatchAuthenticationRequest()
   }
 
-  private fun authenticate() {
+  private fun initActivityToStart() {
+    viewModel.activityToStart.observe(this, Observer { activityToStart ->
+      val intent = Intent(this@MainActivity, activityToStart).apply {
+        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+      }
+      startActivity(intent)
+    })
+  }
+
+  private fun dispatchAuthenticationRequest() {
     val providers = arrayListOf(
         AuthUI.IdpConfig.EmailBuilder().build(),
         AuthUI.IdpConfig.PhoneBuilder().build(),
@@ -46,16 +53,8 @@ class MainActivity : AppCompatActivity() {
 
   private fun handleSignInResult(resultCode: Int, data: Intent?) {
     val response = IdpResponse.fromResultIntent(data)
-    if (resultCode == Activity.RESULT_OK) {
-      GlobalScope.launch(Dispatchers.IO) {
-        viewModel.initData()
-      }.invokeOnCompletion {
-        val intent = Intent(this@MainActivity, AppActivity::class.java).apply {
-          flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-        startActivity(intent)
-      }
-    } else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
+    if (resultCode == Activity.RESULT_OK) viewModel.initDataAndNavigate()
+    else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
   }
 
   companion object {

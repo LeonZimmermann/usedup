@@ -6,7 +6,10 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
 import java.io.IOException
 
 interface ProductRepository {
+
   val products: MutableLiveData<MutableList<Product>>
+
+  suspend fun init()
 
   fun getAllProducts(): List<Product>
 

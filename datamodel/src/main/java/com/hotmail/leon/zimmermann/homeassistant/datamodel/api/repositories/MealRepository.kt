@@ -10,6 +10,8 @@ interface MealRepository {
 
   val meals: MutableLiveData<MutableList<Meal>>
 
+  suspend fun init()
+
   @Throws(NoSuchElementException::class)
   suspend fun getMealForId(id: Id): Meal
 

@@ -5,14 +5,15 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseId
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.InMemoryQuantityProcessor
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseId
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseProduct
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.repositories.FirebaseUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -26,15 +27,20 @@ object FirebaseProductRepository : ProductRepository {
 
   override val products: MutableLiveData<MutableList<Product>> = MutableLiveData()
 
-  init {
-    collection.get().addOnSuccessListener { documents ->
-      products.value = documents.map { Product.createInstance(it.id, it.toObject()) }.toMutableList()
+  override suspend fun init() {
+    withContext(Dispatchers.IO) {
+      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+        .addOnSuccessListener { documents ->
+          products.value = documents.map { Product.createInstance(it.id, it.toObject()) }.toMutableList()
+        }
     }
   }
 
   override fun getAllProducts(): List<Product> = runBlocking(Dispatchers.IO) {
     if (products.value != null) products.value!!
-    else Tasks.await(collection.get()).map { Product.createInstance(it.id, it.toObject()) }
+    else Tasks.await(
+      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get())
+      .map { Product.createInstance(it.id, it.toObject()) }
   }
 
   @Throws(NoSuchElementException::class)

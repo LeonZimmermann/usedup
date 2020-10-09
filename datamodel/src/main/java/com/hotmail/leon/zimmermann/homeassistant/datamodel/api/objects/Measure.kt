@@ -5,7 +5,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.Fire
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
 
 data class Measure(
-    var id: Id,
+    val id: Id,
     var name: String,
     var abbreviation: String,
     var baseFactor: Float,

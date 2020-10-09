@@ -4,12 +4,12 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Category
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
 
-object FirebaseCategoryRepository: CategoryRepository {
+object FirebaseCategoryRepository : CategoryRepository {
   override val categories = mutableListOf<Category>()
 
   override fun init() {

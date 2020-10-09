@@ -5,11 +5,11 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Template
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.TemplateComponent
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -19,9 +19,12 @@ object FirebaseTemplateRepository : TemplateRepository {
 
   override val templates: MutableLiveData<MutableList<Template>> = MutableLiveData()
 
-  init {
-    collection.get().addOnSuccessListener { documents ->
-      templates.value = documents.map { Template.createInstance(it.id, it.toObject()) }.toMutableList()
+  override suspend fun init() {
+    withContext(Dispatchers.IO) {
+      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+        .addOnSuccessListener { documents ->
+          templates.value = documents.map { Template.createInstance(it.id, it.toObject()) }.toMutableList()
+        }
     }
   }
 
@@ -43,7 +46,9 @@ object FirebaseTemplateRepository : TemplateRepository {
   override suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
     if (templates.value != null) templates.value!!.first { it.name == name }
     else {
-      val document = Tasks.await(collection.whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(
+        collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser() as FirebaseId).value)
+          .whereEqualTo("name", name).get()).first()
       val firebaseTemplate = document.toObject<FirebaseTemplate>()
       val template = Template.createInstance(document.id, firebaseTemplate)
       val templateList = templates.value!!
@@ -66,6 +71,7 @@ object FirebaseTemplateRepository : TemplateRepository {
     }
   }
 
+  // TODO Add filter for user
   @Throws(IOException::class, NoSuchElementException::class)
   override suspend fun updateTemplate(id: Id, name: String, components: List<TemplateComponent>) =
     withContext(Dispatchers.IO) {

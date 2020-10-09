@@ -5,11 +5,11 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MealIngredient
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -19,9 +19,12 @@ object FirebaseMealRepository : MealRepository {
 
   override val meals: MutableLiveData<MutableList<Meal>> = MutableLiveData()
 
-  init {
-    collection.get().addOnSuccessListener { documents ->
-      meals.value = documents.map { Meal.createInstance(it.id, it.toObject()) }.toMutableList()
+  override suspend fun init() {
+    withContext(Dispatchers.IO) {
+      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+        .addOnSuccessListener { documents ->
+          meals.value = documents.map { Meal.createInstance(it.id, it.toObject()) }.toMutableList()
+        }
     }
   }
 
@@ -45,7 +48,8 @@ object FirebaseMealRepository : MealRepository {
     if (meals.value != null) meals.value!!.first { it.name == name }
     else {
       val document = Tasks.await(
-        collection.whereEqualTo("name", name).get()).first()
+        collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value)
+          .whereEqualTo("name", name).get()).first()
       val firebaseMeal = document.toObject<FirebaseMeal>()
       val meal = Meal.createInstance(document.id, firebaseMeal)
       val mealList = meals.value!!

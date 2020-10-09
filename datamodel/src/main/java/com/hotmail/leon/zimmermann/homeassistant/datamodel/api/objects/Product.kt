@@ -7,7 +7,7 @@ import kotlin.math.floor
 import kotlin.math.max
 
 data class Product(
-    var id: Id,
+    val id: Id,
     var name: String,
     var quantity: Double,
     var min: Int,

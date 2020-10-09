@@ -6,7 +6,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.Fire
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMealIngredient
 
 class Meal(
-    var id: Id,
+    val id: Id,
     var name: String,
     var duration: Int,
     var description: String?,
