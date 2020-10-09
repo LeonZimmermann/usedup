@@ -49,10 +49,10 @@ object FirebaseUserRepository : UserRepository {
   }
 
   override suspend fun addUser(id: Id, name: String, email: String) = withContext(Dispatchers.IO) {
-    val user = User(id, name, email)
-    val task = collection.add(user).apply { Tasks.await(this) }
+    val firebaseUser = FirebaseUser((id as FirebaseId).value, name, email)
+    val task = collection.document(id.value).set(firebaseUser).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception)
-    else currentUser = user
+    else currentUser = User.createInstance(firebaseUser)
   }
 
   override suspend fun updateUser(id: Id, name: String, email: String) = withContext(Dispatchers.IO) {
