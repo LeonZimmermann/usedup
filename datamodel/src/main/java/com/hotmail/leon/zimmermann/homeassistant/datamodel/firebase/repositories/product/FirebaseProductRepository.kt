@@ -9,11 +9,11 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.InMemoryQuantityProcessor
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.filterForUser
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseId
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseProduct
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.repositories.FirebaseUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -29,7 +29,7 @@ object FirebaseProductRepository : ProductRepository {
 
   override suspend fun init() {
     withContext(Dispatchers.IO) {
-      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+      collection.filterForUser().get()
         .addOnSuccessListener { documents ->
           products.value = documents.map { Product.createInstance(it.id, it.toObject()) }.toMutableList()
         }
@@ -38,9 +38,7 @@ object FirebaseProductRepository : ProductRepository {
 
   override fun getAllProducts(): List<Product> = runBlocking(Dispatchers.IO) {
     if (products.value != null) products.value!!
-    else Tasks.await(
-      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get())
-      .map { Product.createInstance(it.id, it.toObject()) }
+    else Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }
   }
 
   @Throws(NoSuchElementException::class)
@@ -61,8 +59,7 @@ object FirebaseProductRepository : ProductRepository {
   override suspend fun getProductForName(name: String): Product = withContext(Dispatchers.IO) {
     if (products.value != null) products.value!!.first { it.name == name }
     else {
-      val document =
-        Tasks.await(collection.whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseProduct = document.toObject<FirebaseProduct>()
       val product = Product.createInstance(document.id, firebaseProduct)
       val productList = products.value!!

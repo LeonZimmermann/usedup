@@ -7,7 +7,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.repositories
 internal class FirebaseTemplate(
   @PropertyName("name") var name: String? = null,
   @PropertyName("components") var components: List<FirebaseTemplateComponent>? = null,
-  @PropertyName("userId") var userId: String? = null
+  @PropertyName("userReference") var userReference: DocumentReference? = null
 ) {
   companion object {
     const val COLLECTION_NAME = "templates"

@@ -9,6 +9,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MealIngredient
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.filterForUser
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +22,7 @@ object FirebaseMealRepository : MealRepository {
 
   override suspend fun init() {
     withContext(Dispatchers.IO) {
-      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+      collection.filterForUser().get()
         .addOnSuccessListener { documents ->
           meals.value = documents.map { Meal.createInstance(it.id, it.toObject()) }.toMutableList()
         }
@@ -32,8 +33,7 @@ object FirebaseMealRepository : MealRepository {
   override suspend fun getMealForId(id: Id): Meal = withContext(Dispatchers.IO) {
     if (meals.value != null) meals.value!!.first { it.id == id }
     else {
-      val document = Tasks.await(
-        collection.document((id as FirebaseId).value).get())
+      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebaseMeal = document.toObject<FirebaseMeal>() ?: throw IOException()
       val meal = Meal.createInstance(document.id, firebaseMeal)
       val mealList = meals.value!!
@@ -47,9 +47,7 @@ object FirebaseMealRepository : MealRepository {
   override suspend fun getMealForName(name: String): Meal = withContext(Dispatchers.IO) {
     if (meals.value != null) meals.value!!.first { it.name == name }
     else {
-      val document = Tasks.await(
-        collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value)
-          .whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseMeal = document.toObject<FirebaseMeal>()
       val meal = Meal.createInstance(document.id, firebaseMeal)
       val mealList = meals.value!!

@@ -9,6 +9,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Template
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.TemplateComponent
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.TemplateRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.filterForUser
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +22,7 @@ object FirebaseTemplateRepository : TemplateRepository {
 
   override suspend fun init() {
     withContext(Dispatchers.IO) {
-      collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser().id as FirebaseId).value).get()
+      collection.filterForUser().get()
         .addOnSuccessListener { documents ->
           templates.value = documents.map { Template.createInstance(it.id, it.toObject()) }.toMutableList()
         }
@@ -46,9 +47,7 @@ object FirebaseTemplateRepository : TemplateRepository {
   override suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
     if (templates.value != null) templates.value!!.first { it.name == name }
     else {
-      val document = Tasks.await(
-        collection.whereEqualTo("userId", (FirebaseUserRepository.getCurrentUser() as FirebaseId).value)
-          .whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseTemplate = document.toObject<FirebaseTemplate>()
       val template = Template.createInstance(document.id, firebaseTemplate)
       val templateList = templates.value!!

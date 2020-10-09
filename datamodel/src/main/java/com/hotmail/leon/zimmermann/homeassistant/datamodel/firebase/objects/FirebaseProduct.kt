@@ -12,7 +12,7 @@ internal data class FirebaseProduct(
   @PropertyName("capacity") var capacity: Double? = null,
   @PropertyName("measureReference") var measureReference: DocumentReference? = null,
   @PropertyName("categoryReference") var categoryReference: DocumentReference? = null,
-  @PropertyName("userId") var userId: String? = null
+  @PropertyName("userReference") var userReference: DocumentReference? = null
 ) {
   companion object {
     const val COLLECTION_NAME = "products"

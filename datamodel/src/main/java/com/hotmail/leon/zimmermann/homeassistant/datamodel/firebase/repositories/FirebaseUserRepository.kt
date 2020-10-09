@@ -2,6 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.repositorie
 
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -38,15 +39,17 @@ object FirebaseUserRepository : UserRepository {
   override suspend fun getCurrentUser(): User = withContext(Dispatchers.IO) {
     if (currentUser != null) currentUser!!
     else {
-      val userId = requireNotNull(FirebaseAuth.getInstance().uid)
-      val task = collection.whereEqualTo("id", userId).get().apply { Tasks.await(this) }
+      val task = getDocumentReferenceToCurrentUser().get().apply { Tasks.await(this) }
       if (task.exception != null) throw IOException(task.exception)
       else {
-        currentUser = User.createInstance(task.result!!.first().toObject())
+        currentUser = User.createInstance(task.result!!.toObject()!!)
         currentUser!!
       }
     }
   }
+
+  fun getDocumentReferenceToCurrentUser(): DocumentReference =
+    collection.document(requireNotNull(FirebaseAuth.getInstance().uid))
 
   override suspend fun addUser(id: Id, name: String, email: String) = withContext(Dispatchers.IO) {
     val firebaseUser = FirebaseUser((id as FirebaseId).value, name, email)
