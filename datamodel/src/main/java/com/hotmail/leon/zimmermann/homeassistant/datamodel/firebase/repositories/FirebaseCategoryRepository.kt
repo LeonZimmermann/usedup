@@ -8,13 +8,17 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Category
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseCategory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object FirebaseCategoryRepository : CategoryRepository {
   override val categories = mutableListOf<Category>()
 
-  override fun init() {
-    Tasks.await(Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).get()).forEach { document ->
-      categories.add(Category.createInstance(document.id, document.toObject()))
+  override suspend fun init() {
+    withContext(Dispatchers.IO) {
+      Tasks.await(Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).get()).forEach { document ->
+        categories.add(Category.createInstance(document.id, document.toObject()))
+      }
     }
   }
 
