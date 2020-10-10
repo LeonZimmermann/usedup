@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun handleSignInResult(resultCode: Int, data: Intent?) {
     val response = IdpResponse.fromResultIntent(data)
-    if (resultCode == Activity.RESULT_OK) viewModel.initDataAndNavigate()
+    if (resultCode == Activity.RESULT_OK) viewModel.initAppAndStartActivity()
     else response?.let { Toast.makeText(this, it.error?.message, Toast.LENGTH_LONG).show() }
   }
 

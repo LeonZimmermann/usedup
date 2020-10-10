@@ -7,7 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class HomeAssistantApplication: Application() {
-    override fun attachBaseContext(base: Context?) {
+    override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
