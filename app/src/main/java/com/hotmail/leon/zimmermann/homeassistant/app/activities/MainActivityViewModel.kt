@@ -5,7 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hotmail.leon.zimmermann.homeassistant.app.HomeAssistantNotificationChannelManager
+import com.hotmail.leon.zimmermann.homeassistant.app.notifications.HomeAssistantNotificationChannelManager
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 import dagger.hilt.android.qualifiers.ApplicationContext

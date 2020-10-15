@@ -91,6 +91,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
 
+    // Work Manager
+    implementation "androidx.work:work-runtime:$workVersion"
+    implementation "androidx.work:work-runtime-ktx:$workVersion"
+
     // ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
@@ -118,16 +122,16 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
     // Material Design
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     // Page Indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
+    implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.7.0'
 
     // Multidex
     implementation 'com.android.support:multidex:1.0.3'

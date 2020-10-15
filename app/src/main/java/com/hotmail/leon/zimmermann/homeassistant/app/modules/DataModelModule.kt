@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.app
+package com.hotmail.leon.zimmermann.homeassistant.app.modules
 
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository

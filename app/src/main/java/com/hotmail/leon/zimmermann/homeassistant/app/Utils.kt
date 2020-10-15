@@ -20,5 +20,6 @@ fun Iterable<*>.enumerationJoin(context: Context): String {
   val enumerationEnding = context.resources.getString(R.string.enumeration_ending)
   val string = this.joinToString(separator)
   val index = string.lastIndexOf(separator)
-  return string.replaceRange(index, index + separator.length, enumerationEnding)
+  return if (index != -1) string.replaceRange(index, index + separator.length, " $enumerationEnding ")
+  else string
 }

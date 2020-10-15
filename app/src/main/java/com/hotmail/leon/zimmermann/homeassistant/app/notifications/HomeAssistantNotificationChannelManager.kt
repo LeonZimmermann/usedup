@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.app
+package com.hotmail.leon.zimmermann.homeassistant.app.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -21,7 +21,7 @@ class HomeAssistantNotificationChannelManager private constructor(private val co
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val name = context.getString(R.string.shopping_notification_channel_name)
       val descriptionText = context.getString(R.string.shopping_notification_channel_description)
-      val importance = NotificationManager.IMPORTANCE_DEFAULT
+      val importance = NotificationManager.IMPORTANCE_HIGH
       val channel =
         NotificationChannel(SHOPPING_CHANNEL_ID, name, importance).apply {
           description = descriptionText

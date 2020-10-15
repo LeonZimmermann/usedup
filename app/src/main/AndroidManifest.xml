@@ -42,6 +42,8 @@
         <activity
                 android:name=".app.activities.AppActivity"
                 android:windowSoftInputMode="stateHidden" />
+
+        <service android:name=".app.shopping.notification.ShoppingNotificationService"/>
     </application>
 
 </manifest>
