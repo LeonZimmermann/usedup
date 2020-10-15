@@ -61,7 +61,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       recyclerView.scheduleLayoutAnimation()
     }
 
-  var mode: ManagementFragment.Mode = ManagementFragment.Mode.PRODUCT
+  var mode: ManagementViewModel.Mode = ManagementViewModel.Mode.PRODUCT
     set(value) {
       field = value
       notifyDataSetChanged()
@@ -118,11 +118,11 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return when (viewType) {
-      ManagementFragment.Mode.PRODUCT.ordinal -> ProductViewHolder(
+      ManagementViewModel.Mode.PRODUCT.ordinal -> ProductViewHolder(
         inflater.inflate(R.layout.product_browser_item, parent, false))
-      ManagementFragment.Mode.TEMPLATE.ordinal -> TemplateViewHolder(
+      ManagementViewModel.Mode.TEMPLATE.ordinal -> TemplateViewHolder(
         inflater.inflate(R.layout.template_browser_item, parent, false))
-      ManagementFragment.Mode.MEAL.ordinal -> MealViewHolder(
+      ManagementViewModel.Mode.MEAL.ordinal -> MealViewHolder(
         inflater.inflate(R.layout.meal_browser_item, parent, false))
       else -> throw RuntimeException("Invalid viewType: $viewType")
     }
@@ -132,33 +132,33 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (mode) {
-      ManagementFragment.Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
-      ManagementFragment.Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
-      ManagementFragment.Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
+      ManagementViewModel.Mode.PRODUCT -> (holder as ProductViewHolder).init(products[position])
+      ManagementViewModel.Mode.TEMPLATE -> (holder as TemplateViewHolder).init(templates[position])
+      ManagementViewModel.Mode.MEAL -> (holder as MealViewHolder).init(meals[position])
     }
   }
 
   override fun getItemCount() = when (mode) {
-    ManagementFragment.Mode.PRODUCT -> products.size
-    ManagementFragment.Mode.TEMPLATE -> templates.size
-    ManagementFragment.Mode.MEAL -> meals.size
+    ManagementViewModel.Mode.PRODUCT -> products.size
+    ManagementViewModel.Mode.TEMPLATE -> templates.size
+    ManagementViewModel.Mode.MEAL -> meals.size
   }
 
   override fun onItemDismiss(position: Int) {
     super.onItemDismiss(position)
     coroutineScope.launch(Dispatchers.IO) {
       when (mode) {
-        ManagementFragment.Mode.PRODUCT -> {
+        ManagementViewModel.Mode.PRODUCT -> {
           val product = products[position]
           productRepository.deleteProduct(product.id)
           products.remove(product)
         }
-        ManagementFragment.Mode.TEMPLATE -> {
+        ManagementViewModel.Mode.TEMPLATE -> {
           val template = templates[position]
           templateRepository.deleteTemplate(template.id)
           templates.remove(template)
         }
-        ManagementFragment.Mode.MEAL -> {
+        ManagementViewModel.Mode.MEAL -> {
           val meal = meals[position]
           mealRepository.deleteMeal(meal.id)
           meals.remove(meal)
