@@ -1,55 +1,45 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.settings
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.preference.EditTextPreference
-import androidx.preference.MultiSelectListPreference
-import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.databinding.HomeassistantSettingsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeAssistantSettingsFragment : PreferenceFragmentCompat() {
+class HomeAssistantSettingsFragment : Fragment() {
 
   private val viewModel: HomeAssistantSettingsViewModel by viewModels()
 
-  override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-    setPreferencesFromResource(R.xml.preferences, rootKey)
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    return inflater.inflate(R.layout.homeassistant_settings_fragment, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    initShoppingWeekdaysPreferences()
-    initDinnerTimePreference()
+    initDatabinding()
+    initErrorMessage()
   }
 
-  private fun initShoppingWeekdaysPreferences() {
-    val shoppingWeekdayPreference = requireNotNull(findPreference<MultiSelectListPreference>("shopping_weekdays"))
-    viewModel.shoppingWeekdayPreferenceEntryValues.observe(viewLifecycleOwner,
-      Observer { shoppingWeekdayPreferenceEntryValues ->
-        shoppingWeekdayPreference.entryValues = shoppingWeekdayPreferenceEntryValues
-      })
-    viewModel.shoppingWeekdayPreferenceEntries.observe(viewLifecycleOwner, Observer { shoppingWeekayPreferenceEntries ->
-      shoppingWeekdayPreference.entries = shoppingWeekayPreferenceEntries
-    })
-    viewModel.shoppingWeekdayPreferenceSummary.observe(viewLifecycleOwner,
-      Observer { shoppingWeekdayPreferenceSummary ->
-        shoppingWeekdayPreference.summary = shoppingWeekdayPreferenceSummary
-      })
-    shoppingWeekdayPreference.setOnPreferenceChangeListener { _, newValue ->
-      viewModel.updateShoppingWeekdays(newValue as HashSet<String>)
-      true
-    }
-    viewModel.initShoppingPreference(shoppingWeekdayPreference)
+  private fun initDatabinding() {
+    val binding = HomeassistantSettingsFragmentBinding.bind(requireView())
+    binding.lifecycleOwner = this
+    binding.viewModel = viewModel
   }
 
-  private fun initDinnerTimePreference() {
-    val dinnerTimePreference = requireNotNull(findPreference<EditTextPreference>("dinner_time"))
-    viewModel.dinnerTimePreferenceText.observe(viewLifecycleOwner, Observer { dinnerTimeText ->
-      dinnerTimePreference.text = dinnerTimeText
+  private fun initErrorMessage() {
+    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+      Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
     })
-    dinnerTimePreference.setOnPreferenceClickListener { viewModel.onDinnerTimePreferenceClicked(parentFragmentManager) }
+  }
+
+  companion object {
+    fun newInstance() = HomeAssistantSettingsFragment()
   }
 }

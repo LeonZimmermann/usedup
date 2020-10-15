@@ -11,12 +11,6 @@
             android:label="Overview"
             tools:layout="@layout/overview_fragment"/>
     <fragment
-            android:id="@+id/account_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.account.AccountFragment"
-            android:label="Account"
-            tools:layout="@layout/account_fragment" />
-    <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
-    <fragment
             android:id="@+id/about_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.app.about.AboutFragment"
             android:label="About"

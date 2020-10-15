@@ -1,59 +1,48 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.settings
 
-import android.content.Context
-import android.widget.TimePicker
-import androidx.fragment.app.FragmentManager
-import androidx.hilt.lifecycle.ViewModelInject
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.preference.MultiSelectListPreference
-import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.app.enumerationJoin
-import com.hotmail.leon.zimmermann.homeassistant.app.shopping.notification.ShoppingNotificationManager
-import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
-import com.hotmail.leon.zimmermann.homeassistant.components.picker.TimePickerDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.time.DayOfWeek
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 
-class HomeAssistantSettingsViewModel @ViewModelInject constructor(@ApplicationContext private val context: Context) :
-  ViewModel() {
+class HomeAssistantSettingsViewModel : ViewModel() {
 
-  private val shoppingNotificationManager = ShoppingNotificationManager(context)
-  val shoppingWeekdayPreferenceEntryValues: MutableLiveData<Array<CharSequence>> = MutableLiveData()
-  val shoppingWeekdayPreferenceEntries: MutableLiveData<Array<CharSequence>> = MutableLiveData()
-  val shoppingWeekdayPreferenceSummary: MutableLiveData<String> = MutableLiveData()
+  private val authentication = FirebaseAuth.getInstance()
 
-  val dinnerTimePreferenceText: MutableLiveData<String> = MutableLiveData()
+  val errorMessage: MutableLiveData<String> = MutableLiveData()
+  val userImage: MutableLiveData<String> = MutableLiveData()
+  val userName: MutableLiveData<String> = MutableLiveData()
+  val userEmail: MutableLiveData<String> = MutableLiveData()
 
-  fun initShoppingPreference(shoppingWeekdayPreference: MultiSelectListPreference) {
-    shoppingWeekdayPreferenceEntryValues.postValue(DayOfWeek.values().map { it.value.toString() }.toTypedArray())
-    shoppingWeekdayPreferenceEntries.postValue(DayOfWeek.values().map { it.toDisplayString() }.toTypedArray())
-    setSummaryForShoppingPreference(shoppingWeekdayPreference.values.map { DayOfWeek.of(it.toInt()) }.toSet())
+  init {
+    try {
+      val user = requireNotNull(authentication.currentUser)
+      userImage.postValue(user.photoUrl?.toString())
+      userName.postValue(user.displayName)
+      userEmail.postValue(user.email)
+    } catch (e: IllegalArgumentException) {
+      errorMessage.postValue("Cannot access account information")
+      // TODO Navigate up
+    }
   }
 
-  fun updateShoppingWeekdays(newValue: HashSet<String>) {
-    val weekdays = newValue.map { DayOfWeek.of(it.toInt()) }.toSet()
-    setSummaryForShoppingPreference(weekdays)
-    if (weekdays.isNotEmpty()) shoppingNotificationManager.dispatchShoppingNotifications(weekdays)
-    else shoppingNotificationManager.disableShoppingNotifications()
+  fun onLogoutClicked() {
+    authentication.signOut()
+    // TODO Navigate out of app
   }
 
-  private fun setSummaryForShoppingPreference(values: Set<DayOfWeek>) {
-    shoppingWeekdayPreferenceSummary.postValue(if (values.isNotEmpty()) {
-      val summaryEntries = values
-        .map { it.toDisplayString() }
-        .enumerationJoin(context)
-      "$summaryEntries selected"
-    } else context.resources.getString(R.string.shopping_notification_channel_description))
-  }
-
-  fun onDinnerTimePreferenceClicked(fragmentManager: FragmentManager): Boolean {
-    TimePickerDialogFragment(object : TimePickerDialogFragment.OnTimeSetListener {
-      override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        dinnerTimePreferenceText.postValue("$hourOfDay:$minute")
+  companion object {
+    @JvmStatic
+    @BindingAdapter("imageUrl")
+    fun loadImage(view: ImageView, url: String?) {
+      url?.let {
+        Glide.with(view.context)
+          .load(it)
+          .circleCrop()
+          .into(view)
       }
-    }).show(fragmentManager, "TIME_PICKER_FRAGMENT")
-    return true
+    }
   }
 }

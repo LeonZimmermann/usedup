@@ -50,10 +50,6 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
       user.displayName?.let { view.name_text.text = it }
       user.email?.let { view.email_text.text = it }
     }
-    view.edit_button.setOnClickListener {
-      navController.navigate(R.id.action_global_account_fragment)
-      drawer.closeDrawer(navigation_view)
-    }
   }
 
   override fun onNavigationItemSelected(item: MenuItem) = when (item.itemId) {
