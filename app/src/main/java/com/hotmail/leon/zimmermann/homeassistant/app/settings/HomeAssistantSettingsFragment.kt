@@ -1,55 +1,55 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.settings
 
 import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.app.enumerationJoin
-import com.hotmail.leon.zimmermann.homeassistant.app.shopping.notification.ShoppingNotificationManager
-import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
-import java.time.DayOfWeek
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeAssistantSettingsFragment : PreferenceFragmentCompat() {
 
-  private lateinit var shoppingNotificationManager: ShoppingNotificationManager
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    shoppingNotificationManager = ShoppingNotificationManager(requireContext())
-  }
+  private val viewModel: HomeAssistantSettingsViewModel by viewModels()
 
   override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
     setPreferencesFromResource(R.xml.preferences, rootKey)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
     initShoppingWeekdaysPreferences()
-    findPreference<Preference>("dinner_time")
+    initDinnerTimePreference()
   }
 
   private fun initShoppingWeekdaysPreferences() {
-    requireNotNull(findPreference<MultiSelectListPreference>("shopping_weekdays")).apply {
-      entryValues = DayOfWeek.values().map { it.value.toString() }.toTypedArray()
-      entries = DayOfWeek.values().map { it.toDisplayString() }.toTypedArray()
-      setSummaryForShoppingWeekdays(this, values.map { DayOfWeek.of(it.toInt()) }.toSet())
-      setOnPreferenceChangeListener { preference, newValue ->
-        updateShoppingWeekdays(preference as MultiSelectListPreference, newValue as HashSet<String>)
-        true
-      }
+    val shoppingWeekdayPreference = requireNotNull(findPreference<MultiSelectListPreference>("shopping_weekdays"))
+    viewModel.shoppingWeekdayPreferenceEntryValues.observe(viewLifecycleOwner,
+      Observer { shoppingWeekdayPreferenceEntryValues ->
+        shoppingWeekdayPreference.entryValues = shoppingWeekdayPreferenceEntryValues
+      })
+    viewModel.shoppingWeekdayPreferenceEntries.observe(viewLifecycleOwner, Observer { shoppingWeekayPreferenceEntries ->
+      shoppingWeekdayPreference.entries = shoppingWeekayPreferenceEntries
+    })
+    viewModel.shoppingWeekdayPreferenceSummary.observe(viewLifecycleOwner,
+      Observer { shoppingWeekdayPreferenceSummary ->
+        shoppingWeekdayPreference.summary = shoppingWeekdayPreferenceSummary
+      })
+    shoppingWeekdayPreference.setOnPreferenceChangeListener { _, newValue ->
+      viewModel.updateShoppingWeekdays(newValue as HashSet<String>)
+      true
     }
+    viewModel.initShoppingPreference(shoppingWeekdayPreference)
   }
 
-  private fun updateShoppingWeekdays(preference: MultiSelectListPreference, newValue: HashSet<String>) {
-    val weekdays = newValue.map { DayOfWeek.of(it.toInt()) }.toSet()
-    setSummaryForShoppingWeekdays(preference, weekdays)
-    if (weekdays.isNotEmpty()) shoppingNotificationManager.dispatchShoppingNotifications(weekdays)
-    else shoppingNotificationManager.disableShoppingNotifications()
-  }
-
-  private fun setSummaryForShoppingWeekdays(preference: MultiSelectListPreference, values: Set<DayOfWeek>) {
-    preference.summary = if (values.isNotEmpty()) {
-      val summaryEntries = values
-        .map { it.toDisplayString() }
-        .enumerationJoin(requireContext())
-      "$summaryEntries selected"
-    } else requireContext().resources.getString(R.string.shopping_notification_channel_description)
+  private fun initDinnerTimePreference() {
+    val dinnerTimePreference = requireNotNull(findPreference<EditTextPreference>("dinner_time"))
+    viewModel.dinnerTimePreferenceText.observe(viewLifecycleOwner, Observer { dinnerTimeText ->
+      dinnerTimePreference.text = dinnerTimeText
+    })
+    dinnerTimePreference.setOnPreferenceClickListener { viewModel.onDinnerTimePreferenceClicked(parentFragmentManager) }
   }
 }
