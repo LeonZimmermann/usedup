@@ -3,7 +3,7 @@
     <string name="facebook_application_id" translatable="false">535190474056037</string>
     <string name="facebook_login_protocol_scheme" translatable="false">535190474056037</string>
 
-    <string name="app_name">HomeAssistant</string>
+    <string name="app_name">autoLyfe</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
