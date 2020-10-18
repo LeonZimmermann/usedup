@@ -3,12 +3,14 @@ package com.hotmail.leon.zimmermann.homeassistant.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.hotmail.leon.zimmermann.homeassistant.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,8 +20,10 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.main_activity)
     initActivityToStart()
-    dispatchAuthenticationRequest()
+    findViewById<Button>(R.id.login_button)
+      .setOnClickListener { dispatchAuthenticationRequest() }
   }
 
   private fun initActivityToStart() {
@@ -33,16 +37,16 @@ class MainActivity : AppCompatActivity() {
 
   private fun dispatchAuthenticationRequest() {
     val providers = arrayListOf(
-        AuthUI.IdpConfig.EmailBuilder().build(),
-        AuthUI.IdpConfig.PhoneBuilder().build(),
-        AuthUI.IdpConfig.GoogleBuilder().build()
+      AuthUI.IdpConfig.EmailBuilder().build(),
+      AuthUI.IdpConfig.PhoneBuilder().build(),
+      AuthUI.IdpConfig.GoogleBuilder().build()
     )
     startActivityForResult(
-        AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setAvailableProviders(providers)
-            .build(),
-        REQUEST_CODE_SIGN_IN
+      AuthUI.getInstance()
+        .createSignInIntentBuilder()
+        .setAvailableProviders(providers)
+        .build(),
+      REQUEST_CODE_SIGN_IN
     )
   }
 
