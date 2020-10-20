@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.MealEditorFragmentBinding
 import com.hotmail.leon.zimmermann.homeassistant.app.camera.CameraFragment
+import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogFragment
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
@@ -80,22 +81,22 @@ class MealEditorFragment : Fragment() {
   private fun initAdapter(view: View) {
     adapter = ConsumptionElementAdapter(requireContext(), ::onIngredientRemoved).apply {
       ItemTouchHelper(object :
-          RecyclerViewHandler(this) {
-          override fun getMovementFlags(
-              recyclerView: RecyclerView,
-              viewHolder: RecyclerView.ViewHolder
-          ): Int {
-              val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-              return makeMovementFlags(0x00, swipeFlags)
-          }
+        RecyclerViewHandler(this) {
+        override fun getMovementFlags(
+          recyclerView: RecyclerView,
+          viewHolder: RecyclerView.ViewHolder
+        ): Int {
+          val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+          return makeMovementFlags(0x00, swipeFlags)
+        }
       }).attachToRecyclerView(view.ingredients_list)
     }
     viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { consumptionElementList ->
-        adapter.setConsumptionElementList(consumptionElementList)
-        val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
-        val topMarginDimensionId = if (consumptionElementList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
-        params.topMargin = requireContext().resources.getDimension(topMarginDimensionId).toInt()
-        view.add_ingredients_button.layoutParams = params
+      adapter.setConsumptionElementList(consumptionElementList)
+      val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
+      val topMarginDimensionId = if (consumptionElementList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin
+      params.topMargin = requireContext().resources.getDimension(topMarginDimensionId).toInt()
+      view.add_ingredients_button.layoutParams = params
     })
   }
 
@@ -125,14 +126,18 @@ class MealEditorFragment : Fragment() {
     fun onImageViewClicked(view: View) {
       if (viewModel.photoFile == null) viewModel.photoFile = CameraFragment.createPhotoFile(context!!)
       findNavController().navigate(
-          R.id.action_meal_editor_fragment_to_camera_fragment,
-          bundleOf("file" to viewModel.photoFile)
+        R.id.action_meal_editor_fragment_to_camera_fragment,
+        bundleOf("file" to viewModel.photoFile)
       )
     }
 
     fun onAddIngredientsButtonClicked(view: View) {
-      ConsumptionElementDialogFragment().setCallback { viewModel.addConsumptionElement(it) }.show(parentFragmentManager,
-          "ConsumptionElementDialog")
+      ConsumptionElementDialogFragment(object : ConsumptionElementDialogFragment.Callback {
+        override fun onPositiveButtonClicked(consumptionElement: ConsumptionElement) {
+          viewModel.addConsumptionElement(consumptionElement)
+        }
+      }).show(parentFragmentManager,
+        "ConsumptionElementDialog")
     }
 
     fun onSaveDinnerButtonClicked(view: View) {

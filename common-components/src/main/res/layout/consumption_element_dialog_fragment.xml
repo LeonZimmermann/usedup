@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,8 +9,7 @@
                 type="com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
@@ -59,7 +59,7 @@
                 android:id="@+id/measure_input_wrapper"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/quantity_change_input_wrapper"
                 app:layout_constraintEnd_toEndOf="@+id/name_input_wrapper"
@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/measure"
-                    android:inputType="none"
+                    android:inputType="@{viewModel.measureInputType}"
                     android:text="@={viewModel.measureText}" />
         </com.google.android.material.textfield.TextInputLayout>
 

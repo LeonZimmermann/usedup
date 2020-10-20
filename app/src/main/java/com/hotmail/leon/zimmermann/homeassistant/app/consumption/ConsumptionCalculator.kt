@@ -8,6 +8,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toMeasure
 class ConsumptionCalculator {
   @Throws(NotEnoughException::class)
   fun calculateUpdatedQuantity(product: Product, measureValue: MeasureValue): Double {
+    // TODO Check if the measures are compatible
     val existingQuantity = product.quantity * product.capacity
     val conversionQuantity = measureValue.double.toBase(measureValue.measure)
     val quantityDiff = existingQuantity - conversionQuantity

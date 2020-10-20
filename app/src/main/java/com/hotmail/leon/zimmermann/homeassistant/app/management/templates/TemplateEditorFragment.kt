@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementAdapter
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElementDialogFragment
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandler
@@ -80,7 +81,11 @@ class TemplateEditorFragment : Fragment() {
 
   private fun initAddComponentButton(view: View) {
     view.add_component_button.setOnClickListener {
-      ConsumptionElementDialogFragment().setCallback { viewModel.addConsumptionElement(it) }
+      ConsumptionElementDialogFragment(object: ConsumptionElementDialogFragment.Callback {
+        override fun onPositiveButtonClicked(consumptionElement: ConsumptionElement) {
+          viewModel.addConsumptionElement(consumptionElement)
+        }
+      })
         .show(parentFragmentManager, "ConsumptionElementDialog")
     }
   }

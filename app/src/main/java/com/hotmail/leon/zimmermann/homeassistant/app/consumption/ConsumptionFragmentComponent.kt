@@ -42,7 +42,7 @@ class ConsumptionFragmentComponent : Fragment() {
     viewModel.mappedNameList.observe(viewLifecycleOwner, Observer { mappedNameList ->
       mappedNameList.removeObservers(viewLifecycleOwner)
       mappedNameList.observe(viewLifecycleOwner, Observer { nameList ->
-        name_input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_list_item_1, nameList))
+        name_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nameList))
       })
     })
     name_input.onItemClickListener = viewModel
@@ -50,7 +50,7 @@ class ConsumptionFragmentComponent : Fragment() {
 
   private fun initMeasureInput() {
     viewModel.measureNameList.observe(viewLifecycleOwner, Observer { measureList ->
-      measure_input.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_list_item_1, measureList))
+      measure_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, measureList))
     })
   }
 
