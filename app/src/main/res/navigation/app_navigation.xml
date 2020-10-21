@@ -94,6 +94,9 @@
         <action
                 android:id="@+id/action_planner_fragment_to_meal_details_fragment"
                 app:destination="@id/meal_details_fragment" />
+        <action
+                android:id="@+id/action_planner_fragment_to_planner_item_selection_fragment"
+                app:destination="@id/planner_item_selection_fragment" />
     </fragment>
     <action android:id="@+id/action_global_planner_fragment" app:destination="@id/planner_fragment" />
     <fragment
@@ -103,5 +106,14 @@
         <argument
                 android:name="mealId"
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id" />
+    </fragment>
+    <fragment
+            android:id="@+id/planner_item_selection_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.planner.selection.PlannerItemSelectionFragment"
+            android:label="Planner Item Selection"
+            tools:layout="@layout/planner_item_selection_fragment" >
+        <argument
+                android:name="date"
+                app:argType="java.time.LocalDate" />
     </fragment>
 </navigation>

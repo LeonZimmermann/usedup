@@ -60,7 +60,8 @@ object FirebaseTemplateRepository : TemplateRepository {
   @Throws(IOException::class)
   override suspend fun addTemplate(name: String, components: List<TemplateComponent>) = withContext(Dispatchers.IO) {
     val firebaseComponents = mapComponents(components)
-    val firebaseTemplate = FirebaseTemplate(name, firebaseComponents)
+    val firebaseTemplate =
+      FirebaseTemplate(name, firebaseComponents, FirebaseUserRepository.getDocumentReferenceToCurrentUser())
     val task = collection.add(firebaseTemplate).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else {

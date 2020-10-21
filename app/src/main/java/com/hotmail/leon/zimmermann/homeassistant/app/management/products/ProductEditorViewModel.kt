@@ -68,7 +68,7 @@ class ProductEditorViewModel @ViewModelInject constructor(
     }
   }
 
-  private fun saveAfterValidation(view: View) = viewModelScope.launch(Dispatchers.Default) {
+  private fun saveAfterValidation(view: View) = viewModelScope.launch(Dispatchers.IO) {
     val name = nameInputValue.value!!
     val category = categoryRepository.getCategoryForName(categoryInputValue.value!!)
     val capacity = capacityInputValue.value!!.toDouble()
@@ -79,10 +79,10 @@ class ProductEditorViewModel @ViewModelInject constructor(
     try {
       if (productId == null) productRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
       else productRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
-      systemMessage.value = "Added Product"
+      systemMessage.postValue("Added Product")
       Navigation.findNavController(view).navigateUp()
     } catch (e: IOException) {
-      systemMessage.value = "Could not add product"
+      systemMessage.postValue("Could not add product")
     }
   }
 }

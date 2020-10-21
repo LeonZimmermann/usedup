@@ -14,6 +14,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.Fire
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseId
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseProduct
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.repositories.FirebaseUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -83,21 +84,13 @@ object FirebaseProductRepository : ProductRepository {
       Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document((measureId as FirebaseId).value)
     val categoryReference =
       Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document((categoryId as FirebaseId).value)
-    val product = mapOf(
-      "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
-      "measureReference" to measureReference,
-      "categoryReference" to categoryReference
-    )
-    val task = collection.add(product).apply { Tasks.await(this) }
+    val firebaseProduct = FirebaseProduct(name, quantity, min, max, capacity, measureReference, categoryReference,
+      FirebaseUserRepository.getDocumentReferenceToCurrentUser())
+    val task = collection.add(firebaseProduct).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else {
       val productList = products.value!!
-      productList.add(
-        Product.createInstance(
-          task.result!!.id,
-          FirebaseProduct(name, quantity, min, max, capacity, measureReference, categoryReference)
-        )
-      )
+      productList.add(Product.createInstance(task.result!!.id, firebaseProduct))
       products.postValue(productList)
     }
   }

@@ -67,13 +67,13 @@ object FirebaseMealRepository : MealRepository {
     ingredients: List<MealIngredient>
   ) = withContext(Dispatchers.IO) {
     val firebaseIngredients = mapMealIngredients(ingredients)
-    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
+    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients,
+      FirebaseUserRepository.getDocumentReferenceToCurrentUser())
     val task = collection.add(firebaseMeal).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else {
       val mealList = meals.value!!
-      mealList.add(
-        Meal.createInstance(task.result!!.id, FirebaseMeal(name, duration, description, instructions, backgroundUrl)))
+      mealList.add(Meal.createInstance(task.result!!.id, firebaseMeal))
       meals.postValue(mealList)
     }
   }

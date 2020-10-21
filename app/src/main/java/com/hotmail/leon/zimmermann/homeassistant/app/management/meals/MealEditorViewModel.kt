@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hotmail.leon.zimmermann.homeassistant.components.consumption.ConsumptionElement
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.InvalidInputException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MealIngredient
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
@@ -74,9 +75,15 @@ class MealEditorViewModel @ViewModelInject constructor(
 
   fun addNewMealToDatabase() = viewModelScope.launch(Dispatchers.IO) {
     // TODO Check if name is null and consumptionList empty (Validation)
-    mealRepository.addMeal(name!!, duration!!, description, instructions, photoFile.toString(),
-      consumptionElementList.value!!.map { element ->
-        MealIngredient(element.product.id, element.valueValue.measure.id, element.valueValue.double)
-      })
+    when {
+      name.isNullOrBlank() -> throw InvalidInputException("Insert a name")
+      duration == null -> throw InvalidInputException("Insert a duration")
+      consumptionElementList.value!!.isEmpty() -> throw InvalidInputException("Insert consumption elements")
+      else -> mealRepository.addMeal(name!!, duration!!, description, instructions, photoFile?.toString(),
+        consumptionElementList.value!!.map { element ->
+          MealIngredient(element.product.id, element.valueValue.measure.id, element.valueValue.double)
+        })
+    }
+
   }
 }

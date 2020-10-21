@@ -1,6 +1,5 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.consumption
 
-import android.app.Application
 import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
@@ -78,38 +77,57 @@ class ConsumptionViewModel @ViewModelInject constructor(
     }
   }
 
-  private suspend fun consumeProduct() {
-    val product = nameText.value?.let { productRepository.getProductForName(it) } ?: throw InvalidInputException(
-      "The product name is invalid")
-    val quantity = quantityText.value?.toDouble() ?: throw InvalidInputException("The quantity is invalid")
-    val measure =
-      measures.find { it.name == measureText.value } ?: throw InvalidInputException("The measure is invalid")
-    val updatedQuantity = consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure))
-    productRepository.changeQuantity(product, updatedQuantity)
+  private suspend fun consumeProduct() = viewModelScope.launch(Dispatchers.IO) {
+    try {
+      if (nameText.value.isNullOrBlank()) throw InvalidInputException("The product name is invalid")
+      if (quantityText.value.isNullOrBlank()) throw InvalidInputException("The quantity is invalid")
+      val product = nameText.value?.let { productRepository.getProductForName(it) }!!
+      val quantity = quantityText.value?.toDouble()!!
+      val measure =
+        measures.find { it.name == measureText.value } ?: throw InvalidInputException("The measure is invalid")
+      val updatedQuantity = consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure))
+      productRepository.changeQuantity(product, updatedQuantity)
+    } catch (e: NotEnoughException) {
+      errorMessage.postValue(e.message)
+    } catch (e: InvalidInputException) {
+      errorMessage.postValue(e.message)
+    }
   }
 
-  private suspend fun consumeTemplate() {
-    val template = nameText.value?.let { templateRepository.getTemplateForName(it) } ?: throw InvalidInputException(
-      "The template name is invalid")
-    val data = template.components.map { element ->
-      val product = productRepository.getProductForId(element.productId)
-      val quantity = element.value
-      val measure = measures.find { it.name == measureText.value } ?: throw RuntimeException()
-      Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
+  private suspend fun consumeTemplate() = viewModelScope.launch(Dispatchers.IO) {
+    try {
+      if (nameText.value.isNullOrBlank()) throw InvalidInputException("The template name is invalid")
+      val template = nameText.value?.let { templateRepository.getTemplateForName(it) }!!
+      val data = template.components.map { element ->
+        val product = productRepository.getProductForId(element.productId)
+        val quantity = element.value
+        val measure = measures.find { it.id == element.measureId } ?: throw RuntimeException()
+        Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
+      }
+      productRepository.changeQuantity(data)
+    } catch (e: NotEnoughException) {
+      errorMessage.postValue(e.message)
+    } catch (e: InvalidInputException) {
+      errorMessage.postValue(e.message)
     }
-    productRepository.changeQuantity(data)
   }
 
-  private suspend fun consumeMeal() {
-    val meal = nameText.value?.let { mealRepository.getMealForName(it) } ?: throw InvalidInputException(
-      "The meal name is invalid")
-    val data = meal.ingredients.map { element ->
-      val product = productRepository.getProductForId(element.productId)
-      val quantity = element.value
-      val measure = measures.find { it.name == measureText.value } ?: throw RuntimeException()
-      Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
+  private suspend fun consumeMeal() = viewModelScope.launch(Dispatchers.IO) {
+    try {
+      if (nameText.value.isNullOrBlank()) throw InvalidInputException("The meal name is invalid")
+      val meal = nameText.value?.let { mealRepository.getMealForName(it) }!!
+      val data = meal.ingredients.map { element ->
+        val product = productRepository.getProductForId(element.productId)
+        val quantity = element.value
+        val measure = measures.find { it.id == element.measureId } ?: throw RuntimeException()
+        Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
+      }
+      productRepository.changeQuantity(data)
+    } catch (e: NotEnoughException) {
+      errorMessage.postValue(e.message)
+    } catch (e: InvalidInputException) {
+      errorMessage.postValue(e.message)
     }
-    productRepository.changeQuantity(data)
   }
 
   private fun clearInputs() {

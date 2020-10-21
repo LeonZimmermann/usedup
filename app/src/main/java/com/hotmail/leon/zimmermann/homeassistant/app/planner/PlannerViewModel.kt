@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.app.planner.selection.PlannerItemSelectionFragment
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import java.time.LocalDate
 
@@ -21,7 +22,10 @@ class PlannerViewModel @ViewModelInject constructor(private val mealRepository: 
   }
 
   override fun onAddButtonClicked(view: View, date: LocalDate) {
-    TODO("not implemented")
+    Navigation.findNavController(view)
+      .navigate(R.id.action_planner_fragment_to_planner_item_selection_fragment, bundleOf(
+        PlannerItemSelectionFragment.DATE to date
+      ))
   }
 
   override fun onChangeButtonClicked(view: View, plannerItem: PlannerItem) {
