@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.planner_item_selection_fragment.*
@@ -30,6 +31,17 @@ class PlannerItemSelectionFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    initErrorMessageSnackbar()
+    initRecyclerView()
+  }
+
+  private fun initErrorMessageSnackbar() {
+    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+      Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
+    })
+  }
+
+  private fun initRecyclerView() {
     val adapter = PlannerItemSelectionAdapter(requireContext(), viewModel)
     recycler_view.adapter = adapter
     recycler_view.layoutManager = LinearLayoutManager(requireContext())

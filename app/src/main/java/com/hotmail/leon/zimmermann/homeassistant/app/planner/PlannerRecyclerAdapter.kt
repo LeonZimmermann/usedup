@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.PlannerItem
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.weekday_date_tv

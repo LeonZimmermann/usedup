@@ -31,4 +31,7 @@ object DataModelModule {
   @Provides
   fun provideMealRepository(): MealRepository = FirebaseMealRepository
 
+  @Provides
+  fun providePlannerRepository(): PlannerRepository = FirebasePlannerRepository
+
 }

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.planner.selection.PlannerItemSelectionFragment
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.PlannerItem
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import java.time.LocalDate
 
