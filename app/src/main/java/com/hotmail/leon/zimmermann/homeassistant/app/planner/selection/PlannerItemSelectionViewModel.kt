@@ -24,10 +24,11 @@ class PlannerItemSelectionViewModel @ViewModelInject constructor(
   lateinit var date: LocalDate
   val errorMessage = MutableLiveData<String>()
 
-  override fun onMealSelected(meal: Meal) {
+  override fun onMealSelected(view: View, meal: Meal) {
     viewModelScope.launch(Dispatchers.IO) {
       try {
         plannerRepository.addPlannerItem(meal.id, date.toLongValue())
+        viewModelScope.launch(Dispatchers.Main) { Navigation.findNavController(view).navigateUp() }
       } catch (e: IOException) {
         errorMessage.postValue("A network error occurred")
       }

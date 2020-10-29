@@ -37,7 +37,7 @@ class PlannerItemSelectionAdapter(private val context: Context, private val call
       .into(holder.dinnerItemImage)
     holder.dinnerItemName.text = meal.name
     holder.dinnerItemDuration.text = "${meal.duration.toIntFormat()} min"
-    holder.itemView.setOnClickListener { callback.onMealSelected(meal) }
+    holder.itemView.setOnClickListener { callback.onMealSelected(holder.itemView, meal) }
   }
 
   override fun getItemCount(): Int = mealList.size
@@ -48,6 +48,6 @@ class PlannerItemSelectionAdapter(private val context: Context, private val call
   }
 
   interface Callback {
-    fun onMealSelected(meal: Meal)
+    fun onMealSelected(view: View, meal: Meal)
   }
 }
