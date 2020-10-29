@@ -10,16 +10,28 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.toDisplayString
+import com.hotmail.leon.zimmermann.homeassistant.app.toLocalDate
 import com.hotmail.leon.zimmermann.homeassistant.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.PlannerItem
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.weekday_date_tv
 import kotlinx.android.synthetic.main.planner_placeholder.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class PlannerRecyclerAdapter(private val context: Context, private val callbacks: Callbacks) :
+class PlannerRecyclerAdapter(private val context: Context, private val coroutineScope: CoroutineScope,
+  private val callbacks: Callbacks) :
   RecyclerView.Adapter<RecyclerView.ViewHolder>(), RecyclerViewHandlerAdapter {
+
+  private val entryPoint = EntryPointAccessors.fromApplication(context, PlannerRecyclerAdapterEntryPoint::class.java)
+  private val mealRepository: MealRepository = entryPoint.getMealRepository()
 
   private var plannerItems: List<PlannerItem> = listOf()
 
@@ -60,13 +72,15 @@ class PlannerRecyclerAdapter(private val context: Context, private val callbacks
     }
   }
 
-  private fun bindPlannerItemViewHolder(holder: PlannerItemViewHolder, position: Int) {
+  private fun bindPlannerItemViewHolder(holder: PlannerItemViewHolder, position: Int) = coroutineScope.launch {
     val plannerItem = plannerItems[position]
-    val weekdayText = plannerItem.date.dayOfWeek.toDisplayString()
-    val dayText = plannerItem.date.dayOfMonth
+    val date = plannerItem.date.toLocalDate()
+    val meal = mealRepository.getMealForId(plannerItem.mealId)
+    val weekdayText = date.dayOfWeek.toDisplayString()
+    val dayText = date.dayOfMonth
     holder.weekdayDateTextView.text = "$weekdayText $dayText."
-    holder.dinnerItemNameTextView.text = plannerItem.meal.name
-    holder.dinnerItemDurationTextView.text = "${plannerItem.meal.duration}"
+    holder.dinnerItemNameTextView.text = meal.name
+    holder.dinnerItemDurationTextView.text = "${meal.duration}"
     // TODO Init image
     // holder.dinnerItemImageView.image =
     holder.previewButton.setOnClickListener { callbacks.onPreviewButtonClicked(it, plannerItem) }
@@ -74,7 +88,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val callbacks
   }
 
   private fun bindPlannerPlaceholderViewHolder(holder: PlannerPlaceholderViewHolder, position: Int) {
-    val date = plannerItems.lastOrNull()?.date?.plusDays(1) ?: LocalDate.now()
+    val date = plannerItems.lastOrNull()?.date?.toLocalDate()?.plusDays(1) ?: LocalDate.now()
     val weekdayText = date.dayOfWeek.toDisplayString()
     val dayText = date.dayOfMonth
     holder.weekdayDateTextView.text = "$weekdayText $dayText."
@@ -88,6 +102,12 @@ class PlannerRecyclerAdapter(private val context: Context, private val callbacks
   fun setPlannerItems(plannerItems: List<PlannerItem>) {
     this.plannerItems = plannerItems
     notifyDataSetChanged()
+  }
+
+  @EntryPoint
+  @InstallIn(ApplicationComponent::class)
+  interface PlannerRecyclerAdapterEntryPoint {
+    fun getMealRepository(): MealRepository
   }
 
   companion object {

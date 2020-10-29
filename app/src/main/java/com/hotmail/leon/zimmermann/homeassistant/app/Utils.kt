@@ -4,6 +4,9 @@ import android.content.Context
 import com.hotmail.leon.zimmermann.homeassistant.R
 import java.text.DecimalFormat
 import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 
 private val FLOATING_POINT_FORMAT = DecimalFormat("0.0#")
 fun Double.toFloatFormat(): String = FLOATING_POINT_FORMAT.format(this)
@@ -23,3 +26,6 @@ fun Iterable<*>.enumerationJoin(context: Context): String {
   return if (index != -1) string.replaceRange(index, index + separator.length, " $enumerationEnding ")
   else string
 }
+
+fun Long.toLocalDate() = Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDate()
+fun LocalDate.toLongValue() = this.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()

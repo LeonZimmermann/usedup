@@ -1,9 +1,12 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.planner.selection
 
+import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
+import com.hotmail.leon.zimmermann.homeassistant.app.toLongValue
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
@@ -24,7 +27,7 @@ class PlannerItemSelectionViewModel @ViewModelInject constructor(
   override fun onMealSelected(meal: Meal) {
     viewModelScope.launch(Dispatchers.IO) {
       try {
-        plannerRepository.addPlannerItem(meal, date)
+        plannerRepository.addPlannerItem(meal.id, date.toLongValue())
       } catch (e: IOException) {
         errorMessage.postValue("A network error occurred")
       }

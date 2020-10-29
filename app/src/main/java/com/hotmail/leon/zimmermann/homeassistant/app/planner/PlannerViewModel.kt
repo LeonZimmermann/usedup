@@ -10,16 +10,18 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.planner.selection.PlannerItemSelectionFragment
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.PlannerItem
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
 import java.time.LocalDate
 
-class PlannerViewModel @ViewModelInject constructor(private val mealRepository: MealRepository) : ViewModel(),
+class PlannerViewModel @ViewModelInject constructor(private val mealRepository: MealRepository,
+  private val plannerRepository: PlannerRepository) : ViewModel(),
   PlannerRecyclerAdapter.Callbacks {
 
-  val plannerItems: MutableLiveData<MutableList<PlannerItem>> = MutableLiveData()
+  val plannerItems: MutableLiveData<MutableList<PlannerItem>> = plannerRepository.plan
 
   override fun onPreviewButtonClicked(view: View, plannerItem: PlannerItem) {
     Navigation.findNavController(view).navigate(R.id.action_planner_fragment_to_meal_details_fragment,
-      bundleOf("mealId" to plannerItem.meal.id))
+      bundleOf("mealId" to plannerItem.mealId))
   }
 
   override fun onAddButtonClicked(view: View, date: LocalDate) {

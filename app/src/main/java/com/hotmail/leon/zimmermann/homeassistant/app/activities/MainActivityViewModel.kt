@@ -19,7 +19,8 @@ class MainActivityViewModel @ViewModelInject constructor(
   private val templateRepository: TemplateRepository,
   private val mealRepository: MealRepository,
   private val categoryRepository: CategoryRepository,
-  private val measureRepository: MeasureRepository
+  private val measureRepository: MeasureRepository,
+  private val plannerRepository: PlannerRepository
 ) : ViewModel() {
 
   val activityToStart: MutableLiveData<Class<*>> = MutableLiveData()
@@ -32,6 +33,7 @@ class MainActivityViewModel @ViewModelInject constructor(
     mealRepository.init()
     categoryRepository.init()
     measureRepository.init()
+    plannerRepository.init()
     activityToStart.postValue(AppActivity::class.java)
   }
 }
