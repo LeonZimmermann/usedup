@@ -11,4 +11,5 @@
     <color name="calendar_item_color">#FF27634E</color>
 
     <color name="neutral">#A66F00</color>
+    <color name="negative">#6F0000</color>
 </resources>

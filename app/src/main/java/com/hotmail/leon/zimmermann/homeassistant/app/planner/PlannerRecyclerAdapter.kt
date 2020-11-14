@@ -39,6 +39,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
     fun onPreviewButtonClicked(view: View, plannerItem: PlannerItem)
     fun onAddButtonClicked(view: View, date: LocalDate)
     fun onChangeButtonClicked(view: View, plannerItem: PlannerItem)
+    fun onDeleteButtonClicked(view: View, plannerItem: PlannerItem)
   }
 
   inner class PlannerItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,6 +49,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
     val dinnerItemImageView: ImageView = itemView.dinner_item_image
     val previewButton: Button = itemView.preview_button
     val changeButton: Button = itemView.change_button
+    val deleteButton: Button = itemView.delete_button
   }
 
   inner class PlannerPlaceholderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -85,6 +87,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
     // holder.dinnerItemImageView.image =
     holder.previewButton.setOnClickListener { callbacks.onPreviewButtonClicked(it, plannerItem) }
     holder.changeButton.setOnClickListener { callbacks.onChangeButtonClicked(it, plannerItem) }
+    holder.deleteButton.setOnClickListener { callbacks.onDeleteButtonClicked(it, plannerItem) }
   }
 
   private fun bindPlannerPlaceholderViewHolder(holder: PlannerPlaceholderViewHolder, position: Int) {
@@ -97,7 +100,16 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
 
   override fun getItemViewType(position: Int): Int = if (position >= plannerItems.size) PLACEHOLDER_TYPE else ITEM_TYPE
 
-  override fun getItemCount() = plannerItems.size + 1
+  override fun getItemCount() = numberOfSlots() + 1
+
+  private fun numberOfSlots(): Int {
+    if (plannerItems.isEmpty()) return 0
+    val firstDay = requireNotNull(plannerItems.minBy { it.date }).date
+    val lastDay = requireNotNull(plannerItems.maxBy { it.date }).date
+    return firstDay.millisToDays() - lastDay.millisToDays()
+  }
+
+  private fun Long.millisToDays(): Int = (this / (24 * 60 * 60 * 1000)).toInt()
 
   fun setPlannerItems(plannerItems: List<PlannerItem>) {
     this.plannerItems = plannerItems

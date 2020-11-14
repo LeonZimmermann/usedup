@@ -63,7 +63,7 @@ object FirebasePlannerRepository : PlannerRepository {
         .document((mealId as FirebaseId).value),
       "date" to date
     )
-    val task = collection.document(mealId.value).update(data).apply { Tasks.await(this) }
+    val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception)
     else {
       getPlannerItemForId(id).apply {

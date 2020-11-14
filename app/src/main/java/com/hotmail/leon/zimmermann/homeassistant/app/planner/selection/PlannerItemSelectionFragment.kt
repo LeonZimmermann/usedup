@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.app.toLocalDate
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.planner_item_selection_fragment.*
 import java.time.LocalDate
@@ -21,7 +23,8 @@ class PlannerItemSelectionFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    viewModel.date = arguments?.getSerializable(DATE) as LocalDate
+    viewModel.plannerItemId = arguments?.getSerializable(PLANNER_ITEM_ID) as? Id?
+    viewModel.date = requireNotNull(arguments?.getLong(DATE)).toLocalDate()
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +54,7 @@ class PlannerItemSelectionFragment : Fragment() {
   }
 
   companion object {
+    const val PLANNER_ITEM_ID = "plannerItemId"
     const val DATE = "date"
 
     fun newInstance() = PlannerItemSelectionFragment()

@@ -24,7 +24,6 @@ class PlannerFragment : Fragment() {
   }
 
   private val viewModel: PlannerViewModel by viewModels()
-  private lateinit var binding: PlannerFragmentBinding
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {

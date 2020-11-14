@@ -114,6 +114,11 @@
             tools:layout="@layout/planner_item_selection_fragment" >
         <argument
                 android:name="date"
-                app:argType="java.time.LocalDate" />
+                app:argType="long" />
+        <argument
+                android:name="plannerItemId"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
+                app:nullable="true"
+                android:defaultValue="@null" />
     </fragment>
 </navigation>
