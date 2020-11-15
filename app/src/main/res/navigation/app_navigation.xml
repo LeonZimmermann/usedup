@@ -17,10 +17,13 @@
             tools:layout="@layout/about_fragment" />
     <action android:id="@+id/action_global_about_fragment" app:destination="@id/about_fragment" />
     <fragment
-            android:id="@+id/shopping_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.ShoppingFragment"
-            android:label="Shopping"
-            tools:layout="@layout/shopping_fragment" />
+            android:id="@+id/shopping_list_preview_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview.ShoppingListPreviewFragment"
+            android:label="ShoppingListPreview" >
+        <action
+                android:id="@+id/action_shopping_list_preview_fragment_to_shopping_list_fragment"
+                app:destination="@id/shopping_list_fragment" />
+    </fragment>
     <navigation
             android:id="@+id/management"
             android:label="Management"
@@ -81,7 +84,7 @@
                     app:destination="@id/meal" />
         </fragment>
     </navigation>
-    <action android:id="@+id/action_global_management" app:destination="@id/management"/><action android:id="@+id/action_global_shopping_fragment" app:destination="@id/shopping_fragment"/>
+    <action android:id="@+id/action_global_management" app:destination="@id/management"/><action android:id="@+id/action_global_shopping_fragment" app:destination="@id/shopping_list_preview_fragment"/>
     <fragment
             android:id="@+id/settings_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.app.settings.HomeAssistantSettingsFragment"
@@ -121,4 +124,9 @@
                 app:nullable="true"
                 android:defaultValue="@null" />
     </fragment>
+    <fragment
+            android:id="@+id/shopping_list_fragment"
+            android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.ShoppingFragment"
+            android:label="ShoppingListFragment"
+            tools:layout="@layout/shopping_fragment" />
 </navigation>

@@ -16,7 +16,7 @@ object ShoppingNotificationBuilder {
   suspend fun showShoppingNotification(context: Context) = withContext(Dispatchers.Default) {
     val pendingIntent = NavDeepLinkBuilder(context)
       .setGraph(R.navigation.app_navigation)
-      .setDestination(R.id.shopping_fragment).createPendingIntent()
+      .setDestination(R.id.shopping_list_fragment).createPendingIntent()
     val builder = NotificationCompat.Builder(context, HomeAssistantNotificationChannelManager.SHOPPING_CHANNEL_ID)
       .setSmallIcon(R.drawable.cart_icon)
       .setContentTitle("Shopping")

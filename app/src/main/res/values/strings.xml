@@ -14,4 +14,6 @@
     <string name="shopping_notification_channel_name">Shopping</string>
     <string name="shopping_notification_channel_description">Notifies you when you have to go shopping</string>
     <string name="delete">Delete</string>
+    <string name="additional_products">Additional Products</string>
+    <string name="missing_products">Missing Products</string>
 </resources>
