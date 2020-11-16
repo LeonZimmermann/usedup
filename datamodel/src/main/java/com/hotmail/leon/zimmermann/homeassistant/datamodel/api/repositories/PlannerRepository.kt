@@ -3,19 +3,27 @@ package com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories
 import androidx.lifecycle.MutableLiveData
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.PlannerItem
-import java.time.LocalDate
 
 interface PlannerRepository {
 
   /**
-   * Holds a livedata of all items that are available in the database and belong to this user
+   * Holds a livedata of all items that are available in the database and belong to this user.
    */
   val plan: MutableLiveData<MutableList<PlannerItem>>
 
   /**
    * Initializes the plan field of the repository. Should be run on IO Dispatcher, as it fetches data from the database.
+   * Should also update the plan, so that deprecated PlannerItems are removed from the database.
    */
   suspend fun init()
+
+  /**
+   * Loads the PlannerItems blocking in the current thread if it hasn't been loaded yet. Otherwise the value in the plan
+   * field should be returned.
+   *
+   * @return a list of planner items
+   */
+  fun getAllPlannerItems(): List<PlannerItem>
 
   /**
    * Adds a new item to the repository and database. Should be run on IO Dispatcher, as it fetches data from the database.

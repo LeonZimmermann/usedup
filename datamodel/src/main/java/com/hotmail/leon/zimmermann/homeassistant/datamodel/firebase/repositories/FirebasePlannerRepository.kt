@@ -13,6 +13,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.Fire
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebasePlannerItem
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -28,6 +29,11 @@ object FirebasePlannerRepository : PlannerRepository {
           plan.value = documents.map { PlannerItem.createInstance(it.id, it.toObject()) }.toMutableList()
         }
     }
+  }
+
+  override fun getAllPlannerItems(): List<PlannerItem> = runBlocking(Dispatchers.IO) {
+    if (plan.value != null) plan.value!!
+    else Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
   }
 
   private suspend fun getPlannerItemForId(id: Id): PlannerItem = withContext(Dispatchers.IO) {
