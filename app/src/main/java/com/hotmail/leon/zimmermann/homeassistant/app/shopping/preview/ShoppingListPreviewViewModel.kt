@@ -1,9 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
@@ -15,12 +13,17 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   private val mealRepository: MealRepository,
   private val plannerRepository: PlannerRepository) : ViewModel() {
 
-  val shoppingListPreview = MutableLiveData<ShoppingListPreview>()
+  private val mutableShoppingListPreview = MutableLiveData<ShoppingListPreview>()
+
+  val shoppingListPreview: LiveData<ShoppingListPreview> = Transformations.map(mutableShoppingListPreview) { it }
+  val productNames: LiveData<List<String>> =
+    Transformations.map(productRepository.products) { products -> products.map { it.name }.toList() }
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
-      shoppingListPreview.postValue(
+      mutableShoppingListPreview.postValue(
         ShoppingListPreviewGenerator.generateShoppingListPreview(productRepository, mealRepository, plannerRepository))
     }
   }
+
 }
