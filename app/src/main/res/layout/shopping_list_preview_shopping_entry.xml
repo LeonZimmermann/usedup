@@ -7,8 +7,9 @@
 
     <TextView
             android:id="@+id/product_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:textSize="@dimen/itemTextSizeMedium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

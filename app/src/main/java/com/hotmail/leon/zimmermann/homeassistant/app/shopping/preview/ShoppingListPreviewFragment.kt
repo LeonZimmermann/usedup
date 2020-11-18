@@ -26,7 +26,7 @@ class ShoppingListPreviewFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
-    initAdditionalProductsEditText()
+    initAdditionalProductNameInput()
     initAdapters()
   }
 
@@ -36,9 +36,11 @@ class ShoppingListPreviewFragment : Fragment() {
     binding.lifecycleOwner = this
   }
 
-  private fun initAdditionalProductsEditText() {
+  private fun initAdditionalProductNameInput() {
+    additional_product_name_input.onItemSelectedListener = viewModel.addProductNameTextOnItemSelectedListener
     viewModel.productNames.observe(viewLifecycleOwner, Observer { productNames ->
-      product_name_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
+      additional_product_name_input.setAdapter(
+        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
     })
   }
 

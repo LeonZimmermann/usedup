@@ -26,12 +26,13 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/additional_products"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/itemTextSizeBig"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/product_name_input_wrapper"
+                    android:id="@+id/additional_product_name_input_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -43,10 +44,33 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView8">
 
                 <AutoCompleteTextView
-                        android:id="@+id/product_name_input"
+                        android:id="@+id/additional_product_name_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text|textAutoComplete" />
+                        android:inputType="text|textAutoComplete"
+                        android:text="@={viewModel.mutableAddProductNameText}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/additional_product_cart_amount_input_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/additional_product_name_input_wrapper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/additional_product_cart_amount_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/cart_amount"
+                        android:inputType="number"
+                        android:text="@={viewModel.mutableAddProductCartAmountText}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -54,11 +78,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/product_name_input_wrapper"
+                    app:layout_constraintTop_toBottomOf="@+id/add_product_button"
                     tools:itemCount="3"
                     tools:listitem="@layout/shopping_list_preview_shopping_entry" />
 
@@ -69,6 +95,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/missing_products"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/itemTextSizeBig"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/additionalProductRecyclerView" />
@@ -80,6 +107,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
@@ -93,6 +121,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/meals"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/itemTextSizeBig"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/productDiscrepancyRecyclerView" />
@@ -104,11 +133,25 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:overScrollMode="never"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11"
                     tools:itemCount="3"
                     tools:listitem="@layout/meal_browser_item" />
+
+            <Button
+                    android:id="@+id/add_product_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:onClick="@{() -> viewModel.onAddProductButtonClicked()}"
+                    android:text="@string/add_product"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/additional_product_cart_amount_input_wrapper"
+                    app:layout_constraintTop_toBottomOf="@+id/additional_product_cart_amount_input_wrapper" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

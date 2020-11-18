@@ -16,4 +16,5 @@
     <string name="delete">Delete</string>
     <string name="additional_products">Additional Products</string>
     <string name="missing_products">Missing Products</string>
+    <string name="cart_amount">Cart Amount</string>
 </resources>

@@ -13,10 +13,14 @@ object ShoppingListPreviewGenerator {
     plannerRepository: PlannerRepository
   ): ShoppingListPreview {
     val productDiscrepancyList =
-      productRepository.getAllProducts().filter { it.discrepancy > 0 }.map { ShoppingProduct(it) }
+      productRepository.getAllProducts()
+        .filter { it.discrepancy > 0 }
+        .map { ShoppingProduct(it) }
+        .toSet()
     val mealList = plannerRepository.getAllPlannerItems()
       .map { mealRepository.getMealForId(it.mealId) }
       .map { ShoppingMeal(it) }
-    return ShoppingListPreview(listOf(), productDiscrepancyList, mealList)
+      .toSet()
+    return ShoppingListPreview(setOf(), productDiscrepancyList, mealList)
   }
 }
