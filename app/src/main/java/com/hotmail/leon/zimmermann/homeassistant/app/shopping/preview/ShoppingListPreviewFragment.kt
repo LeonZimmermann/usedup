@@ -49,7 +49,8 @@ class ShoppingListPreviewFragment : Fragment() {
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
     additionalProductRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    val productDiscrepancyRecyclerAdapter = ProductDiscrepancyRecyclerAdapter(requireContext())
+    val productDiscrepancyRecyclerAdapter =
+      ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
     productDiscrepancyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     val mealRecyclerAdapter = MealRecyclerAdapter(requireContext())

@@ -82,7 +82,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
     }
   }
 
-  val additionProductRecyclerAdapterCallback = object: AdditionalProductRecyclerAdapter.Callback {
+  val additionProductRecyclerAdapterCallback = object : AdditionalProductRecyclerAdapter.Callback {
     override fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
       TODO("not implemented")
     }
@@ -90,6 +90,15 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
     override fun onRemoveButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
       removeAdditionalProduct(additionalProductRepresentation.data)
     }
+  }
 
+  val productDiscrepancyRecyclerAdapterCallback = object : ProductDiscrepancyRecyclerAdapter.Callback {
+    override fun onEditButtonClicked(view: View, productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {
+      TODO("not implemented")
+    }
+
+    override fun onRemoveButtonClicked(view: View, productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {
+      removeDiscrepancyProduct(productDiscrepancyRepresentation.data)
+    }
   }
 }
