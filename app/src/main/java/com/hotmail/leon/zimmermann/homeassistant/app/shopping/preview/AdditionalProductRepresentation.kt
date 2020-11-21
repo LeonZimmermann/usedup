@@ -2,7 +2,7 @@ package com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview
 
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
 
-data class AdditionalProductRepresentation(private val data: ShoppingProduct) {
+data class AdditionalProductRepresentation(val data: ShoppingProduct) {
   val nameString: String
     get() = data.product.name
   val discrepancyString: String

@@ -4,12 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.shopping_list_preview_shopping_entry.view.*
 
-class AdditionalProductRecyclerAdapter(context: Context) :
+class AdditionalProductRecyclerAdapter(context: Context, var callback: Callback) :
   RecyclerView.Adapter<AdditionalProductRecyclerAdapter.AdditionalProductViewHolder>() {
 
   private var inflater = LayoutInflater.from(context)
@@ -18,11 +19,15 @@ class AdditionalProductRecyclerAdapter(context: Context) :
   inner class AdditionalProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val productNameTextView: TextView = itemView.product_name_tv
     private val amountTextView: TextView = itemView.amount_tv
+    private val editButton: Button = itemView.edit_button
+    private val removeButton: Button = itemView.remove_button
 
     fun init(additionalProduct: AdditionalProductRepresentation) {
       additionalProduct.apply {
         productNameTextView.text = nameString
         amountTextView.text = discrepancyString
+        editButton.setOnClickListener { callback.onEditButtonClicked(itemView, additionalProduct) }
+        removeButton.setOnClickListener { callback.onRemoveButtonClicked(itemView, additionalProduct) }
       }
     }
   }
@@ -40,5 +45,10 @@ class AdditionalProductRecyclerAdapter(context: Context) :
   internal fun setAdditionalProductList(additionalProductList: List<AdditionalProductRepresentation>) {
     this.additionalProductList = additionalProductList
     notifyDataSetChanged()
+  }
+
+  interface Callback {
+    fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation)
+    fun onRemoveButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation)
   }
 }

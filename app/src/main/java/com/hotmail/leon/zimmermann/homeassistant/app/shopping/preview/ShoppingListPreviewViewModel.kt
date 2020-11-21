@@ -81,4 +81,15 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
       mutableAddProductNameText.postValue("")
     }
   }
+
+  val additionProductRecyclerAdapterCallback = object: AdditionalProductRecyclerAdapter.Callback {
+    override fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
+      TODO("not implemented")
+    }
+
+    override fun onRemoveButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
+      removeAdditionalProduct(additionalProductRepresentation.data)
+    }
+
+  }
 }
