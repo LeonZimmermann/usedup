@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -26,7 +25,7 @@ class ShoppingListPreviewFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
-    initAdditionalProductNameInput()
+    //initAdditionalProductNameInput()
     initAdapters()
   }
 
@@ -36,6 +35,7 @@ class ShoppingListPreviewFragment : Fragment() {
     binding.lifecycleOwner = this
   }
 
+  /*
   private fun initAdditionalProductNameInput() {
     additional_product_name_input.onItemSelectedListener = viewModel.addProductNameTextOnItemSelectedListener
     viewModel.productNames.observe(viewLifecycleOwner, Observer { productNames ->
@@ -43,6 +43,7 @@ class ShoppingListPreviewFragment : Fragment() {
         ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
     })
   }
+  */
 
   private fun initAdapters() {
     val additionalProductRecyclerAdapter =

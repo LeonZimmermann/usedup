@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
@@ -19,8 +20,8 @@ class ProductDiscrepancyRecyclerAdapter(context: Context, var callback: Callback
   inner class ProductDiscrepancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val productNameTextView: TextView = itemView.product_name_tv
     private val amountTextView: TextView = itemView.amount_tv
-    private val editButton: Button = itemView.edit_button
-    private val removeButton: Button = itemView.remove_button
+    private val editButton: ImageView = itemView.edit_button
+    private val removeButton: ImageView = itemView.remove_button
 
     fun init(productDiscrepancy: ProductDiscrepancyRepresentation) {
       productDiscrepancy.apply {

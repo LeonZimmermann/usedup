@@ -3,15 +3,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="17dp">
 
     <TextView
             android:id="@+id/product_name_tv"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
             android:ellipsize="end"
             android:textSize="@dimen/itemTextSizeMedium"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/amount_tv"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Toast" />
@@ -20,34 +24,36 @@
             android:id="@+id/amount_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginEnd="15dp"
             android:textSize="@dimen/itemTextSizeMedium"
             app:layout_constraintBottom_toBottomOf="@+id/product_name_tv"
-            app:layout_constraintStart_toEndOf="@+id/product_name_tv"
+            app:layout_constraintEnd_toStartOf="@+id/edit_button"
             app:layout_constraintTop_toTopOf="@+id/product_name_tv"
             tools:text="5" />
 
-    <Button
+    <ImageView
             android:id="@+id/edit_button"
-            style="@style/IconOnlyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            style="@style/RoundIconButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
             android:backgroundTint="@color/colorPrimary"
-            android:drawableTint="@android:color/white"
-            app:icon="@drawable/edit_icon"
+            android:scaleType="fitCenter"
+            android:src="@drawable/edit_icon"
+            android:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@+id/remove_button"
             app:layout_constraintEnd_toStartOf="@+id/remove_button"
             app:layout_constraintTop_toTopOf="@+id/remove_button" />
 
-    <Button
+    <ImageView
             android:id="@+id/remove_button"
-            style="@style/IconOnlyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/RoundIconButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:backgroundTint="@color/negative"
-            android:drawableTint="@android:color/white"
-            app:icon="@drawable/cross_icon"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cross_icon"
+            android:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -20,11 +20,13 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   private val mutableShoppingListPreview = MutableLiveData<ShoppingListPreview>()
 
   val shoppingListPreview: LiveData<ShoppingListPreview> = Transformations.map(mutableShoppingListPreview) { it }
+
+  /*
   val productNames: LiveData<List<String>> =
     Transformations.map(productRepository.products) { products -> products.map { it.name }.toList() }
-
   val mutableAddProductNameText: MutableLiveData<String> = MutableLiveData("")
   val mutableAddProductCartAmountText: MutableLiveData<String> = MutableLiveData("")
+   */
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -60,6 +62,8 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   }
 
   fun onAddProductButtonClicked() {
+    TODO("Implement")
+    /*
     viewModelScope.launch(Dispatchers.Default) {
       // TODO Perhaps handle these constraint differently (different exception or other form of validation system)
       // TODO Don't throw IllegalArgumentException and handle null case differently
@@ -69,8 +73,9 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
       val product = productRepository.getProductForName(productName)
       addAdditionalProduct(ShoppingProduct(product, cartAmount))
     }
+     */
   }
-
+/*
   val addProductNameTextOnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
       val productName = requireNotNull(productNames.value)[position]
@@ -81,7 +86,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
       mutableAddProductNameText.postValue("")
     }
   }
-
+*/
   val additionProductRecyclerAdapterCallback = object : AdditionalProductRecyclerAdapter.Callback {
     override fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
       TODO("not implemented")
