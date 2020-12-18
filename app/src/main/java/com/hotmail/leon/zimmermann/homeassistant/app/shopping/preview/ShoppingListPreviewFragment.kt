@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ShoppingListPreviewFragmentBinding
@@ -16,7 +17,12 @@ import kotlinx.android.synthetic.main.shopping_list_preview_fragment.*
 @AndroidEntryPoint
 class ShoppingListPreviewFragment : Fragment() {
 
-  private val viewModel: ShoppingListPreviewViewModel by viewModels()
+  private lateinit var viewModel: ShoppingListPreviewViewModel
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel = ViewModelProvider(requireActivity())[ShoppingListPreviewViewModel::class.java]
+  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.shopping_list_preview_fragment, container, false)
@@ -26,6 +32,7 @@ class ShoppingListPreviewFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
     initAdapters()
+    initShoppingProductDialogHandler()
   }
 
   private fun initDatabinding() {
@@ -44,7 +51,7 @@ class ShoppingListPreviewFragment : Fragment() {
     val additionalProductRecyclerAdapter =
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
-    additionalProductRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+    additionalProductRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
@@ -57,7 +64,7 @@ class ShoppingListPreviewFragment : Fragment() {
     val productDiscrepancyRecyclerAdapter =
       ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
-    productDiscrepancyRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+    productDiscrepancyRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
@@ -69,7 +76,7 @@ class ShoppingListPreviewFragment : Fragment() {
   private fun initMealRecyclerAdapter() {
     val mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
     mealRecyclerView.adapter = mealRecyclerAdapter
-    mealRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+    mealRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
@@ -77,7 +84,15 @@ class ShoppingListPreviewFragment : Fragment() {
     })
   }
 
+  private fun initShoppingProductDialogHandler() {
+    viewModel.shoppingProductDialog.observe(viewLifecycleOwner, Observer {
+      it?.show(parentFragmentManager, SHOPPING_PRODUCT_DIALOG)
+    })
+  }
+
   companion object {
+    private const val SHOPPING_PRODUCT_DIALOG = "SHOPPING_PRODUCT_DIALOG"
+
     fun newInstance() = ShoppingListPreviewFragment()
   }
 }

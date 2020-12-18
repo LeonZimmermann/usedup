@@ -4,14 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.shopping_list_preview_meal.view.*
-import org.jetbrains.anko.dip
 
 class MealRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<MealRecyclerAdapter.MealViewHolder>() {
 

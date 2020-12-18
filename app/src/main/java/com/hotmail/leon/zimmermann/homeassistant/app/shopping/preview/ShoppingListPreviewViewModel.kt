@@ -1,9 +1,9 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview
 
 import android.view.View
-import android.widget.AdapterView
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.orElse
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
@@ -21,12 +21,10 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
 
   val shoppingListPreview: LiveData<ShoppingListPreview> = Transformations.map(mutableShoppingListPreview) { it }
 
-  /*
   val productNames: LiveData<List<String>> =
     Transformations.map(productRepository.products) { products -> products.map { it.name }.toList() }
-  val mutableAddProductNameText: MutableLiveData<String> = MutableLiveData("")
-  val mutableAddProductCartAmountText: MutableLiveData<String> = MutableLiveData("")
-   */
+  var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
+  var editShoppingProduct: ShoppingProduct? = null
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -62,34 +60,18 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   }
 
   fun onAddProductButtonClicked() {
-    TODO("Implement")
-    /*
-    viewModelScope.launch(Dispatchers.Default) {
-      // TODO Perhaps handle these constraint differently (different exception or other form of validation system)
-      // TODO Don't throw IllegalArgumentException and handle null case differently
-      val productName = mutableAddProductNameText.value ?: throw IllegalArgumentException()
-      val cartAmount = mutableAddProductCartAmountText.value?.toInt() ?: throw IllegalArgumentException()
-      if (cartAmount <= 0) throw IllegalArgumentException("$cartAmount cannot be negative")
-      val product = productRepository.getProductForName(productName)
-      addAdditionalProduct(ShoppingProduct(product, cartAmount))
-    }
-     */
+    editShoppingProduct = null
+    shoppingProductDialog.postValue(ShoppingProductDialog(R.string.add_additional_product))
+    // TODO Implement
   }
-/*
-  val addProductNameTextOnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-      val productName = requireNotNull(productNames.value)[position]
-      mutableAddProductNameText.postValue(productName)
-    }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-      mutableAddProductNameText.postValue("")
-    }
-  }
-*/
+  suspend fun getProductForName(productName: String) = productRepository.getProductForName(productName)
+
   val additionProductRecyclerAdapterCallback = object : AdditionalProductRecyclerAdapter.Callback {
     override fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
-      TODO("not implemented")
+      editShoppingProduct = additionalProductRepresentation.data
+      shoppingProductDialog.postValue(ShoppingProductDialog(R.string.change_cart_amount_for_product))
+      // TODO Replace
     }
 
     override fun onRemoveButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation) {
@@ -99,7 +81,9 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
 
   val productDiscrepancyRecyclerAdapterCallback = object : ProductDiscrepancyRecyclerAdapter.Callback {
     override fun onEditButtonClicked(view: View, productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {
-      TODO("not implemented")
+      editShoppingProduct = productDiscrepancyRepresentation.data
+      shoppingProductDialog.postValue(ShoppingProductDialog(R.string.change_cart_amount_for_product))
+      // TODO Replace
     }
 
     override fun onRemoveButtonClicked(view: View, productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {

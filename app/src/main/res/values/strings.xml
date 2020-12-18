@@ -17,4 +17,6 @@
     <string name="additional_products">Additional Products</string>
     <string name="missing_products">Missing Products</string>
     <string name="cart_amount">Cart Amount</string>
+    <string name="change_cart_amount_for_product">Change cart amount for product</string>
+    <string name="add_additional_product">Add additional product</string>
 </resources>

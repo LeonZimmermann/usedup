@@ -57,6 +57,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="37dp"
                     android:backgroundTint="@color/colorPrimary"
+                    android:onClick="@{() -> viewModel.onAddProductButtonClicked()}"
                     android:text="Add additional product"
                     android:textColor="@android:color/white"
                     app:icon="@drawable/add_icon"
