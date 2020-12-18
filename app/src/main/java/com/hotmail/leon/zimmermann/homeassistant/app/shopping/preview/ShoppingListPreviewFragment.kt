@@ -49,14 +49,20 @@ class ShoppingListPreviewFragment : Fragment() {
     val additionalProductRecyclerAdapter =
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
-    additionalProductRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    additionalProductRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+      override fun canScrollVertically(): Boolean = false
+    }
     val productDiscrepancyRecyclerAdapter =
       ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
-    productDiscrepancyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    productDiscrepancyRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+      override fun canScrollVertically(): Boolean = false
+    }
     val mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
     mealRecyclerView.adapter = mealRecyclerAdapter
-    mealRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    mealRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
+      override fun canScrollVertically(): Boolean = false
+    }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
       additionalProductRecyclerAdapter.setAdditionalProductList(
         shoppingListPreview.additionalProductList.map { AdditionalProductRepresentation(it) })

@@ -47,7 +47,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView8"
                     tools:itemCount="3"
-                    tools:listitem="@layout/shopping_list_preview_shopping_entry" />
+                    tools:listitem="@layout/shopping_list_preview_product" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/add_additional_product_button"
@@ -89,7 +89,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
                     tools:itemCount="3"
-                    tools:listitem="@layout/shopping_list_preview_shopping_entry" />
+                    tools:listitem="@layout/shopping_list_preview_product" />
 
             <TextView
                     android:id="@+id/textView11"
@@ -108,9 +108,10 @@
                     android:id="@+id/mealRecyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginEnd="37dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     android:overScrollMode="never"
+                    android:paddingBottom="37dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11"

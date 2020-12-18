@@ -4,12 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
-import kotlinx.android.synthetic.main.shopping_list_preview_shopping_entry.view.*
+import kotlinx.android.synthetic.main.shopping_list_preview_product.view.*
 
 class ProductDiscrepancyRecyclerAdapter(context: Context, var callback: Callback) :
   RecyclerView.Adapter<ProductDiscrepancyRecyclerAdapter.ProductDiscrepancyViewHolder>() {
@@ -34,7 +33,7 @@ class ProductDiscrepancyRecyclerAdapter(context: Context, var callback: Callback
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductDiscrepancyViewHolder {
-    return ProductDiscrepancyViewHolder(inflater.inflate(R.layout.shopping_list_preview_shopping_entry, parent, false))
+    return ProductDiscrepancyViewHolder(inflater.inflate(R.layout.shopping_list_preview_product, parent, false))
   }
 
   override fun onBindViewHolder(holder: ProductDiscrepancyViewHolder, position: Int) {
