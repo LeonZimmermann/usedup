@@ -25,7 +25,6 @@ class ShoppingListPreviewFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
-    //initAdditionalProductNameInput()
     initAdapters()
   }
 
@@ -35,39 +34,45 @@ class ShoppingListPreviewFragment : Fragment() {
     binding.lifecycleOwner = this
   }
 
-  /*
-  private fun initAdditionalProductNameInput() {
-    additional_product_name_input.onItemSelectedListener = viewModel.addProductNameTextOnItemSelectedListener
-    viewModel.productNames.observe(viewLifecycleOwner, Observer { productNames ->
-      additional_product_name_input.setAdapter(
-        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
-    })
-  }
-  */
-
   private fun initAdapters() {
+    initAdditionalProductRecyclerAdapter()
+    initProductDisrepancyRecyclerAdapter()
+    initMealRecyclerAdapter()
+  }
+
+  private fun initAdditionalProductRecyclerAdapter() {
     val additionalProductRecyclerAdapter =
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
     additionalProductRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
+    viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
+      additionalProductRecyclerAdapter.setAdditionalProductList(
+        shoppingListPreview.additionalProductList.map { AdditionalProductRepresentation(it) })
+    })
+  }
+
+  private fun initProductDisrepancyRecyclerAdapter() {
     val productDiscrepancyRecyclerAdapter =
       ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
     productDiscrepancyRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
+    viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
+      productDiscrepancyRecyclerAdapter.setProductDiscrepancyList(
+        shoppingListPreview.productDiscrepancyList.map { ProductDiscrepancyRepresentation(it) })
+    })
+  }
+
+  private fun initMealRecyclerAdapter() {
     val mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
     mealRecyclerView.adapter = mealRecyclerAdapter
     mealRecyclerView.layoutManager = object: LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
-      additionalProductRecyclerAdapter.setAdditionalProductList(
-        shoppingListPreview.additionalProductList.map { AdditionalProductRepresentation(it) })
-      productDiscrepancyRecyclerAdapter.setProductDiscrepancyList(
-        shoppingListPreview.productDiscrepancyList.map { ProductDiscrepancyRepresentation(it) })
       mealRecyclerAdapter.setMealList(shoppingListPreview.mealList.map { MealRepresentation(it) })
     })
   }
