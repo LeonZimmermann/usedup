@@ -31,10 +31,11 @@ class PlannerItemSelectionAdapter(private val context: Context, private val call
 
   override fun onBindViewHolder(holder: PlannerItemSelectionViewHolder, position: Int) {
     val meal = mealList[position]
-    Glide.with(context)
-      .load(meal.backgroundUrl)
-      .placeholder(R.drawable.meal_icon)
-      .into(holder.dinnerItemImage)
+    meal.backgroundUrl?.let {
+      Glide.with(context)
+        .load(it)
+        .into(holder.dinnerItemImage)
+    }
     holder.dinnerItemName.text = meal.name
     holder.dinnerItemDuration.text = "${meal.duration.toIntFormat()} min"
     holder.itemView.setOnClickListener { callback.onMealSelected(holder.itemView, meal) }
