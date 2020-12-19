@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +18,10 @@ class ShoppingListPreviewFragment : Fragment() {
 
   private lateinit var viewModel: ShoppingListPreviewViewModel
 
+  private lateinit var additionalProductRecyclerAdapter: AdditionalProductRecyclerAdapter
+  private lateinit var productDiscrepancyRecyclerAdapter: ProductDiscrepancyRecyclerAdapter
+  private lateinit var mealRecyclerAdapter: MealRecyclerAdapter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel = ViewModelProvider(requireActivity())[ShoppingListPreviewViewModel::class.java]
@@ -31,8 +34,11 @@ class ShoppingListPreviewFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
-    initAdapters()
+    initAdditionalProductRecyclerAdapter()
+    initProductDisrepancyRecyclerAdapter()
+    initMealRecyclerAdapter()
     initShoppingProductDialogHandler()
+    initAddShoppingProductHandler()
   }
 
   private fun initDatabinding() {
@@ -41,40 +47,34 @@ class ShoppingListPreviewFragment : Fragment() {
     binding.lifecycleOwner = this
   }
 
-  private fun initAdapters() {
-    initAdditionalProductRecyclerAdapter()
-    initProductDisrepancyRecyclerAdapter()
-    initMealRecyclerAdapter()
-  }
-
   private fun initAdditionalProductRecyclerAdapter() {
-    val additionalProductRecyclerAdapter =
+    additionalProductRecyclerAdapter =
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
     additionalProductRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
-      additionalProductRecyclerAdapter.setAdditionalProductList(
+      additionalProductRecyclerAdapter.initAdditionalProductList(
         shoppingListPreview.additionalProductList.map { AdditionalProductRepresentation(it) })
     })
   }
 
   private fun initProductDisrepancyRecyclerAdapter() {
-    val productDiscrepancyRecyclerAdapter =
+    productDiscrepancyRecyclerAdapter =
       ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
     productDiscrepancyRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, Observer { shoppingListPreview ->
-      productDiscrepancyRecyclerAdapter.setProductDiscrepancyList(
+      productDiscrepancyRecyclerAdapter.initProductDiscrepancyList(
         shoppingListPreview.productDiscrepancyList.map { ProductDiscrepancyRepresentation(it) })
     })
   }
 
   private fun initMealRecyclerAdapter() {
-    val mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
+    mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
     mealRecyclerView.adapter = mealRecyclerAdapter
     mealRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
@@ -87,6 +87,14 @@ class ShoppingListPreviewFragment : Fragment() {
   private fun initShoppingProductDialogHandler() {
     viewModel.shoppingProductDialog.observe(viewLifecycleOwner, Observer {
       it?.show(parentFragmentManager, SHOPPING_PRODUCT_DIALOG)
+    })
+  }
+
+  private fun initAddShoppingProductHandler() {
+    viewModel.addShoppingProduct.observe(viewLifecycleOwner, Observer { shoppingProduct ->
+      shoppingProduct?.let {
+        additionalProductRecyclerAdapter.addAdditionalProduct(AdditionalProductRepresentation(it))
+      }
     })
   }
 

@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hotmail.leon.zimmermann.homeassistant.R
+import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
 import kotlinx.android.synthetic.main.shopping_product_dialog.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.Serializable
 
-class ShoppingProductDialog(private var titleStringId: Int = -1) : DialogFragment() {
+class ShoppingProductDialog(private var titleStringId: Int = -1, private var callback: Callback? = null) : DialogFragment() {
 
   private lateinit var viewModel: ShoppingListPreviewViewModel
 
@@ -31,13 +34,16 @@ class ShoppingProductDialog(private var titleStringId: Int = -1) : DialogFragmen
       MaterialAlertDialogBuilder(requireContext())
         .setView(view)
         .setPositiveButton(R.string.submit) { _, _ ->
-          applyData()
+          applyData(view)
           viewModel.editShoppingProduct = null
+          viewModel.shoppingProductDialog.postValue(null)
         }
         .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
           viewModel.editShoppingProduct = null
           dialogInterface.cancel()
         }
+        .setOnDismissListener { viewModel.shoppingProductDialog.postValue(null) }
+        .setOnCancelListener { viewModel.shoppingProductDialog.postValue(null) }
         .create()
     } ?: throw IllegalArgumentException("Activity cannot be null")
   }
@@ -52,27 +58,37 @@ class ShoppingProductDialog(private var titleStringId: Int = -1) : DialogFragmen
     view.cart_amount_input.setText(viewModel.editShoppingProduct?.cartAmount?.toString() ?: "0")
   }
 
-  private fun applyData() = viewModel.viewModelScope.launch(Dispatchers.IO) {
-    val productName = requireView().product_name_input.text.toString()
+  private fun applyData(view: View) = viewModel.viewModelScope.launch(Dispatchers.IO) {
+    val productName = view.product_name_input.text.toString()
     val product = viewModel.getProductForName(productName);
-    val cartAmount = requireView().cart_amount_input.text.toString().toIntOrNull() ?: throw IllegalArgumentException()
-    // TODO Update data
+    val cartAmount = view.cart_amount_input.text.toString().toIntOrNull() ?: throw IllegalArgumentException()
+    withContext(Dispatchers.Main) {
+      callback?.onResult(ShoppingProduct(product, cartAmount))
+    }
   }
 
   private fun initWithSavedState(savedInstanceState: Bundle?) {
     savedInstanceState?.let {
       titleStringId = it.getInt(TITLE_STRING_ID, -1)
       if (titleStringId == -1) throw RuntimeException()
+      callback = it.getSerializable(CALLBACK) as? Callback ?: throw RuntimeException()
     }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putInt(TITLE_STRING_ID, titleStringId)
+    outState.putSerializable(CALLBACK, callback)
+  }
+
+  @FunctionalInterface
+  interface Callback: Serializable {
+    fun onResult(shoppingProduct: ShoppingProduct)
   }
 
   companion object {
     private const val TITLE_STRING_ID = "TITLE_STRING_ID"
+    private const val CALLBACK = "CALLBACK"
   }
 
 }

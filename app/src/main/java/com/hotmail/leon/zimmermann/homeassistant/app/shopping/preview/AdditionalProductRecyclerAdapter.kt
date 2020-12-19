@@ -1,6 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,27 +10,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.shopping_list_preview_product.view.*
+import kotlin.math.log
 
 class AdditionalProductRecyclerAdapter(context: Context, var callback: Callback) :
   RecyclerView.Adapter<AdditionalProductRecyclerAdapter.AdditionalProductViewHolder>() {
 
   private var inflater = LayoutInflater.from(context)
-  private var additionalProductList: List<AdditionalProductRepresentation> = listOf()
+  private var additionalProductList: MutableList<AdditionalProductRepresentation> = mutableListOf()
 
   inner class AdditionalProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val productNameTextView: TextView = itemView.product_name_tv
-    private val amountTextView: TextView = itemView.amount_tv
-    private val editButton: ImageView = itemView.edit_button
-    private val removeButton: ImageView = itemView.remove_button
-
-    fun init(additionalProduct: AdditionalProductRepresentation) {
-      additionalProduct.apply {
-        productNameTextView.text = nameString
-        amountTextView.text = discrepancyString
-        editButton.setOnClickListener { callback.onEditButtonClicked(itemView, additionalProduct) }
-        removeButton.setOnClickListener { callback.onRemoveButtonClicked(itemView, additionalProduct) }
-      }
-    }
+    val productNameTextView: TextView = itemView.product_name_tv
+    val amountTextView: TextView = itemView.amount_tv
+    val editButton: ImageView = itemView.edit_button
+    val removeButton: ImageView = itemView.remove_button
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdditionalProductViewHolder {
@@ -37,18 +30,55 @@ class AdditionalProductRecyclerAdapter(context: Context, var callback: Callback)
   }
 
   override fun onBindViewHolder(holder: AdditionalProductViewHolder, position: Int) {
-    holder.init(additionalProductList[position])
+    additionalProductList[position].apply {
+      holder.productNameTextView.text = nameString
+      holder.amountTextView.text = discrepancyString
+      holder.editButton.setOnClickListener {
+        callback.onEditButtonClicked(this@AdditionalProductRecyclerAdapter, position, holder.itemView, this)
+      }
+      holder.removeButton.setOnClickListener {
+        callback.onRemoveButtonClicked(this@AdditionalProductRecyclerAdapter, position, holder.itemView, this)
+      }
+    }
   }
 
   override fun getItemCount(): Int = additionalProductList.size
 
-  internal fun setAdditionalProductList(additionalProductList: List<AdditionalProductRepresentation>) {
-    this.additionalProductList = additionalProductList
+  internal fun initAdditionalProductList(additionalProductList: List<AdditionalProductRepresentation>) {
+    this.additionalProductList = additionalProductList.toMutableList()
     notifyDataSetChanged()
   }
 
+  internal fun addAdditionalProduct(additionalProductRepresentation: AdditionalProductRepresentation) {
+    Log.d(TAG, "addAdditionalProduct: $additionalProductRepresentation")
+    this.additionalProductList.add(additionalProductRepresentation)
+    notifyItemInserted(this.additionalProductList.size - 1)
+  }
+
+  internal fun replaceAdditionalProduct(index: Int, additionalProductRepresentation: AdditionalProductRepresentation) {
+    Log.d(TAG, "replaceAdditionalProduct: $index, $additionalProductRepresentation")
+    this.additionalProductList[index] = additionalProductRepresentation
+    notifyItemChanged(index)
+  }
+
+  internal fun removeAdditionalProduct(index: Int) {
+    Log.d(TAG, "removeAdditionalProduct: $index")
+    this.additionalProductList.removeAt(index)
+    notifyItemRemoved(index)
+    for (i in index until itemCount) {
+      notifyItemChanged(i)
+    }
+  }
+
   interface Callback {
-    fun onEditButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation)
-    fun onRemoveButtonClicked(view: View, additionalProductRepresentation: AdditionalProductRepresentation)
+    fun onEditButtonClicked(adapter: AdditionalProductRecyclerAdapter, index: Int, view: View,
+      additionalProductRepresentation: AdditionalProductRepresentation)
+
+    fun onRemoveButtonClicked(adapter: AdditionalProductRecyclerAdapter, index: Int, view: View,
+      additionalProductRepresentation: AdditionalProductRepresentation)
+  }
+
+  companion object {
+    private const val TAG = "APRA"
   }
 }
