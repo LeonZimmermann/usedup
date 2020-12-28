@@ -1,9 +1,12 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.activities
 
+import android.R.id.toggle
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,22 +20,29 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.app_activity.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
+import org.jetbrains.anko.appcompat.v7.toolbar
+import org.jetbrains.anko.toggleButton
+import org.jetbrains.anko.toolbar
+
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
   private lateinit var navController: NavController
   private lateinit var appBarConfiguration: AppBarConfiguration
+  private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.app_activity)
+    setSupportActionBar(toolbar)
     initNavigation()
   }
 
   private fun initNavigation() {
     navController = findNavController(R.id.nav_host_fragment)
     appBarConfiguration = AppBarConfiguration(navController.graph, drawer)
+    actionBarDrawerToggle = ActionBarDrawerToggle(this, drawer, 0, 0)
     setupActionBarWithNavController(navController, appBarConfiguration)
     navigation_view.setupWithNavController(navController)
     navigation_view.setNavigationItemSelectedListener(this)

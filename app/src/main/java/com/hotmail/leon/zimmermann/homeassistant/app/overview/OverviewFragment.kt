@@ -44,7 +44,9 @@ class OverviewFragment : Fragment() {
   private fun initDiscrepancyCard() {
     val adapter = SimpleProductPreviewAdapter(requireContext(), discrepancy_recyclerview)
     discrepancy_recyclerview.adapter = adapter
-    discrepancy_recyclerview.layoutManager = LinearLayoutManager(requireContext())
+    discrepancy_recyclerview.layoutManager = object : LinearLayoutManager(requireContext()) {
+      override fun canScrollVertically(): Boolean = false
+    }
     viewModel.discrepancyProductList.observe(viewLifecycleOwner, Observer { discrepancyProductList ->
       adapter.productAmountList = discrepancyProductList
     })
