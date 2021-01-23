@@ -12,6 +12,7 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.databinding.ShoppingListPreviewFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.shopping_list_preview_fragment.*
+import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 
 @AndroidEntryPoint
 class ShoppingListPreviewFragment : Fragment() {
@@ -40,6 +41,7 @@ class ShoppingListPreviewFragment : Fragment() {
     initShoppingProductDialogHandler()
     initAddAdditionalProductShoppingProductHandler()
     initEditAdditionalProductShoppingProductHandler()
+    initActionButtonVisibilityHandler()
   }
 
   private fun initDatabinding() {
@@ -109,8 +111,15 @@ class ShoppingListPreviewFragment : Fragment() {
     })
   }
 
+  private fun initActionButtonVisibilityHandler() {
+    scrollView.onScrollChange { _, _, scrollY, _, _ ->
+      go_shopping_button.visibility = if (scrollY > SHOW_ACTION_BUTTON_THRESHOLD) View.GONE else View.VISIBLE
+    }
+  }
+
   companion object {
     private const val SHOPPING_PRODUCT_DIALOG = "SHOPPING_PRODUCT_DIALOG"
+    private const val SHOW_ACTION_BUTTON_THRESHOLD = 100
 
     fun newInstance() = ShoppingListPreviewFragment()
   }

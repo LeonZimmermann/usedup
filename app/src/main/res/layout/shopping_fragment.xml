@@ -11,29 +11,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="37dp"
-            android:layout_marginTop="37dp"
             android:layout_marginEnd="37dp"
+            android:layout_marginBottom="37dp"
             android:backgroundTint="@color/colorAccent"
             android:text="@string/confirm_cart"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             app:icon="@drawable/cart_icon"
             app:iconTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shopping_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="37dp"
-            android:layout_marginTop="37dp"
             android:layout_marginEnd="37dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirm_button"
+            app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="20"
             tools:listitem="@layout/shopping_category" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,139 +10,147 @@
                 type="com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview.ShoppingListPreviewViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".app.shopping.preview.ShoppingListPreviewFragment">
+            android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/go_shopping_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="37dp"
+                android:backgroundTint="@color/colorAccent"
+                android:onClick="@{(view) -> viewModel.onGoShoppingButtonClicked(view)}"
+                android:text="Go Shopping"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/cart_icon"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <ScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                tools:context=".app.shopping.preview.ShoppingListPreviewFragment">
 
-            <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:text="@string/additional_products"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/itemTextSizeBig"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/go_shopping_button" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/additionalProductRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/shopping_list_preview_product" />
+                <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginTop="37dp"
+                        android:layout_marginEnd="37dp"
+                        android:text="@string/additional_products"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/itemTextSizeBig"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/add_additional_product_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="37dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:onClick="@{() -> viewModel.onAddProductButtonClicked()}"
-                    android:text="Add additional product"
-                    android:textColor="@android:color/white"
-                    app:icon="@drawable/add_icon"
-                    app:iconTint="@android:color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/additionalProductRecyclerView" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/additionalProductRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="37dp"
+                        android:overScrollMode="never"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/shopping_list_preview_product" />
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/go_shopping_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:backgroundTint="@color/colorAccent"
-                    android:onClick="@{(view) -> viewModel.onGoShoppingButtonClicked(view)}"
-                    android:text="Go Shopping"
-                    android:textColor="@android:color/white"
-                    app:icon="@drawable/cart_icon"
-                    app:iconTint="@android:color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/add_additional_product_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="37dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:onClick="@{() -> viewModel.onAddProductButtonClicked()}"
+                        android:text="Add additional product"
+                        android:textColor="@android:color/white"
+                        app:icon="@drawable/add_icon"
+                        app:iconTint="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/additionalProductRecyclerView" />
 
-            <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:text="@string/missing_products"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/itemTextSizeBig"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_additional_product_button" />
+                <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginTop="37dp"
+                        android:layout_marginEnd="37dp"
+                        android:text="@string/missing_products"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/itemTextSizeBig"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/add_additional_product_button" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/productDiscrepancyRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/shopping_list_preview_product" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/productDiscrepancyRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginEnd="37dp"
+                        android:overScrollMode="never"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView10"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/shopping_list_preview_product" />
 
-            <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="37dp"
-                    android:layout_marginTop="37dp"
-                    android:layout_marginEnd="37dp"
-                    android:text="@string/meals"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/itemTextSizeBig"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/productDiscrepancyRecyclerView" />
+                <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="37dp"
+                        android:layout_marginTop="37dp"
+                        android:layout_marginEnd="37dp"
+                        android:text="@string/meals"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/itemTextSizeBig"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/productDiscrepancyRecyclerView" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mealRecyclerView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    android:paddingBottom="37dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/meal_browser_item" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mealRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:paddingBottom="37dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView11"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/meal_browser_item" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

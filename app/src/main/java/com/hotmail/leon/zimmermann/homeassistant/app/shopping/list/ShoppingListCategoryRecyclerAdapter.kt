@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.leon.zimmermann.homeassistant.R
 import kotlinx.android.synthetic.main.shopping_list_category.view.*
 
-class ShoppingListCategoryRecyclerAdapter(private val context: Context) :
+class ShoppingListCategoryRecyclerAdapter(private val context: Context, private val callback: ShoppingListElementRecyclerAdapter.Callback) :
   RecyclerView.Adapter<ShoppingListCategoryRecyclerAdapter.ShoppingListCategoryViewHolder>() {
 
   private val layoutInflater = LayoutInflater.from(context)
@@ -29,7 +29,7 @@ class ShoppingListCategoryRecyclerAdapter(private val context: Context) :
   override fun onBindViewHolder(holder: ShoppingListCategoryViewHolder, position: Int) {
     val shoppingListCategory = shoppingListCategories[position]
     holder.categoryNameTextView.text = shoppingListCategory.name
-    val adapter = ShoppingListElementRecyclerAdapter(context)
+    val adapter = ShoppingListElementRecyclerAdapter(context, callback)
     holder.shoppingListCategoryRecyclerAdapter.layoutManager = LinearLayoutManager(context)
     holder.shoppingListCategoryRecyclerAdapter.adapter = adapter
     adapter.initShoppingListElements(shoppingListCategory.shoppingListElementRepresentation)

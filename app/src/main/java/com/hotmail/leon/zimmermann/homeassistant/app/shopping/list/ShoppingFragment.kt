@@ -12,6 +12,7 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.shopping_fragment.*
+import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 
 @AndroidEntryPoint
 class ShoppingFragment : Fragment() {
@@ -39,7 +40,7 @@ class ShoppingFragment : Fragment() {
   }
 
   private fun initShoppingListRecyclerView() {
-    val adapter = ShoppingListCategoryRecyclerAdapter(requireContext())
+    val adapter = ShoppingListCategoryRecyclerAdapter(requireContext(), viewModel.onCheckButtonPressedCallback)
     shopping_list_recycler_view.adapter = adapter
     shopping_list_recycler_view.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListCategories.observe(viewLifecycleOwner, Observer { shoppingListCategories ->
@@ -47,8 +48,15 @@ class ShoppingFragment : Fragment() {
     })
   }
 
+  private fun initActionButtonVisibilityHandler() {
+    shopping_list_recycler_view.onScrollChange { _, _, scrollY, _, _ ->
+      confirm_button.visibility = if (scrollY > SHOW_ACTION_BUTTON_THRESHOLD) View.GONE else View.VISIBLE
+    }
+  }
+
   companion object {
     const val SHOPPING_LIST = "shoppingList"
+    private const val SHOW_ACTION_BUTTON_THRESHOLD = 100
 
     fun newInstance() = ShoppingFragment()
   }

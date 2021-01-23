@@ -38,9 +38,9 @@
             android:layout_height="30dp"
             android:backgroundTint="@color/colorPrimary"
             android:scaleType="fitCenter"
-            android:src="@drawable/check_icon"
-            app:tint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@android:color/white"
+            tools:src="@drawable/check_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

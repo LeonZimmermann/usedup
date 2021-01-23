@@ -13,6 +13,7 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.Cate
 class ShoppingViewModel @ViewModelInject constructor(private val categoryRepository: CategoryRepository) : ViewModel() {
 
   private val shoppingList: MutableLiveData<ShoppingList> = MutableLiveData()
+  private val shoppingCart: MutableSet<ShoppingProduct> = mutableSetOf()
 
   val shoppingListCategories: LiveData<Set<ShoppingListCategoryRepresentation>> =
     Transformations.map(shoppingList) { shoppingList ->
@@ -28,5 +29,17 @@ class ShoppingViewModel @ViewModelInject constructor(private val categoryReposit
 
   fun initShoppingList(shoppingList: ShoppingList) {
     this.shoppingList.postValue(shoppingList)
+  }
+
+  val onCheckButtonPressedCallback = object : ShoppingListElementRecyclerAdapter.Callback {
+    override fun onCheckButtonPressed(shoppingListElementRepresentation: ShoppingListElementRepresentation) {
+      val shoppingProduct =
+        ShoppingProduct(shoppingListElementRepresentation.product, shoppingListElementRepresentation.cartAmount)
+      if (shoppingListElementRepresentation.checked) {
+        shoppingCart.add(shoppingProduct)
+      } else {
+        shoppingCart.remove(shoppingProduct)
+      }
+    }
   }
 }
