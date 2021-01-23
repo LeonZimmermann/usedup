@@ -1,17 +1,32 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.list
 
-import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.IOException
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
 
-class ShoppingViewModel @ViewModelInject constructor() : ViewModel() {
+class ShoppingViewModel @ViewModelInject constructor(private val categoryRepository: CategoryRepository) : ViewModel() {
+
+  private val shoppingList: MutableLiveData<ShoppingList> = MutableLiveData()
+
+  val shoppingListCategories: LiveData<Set<ShoppingListCategoryRepresentation>> =
+    Transformations.map(shoppingList) { shoppingList ->
+      shoppingList.shoppingProducts
+        .groupBy { it.product.categoryId }
+        .map(::mapToShoppingListCategoryRepresentation)
+        .toSet()
+    }
+
+  private fun mapToShoppingListCategoryRepresentation(entry: Map.Entry<Id, List<ShoppingProduct>>) =
+    ShoppingListCategoryRepresentation(categoryRepository.getCategoryForId(entry.key).name,
+      entry.value.map { ShoppingListElementRepresentation(it.product, it.cartAmount, false) }.toSet())
+
+  fun initShoppingList(shoppingList: ShoppingList) {
+    this.shoppingList.postValue(shoppingList)
+  }
 }

@@ -128,5 +128,9 @@
             android:id="@+id/shopping_list_fragment"
             android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.list.ShoppingFragment"
             android:label="ShoppingListFragment"
-            tools:layout="@layout/shopping_fragment" />
+            tools:layout="@layout/shopping_fragment" >
+        <argument
+                android:name="shoppingList"
+                app:argType="com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList" />
+    </fragment>
 </navigation>
