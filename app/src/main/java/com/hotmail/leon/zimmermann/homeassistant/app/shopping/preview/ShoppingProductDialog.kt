@@ -35,11 +35,11 @@ class ShoppingProductDialog(private var titleStringId: Int = -1, private var cal
         .setView(view)
         .setPositiveButton(R.string.submit) { _, _ ->
           applyData(view)
-          viewModel.editShoppingProduct = null
+          viewModel.dialogEditShoppingProduct = null
           viewModel.shoppingProductDialog.postValue(null)
         }
         .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-          viewModel.editShoppingProduct = null
+          viewModel.dialogEditShoppingProduct = null
           dialogInterface.cancel()
         }
         .setOnDismissListener { viewModel.shoppingProductDialog.postValue(null) }
@@ -54,8 +54,8 @@ class ShoppingProductDialog(private var titleStringId: Int = -1, private var cal
         ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
     })
     view.dialog_title.text = resources.getString(titleStringId)
-    viewModel.editShoppingProduct?.let { view.product_name_input.setText(it.product.name) }
-    view.cart_amount_input.setText(viewModel.editShoppingProduct?.cartAmount?.toString() ?: "0")
+    viewModel.dialogEditShoppingProduct?.let { view.product_name_input.setText(it.product.name) }
+    view.cart_amount_input.setText(viewModel.dialogEditShoppingProduct?.cartAmount?.toString() ?: "0")
   }
 
   private fun applyData(view: View) = viewModel.viewModelScope.launch(Dispatchers.IO) {

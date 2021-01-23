@@ -50,19 +50,17 @@ class AdditionalProductRecyclerAdapter(context: Context, var callback: Callback)
   }
 
   internal fun addAdditionalProduct(additionalProductRepresentation: AdditionalProductRepresentation) {
-    Log.d(TAG, "addAdditionalProduct: $additionalProductRepresentation")
     this.additionalProductList.add(additionalProductRepresentation)
     notifyItemInserted(this.additionalProductList.size - 1)
   }
 
-  internal fun replaceAdditionalProduct(index: Int, additionalProductRepresentation: AdditionalProductRepresentation) {
-    Log.d(TAG, "replaceAdditionalProduct: $index, $additionalProductRepresentation")
+  internal fun replaceAdditionalProduct(additionalProductRepresentation: AdditionalProductRepresentation) {
+    val index = this.additionalProductList.indexOfFirst { it.data == additionalProductRepresentation.data }
     this.additionalProductList[index] = additionalProductRepresentation
     notifyItemChanged(index)
   }
 
   internal fun removeAdditionalProduct(index: Int) {
-    Log.d(TAG, "removeAdditionalProduct: $index")
     this.additionalProductList.removeAt(index)
     notifyItemRemoved(index)
     for (i in index until itemCount) {

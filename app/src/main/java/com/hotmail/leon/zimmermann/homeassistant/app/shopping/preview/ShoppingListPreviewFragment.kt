@@ -38,7 +38,8 @@ class ShoppingListPreviewFragment : Fragment() {
     initProductDisrepancyRecyclerAdapter()
     initMealRecyclerAdapter()
     initShoppingProductDialogHandler()
-    initAddShoppingProductHandler()
+    initAddAdditionalProductShoppingProductHandler()
+    initEditAdditionalProductShoppingProductHandler()
   }
 
   private fun initDatabinding() {
@@ -90,10 +91,20 @@ class ShoppingListPreviewFragment : Fragment() {
     })
   }
 
-  private fun initAddShoppingProductHandler() {
-    viewModel.addShoppingProduct.observe(viewLifecycleOwner, Observer { shoppingProduct ->
+  private fun initAddAdditionalProductShoppingProductHandler() {
+    viewModel.addAdditionalProductShoppingProduct.observe(viewLifecycleOwner, Observer { shoppingProduct ->
       shoppingProduct?.let {
         additionalProductRecyclerAdapter.addAdditionalProduct(AdditionalProductRepresentation(it))
+        viewModel.addAdditionalProductShoppingProduct.postValue(null)
+      }
+    })
+  }
+
+  private fun initEditAdditionalProductShoppingProductHandler() {
+    viewModel.editAdditionalProductShoppingProduct.observe(viewLifecycleOwner, Observer { shoppingProduct ->
+      shoppingProduct?.let {
+        additionalProductRecyclerAdapter.replaceAdditionalProduct(AdditionalProductRepresentation(it))
+        viewModel.editAdditionalProductShoppingProduct.postValue(null)
       }
     })
   }

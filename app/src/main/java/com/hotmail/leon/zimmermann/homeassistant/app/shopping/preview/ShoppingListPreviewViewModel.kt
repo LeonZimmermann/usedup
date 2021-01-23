@@ -6,7 +6,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import com.hotmail.leon.zimmermann.homeassistant.R
-import com.hotmail.leon.zimmermann.homeassistant.app.orElse
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
@@ -19,21 +18,22 @@ import kotlinx.coroutines.launch
 class ShoppingListPreviewViewModel @ViewModelInject constructor(
   private val productRepository: ProductRepository,
   private val mealRepository: MealRepository,
-  private val measureRepository: MeasureRepository,
-  private val plannerRepository: PlannerRepository) : ViewModel() {
+  private val plannerRepository: PlannerRepository,
+  measureRepository: MeasureRepository) : ViewModel() {
 
   private val mapper = ShoppingListPreviewToShoppingListMapper(productRepository, measureRepository)
 
   private val mutableShoppingListPreview = MutableLiveData<ShoppingListPreview>()
   val shoppingListPreview: LiveData<ShoppingListPreview> = Transformations.map(mutableShoppingListPreview) { it }
 
-  val addShoppingProduct: MutableLiveData<ShoppingProduct?> = MutableLiveData(null)
+  val addAdditionalProductShoppingProduct: MutableLiveData<ShoppingProduct?> = MutableLiveData(null)
+  val editAdditionalProductShoppingProduct: MutableLiveData<ShoppingProduct?> = MutableLiveData(null)
 
   // Dialog
   val productNames: LiveData<List<String>> =
     Transformations.map(productRepository.products) { products -> products.map { it.name }.toList() }
   var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
-  var editShoppingProduct: ShoppingProduct? = null
+  var dialogEditShoppingProduct: ShoppingProduct? = null
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
@@ -44,23 +44,26 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
 
   fun onGoShoppingButtonClicked(view: View) = viewModelScope.launch(Dispatchers.Main) {
     val mapResult = async(Dispatchers.Default) { mapper.mapPreviewToShoppingList(shoppingListPreview.value!!) }
-    Navigation.findNavController(view).navigate(R.id.action_shopping_list_preview_fragment_to_shopping_list_fragment, bundleOf(
-      "shoppingList" to mapResult.await()
-    ))
+    Navigation.findNavController(view)
+      .navigate(R.id.action_shopping_list_preview_fragment_to_shopping_list_fragment, bundleOf(
+        "shoppingList" to mapResult.await()
+      ))
   }
 
   fun onAddProductButtonClicked() {
-    editShoppingProduct = null
+    dialogEditShoppingProduct = null
     shoppingProductDialog.postValue(
       ShoppingProductDialog(R.string.add_additional_product, object : ShoppingProductDialog.Callback {
         override fun onResult(shoppingProduct: ShoppingProduct) {
-          /*
-          TODO Change Implementation to acount for products that already exist
-          shoppingListPreviewObject.additionalProductList.add(product).orElse {
-        shoppingListPreviewObject.additionalProductList.first { it == product }.cartAmount += product.cartAmount
-      }
-           */
-          addShoppingProduct.postValue(shoppingProduct)
+          val shoppingList = requireNotNull(mutableShoppingListPreview.value)
+          if (shoppingList.additionalProductList.contains(shoppingProduct)) {
+            shoppingList.additionalProductList.first { it == shoppingProduct }.cartAmount = shoppingProduct.cartAmount
+            editAdditionalProductShoppingProduct.postValue(shoppingProduct)
+          } else {
+            shoppingList.additionalProductList.add(shoppingProduct)
+            addAdditionalProductShoppingProduct.postValue(shoppingProduct)
+          }
+          mutableShoppingListPreview.postValue(shoppingList)
         }
       }))
   }
@@ -68,11 +71,15 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   val additionProductRecyclerAdapterCallback = object : AdditionalProductRecyclerAdapter.Callback {
     override fun onEditButtonClicked(adapter: AdditionalProductRecyclerAdapter, index: Int, view: View,
       additionalProductRepresentation: AdditionalProductRepresentation) {
-      editShoppingProduct = additionalProductRepresentation.data
+      dialogEditShoppingProduct = additionalProductRepresentation.data
       shoppingProductDialog.postValue(
         ShoppingProductDialog(R.string.change_cart_amount_for_product, object : ShoppingProductDialog.Callback {
           override fun onResult(shoppingProduct: ShoppingProduct) {
-            adapter.replaceAdditionalProduct(index, AdditionalProductRepresentation(shoppingProduct))
+            adapter.replaceAdditionalProduct(AdditionalProductRepresentation(shoppingProduct))
+            val shoppingList = mutableShoppingListPreview.value!!
+            shoppingList.additionalProductList.first { it == shoppingProduct }.cartAmount =
+              shoppingProduct.cartAmount
+            mutableShoppingListPreview.postValue(shoppingList)
           }
         }))
     }
@@ -87,11 +94,15 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   val productDiscrepancyRecyclerAdapterCallback = object : ProductDiscrepancyRecyclerAdapter.Callback {
     override fun onEditButtonClicked(adapter: ProductDiscrepancyRecyclerAdapter, index: Int, view: View,
       productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {
-      editShoppingProduct = productDiscrepancyRepresentation.data
+      dialogEditShoppingProduct = productDiscrepancyRepresentation.data
       shoppingProductDialog.postValue(
         ShoppingProductDialog(R.string.change_cart_amount_for_product, object : ShoppingProductDialog.Callback {
           override fun onResult(shoppingProduct: ShoppingProduct) {
             adapter.replaceProductDiscrepancy(index, ProductDiscrepancyRepresentation(shoppingProduct))
+            val shoppingList = mutableShoppingListPreview.value!!
+            shoppingList.productDiscrepancyList.first { it == shoppingProduct }.cartAmount =
+              shoppingProduct.cartAmount
+            mutableShoppingListPreview.postValue(shoppingList)
           }
         }))
     }
