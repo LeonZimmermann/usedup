@@ -119,7 +119,7 @@ class ShoppingListPreviewFragment : Fragment() {
 
   companion object {
     private const val SHOPPING_PRODUCT_DIALOG = "SHOPPING_PRODUCT_DIALOG"
-    private const val SHOW_ACTION_BUTTON_THRESHOLD = 100
+    private const val SHOW_ACTION_BUTTON_THRESHOLD = 50
 
     fun newInstance() = ShoppingListPreviewFragment()
   }

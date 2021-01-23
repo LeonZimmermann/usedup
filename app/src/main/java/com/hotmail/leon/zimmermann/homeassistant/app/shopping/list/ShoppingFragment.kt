@@ -56,7 +56,7 @@ class ShoppingFragment : Fragment() {
 
   companion object {
     const val SHOPPING_LIST = "shoppingList"
-    private const val SHOW_ACTION_BUTTON_THRESHOLD = 100
+    private const val SHOW_ACTION_BUTTON_THRESHOLD = 50
 
     fun newInstance() = ShoppingFragment()
   }
