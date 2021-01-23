@@ -55,7 +55,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
       ShoppingProductDialog(R.string.add_additional_product, object : ShoppingProductDialog.Callback {
         override fun onResult(shoppingProduct: ShoppingProduct) {
           /*
-          TODO Change Implementation
+          TODO Change Implementation to acount for products that already exist
           shoppingListPreviewObject.additionalProductList.add(product).orElse {
         shoppingListPreviewObject.additionalProductList.first { it == product }.cartAmount += product.cartAmount
       }
@@ -80,6 +80,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
     override fun onRemoveButtonClicked(adapter: AdditionalProductRecyclerAdapter, index: Int, view: View,
       additionalProductRepresentation: AdditionalProductRepresentation) {
       adapter.removeAdditionalProduct(index)
+      shoppingListPreview.value!!.additionalProductList.remove(additionalProductRepresentation.data)
     }
   }
 
@@ -98,6 +99,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
     override fun onRemoveButtonClicked(adapter: ProductDiscrepancyRecyclerAdapter, index: Int, view: View,
       productDiscrepancyRepresentation: ProductDiscrepancyRepresentation) {
       adapter.removeProductDiscrepancy(index)
+      shoppingListPreview.value!!.productDiscrepancyList.remove(productDiscrepancyRepresentation.data)
     }
   }
 
