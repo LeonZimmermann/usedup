@@ -3,10 +3,12 @@ package com.hotmail.leon.zimmermann.homeassistant.app
 import android.content.Context
 import com.hotmail.leon.zimmermann.homeassistant.R
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.*
 
 private val FLOATING_POINT_FORMAT = DecimalFormat("0.0#")
 fun Double.toFloatFormat(): String = FLOATING_POINT_FORMAT.format(this)
@@ -16,7 +18,7 @@ fun Int.toIntFormat(): String = INT_FORMAT.format(this)
 
 fun DayOfWeek.toDisplayString(): String =
   if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) getDisplayName(
-    java.time.format.TextStyle.FULL, java.util.Locale.getDefault()) else name
+    java.time.format.TextStyle.FULL, Locale.getDefault()) else name
 
 fun Iterable<*>.enumerationJoin(context: Context): String {
   val separator = ", "
@@ -29,3 +31,6 @@ fun Iterable<*>.enumerationJoin(context: Context): String {
 
 fun Long.toLocalDate() = Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDate()
 fun LocalDate.toLongValue() = this.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+
+private val TIME_FORMAT = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+fun Calendar.toTimeDisplayString(): String = TIME_FORMAT.format(time)

@@ -2,10 +2,11 @@ package com.hotmail.leon.zimmermann.homeassistant.app.settings
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TimePicker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.hotmail.leon.zimmermann.homeassistant.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,11 +22,11 @@ class HomeAssistantPreferenceFragment : PreferenceFragmentCompat() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    initShoppingWeekdaysPreferences()
-    initDinnerTimePreference()
+    initShoppingWeekdaysPreference()
+    initDinnerPreference()
   }
 
-  private fun initShoppingWeekdaysPreferences() {
+  private fun initShoppingWeekdaysPreference() {
     val shoppingWeekdayPreference = requireNotNull(findPreference<MultiSelectListPreference>("shopping_weekdays"))
     viewModel.shoppingWeekdayPreferenceEntryValues.observe(viewLifecycleOwner,
       Observer { shoppingWeekdayPreferenceEntryValues ->
@@ -45,11 +46,34 @@ class HomeAssistantPreferenceFragment : PreferenceFragmentCompat() {
     viewModel.initShoppingPreference(shoppingWeekdayPreference)
   }
 
-  private fun initDinnerTimePreference() {
-    val dinnerTimePreference = requireNotNull(findPreference<EditTextPreference>("dinner_time"))
-    viewModel.dinnerTimePreferenceText.observe(viewLifecycleOwner, Observer { dinnerTimeText ->
-      dinnerTimePreference.text = dinnerTimeText
-    })
-    dinnerTimePreference.setOnPreferenceClickListener { viewModel.onDinnerTimePreferenceClicked(parentFragmentManager) }
+  private fun initDinnerPreference() {
+    val dinnerPreference = requireNotNull(findPreference<TimePreference>("dinner_time"))
+    dinnerPreference.setOnPreferenceChangeListener { _, newValue ->
+      viewModel.updateDinnerNotificationSchedule(newValue as TimePreference.Time)
+      true
+    }
+  }
+
+  override fun onDisplayPreferenceDialog(preference: Preference?) {
+    if (parentFragmentManager.findFragmentByTag(TIME_PREFERENCE) != null) {
+      return
+    }
+    if (preference is TimePreference) {
+      val dialog = TimePreferenceDialogFragment.newInstance(preference.getKey(),
+        object : TimePreferenceDialogFragment.OnTimeSetListener {
+          override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+            preference.setTime(TimePreference.Time(hourOfDay, minute))
+          }
+        })
+      dialog.setTargetFragment(this, 0)
+      dialog.show(parentFragmentManager, TIME_PREFERENCE)
+    } else {
+      super.onDisplayPreferenceDialog(preference)
+    }
+  }
+
+  companion object {
+    private const val TIME_PREFERENCE = "TimePreference"
+
   }
 }
