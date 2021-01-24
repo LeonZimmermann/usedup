@@ -132,5 +132,5 @@
         <argument
                 android:name="shoppingList"
                 app:argType="com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList" />
-    </fragment>
+    </fragment><action android:id="@+id/action_global_overview_fragment" app:destination="@id/overview_fragment"/>
 </navigation>

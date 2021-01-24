@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".app.shopping.list.ShoppingFragment">
+<layout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/confirm_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="37dp"
-            android:layout_marginEnd="37dp"
-            android:layout_marginBottom="37dp"
-            android:backgroundTint="@color/colorAccent"
-            android:text="@string/confirm_cart"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            app:icon="@drawable/cart_icon"
-            app:iconTint="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <data>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shopping_list_recycler_view"
+        <variable
+                name="viewModel"
+                type="com.hotmail.leon.zimmermann.homeassistant.app.shopping.list.ShoppingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="37dp"
-            android:layout_marginEnd="37dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="20"
-            tools:listitem="@layout/shopping_category" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            tools:context=".app.shopping.list.ShoppingFragment">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/confirm_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="37dp"
+                android:backgroundTint="@color/colorAccent"
+                android:onClick="@{(view) -> viewModel.onConfirmButtonPressed(view)}"
+                android:text="@string/confirm_cart"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/cart_icon"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shopping_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="20"
+                tools:listitem="@layout/shopping_category" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,16 +1,22 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.list
 
+import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.navigation.Navigation
+import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.CategoryRepository
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ShoppingViewModel @ViewModelInject constructor(private val categoryRepository: CategoryRepository) : ViewModel() {
+class ShoppingViewModel @ViewModelInject constructor(
+  private val productRepository: ProductRepository,
+  private val categoryRepository: CategoryRepository
+) : ViewModel() {
 
   private val shoppingList: MutableLiveData<ShoppingList> = MutableLiveData()
   private val shoppingCart: MutableSet<ShoppingProduct> = mutableSetOf()
@@ -29,6 +35,21 @@ class ShoppingViewModel @ViewModelInject constructor(private val categoryReposit
 
   fun initShoppingList(shoppingList: ShoppingList) {
     this.shoppingList.postValue(shoppingList)
+  }
+
+  fun onConfirmButtonPressed(view: View) = viewModelScope.launch(Dispatchers.Default) {
+    shoppingCart.forEach { shoppingProduct ->
+      launch(Dispatchers.IO) {
+        productRepository.changeQuantity(shoppingProduct.product,
+          shoppingProduct.product.quantity + shoppingProduct.cartAmount)
+      }
+    }
+    launch(Dispatchers.Main) {
+      Navigation.findNavController(view).apply {
+        navigate(R.id.action_global_overview_fragment)
+        popBackStack(R.id.action_global_overview_fragment, false)
+      }
+    }
   }
 
   val onCheckButtonPressedCallback = object : ShoppingListElementRecyclerAdapter.Callback {

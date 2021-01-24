@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hotmail.leon.zimmermann.homeassistant.R
 import com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList
+import com.hotmail.leon.zimmermann.homeassistant.databinding.ShoppingFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.shopping_fragment.*
 import org.jetbrains.anko.sdk27.coroutines.onScrollChange
@@ -36,7 +37,15 @@ class ShoppingFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    initDatabinding()
     initShoppingListRecyclerView()
+    initActionButtonVisibilityHandler()
+  }
+
+  private fun initDatabinding() {
+    val binding = ShoppingFragmentBinding.bind(requireView())
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = this
   }
 
   private fun initShoppingListRecyclerView() {
