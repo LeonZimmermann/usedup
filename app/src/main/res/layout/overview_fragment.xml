@@ -15,35 +15,52 @@
             android:layout_height="match_parent"
             tools:context=".app.overview.OverviewFragment"
             android:focusableInTouchMode="true"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:focusable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <fragment
+            <FrameLayout
                     android:id="@+id/consumption_fragment_component"
-                    android:name="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionFragmentComponent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="22dp"
+                    android:background="@drawable/card_background"
+                    android:padding="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout="@layout/consumption_fragment_component" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <fragment
+                        android:name="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionFragmentComponent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:layout="@layout/consumption_fragment_component" />
+            </FrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="22dp"
+                    android:background="@drawable/card_background"
+                    android:padding="15dp"
+                    android:layout_marginBottom="27dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/consumption_fragment_component">
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/discrepancy_recyclerview"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="37dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="37dp"
                         android:layoutAnimation="@anim/layout_animation"
                         android:overScrollMode="never"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -56,7 +73,6 @@
                         android:id="@+id/register_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
                         android:text="@string/discrepancy_overview"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/itemTextSizeBig"
@@ -68,9 +84,7 @@
                         android:id="@+id/infoboxView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="37dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="37dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/register_textview"

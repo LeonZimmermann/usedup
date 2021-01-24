@@ -23,12 +23,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:backgroundTint="@{viewModel.mode == Mode.PRODUCT ? @color/colorPrimary : @android:color/white}"
                 android:minHeight="25dp"
                 android:onClick="@{() -> viewModel.setMode(Mode.PRODUCT)}"
                 android:text="Product"
                 android:textColor="@{viewModel.mode == Mode.PRODUCT ? @android:color/white : @color/colorPrimary}"
                 android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/template_mode_button"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -36,7 +38,6 @@
                 android:id="@+id/template_mode_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:backgroundTint="@{viewModel.mode == Mode.TEMPLATE ? @color/colorPrimary : @android:color/white}"
                 android:minHeight="25dp"
                 android:onClick="@{() -> viewModel.setMode(Mode.TEMPLATE)}"
@@ -44,6 +45,7 @@
                 android:textColor="@{viewModel.mode == Mode.TEMPLATE ? @android:color/white : @color/colorPrimary}"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/product_mode_button"
+                app:layout_constraintEnd_toStartOf="@+id/meal_mode_button"
                 app:layout_constraintStart_toEndOf="@+id/product_mode_button"
                 app:layout_constraintTop_toTopOf="@+id/product_mode_button" />
 
@@ -51,7 +53,7 @@
                 android:id="@+id/meal_mode_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="5dp"
                 android:backgroundTint="@{viewModel.mode == Mode.MEAL ? @color/colorPrimary : @android:color/white}"
                 android:minHeight="25dp"
                 android:onClick="@{() -> viewModel.setMode(Mode.MEAL)}"
@@ -59,6 +61,7 @@
                 android:textColor="@{viewModel.mode == Mode.MEAL ? @android:color/white : @color/colorPrimary}"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/template_mode_button"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/template_mode_button"
                 app:layout_constraintTop_toTopOf="@+id/template_mode_button" />
 
@@ -67,9 +70,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="37dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/infoboxView2">
@@ -80,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text|textAutoComplete"
                     android:text="@={viewModel.nameText}"
-                    tools:hint="Enter the products name"/>
+                    tools:hint="Enter the products name" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +90,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
                 android:layout_marginTop="5dp"
                 android:visibility="@{viewModel.mode == Mode.PRODUCT ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toStartOf="@+id/measure_input_wrapper"
@@ -114,7 +114,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="37dp"
                 android:visibility="@{viewModel.mode == Mode.PRODUCT ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/quantity_input_wrapper"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -150,9 +149,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
-                android:layout_marginTop="37dp"
-                android:text="Consume"
+                android:text="Register consumptions"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/itemTextSizeBig"
                 android:textStyle="bold"
@@ -163,9 +160,7 @@
                 android:id="@+id/infoboxView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="37dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="37dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/product_mode_button"
