@@ -1,9 +1,11 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.consumption
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,6 +21,7 @@ class ConsumptionFragmentComponent : Fragment() {
 
   private val viewModel: ConsumptionViewModel by viewModels()
   private lateinit var binding: ConsumptionFragmentComponentBinding
+  private lateinit var inputMethodManager: InputMethodManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.consumption_fragment_component, container, false)
@@ -26,8 +29,10 @@ class ConsumptionFragmentComponent : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     initDatabinding(view)
     initNameInput()
+    initQuantityInput()
     initMeasureInput()
     initErrorSnackbar()
   }
@@ -45,7 +50,20 @@ class ConsumptionFragmentComponent : Fragment() {
         name_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nameList))
       })
     })
+    viewModel.nameHint.observe(viewLifecycleOwner, Observer { nameHint ->
+      name_input.hint = nameHint
+    })
     name_input.onItemClickListener = viewModel
+  }
+
+  private fun initQuantityInput() {
+    viewModel.focusQuantityInputField.observe(viewLifecycleOwner, Observer { focusQuantityInputField ->
+      if (focusQuantityInputField) {
+        quantity_input.requestFocus()
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        viewModel.focusQuantityInputField.postValue(false)
+      }
+    })
   }
 
   private fun initMeasureInput() {

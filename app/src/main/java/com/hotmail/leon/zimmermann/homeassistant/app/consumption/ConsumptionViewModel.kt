@@ -33,8 +33,10 @@ class ConsumptionViewModel @ViewModelInject constructor(
 
   val mappedNameList: MutableLiveData<LiveData<List<String>>> = MutableLiveData()
   val nameText: MutableLiveData<String> = MutableLiveData()
+  val nameHint: MutableLiveData<String> = MutableLiveData()
 
   val quantityText: MutableLiveData<String> = MutableLiveData()
+  val focusQuantityInputField: MutableLiveData<Boolean> = MutableLiveData()
 
   val measureNameList: MutableLiveData<List<String>> = MutableLiveData()
   val measureText: MutableLiveData<String> = MutableLiveData()
@@ -56,8 +58,9 @@ class ConsumptionViewModel @ViewModelInject constructor(
     }
     this.mode.value = mode
     this.mappedNameList.value = nameList
-    if (nameList.value == null) this.nameText.value = ""
-    else this.nameText.value = if (nameList.value!!.size == 1) nameList.value!![0] else ""
+    nameHint.postValue(mode.hint)
+    if (nameList.value == null) this.nameText.postValue("")
+    else this.nameText.postValue(if (nameList.value!!.size == 1) nameList.value!![0] else "")
   }
 
   fun consume() = viewModelScope.launch(Dispatchers.Default) {
@@ -91,6 +94,8 @@ class ConsumptionViewModel @ViewModelInject constructor(
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
+    } catch (e: NoSuchElementException) {
+      errorMessage.postValue("Could not find the provided product")
     }
   }
 
@@ -109,6 +114,8 @@ class ConsumptionViewModel @ViewModelInject constructor(
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
+    } catch (e: NoSuchElementException) {
+      errorMessage.postValue("Could not find the provided template")
     }
   }
 
@@ -127,6 +134,8 @@ class ConsumptionViewModel @ViewModelInject constructor(
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
+    } catch (e: NoSuchElementException) {
+      errorMessage.postValue("Could not find the provided meal")
     }
   }
 
@@ -146,11 +155,14 @@ class ConsumptionViewModel @ViewModelInject constructor(
         this@ConsumptionViewModel.measureNameList.value = measureList
         measureText.value = if (measureList.size > 1) "" else productMeasure.name
         measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
+        focusQuantityInputField.postValue(true)
       }
     }
   }
 
-  enum class Mode {
-    PRODUCT, TEMPLATE, MEAL
+  enum class Mode(internal val hint: String) {
+    PRODUCT("Enter the products name"),
+    TEMPLATE("Enter the templates name"),
+    MEAL("Enter the meals name")
   }
 }
