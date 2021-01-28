@@ -1,5 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects
 
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.calculateDiscrepancy
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.exceptions.DataIntegrityException
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseId
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseProduct
@@ -17,7 +18,7 @@ data class Product(
     var categoryId: Id
 ) {
   val discrepancy: Int
-    get() = max(min - floor(quantity).toInt(), 0)
+    get() = calculateDiscrepancy(min, quantity)
 
   companion object {
     internal fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {

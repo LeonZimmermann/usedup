@@ -21,6 +21,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   private val plannerRepository: PlannerRepository,
   measureRepository: MeasureRepository) : ViewModel() {
 
+  private val shoppingListPreviewGenerator = ShoppingListPreviewGenerator(productRepository, mealRepository, plannerRepository)
   private val mapper = ShoppingListPreviewToShoppingListMapper(productRepository, measureRepository)
 
   private val mutableShoppingListPreview = MutableLiveData<ShoppingListPreview>()
@@ -37,8 +38,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
 
   init {
     viewModelScope.launch(Dispatchers.IO) {
-      mutableShoppingListPreview.postValue(
-        ShoppingListPreviewGenerator.generateShoppingListPreview(productRepository, mealRepository, plannerRepository))
+      mutableShoppingListPreview.postValue(shoppingListPreviewGenerator.generateShoppingListPreview())
     }
   }
 

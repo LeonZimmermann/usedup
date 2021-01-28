@@ -89,13 +89,13 @@ class CameraFragment : Fragment() {
 
     @Throws(IOException::class)
     private fun dispatchTakePictureIntent(): Uri {
-        if (!context!!.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
+        if (!requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
             throw NoCameraException("Device has no camera")
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoUri =
-            FileProvider.getUriForFile(context!!, "com.hotmail.leon.zimmermann.homeassistant.fileprovider", file!!)
+            FileProvider.getUriForFile(requireContext(), "com.hotmail.leon.zimmermann.homeassistant.fileprovider", file!!)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        intent.resolveActivity(context!!.packageManager)?.also {
+        intent.resolveActivity(requireContext().packageManager)?.also {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
         return photoUri

@@ -6,12 +6,12 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.Meal
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
 
-object ShoppingListPreviewGenerator {
-  suspend fun generateShoppingListPreview(
-    productRepository: ProductRepository,
-    mealRepository: MealRepository,
-    plannerRepository: PlannerRepository
-  ): ShoppingListPreview {
+class ShoppingListPreviewGenerator(
+  private val productRepository: ProductRepository,
+  private val mealRepository: MealRepository,
+  private val plannerRepository: PlannerRepository
+) {
+  suspend fun generateShoppingListPreview(): ShoppingListPreview {
     val productDiscrepancyList =
       productRepository.getAllProducts()
         .filter { it.discrepancy > 0 }
