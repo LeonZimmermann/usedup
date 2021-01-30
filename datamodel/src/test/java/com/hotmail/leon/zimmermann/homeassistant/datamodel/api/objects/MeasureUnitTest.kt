@@ -7,7 +7,7 @@ import junit.framework.Assert.assertEquals
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 
-class MeasureTest {
+class MeasureUnitTest {
     @Test
     fun testCreateInstance() {
         assertThatThrownBy {

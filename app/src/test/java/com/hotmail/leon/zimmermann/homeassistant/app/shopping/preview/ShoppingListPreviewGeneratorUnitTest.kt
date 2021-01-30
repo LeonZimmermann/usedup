@@ -1,6 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview
 
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
+import com.hotmail.leon.zimmermann.homeassistant.app.mockProduct
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
@@ -8,11 +8,10 @@ import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -64,12 +63,4 @@ class ShoppingListPreviewGeneratorUnitTest {
       assertEquals(1, result.productDiscrepancyList.first().cartAmount)
     }
 
-  @Test
-  fun test() {
-    every { productRepository.getAllProducts() } returns listOf(mockProduct("Product One", 1.0, 1, 2))
-  }
-
-  fun mockProduct(name: String = "", quantity: Double = 0.0, min: Int = 0, max: Int = 0,
-    capacity: Double = 0.0): Product =
-    Product(mockk(), name, quantity, min, max, capacity, mockk(), mockk())
 }

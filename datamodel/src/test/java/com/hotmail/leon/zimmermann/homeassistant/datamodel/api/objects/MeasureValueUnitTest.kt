@@ -6,7 +6,7 @@ import junit.framework.Assert.assertEquals
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 
-class MeasureValueTest {
+class MeasureValueUnitTest {
 
     @Test
     fun testPlusException() {

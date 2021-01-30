@@ -29,7 +29,7 @@ class ConsumptionViewModel @ViewModelInject constructor(
   private val mealNameList = Transformations.map(mealRepository.meals) { meals -> meals.map { it.name } }
   private val measures: MutableList<Measure> = measureRepository.measures
 
-  private val consumptionCalculator = ConsumptionCalculator()
+  private val consumptionCalculator = ConsumptionCalculator(measureRepository)
 
   val mappedNameList: MutableLiveData<LiveData<List<String>>> = MutableLiveData()
   val nameText: MutableLiveData<String> = MutableLiveData()

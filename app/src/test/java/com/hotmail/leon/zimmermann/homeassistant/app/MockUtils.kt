@@ -1,4 +1,4 @@
-package com.hotmail.leon.zimmermann.homeassistant.datamodel.api
+package com.hotmail.leon.zimmermann.homeassistant.app
 
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Measure

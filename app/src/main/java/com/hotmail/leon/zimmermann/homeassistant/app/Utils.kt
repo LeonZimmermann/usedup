@@ -10,7 +10,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-private val FLOATING_POINT_FORMAT = DecimalFormat("0.0#")
+private val FLOATING_POINT_FORMAT = DecimalFormat("0.##")
 fun Double.toFloatFormat(): String = FLOATING_POINT_FORMAT.format(this)
 
 private val INT_FORMAT = DecimalFormat("0")

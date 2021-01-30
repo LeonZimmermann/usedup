@@ -4,16 +4,24 @@ import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureVa
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toBase
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
 
-class ConsumptionCalculator {
+class ConsumptionCalculator(private val measureRepository: MeasureRepository) {
   @Throws(NotEnoughException::class)
   fun calculateUpdatedQuantity(product: Product, measureValue: MeasureValue): Double {
-    // TODO Check if the measures are compatible
+    val productMeasure = measureRepository.getMeasureForId(product.measureId)
+    if (productMeasure.type != measureValue.measure.type) {
+      throw ConsumptionException("Incompatible measures")
+    }
     val existingQuantity = product.quantity * product.capacity
-    val conversionQuantity = measureValue.double.toBase(measureValue.measure)
-    val quantityDiff = existingQuantity - conversionQuantity
-    if (quantityDiff < 0) throw NotEnoughException(product,
-      MeasureValue(quantityDiff.toMeasure(measureValue.measure), measureValue.measure))
-    else return product.quantity - measureValue.double.toBase(measureValue.measure) / product.capacity
+    val existingValueAsBase = existingQuantity.toBase(productMeasure)
+    val consumptionValueAsBase = measureValue.double.toBase(measureValue.measure)
+    val quantityDiff = existingValueAsBase - consumptionValueAsBase
+    if (quantityDiff < 0) {
+      throw NotEnoughException(product,
+        MeasureValue(quantityDiff.toMeasure(measureValue.measure), measureValue.measure))
+    } else {
+      return (existingValueAsBase - consumptionValueAsBase).toMeasure(productMeasure) / product.capacity
+    }
   }
 }
