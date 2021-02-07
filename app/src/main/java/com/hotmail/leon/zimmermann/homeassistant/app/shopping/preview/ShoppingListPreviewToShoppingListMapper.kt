@@ -35,6 +35,7 @@ class ShoppingListPreviewToShoppingListMapper(
     shoppingMeals
       .toList()
       .map { mapShoppingMealToShoppingProducts(it) }
+      .ifEmpty { return emptyList() }
       .reduce { acc, set -> set + acc }
 
   private suspend fun mapShoppingMealToShoppingProducts(shoppingMeal: ShoppingMeal): List<Pair<Product, Double>> =
