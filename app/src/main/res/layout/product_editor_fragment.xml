@@ -67,10 +67,12 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/measure_input_wrapper"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+                app:layout_constraintStart_toEndOf="@+id/measure_input_wrapper"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:enabled="@{viewModel.capacityInputEnabled}"
                     android:hint="@string/capacity"
                     android:inputType="numberSigned|numberDecimal"
                     android:text="@={viewModel.capacityInputValue}" />
@@ -88,11 +91,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/capacity_input_wrapper"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+                app:layout_constraintEnd_toStartOf="@+id/capacity_input_wrapper"
                 app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintStart_toEndOf="@+id/capacity_input_wrapper"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/capacity_input_wrapper">
 
             <AutoCompleteTextView
@@ -175,8 +178,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="32dp"
-                android:text="@{buttonText}"
                 android:onClick="@{(view) -> viewModel.save(view)}"
+                android:text="@{buttonText}"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

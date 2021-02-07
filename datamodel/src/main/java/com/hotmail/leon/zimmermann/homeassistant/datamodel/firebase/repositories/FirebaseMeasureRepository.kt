@@ -16,6 +16,7 @@ object FirebaseMeasureRepository : MeasureRepository {
 
   override suspend fun init() {
     withContext(Dispatchers.IO) {
+      measures.clear()
       Tasks.await(Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).get()).forEach { document ->
         measures.add(Measure.createInstance(document.id, document.toObject()))
       }

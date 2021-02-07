@@ -1,6 +1,7 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.management.products
 
 import android.view.View
+import android.widget.AdapterView
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,21 +20,20 @@ class ProductEditorViewModel @ViewModelInject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
   private val categoryRepository: CategoryRepository
-) : ViewModel() {
-
+) : ViewModel(), AdapterView.OnItemClickListener {
 
   val categoryList = categoryRepository.categories
   val measureList = measureRepository.measures
 
-  var nameInputValue = MutableLiveData("")
-  var categoryInputValue = MutableLiveData("")
-  var capacityInputValue = MutableLiveData("")
-  var measureInputValue = MutableLiveData("")
-  var currentInputValue = MutableLiveData("")
-  var minInputValue = MutableLiveData("")
-  var maxInputValue = MutableLiveData("")
-
-  var systemMessage = MutableLiveData("")
+  val nameInputValue = MutableLiveData("")
+  val categoryInputValue = MutableLiveData("")
+  val capacityInputValue = MutableLiveData("")
+  val capacityInputEnabled = MutableLiveData(false)
+  val measureInputValue = MutableLiveData("")
+  val currentInputValue = MutableLiveData("")
+  val minInputValue = MutableLiveData("")
+  val maxInputValue = MutableLiveData("")
+  val systemMessage = MutableLiveData("")
 
   var productId: Id? = null
     private set
@@ -69,20 +69,41 @@ class ProductEditorViewModel @ViewModelInject constructor(
   }
 
   private fun saveAfterValidation(view: View) = viewModelScope.launch(Dispatchers.IO) {
-    val name = nameInputValue.value!!
-    val category = categoryRepository.getCategoryForName(categoryInputValue.value!!)
-    val capacity = capacityInputValue.value!!.toDouble()
-    val measure = measureRepository.getMeasureForName(measureInputValue.value!!)
-    val quantity = currentInputValue.value!!.toDouble()
-    val min = minInputValue.value!!.toInt()
-    val max = maxInputValue.value!!.toInt()
+    val name = requireNotNull(nameInputValue.value)
+    val category = categoryRepository.getCategoryForName(requireNotNull(categoryInputValue.value))
+    val capacity = requireNotNull(capacityInputValue.value).toDouble()
+    val measure = measureRepository.getMeasureForName(requireNotNull(measureInputValue.value))
+    val quantity = requireNotNull(currentInputValue.value).toDouble()
+    val min = requireNotNull(minInputValue.value).toInt()
+    val max = requireNotNull(maxInputValue.value).toInt()
     try {
       if (productId == null) productRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
-      else productRepository.updateProduct(productId!!, name, category.id, capacity, measure.id, quantity, min, max)
+      else productRepository.updateProduct(requireNotNull(productId), name, category.id, capacity, measure.id, quantity,
+        min, max)
       systemMessage.postValue("Added Product")
+      clearData()
       Navigation.findNavController(view).navigateUp()
     } catch (e: IOException) {
       systemMessage.postValue("Could not add product")
     }
+  }
+
+  private fun clearData() {
+    nameInputValue.postValue("")
+    categoryInputValue.postValue("")
+    capacityInputValue.postValue("")
+    capacityInputEnabled.postValue(false)
+    measureInputValue.postValue("")
+    currentInputValue.postValue("")
+    minInputValue.postValue("")
+    maxInputValue.postValue("")
+    systemMessage.postValue("")
+    productId = null
+  }
+
+  override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+    val measureName = requireNotNull(parent.adapter.getItem(position) as? String)
+    val measure = measureRepository.getMeasureForName(measureName)
+    capacityInputEnabled.postValue(measure.complex)
   }
 }

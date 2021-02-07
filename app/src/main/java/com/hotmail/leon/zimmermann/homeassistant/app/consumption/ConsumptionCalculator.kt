@@ -1,9 +1,6 @@
 package com.hotmail.leon.zimmermann.homeassistant.app.consumption
 
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Product
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toBase
-import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.toMeasure
+import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.*
 import com.hotmail.leon.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
 
 class ConsumptionCalculator(private val measureRepository: MeasureRepository) {
@@ -13,6 +10,15 @@ class ConsumptionCalculator(private val measureRepository: MeasureRepository) {
     if (productMeasure.type != measureValue.measure.type) {
       throw ConsumptionException("Incompatible measures")
     }
+    return if (measureValue.measure.complex) {
+      calculateUpdatedQuantityForComplexMode(product, productMeasure, measureValue)
+    } else {
+      calculateUpdatedQuantityForSimpleMode(product, measureValue)
+    }
+  }
+
+  private fun calculateUpdatedQuantityForComplexMode(product: Product, productMeasure: Measure,
+    measureValue: MeasureValue): Double {
     val existingQuantity = product.quantity * product.capacity
     val existingValueAsBase = existingQuantity.toBase(productMeasure)
     val consumptionValueAsBase = measureValue.double.toBase(measureValue.measure)
@@ -22,6 +28,21 @@ class ConsumptionCalculator(private val measureRepository: MeasureRepository) {
         MeasureValue(quantityDiff.toMeasure(measureValue.measure), measureValue.measure))
     } else {
       return (existingValueAsBase - consumptionValueAsBase).toMeasure(productMeasure) / product.capacity
+    }
+  }
+
+  private fun calculateUpdatedQuantityForSimpleMode(product: Product,
+    measureValue: MeasureValue): Double {
+    val consumptionValue = measureValue.double.toInt()
+    if (consumptionValue.toDouble() != measureValue.double) {
+      throw ConsumptionException("The provided consumption needs to be an integer")
+    }
+    val quantityDiff = product.quantity - consumptionValue
+    if (quantityDiff < 0) {
+      throw NotEnoughException(product,
+        MeasureValue(quantityDiff, measureValue.measure))
+    } else {
+      return quantityDiff
     }
   }
 }

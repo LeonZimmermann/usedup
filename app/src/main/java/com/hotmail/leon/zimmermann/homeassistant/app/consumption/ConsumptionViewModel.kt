@@ -36,7 +36,7 @@ class ConsumptionViewModel @ViewModelInject constructor(
   val nameHint: MutableLiveData<String> = MutableLiveData()
 
   val quantityText: MutableLiveData<String> = MutableLiveData()
-  val focusQuantityInputField: MutableLiveData<Boolean> = MutableLiveData()
+  val quantityInputFieldFocus: MutableLiveData<Boolean> = MutableLiveData()
 
   val measureNameList: MutableLiveData<List<String>> = MutableLiveData()
   val measureText: MutableLiveData<String> = MutableLiveData()
@@ -155,7 +155,7 @@ class ConsumptionViewModel @ViewModelInject constructor(
         this@ConsumptionViewModel.measureNameList.value = measureList
         measureText.value = if (measureList.size > 1) "" else productMeasure.name
         measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
-        focusQuantityInputField.postValue(true)
+        quantityInputFieldFocus.postValue(true)
       }
     }
   }

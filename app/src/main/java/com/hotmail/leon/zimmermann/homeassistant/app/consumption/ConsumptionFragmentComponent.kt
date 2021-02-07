@@ -57,11 +57,11 @@ class ConsumptionFragmentComponent : Fragment() {
   }
 
   private fun initQuantityInput() {
-    viewModel.focusQuantityInputField.observe(viewLifecycleOwner, Observer { focusQuantityInputField ->
+    viewModel.quantityInputFieldFocus.observe(viewLifecycleOwner, Observer { focusQuantityInputField ->
       if (focusQuantityInputField) {
         quantity_input.requestFocus()
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-        viewModel.focusQuantityInputField.postValue(false)
+        viewModel.quantityInputFieldFocus.postValue(false)
       }
     })
   }

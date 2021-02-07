@@ -16,6 +16,7 @@ object FirebaseCategoryRepository : CategoryRepository {
 
   override suspend fun init() {
     withContext(Dispatchers.IO) {
+      categories.clear()
       Tasks.await(Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).get()).forEach { document ->
         categories.add(Category.createInstance(document.id, document.toObject()))
       }
