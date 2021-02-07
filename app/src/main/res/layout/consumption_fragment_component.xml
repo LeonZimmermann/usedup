@@ -31,7 +31,7 @@
                 android:textColor="@{viewModel.mode == Mode.PRODUCT ? @android:color/white : @color/colorPrimary}"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/template_mode_button"
-                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <Button
@@ -153,6 +153,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/itemTextSizeBig"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
