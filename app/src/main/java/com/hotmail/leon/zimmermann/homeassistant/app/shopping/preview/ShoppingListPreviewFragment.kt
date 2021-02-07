@@ -28,6 +28,11 @@ class ShoppingListPreviewFragment : Fragment() {
     viewModel = ViewModelProvider(requireActivity())[ShoppingListPreviewViewModel::class.java]
   }
 
+  override fun onResume() {
+    super.onResume()
+    viewModel.initShoppingListPreview()
+  }
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return inflater.inflate(R.layout.shopping_list_preview_fragment, container, false)
   }

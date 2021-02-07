@@ -36,7 +36,7 @@ class ShoppingListPreviewViewModel @ViewModelInject constructor(
   var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
   var dialogEditShoppingProduct: ShoppingProduct? = null
 
-  init {
+  fun initShoppingListPreview() {
     viewModelScope.launch(Dispatchers.IO) {
       mutableShoppingListPreview.postValue(shoppingListPreviewGenerator.generateShoppingListPreview())
     }
