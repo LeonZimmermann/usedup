@@ -32,7 +32,7 @@
         </provider>
 
         <activity
-                android:name=".app.activities.MainActivity"
+                android:name=".app.activities.main.MainActivity"
                 android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +43,9 @@
                 android:name=".app.activities.AppActivity"
                 android:noHistory="true"
                 android:windowSoftInputMode="stateHidden" />
+        <activity
+                android:name=".app.activities.login.LoginFlowActivity"
+                android:noHistory="true" />
 
         <service android:name=".app.shopping.notification.ShoppingNotificationService" />
     </application>

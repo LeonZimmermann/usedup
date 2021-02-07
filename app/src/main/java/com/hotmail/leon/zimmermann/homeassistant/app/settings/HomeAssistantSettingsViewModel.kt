@@ -7,11 +7,9 @@ import androidx.databinding.BindingAdapter
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.hotmail.leon.zimmermann.homeassistant.app.activities.MainActivity
+import com.hotmail.leon.zimmermann.homeassistant.app.activities.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class HomeAssistantSettingsViewModel @ViewModelInject constructor(@ApplicationContext private val context: Context) :

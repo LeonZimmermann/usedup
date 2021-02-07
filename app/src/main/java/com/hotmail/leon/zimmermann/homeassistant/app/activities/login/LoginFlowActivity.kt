@@ -1,9 +1,8 @@
-package com.hotmail.leon.zimmermann.homeassistant.app.activities
+package com.hotmail.leon.zimmermann.homeassistant.app.activities.login
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,26 +13,26 @@ import com.hotmail.leon.zimmermann.homeassistant.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class LoginFlowActivity : AppCompatActivity() {
 
-  private val viewModel: MainActivityViewModel by viewModels()
+  private val viewModel: LoginFlowActivityViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.main_activity)
+    setContentView(R.layout.login_activity)
     initActivityToStart()
-    findViewById<Button>(R.id.login_button)
-      .setOnClickListener { dispatchAuthenticationRequest() }
+    dispatchAuthenticationRequest()
   }
 
   private fun initActivityToStart() {
     viewModel.activityToStart.observe(this, Observer { activityToStart ->
-      val intent = Intent(this@MainActivity, activityToStart).apply {
+      val intent = Intent(this@LoginFlowActivity, activityToStart).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
       }
       startActivity(intent)
     })
   }
+
 
   private fun dispatchAuthenticationRequest() {
     val providers = arrayListOf(
