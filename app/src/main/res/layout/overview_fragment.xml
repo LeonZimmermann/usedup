@@ -7,13 +7,13 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.overview.OverviewViewModel" />
+                type="de.usedup.android.overview.OverviewViewModel" />
     </data>
 
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".app.overview.OverviewFragment"
+            tools:context=".overview.OverviewFragment"
             android:focusableInTouchMode="true"
             android:clipToPadding="false"
             android:clipChildren="false"
@@ -37,7 +37,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                 <fragment
-                        android:name="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionFragmentComponent"
+                        android:name="de.usedup.android.consumption.ConsumptionFragmentComponent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:layout="@layout/consumption_fragment_component" />
@@ -82,7 +82,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                <com.hotmail.leon.zimmermann.homeassistant.components.views.InfoboxView
+                <de.usedup.android.components.views.InfoboxView
                         android:id="@+id/infoboxView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

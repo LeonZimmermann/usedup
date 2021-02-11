@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionViewModel.Mode" />
+        <import type="de.usedup.android.consumption.ConsumptionViewModel.Mode" />
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.consumption.ConsumptionViewModel" />
+                type="de.usedup.android.consumption.ConsumptionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -157,7 +157,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <com.hotmail.leon.zimmermann.homeassistant.components.views.InfoboxView
+        <de.usedup.android.components.views.InfoboxView
                 android:id="@+id/infoboxView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

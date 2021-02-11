@@ -9,13 +9,13 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorViewModel" />
+                type="de.usedup.android.management.templates.TemplateEditorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".app.management.templates.TemplateEditorFragment">
+            tools:context=".management.templates.TemplateEditorFragment">
 
         <ScrollView
                 android:layout_width="match_parent"

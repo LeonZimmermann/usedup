@@ -1,0 +1,39 @@
+package de.usedup.android.modules
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.DefineComponent
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import de.usedup.android.datamodel.api.repositories.*
+import de.usedup.android.datamodel.api.repositories.product.ProductRepository
+import de.usedup.android.datamodel.firebase.repositories.*
+import de.usedup.android.datamodel.firebase.repositories.product.FirebaseProductRepository
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DataModelModule {
+
+  @Provides
+  fun provideUserRepository(): UserRepository = FirebaseUserRepository
+
+  @Provides
+  fun provideCategoryRepository(): CategoryRepository = FirebaseCategoryRepository
+
+  @Provides
+  fun provideMeasureRepository(): MeasureRepository = FirebaseMeasureRepository
+
+  @Provides
+  fun provideProductRepository(): ProductRepository = FirebaseProductRepository
+
+  @Provides
+  fun provideTemplateRepository(): TemplateRepository = FirebaseTemplateRepository
+
+  @Provides
+  fun provideMealRepository(): MealRepository = FirebaseMealRepository
+
+  @Provides
+  fun providePlannerRepository(): PlannerRepository = FirebasePlannerRepository
+
+}

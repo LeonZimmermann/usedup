@@ -7,7 +7,7 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview.ShoppingListPreviewViewModel" />
+                type="de.usedup.android.shopping.preview.ShoppingListPreviewViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +35,7 @@
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".app.shopping.preview.ShoppingListPreviewFragment">
+                tools:context=".shopping.preview.ShoppingListPreviewFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

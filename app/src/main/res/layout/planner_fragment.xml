@@ -7,14 +7,14 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.planner.PlannerViewModel" />
+                type="de.usedup.android.planner.PlannerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".app.planner.PlannerFragment">
+            tools:context=".planner.PlannerFragment">
 
         <ScrollView
                 android:layout_width="0dp"

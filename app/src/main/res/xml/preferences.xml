@@ -7,7 +7,7 @@
             android:key="shopping_weekdays"
             android:summary="Select the weekdays on which you go shopping"
             android:title="Shopping Weekdays" />
-    <com.hotmail.leon.zimmermann.homeassistant.app.settings.TimePreference
+    <de.usedup.android.settings.TimePreference
             android:icon="@drawable/clock_icon"
             android:key="dinner_time"
             android:summary="Select the time at which you usually eat for dinner"

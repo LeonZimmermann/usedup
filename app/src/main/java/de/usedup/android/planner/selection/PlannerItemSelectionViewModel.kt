@@ -1,0 +1,41 @@
+package de.usedup.android.planner.selection
+
+import android.view.View
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
+import de.usedup.android.utils.toLongValue
+import de.usedup.android.datamodel.api.objects.Id
+import de.usedup.android.datamodel.api.objects.Meal
+import de.usedup.android.datamodel.api.repositories.MealRepository
+import de.usedup.android.datamodel.api.repositories.PlannerRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.IOException
+import java.time.LocalDate
+
+class PlannerItemSelectionViewModel @ViewModelInject constructor(
+  mealRepository: MealRepository,
+  private val plannerRepository: PlannerRepository
+) : ViewModel(), PlannerItemSelectionAdapter.Callback {
+
+  val mealList: MutableLiveData<MutableList<Meal>> = mealRepository.meals
+  val errorMessage = MutableLiveData<String>()
+
+  var plannerItemId: Id? = null
+  lateinit var date: LocalDate
+
+  override fun onMealSelected(view: View, meal: Meal) {
+    viewModelScope.launch(Dispatchers.IO) {
+      try {
+        plannerItemId?.let { plannerRepository.updatePlannerItem(it, meal.id, date.toLongValue()) }
+          ?: plannerRepository.addPlannerItem(meal.id, date.toLongValue())
+        viewModelScope.launch(Dispatchers.Main) { Navigation.findNavController(view).navigateUp() }
+      } catch (e: IOException) {
+        errorMessage.postValue("A network error occurred")
+      }
+    }
+  }
+}

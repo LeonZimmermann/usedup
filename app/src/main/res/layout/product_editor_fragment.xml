@@ -7,7 +7,7 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.management.products.ProductEditorViewModel" />
+                type="de.usedup.android.management.products.ProductEditorViewModel" />
 
         <variable
                 name="buttonText"
@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".app.management.products.ProductEditorFragment">
+            tools:context=".management.products.ProductEditorFragment">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_input_wrapper"

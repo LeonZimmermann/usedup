@@ -5,7 +5,7 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.shopping.list.ShoppingViewModel" />
+                type="de.usedup.android.shopping.list.ShoppingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".app.shopping.list.ShoppingFragment">
+            tools:context=".shopping.list.ShoppingFragment">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/confirm_button"

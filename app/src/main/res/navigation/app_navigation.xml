@@ -7,19 +7,21 @@
 
     <fragment
             android:id="@+id/overview_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.overview.OverviewFragment"
+            android:name="de.usedup.android.overview.OverviewFragment"
             android:label="Overview"
-            tools:layout="@layout/overview_fragment"/>
+            tools:layout="@layout/overview_fragment" />
     <fragment
             android:id="@+id/about_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.about.AboutFragment"
+            android:name="de.usedup.android.about.AboutFragment"
             android:label="About"
             tools:layout="@layout/about_fragment" />
-    <action android:id="@+id/action_global_about_fragment" app:destination="@id/about_fragment" />
+    <action
+            android:id="@+id/action_global_about_fragment"
+            app:destination="@id/about_fragment" />
     <fragment
             android:id="@+id/shopping_list_preview_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.preview.ShoppingListPreviewFragment"
-            android:label="ShoppingListPreview" >
+            android:name="de.usedup.android.shopping.preview.ShoppingListPreviewFragment"
+            android:label="ShoppingListPreview">
         <action
                 android:id="@+id/action_shopping_list_preview_fragment_to_shopping_list_fragment"
                 app:destination="@id/shopping_list_fragment" />
@@ -34,43 +36,43 @@
                 app:startDestination="@id/meal_editor_fragment">
             <fragment
                     android:id="@+id/camera_fragment"
-                    android:name="com.hotmail.leon.zimmermann.homeassistant.app.camera.CameraFragment"
+                    android:name="de.usedup.android.camera.CameraFragment"
                     android:label="Camera"
                     tools:layout="@layout/camera_fragment" />
             <fragment
                     android:id="@+id/meal_editor_fragment"
-                    android:name="com.hotmail.leon.zimmermann.homeassistant.app.management.meals.MealEditorFragment"
+                    android:name="de.usedup.android.management.meals.MealEditorFragment"
                     android:label="Meal Editor">
                 <action
                         android:id="@+id/action_meal_editor_fragment_to_camera_fragment"
                         app:destination="@id/camera_fragment" />
                 <argument
                         android:name="mealId"
-                        app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
+                        app:argType="de.usedup.android.datamodel.api.objects.Id"
                         app:nullable="true" />
             </fragment>
         </navigation>
         <fragment
                 android:id="@+id/product_editor_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.app.management.products.ProductEditorFragment"
+                android:name="de.usedup.android.management.products.ProductEditorFragment"
                 android:label="Product Editor">
             <argument
                     android:name="productId"
-                    app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
+                    app:argType="de.usedup.android.datamodel.api.objects.Id"
                     app:nullable="true" />
         </fragment>
         <fragment
                 android:id="@+id/template_editor_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.app.management.templates.TemplateEditorFragment"
+                android:name="de.usedup.android.management.templates.TemplateEditorFragment"
                 android:label="Template Editor">
             <argument
                     android:name="templateId"
-                    app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
+                    app:argType="de.usedup.android.datamodel.api.objects.Id"
                     app:nullable="true" />
         </fragment>
         <fragment
                 android:id="@+id/management_fragment"
-                android:name="com.hotmail.leon.zimmermann.homeassistant.app.management.ManagementFragment"
+                android:name="de.usedup.android.management.ManagementFragment"
                 android:label="Management"
                 tools:layout="@layout/management_fragment">
             <action
@@ -84,16 +86,23 @@
                     app:destination="@id/meal" />
         </fragment>
     </navigation>
-    <action android:id="@+id/action_global_management" app:destination="@id/management"/><action android:id="@+id/action_global_shopping_fragment" app:destination="@id/shopping_list_preview_fragment"/>
+    <action
+            android:id="@+id/action_global_management"
+            app:destination="@id/management" />
+    <action
+            android:id="@+id/action_global_shopping_fragment"
+            app:destination="@id/shopping_list_preview_fragment" />
     <fragment
             android:id="@+id/settings_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.settings.HomeAssistantSettingsFragment"
+            android:name="de.usedup.android.settings.UsedupSettingsFragment"
             android:label="Settings" />
-    <action android:id="@+id/action_global_settings_fragment" app:destination="@id/settings_fragment" />
+    <action
+            android:id="@+id/action_global_settings_fragment"
+            app:destination="@id/settings_fragment" />
     <fragment
             android:id="@+id/planner_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.planner.PlannerFragment"
-            android:label="Planner" >
+            android:name="de.usedup.android.planner.PlannerFragment"
+            android:label="Planner">
         <action
                 android:id="@+id/action_planner_fragment_to_meal_details_fragment"
                 app:destination="@id/meal_details_fragment" />
@@ -101,36 +110,41 @@
                 android:id="@+id/action_planner_fragment_to_planner_item_selection_fragment"
                 app:destination="@id/planner_item_selection_fragment" />
     </fragment>
-    <action android:id="@+id/action_global_planner_fragment" app:destination="@id/planner_fragment" />
+    <action
+            android:id="@+id/action_global_planner_fragment"
+            app:destination="@id/planner_fragment" />
     <fragment
             android:id="@+id/meal_details_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.mealdetails.MealDetailsFragment"
-            android:label="Meal Details" >
+            android:name="de.usedup.android.mealdetails.MealDetailsFragment"
+            android:label="Meal Details">
         <argument
                 android:name="mealId"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id" />
+                app:argType="de.usedup.android.datamodel.api.objects.Id" />
     </fragment>
     <fragment
             android:id="@+id/planner_item_selection_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.planner.selection.PlannerItemSelectionFragment"
+            android:name="de.usedup.android.planner.selection.PlannerItemSelectionFragment"
             android:label="Planner Item Selection"
-            tools:layout="@layout/planner_item_selection_fragment" >
+            tools:layout="@layout/planner_item_selection_fragment">
         <argument
                 android:name="date"
                 app:argType="long" />
         <argument
                 android:name="plannerItemId"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.datamodel.api.objects.Id"
-                app:nullable="true"
-                android:defaultValue="@null" />
+                android:defaultValue="@null"
+                app:argType="de.usedup.android.datamodel.api.objects.Id"
+                app:nullable="true" />
     </fragment>
     <fragment
             android:id="@+id/shopping_list_fragment"
-            android:name="com.hotmail.leon.zimmermann.homeassistant.app.shopping.list.ShoppingFragment"
+            android:name="de.usedup.android.shopping.list.ShoppingFragment"
             android:label="ShoppingListFragment"
-            tools:layout="@layout/shopping_fragment" >
+            tools:layout="@layout/shopping_fragment">
         <argument
                 android:name="shoppingList"
-                app:argType="com.hotmail.leon.zimmermann.homeassistant.app.shopping.data.ShoppingList" />
-    </fragment><action android:id="@+id/action_global_overview_fragment" app:destination="@id/overview_fragment"/>
+                app:argType="de.usedup.android.datamodel.api.objects.Id" />
+    </fragment>
+    <action
+            android:id="@+id/action_global_overview_fragment"
+            app:destination="@id/overview_fragment" />
 </navigation>

@@ -9,7 +9,7 @@
 
         <variable
                 name="viewModel"
-                type="com.hotmail.leon.zimmermann.homeassistant.app.mealdetails.MealDetailsViewModel" />
+                type="de.usedup.android.mealdetails.MealDetailsViewModel" />
     </data>
 
     <ScrollView
