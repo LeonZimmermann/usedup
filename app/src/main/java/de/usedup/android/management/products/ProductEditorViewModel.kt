@@ -82,7 +82,9 @@ class ProductEditorViewModel @ViewModelInject constructor(
         min, max)
       systemMessage.postValue("Added Product")
       clearData()
-      Navigation.findNavController(view).navigateUp()
+      launch(Dispatchers.Main) {
+        Navigation.findNavController(view).navigateUp()
+      }
     } catch (e: IOException) {
       systemMessage.postValue("Could not add product")
     }
