@@ -78,11 +78,18 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
     val plannerItem = plannerItems[position]
     val date = plannerItem.date.toLocalDate()
     val meal = mealRepository.getMealForId(plannerItem.mealId)
-    val weekdayText = date.dayOfWeek.toDisplayString()
-    val dayText = date.dayOfMonth
-    holder.weekdayDateTextView.text = "$weekdayText $dayText."
-    holder.dinnerItemNameTextView.text = meal.name
-    holder.dinnerItemDurationTextView.text = "${meal.duration}"
+    if (meal != null) {
+      val weekdayText = date.dayOfWeek.toDisplayString()
+      val dayText = date.dayOfMonth
+      holder.weekdayDateTextView.text = "$weekdayText $dayText."
+      holder.dinnerItemNameTextView.text = meal.name
+      holder.dinnerItemDurationTextView.text = "${meal.duration}"
+    } else {
+      // TODO Find Better solution
+      holder.weekdayDateTextView.text = "Error"
+      holder.dinnerItemNameTextView.text = "Error"
+      holder.dinnerItemDurationTextView.text = "0"
+    }
     // TODO Init image
     // holder.dinnerItemImageView.image =
     holder.previewButton.setOnClickListener { callbacks.onPreviewButtonClicked(it, plannerItem) }

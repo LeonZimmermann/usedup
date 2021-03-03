@@ -61,10 +61,12 @@ class ShoppingProductDialog(private var titleStringId: Int = -1, private var cal
 
   private fun applyData(view: View) = viewModel.viewModelScope.launch(Dispatchers.IO) {
     val productName = view.product_name_input.text.toString()
-    val product = viewModel.getProductForName(productName);
-    val cartAmount = view.cart_amount_input.text.toString().toIntOrNull() ?: throw IllegalArgumentException()
-    withContext(Dispatchers.Main) {
-      callback?.onResult(ShoppingProduct(product, cartAmount))
+    val product = viewModel.getProductForName(productName)
+    if (product != null) {
+      val cartAmount = view.cart_amount_input.text.toString().toIntOrNull() ?: throw IllegalArgumentException()
+      withContext(Dispatchers.Main) {
+        callback?.onResult(ShoppingProduct(product, cartAmount))
+      }
     }
   }
 

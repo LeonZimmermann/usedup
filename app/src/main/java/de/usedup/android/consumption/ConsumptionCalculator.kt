@@ -7,7 +7,7 @@ class ConsumptionCalculator(private val measureRepository: MeasureRepository) {
   @Throws(NotEnoughException::class)
   fun calculateUpdatedQuantity(product: Product, measureValue: MeasureValue): Double {
     val productMeasure = measureRepository.getMeasureForId(product.measureId)
-    if (productMeasure.type != measureValue.measure.type) {
+    if (productMeasure == null || productMeasure.type != measureValue.measure.type) {
       throw ConsumptionException("Incompatible measures")
     }
     return if (measureValue.measure.complex) {

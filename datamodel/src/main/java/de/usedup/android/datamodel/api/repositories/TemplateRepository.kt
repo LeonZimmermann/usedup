@@ -12,18 +12,16 @@ interface TemplateRepository {
 
   suspend fun init()
 
-  @Throws(NoSuchElementException::class)
-  suspend fun getTemplateForId(id: Id): Template
+  suspend fun getTemplateForId(id: Id): Template?
 
-  @Throws(NoSuchElementException::class)
-  suspend fun getTemplateForName(name: String): Template
+  suspend fun getTemplateForName(name: String): Template?
 
   @Throws(IOException::class)
   suspend fun addTemplate(name: String, components: List<TemplateComponent>)
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   suspend fun updateTemplate(id: Id, name: String, components: List<TemplateComponent>)
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   suspend fun deleteTemplate(id: Id)
 }

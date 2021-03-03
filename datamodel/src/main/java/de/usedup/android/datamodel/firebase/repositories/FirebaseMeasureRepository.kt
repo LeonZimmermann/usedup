@@ -23,6 +23,6 @@ object FirebaseMeasureRepository : MeasureRepository {
     }
   }
 
-  override fun getMeasureForId(id: Id) = measures.first { it.id == id }
-  override fun getMeasureForName(name: String) = measures.first { it.name == name }
+  override fun getMeasureForId(id: Id) = measures.firstOrNull { it.id == id }
+  override fun getMeasureForName(name: String) = measures.firstOrNull { it.name == name }
 }

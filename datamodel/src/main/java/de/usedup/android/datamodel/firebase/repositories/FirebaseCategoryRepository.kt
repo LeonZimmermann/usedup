@@ -23,6 +23,6 @@ object FirebaseCategoryRepository : CategoryRepository {
     }
   }
 
-  override fun getCategoryForId(id: Id) = categories.first { it.id == id }
-  override fun getCategoryForName(name: String) = categories.first { it.name == name }
+  override fun getCategoryForId(id: Id) = categories.firstOrNull { it.id == id }
+  override fun getCategoryForName(name: String) = categories.firstOrNull { it.name == name }
 }

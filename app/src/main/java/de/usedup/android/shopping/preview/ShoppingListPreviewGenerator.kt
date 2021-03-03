@@ -18,7 +18,7 @@ class ShoppingListPreviewGenerator(
         .map { ShoppingProduct(it) }
         .toSet()
     val mealList = plannerRepository.getAllPlannerItems()
-      .map { mealRepository.getMealForId(it.mealId) }
+      .mapNotNull { mealRepository.getMealForId(it.mealId) }
       .map { ShoppingMeal(it) }
       .toSet()
     return ShoppingListPreview(setOf(), productDiscrepancyList, mealList)

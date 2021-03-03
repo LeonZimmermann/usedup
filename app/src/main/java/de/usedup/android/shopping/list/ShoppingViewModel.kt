@@ -32,7 +32,7 @@ class ShoppingViewModel @Inject constructor(
     }
 
   private fun mapToShoppingListCategoryRepresentation(entry: Map.Entry<Id, List<ShoppingProduct>>) =
-    ShoppingListCategoryRepresentation(categoryRepository.getCategoryForId(entry.key).name,
+    ShoppingListCategoryRepresentation(categoryRepository.getCategoryForId(entry.key)!!.name,
       entry.value.map { ShoppingListElementRepresentation(it.product, it.cartAmount, false) }.toSet())
 
   fun initShoppingList(shoppingList: ShoppingList) {

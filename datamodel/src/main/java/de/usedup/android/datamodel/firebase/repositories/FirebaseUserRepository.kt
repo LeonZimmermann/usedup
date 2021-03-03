@@ -60,18 +60,20 @@ object FirebaseUserRepository : UserRepository {
     else currentUser = User.createInstance(firebaseUser)
   }
 
-  override suspend fun updateUser(id: Id, name: String, email: String) = withContext(Dispatchers.IO) {
-    val data = mapOf(
-      "name" to name,
-      "email" to email
-    )
-    val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception)
-    else {
-      if (currentUser == null) currentUser = User(id, name, email)
-      else currentUser!!.let {
-        it.name = name
-        it.email = email
+  override suspend fun updateUser(id: Id, name: String, email: String) {
+    withContext(Dispatchers.IO) {
+      val data = mapOf(
+        "name" to name,
+        "email" to email
+      )
+      val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
+      if (task.exception != null) throw IOException(task.exception)
+      else {
+        if (currentUser == null) currentUser = User(id, name, email)
+        else currentUser?.let {
+          it.name = name
+          it.email = email
+        }
       }
     }
   }

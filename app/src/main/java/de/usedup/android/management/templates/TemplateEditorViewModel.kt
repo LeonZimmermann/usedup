@@ -43,13 +43,17 @@ class TemplateEditorViewModel @ViewModelInject constructor(
   fun setTemplateId(templateId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@TemplateEditorViewModel.templateId = templateId
     actionButtonText.postValue("Update Template")
-    templateRepository.getTemplateForId(templateId).apply {
+    templateRepository.getTemplateForId(templateId)?.apply {
       nameString.postValue(name)
       components.let {
-        consumptionElementList.postValue(it.map { element ->
+        consumptionElementList.postValue(it.mapNotNull { element ->
           val product = productRepository.getProductForId(element.productId)
           val measure = measureRepository.getMeasureForId(element.measureId)
-          ConsumptionElement(product, MeasureValue(element.value, measure))
+          if (product != null && measure != null) {
+            ConsumptionElement(product, MeasureValue(element.value, measure))
+          } else {
+            null
+          }
         }.toMutableList())
       }
     }

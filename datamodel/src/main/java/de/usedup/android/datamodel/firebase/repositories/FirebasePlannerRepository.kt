@@ -36,13 +36,13 @@ object FirebasePlannerRepository : PlannerRepository {
     else Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
   }
 
-  private suspend fun getPlannerItemForId(id: Id): PlannerItem = withContext(Dispatchers.IO) {
-    if (plan.value != null) plan.value!!.first { it.id == id }
+  private suspend fun getPlannerItemForId(id: Id): PlannerItem? = withContext(Dispatchers.IO) {
+    if (plan.value != null) plan.value?.firstOrNull { it.id == id }
     else {
       val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebasePlannerItem = document.toObject<FirebasePlannerItem>() ?: throw IOException()
       val plannerItem = PlannerItem.createInstance(document.id, firebasePlannerItem)
-      val plannerItemList = plan.value!!
+      val plannerItemList = requireNotNull(plan.value)
       plannerItemList.add(plannerItem)
       plan.postValue(plannerItemList)
       plannerItem
@@ -63,25 +63,27 @@ object FirebasePlannerRepository : PlannerRepository {
     }
   }
 
-  override suspend fun updatePlannerItem(id: Id, mealId: Id, date: Long) = withContext(Dispatchers.IO) {
-    val data = mapOf(
-      "mealReference" to Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME)
-        .document((mealId as FirebaseId).value),
-      "date" to date
-    )
-    val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception)
-    else {
-      getPlannerItemForId(id).apply {
-        this.mealId = mealId
-        this.date = date
+  override suspend fun updatePlannerItem(id: Id, mealId: Id, date: Long) {
+    withContext(Dispatchers.IO) {
+      val data = mapOf(
+        "mealReference" to Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME)
+          .document((mealId as FirebaseId).value),
+        "date" to date
+      )
+      val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
+      if (task.exception != null) throw IOException(task.exception)
+      else {
+        getPlannerItemForId(id)?.apply {
+          this.mealId = mealId
+          this.date = date
+          plan.postValue(plan.value)
+        }
       }
-      plan.postValue(plan.value)
     }
   }
 
   override suspend fun deletePlannerItem(id: Id) = withContext(Dispatchers.IO) {
-    plan.value!!.remove(getPlannerItemForId(id))
+    requireNotNull(plan.value).remove(getPlannerItemForId(id))
     val task = collection.document((id as FirebaseId).value).delete().apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception)
     else plan.postValue(plan.value)

@@ -13,17 +13,15 @@ interface ProductRepository {
 
   fun getAllProducts(): List<Product>
 
-  @Throws(NoSuchElementException::class)
-  suspend fun getProductForId(id: Id): Product
+  suspend fun getProductForId(id: Id): Product?
 
-  @Throws(NoSuchElementException::class)
-  suspend fun getProductForName(name: String): Product
+  suspend fun getProductForName(name: String): Product?
 
   @Throws(IOException::class)
   suspend fun addProduct(name: String, categoryId: Id, capacity: Double, measureId: Id, quantity: Double,
     min: Int, max: Int)
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   suspend fun updateProduct(id: Id, name: String, categoryId: Id, capacity: Double, measureId: Id,
     quantity: Double, min: Int, max: Int)
 
@@ -33,7 +31,7 @@ interface ProductRepository {
   @Throws(IOException::class)
   suspend fun changeQuantity(data: List<Pair<Product, Double>>)
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   suspend fun deleteProduct(id: Id)
 
 }

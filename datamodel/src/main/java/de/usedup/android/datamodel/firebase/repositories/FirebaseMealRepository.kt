@@ -29,9 +29,8 @@ object FirebaseMealRepository : MealRepository {
     }
   }
 
-  @Throws(NoSuchElementException::class)
-  override suspend fun getMealForId(id: Id): Meal = withContext(Dispatchers.IO) {
-    if (meals.value != null) meals.value!!.first { it.id == id }
+  override suspend fun getMealForId(id: Id): Meal? = withContext(Dispatchers.IO) {
+    if (meals.value != null) meals.value?.firstOrNull { it.id == id }
     else {
       val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebaseMeal = document.toObject<FirebaseMeal>() ?: throw IOException()
@@ -43,14 +42,13 @@ object FirebaseMealRepository : MealRepository {
     }
   }
 
-  @Throws(NoSuchElementException::class)
-  override suspend fun getMealForName(name: String): Meal = withContext(Dispatchers.IO) {
-    if (meals.value != null) meals.value!!.first { it.name == name }
+  override suspend fun getMealForName(name: String) = withContext(Dispatchers.IO) {
+    if (meals.value != null) meals.value?.firstOrNull { it.name == name }
     else {
       val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseMeal = document.toObject<FirebaseMeal>()
       val meal = Meal.createInstance(document.id, firebaseMeal)
-      val mealList = meals.value!!
+      val mealList = requireNotNull(meals.value)
       mealList.add(meal)
       meals.postValue(mealList)
       meal
@@ -78,7 +76,7 @@ object FirebaseMealRepository : MealRepository {
     }
   }
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   override suspend fun updateMeal(
     id: Id,
     name: String,
@@ -87,28 +85,30 @@ object FirebaseMealRepository : MealRepository {
     instructions: String,
     backgroundUrl: String?,
     ingredients: List<MealIngredient>
-  ) = withContext(Dispatchers.IO) {
-    val firebaseIngredients = mapMealIngredients(ingredients)
-    val data = mapOf(
-      "name" to name,
-      "duration" to duration,
-      "description" to description,
-      "name" to instructions,
-      "backgroundUrl" to backgroundUrl,
-      "ingredients" to firebaseIngredients
-    )
-    val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception!!)
-    else {
-      getMealForId(id).apply {
-        this.name = name
-        this.duration = duration
-        this.description = description
-        this.instructions = instructions
-        this.backgroundUrl = backgroundUrl
-        this.ingredients = ingredients
+  ) {
+    withContext(Dispatchers.IO) {
+      val firebaseIngredients = mapMealIngredients(ingredients)
+      val data = mapOf(
+        "name" to name,
+        "duration" to duration,
+        "description" to description,
+        "name" to instructions,
+        "backgroundUrl" to backgroundUrl,
+        "ingredients" to firebaseIngredients
+      )
+      val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
+      if (task.exception != null) throw IOException(task.exception!!)
+      else {
+        getMealForId(id)?.apply {
+          this.name = name
+          this.duration = duration
+          this.description = description
+          this.instructions = instructions
+          this.backgroundUrl = backgroundUrl
+          this.ingredients = ingredients
+          meals.postValue(meals.value)
+        }
       }
-      meals.postValue(meals.value)
     }
   }
 

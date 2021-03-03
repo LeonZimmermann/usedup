@@ -40,12 +40,18 @@ class ProductEditorViewModel @ViewModelInject constructor(
 
   fun setProductId(productId: Id) = viewModelScope.launch(Dispatchers.Default) {
     this@ProductEditorViewModel.productId = productId
-    productRepository.getProductForId(productId).let { product ->
+    productRepository.getProductForId(productId)?.let { product ->
       nameInputValue.postValue(product.name)
       capacityInputValue.postValue(product.capacity.toString())
-      categoryInputValue.postValue(categoryRepository.getCategoryForId(product.categoryId).name)
+      val category = categoryRepository.getCategoryForId(product.categoryId)
+      if (category != null) {
+        categoryInputValue.postValue(category.name)
+      }
       currentInputValue.postValue(product.quantity.toString())
-      measureInputValue.postValue(measureRepository.getMeasureForId(product.measureId).name)
+      val measure = measureRepository.getMeasureForId(product.measureId)
+      if (measure != null) {
+        measureInputValue.postValue(measure.name)
+      }
       minInputValue.postValue(product.min.toString())
       maxInputValue.postValue(product.max.toString())
     }
@@ -70,9 +76,13 @@ class ProductEditorViewModel @ViewModelInject constructor(
 
   private fun saveAfterValidation(view: View) = viewModelScope.launch(Dispatchers.IO) {
     val name = requireNotNull(nameInputValue.value)
-    val category = categoryRepository.getCategoryForName(requireNotNull(categoryInputValue.value))
+    val category =
+      categoryRepository.getCategoryForName(requireNotNull(categoryInputValue.value)) ?: throw InvalidInputException(
+        "Select a valid category")
     val capacity = requireNotNull(capacityInputValue.value).toDouble()
-    val measure = measureRepository.getMeasureForName(requireNotNull(measureInputValue.value))
+    val measure =
+      measureRepository.getMeasureForName(requireNotNull(measureInputValue.value)) ?: throw InvalidInputException(
+        "Select a valid measure")
     val quantity = requireNotNull(currentInputValue.value).toDouble()
     val min = requireNotNull(minInputValue.value).toInt()
     val max = requireNotNull(maxInputValue.value).toInt()
@@ -106,6 +116,8 @@ class ProductEditorViewModel @ViewModelInject constructor(
   override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
     val measureName = requireNotNull(parent.adapter.getItem(position) as? String)
     val measure = measureRepository.getMeasureForName(measureName)
-    capacityInputEnabled.postValue(measure.complex)
+    if (measure != null) {
+      capacityInputEnabled.postValue(measure.complex)
+    }
   }
 }

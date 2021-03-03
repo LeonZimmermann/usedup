@@ -32,13 +32,17 @@ class MealDetailsViewModel @ViewModelInject constructor(
 
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealDetailsViewModel.mealId = mealId
-    mealRepository.getMealForId(mealId).apply {
+    mealRepository.getMealForId(mealId)?.apply {
       nameString.postValue(name)
       durationString.postValue(duration.toString())
-      ingredientsString.postValue(createIngredientsString(ingredients.map { ingredient ->
+      ingredientsString.postValue(createIngredientsString(ingredients.mapNotNull { ingredient ->
         val product = productRepository.getProductForId(ingredient.productId)
         val measure = measureRepository.getMeasureForId(ingredient.measureId)
-        ConsumptionElement(product, MeasureValue(ingredient.value, measure))
+        if (product != null && measure != null) {
+          ConsumptionElement(product, MeasureValue(ingredient.value, measure))
+        } else {
+          null
+        }
       }))
       descriptionString.postValue(description)
       instructionsString.postValue(instructions)

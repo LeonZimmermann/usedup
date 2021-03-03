@@ -6,6 +6,6 @@ import de.usedup.android.datamodel.api.objects.Id
 interface CategoryRepository {
   val categories: MutableList<Category>
   suspend fun init()
-  fun getCategoryForId(id: Id): Category
-  fun getCategoryForName(name: String): Category
+  fun getCategoryForId(id: Id): Category?
+  fun getCategoryForName(name: String): Category?
 }

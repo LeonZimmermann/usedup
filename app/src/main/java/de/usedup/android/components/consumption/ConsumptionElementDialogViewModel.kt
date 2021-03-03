@@ -43,11 +43,15 @@ class ConsumptionElementDialogViewModel @ViewModelInject constructor(
   override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
     viewModelScope.launch {
       val product = productRepository.getProductForName(productNames.value!![position])
-      val productMeasure = measureRepository.getMeasureForId(product.measureId)
-      val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
-      measureNames.postValue(measureList)
-      measureText.postValue(if (measureList.size > 1) "" else productMeasure.name)
-      measureInputType.postValue(if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0)
+      if (product != null) {
+        val productMeasure = measureRepository.getMeasureForId(product.measureId)
+        if (productMeasure != null) {
+          val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
+          measureNames.postValue(measureList)
+          measureText.postValue(if (measureList.size > 1) "" else productMeasure.name)
+          measureInputType.postValue(if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0)
+        }
+      }
     }
   }
 

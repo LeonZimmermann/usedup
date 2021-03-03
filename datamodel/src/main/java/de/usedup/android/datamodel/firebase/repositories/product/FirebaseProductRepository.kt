@@ -42,9 +42,8 @@ object FirebaseProductRepository : ProductRepository {
     else Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }
   }
 
-  @Throws(NoSuchElementException::class)
-  override suspend fun getProductForId(id: Id): Product = withContext(Dispatchers.IO) {
-    if (products.value != null) products.value!!.first { it.id == id }
+  override suspend fun getProductForId(id: Id) = withContext(Dispatchers.IO) {
+    if (products.value != null) products.value?.firstOrNull { it.id == id }
     else {
       val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebaseProduct = document.toObject<FirebaseProduct>() ?: throw IOException()
@@ -56,9 +55,8 @@ object FirebaseProductRepository : ProductRepository {
     }
   }
 
-  @Throws(NoSuchElementException::class)
-  override suspend fun getProductForName(name: String): Product = withContext(Dispatchers.IO) {
-    if (products.value != null) products.value!!.first { it.name == name }
+  override suspend fun getProductForName(name: String) = withContext(Dispatchers.IO) {
+    if (products.value != null) products.value?.first { it.name == name }
     else {
       val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseProduct = document.toObject<FirebaseProduct>()
@@ -95,39 +93,33 @@ object FirebaseProductRepository : ProductRepository {
     }
   }
 
-  @Throws(IOException::class, NoSuchElementException::class)
-  override suspend fun updateProduct(
-    id: Id,
-    name: String,
-    categoryId: Id,
-    capacity: Double,
-    measureId: Id,
-    quantity: Double,
-    min: Int,
-    max: Int
-  ) = withContext(Dispatchers.IO) {
-    val measureReference =
-      Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document((measureId as FirebaseId).value)
-    val categoryReference =
-      Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document((categoryId as FirebaseId).value)
-    val data = mapOf(
-      "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
-      "measureReference" to measureReference,
-      "categoryReference" to categoryReference
-    )
-    val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception!!)
-    else {
-      getProductForId(id).apply {
-        this.name = name
-        this.categoryId = categoryId
-        this.capacity = capacity
-        this.measureId = measureId
-        this.quantity = quantity
-        this.min = min
-        this.max = max
+  @Throws(IOException::class)
+  override suspend fun updateProduct(id: Id, name: String, categoryId: Id, capacity: Double, measureId: Id,
+    quantity: Double, min: Int, max: Int) {
+    withContext(Dispatchers.IO) {
+      val measureReference =
+        Firebase.firestore.collection(FirebaseMeasure.COLLECTION_NAME).document((measureId as FirebaseId).value)
+      val categoryReference =
+        Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document((categoryId as FirebaseId).value)
+      val data = mapOf(
+        "name" to name, "quantity" to quantity, "min" to min, "max" to max, "capacity" to capacity,
+        "measureReference" to measureReference,
+        "categoryReference" to categoryReference
+      )
+      val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
+      if (task.exception != null) throw IOException(task.exception!!)
+      else {
+        getProductForId(id)?.apply {
+          this.name = name
+          this.categoryId = categoryId
+          this.capacity = capacity
+          this.measureId = measureId
+          this.quantity = quantity
+          this.min = min
+          this.max = max
+          products.postValue(products.value)
+        }
       }
-      products.postValue(products.value)
     }
   }
 
@@ -145,10 +137,10 @@ object FirebaseProductRepository : ProductRepository {
     products.postValue(products.value)
   }
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   override suspend fun deleteProduct(id: Id) = withContext(Dispatchers.IO) {
     // TODO Account for changes in templates and meals
-    products.value!!.remove(getProductForId(id))
+    requireNotNull(products.value).remove(getProductForId(id))
     val task = collection.document((id as FirebaseId).value).delete().apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else products.postValue(products.value)

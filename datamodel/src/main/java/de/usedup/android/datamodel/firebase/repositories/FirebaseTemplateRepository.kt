@@ -29,28 +29,26 @@ object FirebaseTemplateRepository : TemplateRepository {
     }
   }
 
-  @Throws(NoSuchElementException::class)
   override suspend fun getTemplateForId(id: Id) = withContext(Dispatchers.IO) {
-    if (templates.value != null) templates.value!!.first { it.id == id }
+    if (templates.value != null) templates.value?.firstOrNull { it.id == id }
     else {
       val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebaseTemplate = document.toObject<FirebaseTemplate>() ?: throw IOException()
       val template = Template.createInstance(document.id, firebaseTemplate)
-      val templateList = templates.value!!
+      val templateList = requireNotNull(templates.value)
       templateList.add(template)
       templates.postValue(templateList)
       template
     }
   }
 
-  @Throws(NoSuchElementException::class)
   override suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
-    if (templates.value != null) templates.value!!.first { it.name == name }
+    if (templates.value != null) templates.value?.firstOrNull { it.name == name }
     else {
       val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
       val firebaseTemplate = document.toObject<FirebaseTemplate>()
       val template = Template.createInstance(document.id, firebaseTemplate)
-      val templateList = templates.value!!
+      val templateList = requireNotNull(templates.value)
       templateList.add(template)
       templates.postValue(templateList)
       template
@@ -72,8 +70,8 @@ object FirebaseTemplateRepository : TemplateRepository {
   }
 
   // TODO Add filter for user
-  @Throws(IOException::class, NoSuchElementException::class)
-  override suspend fun updateTemplate(id: Id, name: String, components: List<TemplateComponent>) =
+  @Throws(IOException::class)
+  override suspend fun updateTemplate(id: Id, name: String, components: List<TemplateComponent>) {
     withContext(Dispatchers.IO) {
       val firebaseComponents = mapComponents(components)
       val data = mapOf(
@@ -83,17 +81,18 @@ object FirebaseTemplateRepository : TemplateRepository {
       val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
       if (task.exception != null) throw IOException(task.exception!!)
       else {
-        getTemplateForId(id).apply {
+        getTemplateForId(id)?.apply {
           this.name = name
           this.components = components
+          templates.postValue(templates.value)
         }
-        templates.postValue(templates.value)
       }
     }
+  }
 
-  @Throws(IOException::class, NoSuchElementException::class)
+  @Throws(IOException::class)
   override suspend fun deleteTemplate(id: Id) = withContext(Dispatchers.IO) {
-    templates.value!!.remove(getTemplateForId(id))
+    requireNotNull(templates.value).remove(getTemplateForId(id))
     val task = collection.document((id as FirebaseId).value).delete().apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else templates.postValue(templates.value)

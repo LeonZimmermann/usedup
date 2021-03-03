@@ -40,8 +40,8 @@ class ShoppingListPreviewToShoppingListMapper(
 
   private suspend fun mapShoppingMealToShoppingProducts(shoppingMeal: ShoppingMeal): List<Pair<Product, Double>> =
     shoppingMeal.meal.ingredients.map {
-      val product = productRepository.getProductForId(it.productId)
-      val measure = measureRepository.getMeasureForId(it.measureId)
+      val product = productRepository.getProductForId(it.productId) ?: throw Exception() // TODO Refactor exceptions
+      val measure = measureRepository.getMeasureForId(it.measureId) ?: throw Exception()
       val rawAmountRequired = measure.baseFactor * it.value
       product to rawAmountRequired
     }

@@ -46,15 +46,19 @@ class MealEditorViewModel @ViewModelInject constructor(
 
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealEditorViewModel.mealId = mealId
-    mealRepository.getMealForId(mealId).apply {
+    mealRepository.getMealForId(mealId)?.apply {
       backgroundUrl?.let { photoFile = File(it) }
       nameString.postValue(name)
       durationString.postValue(duration.toString())
       ingredients.let {
-        consumptionElementList.postValue(it.map { ingredient ->
+        consumptionElementList.postValue(it.mapNotNull { ingredient ->
           val product = productRepository.getProductForId(ingredient.productId)
           val measure = measureRepository.getMeasureForId(ingredient.measureId)
-          ConsumptionElement(product, MeasureValue(ingredient.value, measure))
+          if (product != null && measure != null) {
+            ConsumptionElement(product, MeasureValue(ingredient.value, measure))
+          } else {
+            null
+          }
         }.toMutableList())
       }
       descriptionString.postValue(description)

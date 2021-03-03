@@ -107,7 +107,8 @@ class ConsumptionViewModel @Inject constructor(
       if (nameText.value.isNullOrBlank()) throw InvalidInputException("The template name is invalid")
       val template = nameText.value?.let { templateRepository.getTemplateForName(it) }!!
       val data = template.components.map { element ->
-        val product = productRepository.getProductForId(element.productId)
+        val product = productRepository.getProductForId(element.productId) ?: throw InvalidInputException(
+          "The template has invalid products and could not be consumed")
         val quantity = element.value
         val measure = measures.find { it.id == element.measureId } ?: throw RuntimeException()
         Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
@@ -127,7 +128,8 @@ class ConsumptionViewModel @Inject constructor(
       if (nameText.value.isNullOrBlank()) throw InvalidInputException("The meal name is invalid")
       val meal = nameText.value?.let { mealRepository.getMealForName(it) }!!
       val data = meal.ingredients.map { element ->
-        val product = productRepository.getProductForId(element.productId)
+        val product = productRepository.getProductForId(element.productId) ?: throw InvalidInputException(
+          "The meal has invalid products and could not be consumed")
         val quantity = element.value
         val measure = measures.find { it.id == element.measureId } ?: throw RuntimeException()
         Pair(product, consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure)))
@@ -153,12 +155,16 @@ class ConsumptionViewModel @Inject constructor(
     viewModelScope.launch {
       if (mode.value == Mode.PRODUCT) {
         val product = productRepository.getProductForName(productNameList.value!![position])
-        val productMeasure = measureRepository.getMeasureForId(product.measureId)
-        val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
-        this@ConsumptionViewModel.measureNameList.value = measureList
-        measureText.value = if (measureList.size > 1) "" else productMeasure.name
-        measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
-        quantityInputFieldFocus.postValue(true)
+        if (product != null) {
+          val productMeasure = measureRepository.getMeasureForId(product.measureId)
+          if (productMeasure != null) {
+            val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
+            this@ConsumptionViewModel.measureNameList.value = measureList
+            measureText.value = if (measureList.size > 1) "" else productMeasure.name
+            measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
+            quantityInputFieldFocus.postValue(true)
+          }
+        }
       }
     }
   }
