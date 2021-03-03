@@ -137,8 +137,6 @@
                                 android:id="@+id/productDiscrepancyRecyclerView"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="37dp"
-                                android:layout_marginEnd="37dp"
                                 android:overScrollMode="never"
                                 android:visibility="@{viewModel.productDiscrepancyEmpty ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintEnd_toEndOf="parent"
