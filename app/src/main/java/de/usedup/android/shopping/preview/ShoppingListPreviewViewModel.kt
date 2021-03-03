@@ -41,9 +41,15 @@ class ShoppingListPreviewViewModel @Inject constructor(
   var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
   var dialogEditShoppingProduct: ShoppingProduct? = null
 
+  val productDiscrepancyEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+  val mealsEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+
   fun initShoppingListPreview() {
     viewModelScope.launch(Dispatchers.IO) {
-      mutableShoppingListPreview.postValue(shoppingListPreviewGenerator.generateShoppingListPreview())
+      val shoppingListPreview = shoppingListPreviewGenerator.generateShoppingListPreview()
+      mutableShoppingListPreview.postValue(shoppingListPreview)
+      productDiscrepancyEmpty.postValue(shoppingListPreview.productDiscrepancyList.isEmpty())
+      mealsEmpty.postValue(shoppingListPreview.mealList.isEmpty())
     }
   }
 

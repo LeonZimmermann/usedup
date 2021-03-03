@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
                 name="viewModel"
                 type="de.usedup.android.shopping.preview.ShoppingListPreviewViewModel" />
@@ -85,8 +87,8 @@
                                 tools:listitem="@layout/shopping_list_preview_product" />
 
                         <Button
-                                style="@style/Widget.MaterialComponents.Button.TextButton"
                                 android:id="@+id/add_additional_product_button"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="37dp"
@@ -138,11 +140,30 @@
                                 android:layout_marginStart="37dp"
                                 android:layout_marginEnd="37dp"
                                 android:overScrollMode="never"
+                                android:visibility="@{viewModel.productDiscrepancyEmpty ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView10"
                                 tools:itemCount="3"
                                 tools:listitem="@layout/shopping_list_preview_product" />
+
+                        <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:text="You don't miss any products"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/itemTextSizeMedium"
+                                android:visibility="@{viewModel.productDiscrepancyEmpty ? View.VISIBLE : View.GONE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                                tools:visibility="gone" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
@@ -182,11 +203,30 @@
                                 android:clipToPadding="false"
                                 android:overScrollMode="never"
                                 android:paddingBottom="37dp"
+                                android:visibility="@{viewModel.mealsEmpty ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/textView11"
                                 tools:itemCount="3"
                                 tools:listitem="@layout/meal_browser_item" />
+
+                        <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginBottom="15dp"
+                                android:text="You don't have any meals planned"
+                                android:textColor="@color/textColorLight"
+                                android:textSize="@dimen/itemTextSizeMedium"
+                                android:visibility="@{viewModel.mealsEmpty ? View.VISIBLE : View.GONE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                                tools:visibility="gone" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </FrameLayout>
