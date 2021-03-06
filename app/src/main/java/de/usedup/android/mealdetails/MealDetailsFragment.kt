@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import de.usedup.android.R
 import de.usedup.android.management.meals.MealEditorFragment
 import de.usedup.android.databinding.MealDetailsFragmentBinding
@@ -32,12 +34,29 @@ class MealDetailsFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding(view)
+    initErrorMessage()
+    initNavigateUp()
   }
 
   private fun initDatabinding(view: View) {
     val binding = MealDetailsFragmentBinding.bind(view)
     binding.lifecycleOwner = this
     binding.viewModel = viewModel
+  }
+
+  private fun initErrorMessage() {
+    viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+      errorMessage?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show() }
+    }
+  }
+
+  private fun initNavigateUp() {
+    viewModel.navigateUp.observe(viewLifecycleOwner) { navigateUp ->
+      if (navigateUp) {
+        Navigation.findNavController(requireView()).navigateUp()
+        viewModel.navigateUp.postValue(false)
+      }
+    }
   }
 
   companion object {

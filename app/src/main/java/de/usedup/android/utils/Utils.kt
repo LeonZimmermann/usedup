@@ -29,6 +29,8 @@ fun Iterable<*>.enumerationJoin(context: Context): String {
   else string
 }
 
+fun Int.toDurationString() = "$this min"
+
 fun Long.toLocalDate() = Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDate()
 fun LocalDate.toLongValue() = this.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
 

@@ -25,23 +25,23 @@
                     android:id="@+id/consumption_creation_image_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:adjustViewBounds="true"
-                    android:cropToPadding="true"
-                    android:scaleType="fitCenter"
+                    android:background="#4B4B4B"
+                    android:padding="50dp"
                     app:layout_constraintDimensionRatio="16:9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/meal_icon" />
+                    app:srcCompat="@drawable/meal_icon"
+                    app:tint="@android:color/white" />
 
             <TextView
                     android:id="@+id/name_input"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginTop="37dp"
                     android:text="@{viewModel.nameString}"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/itemTextSizeBig"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/consumption_creation_image_view"
@@ -57,47 +57,50 @@
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintStart_toEndOf="@+id/imageView3"
                     app:layout_constraintTop_toTopOf="@+id/imageView3"
-                    tools:text="5min" />
+                    tools:text="5 min" />
 
             <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginTop="37dp"
                     android:text="@string/ingredients"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/itemTextSizeMedium"
-                    app:layout_constraintStart_toStartOf="@+id/imageView3"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/consumption_details_description_tv" />
 
             <TextView
                     android:id="@+id/consumption_details_ingredients_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="37dp"
                     android:text="@{viewModel.ingredientsString}"
                     android:textSize="@dimen/itemTextSizeSmall"
-                    app:layout_constraintEnd_toEndOf="@+id/consumption_details_description_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView5"
-                    tools:text="- Lorem ipsum\n- Lorem ipsum\n- Lorem ipsum" />
+                    tools:text="Lorem ipsum\nLorem ipsum\nLorem ipsum" />
 
             <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginTop="37dp"
                     android:text="@string/description"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/itemTextSizeMedium"
                     android:visibility="@{viewModel.descriptionString != null ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/imageView3"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/duration_input" />
 
             <TextView
                     android:id="@+id/consumption_details_description_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="37dp"
                     android:text="@{viewModel.descriptionString}"
                     android:textSize="@dimen/itemTextSizeSmall"
                     android:visibility="@{viewModel.descriptionString != null ? View.VISIBLE : View.GONE}"
@@ -110,31 +113,35 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginTop="37dp"
                     android:text="@string/instructions"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/itemTextSizeMedium"
                     android:visibility="@{viewModel.instructionsString != null ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintStart_toStartOf="@+id/imageView3"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/consumption_details_ingredients_tv" />
 
             <TextView
                     android:id="@+id/consumption_details_instructions_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginBottom="37dp"
                     android:text="@{viewModel.instructionsString}"
                     android:textSize="@dimen/itemTextSizeSmall"
                     android:visibility="@{viewModel.instructionsString != null ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="@+id/consumption_details_ingredients_tv"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView9"
                     app:layout_constraintTop_toBottomOf="@+id/textView9"
-                    tools:text="- Lorem ipsum\n- Lorem ipsum\n- Lorem ipsum" />
+                    tools:text="Lorem ipsum\nLorem ipsum\nLorem ipsum" />
 
             <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintStart_toStartOf="@+id/name_input"
                     app:layout_constraintTop_toBottomOf="@+id/name_input"
                     app:srcCompat="@drawable/clock_icon" />
