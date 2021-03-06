@@ -1,7 +1,5 @@
 package de.usedup.android.shopping.preview
 
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.*
@@ -23,7 +21,7 @@ class ShoppingListPreviewViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   mealRepository: MealRepository,
   plannerRepository: PlannerRepository,
-  measureRepository: MeasureRepository) : ViewModel(), Parcelable {
+  measureRepository: MeasureRepository) : ViewModel() {
 
   private val shoppingListPreviewGenerator =
     ShoppingListPreviewGenerator(productRepository, mealRepository, plannerRepository)
@@ -125,30 +123,5 @@ class ShoppingListPreviewViewModel @Inject constructor(
     }
   }
 
-  constructor(parcel: Parcel) : this(
-    TODO("productRepository"),
-    TODO("mealRepository"),
-    TODO("plannerRepository"),
-    TODO("measureRepository")) {
-
-  }
-
   suspend fun getProductForName(productName: String) = productRepository.getProductForName(productName)
-  override fun writeToParcel(parcel: Parcel, flags: Int) {
-
-  }
-
-  override fun describeContents(): Int {
-    return 0
-  }
-
-  companion object CREATOR : Parcelable.Creator<ShoppingListPreviewViewModel> {
-    override fun createFromParcel(parcel: Parcel): ShoppingListPreviewViewModel {
-      return ShoppingListPreviewViewModel(parcel)
-    }
-
-    override fun newArray(size: Int): Array<ShoppingListPreviewViewModel?> {
-      return arrayOfNulls(size)
-    }
-  }
 }

@@ -17,11 +17,13 @@ class MealRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<M
 
   inner class MealViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val nameTv: TextView = itemView.meal_name_tv
+    private val durationTv: TextView = itemView.dinner_item_duration_tv
     private val imageView: ImageView = itemView.meal_image_view
 
     fun init(meal: MealRepresentation) {
       meal.apply {
         nameTv.text = nameText
+        durationTv.text = durationText
         // TODO Init imageView
       }
     }

@@ -4,9 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="37dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginRight="37dp">
+        android:layout_marginTop="17dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,35 +37,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/meal_image_view"
                 tools:text="Sandwichtoast" />
 
-        <ImageView
-                android:id="@+id/edit_button"
-                style="@style/RoundIconButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="15dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:scaleType="fitCenter"
-                android:src="@drawable/edit_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/remove_button"
-                app:layout_constraintEnd_toStartOf="@+id/remove_button"
-                app:layout_constraintTop_toTopOf="@+id/remove_button"
-                app:tint="@android:color/white" />
+        <TextView
+                android:id="@+id/dinner_item_duration_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/itemTextSizeMedium"
+                app:layout_constraintBottom_toBottomOf="@+id/meal_name_tv"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/dinner_item_name_tv"
+                tools:text="Duration" />
 
         <ImageView
-                android:id="@+id/remove_button"
-                style="@style/RoundIconButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="15dp"
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:backgroundTint="@color/negative"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cross_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/dinner_item_duration_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/meal_image_view"
-                app:tint="@android:color/white" />
+                app:layout_constraintTop_toTopOf="@+id/dinner_item_duration_tv"
+                app:srcCompat="@drawable/clock_icon"
+                app:tint="@android:color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
