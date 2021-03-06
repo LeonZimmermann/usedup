@@ -21,7 +21,7 @@
     <fragment
             android:id="@+id/shopping_list_preview_fragment"
             android:name="de.usedup.android.shopping.preview.ShoppingListPreviewFragment"
-            android:label="ShoppingListPreview">
+            android:label="Preview">
         <action
                 android:id="@+id/action_shopping_list_preview_fragment_to_shopping_list_fragment"
                 app:destination="@id/shopping_list_fragment" />
@@ -42,7 +42,7 @@
             <fragment
                     android:id="@+id/meal_editor_fragment"
                     android:name="de.usedup.android.management.meals.MealEditorFragment"
-                    android:label="Meal Editor">
+                    android:label="Edit Meal">
                 <action
                         android:id="@+id/action_meal_editor_fragment_to_camera_fragment"
                         app:destination="@id/camera_fragment" />
@@ -55,7 +55,7 @@
         <fragment
                 android:id="@+id/product_editor_fragment"
                 android:name="de.usedup.android.management.products.ProductEditorFragment"
-                android:label="Product Editor">
+                android:label="Edit Product">
             <argument
                     android:name="productId"
                     app:argType="de.usedup.android.datamodel.api.objects.Id"
@@ -64,7 +64,7 @@
         <fragment
                 android:id="@+id/template_editor_fragment"
                 android:name="de.usedup.android.management.templates.TemplateEditorFragment"
-                android:label="Template Editor">
+                android:label="Edit Template">
             <argument
                     android:name="templateId"
                     app:argType="de.usedup.android.datamodel.api.objects.Id"
@@ -102,7 +102,7 @@
     <fragment
             android:id="@+id/planner_fragment"
             android:name="de.usedup.android.planner.PlannerFragment"
-            android:label="Planner">
+            android:label="Dinner Planning">
         <action
                 android:id="@+id/action_planner_fragment_to_meal_details_fragment"
                 app:destination="@id/meal_details_fragment" />
@@ -116,7 +116,7 @@
     <fragment
             android:id="@+id/meal_details_fragment"
             android:name="de.usedup.android.mealdetails.MealDetailsFragment"
-            android:label="Meal Details">
+            android:label="Meal">
         <argument
                 android:name="mealId"
                 app:argType="de.usedup.android.datamodel.api.objects.Id" />
@@ -124,7 +124,7 @@
     <fragment
             android:id="@+id/planner_item_selection_fragment"
             android:name="de.usedup.android.planner.selection.PlannerItemSelectionFragment"
-            android:label="Planner Item Selection"
+            android:label="Select Dinner"
             tools:layout="@layout/planner_item_selection_fragment">
         <argument
                 android:name="date"
@@ -138,7 +138,7 @@
     <fragment
             android:id="@+id/shopping_list_fragment"
             android:name="de.usedup.android.shopping.list.ShoppingFragment"
-            android:label="ShoppingListFragment"
+            android:label="Shopping-List"
             tools:layout="@layout/shopping_fragment">
         <argument
                 android:name="shoppingList"
