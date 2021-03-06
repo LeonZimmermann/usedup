@@ -13,6 +13,7 @@ import de.usedup.android.R
 import de.usedup.android.utils.toLocalDate
 import de.usedup.android.datamodel.api.objects.Id
 import dagger.hilt.android.AndroidEntryPoint
+import de.usedup.android.databinding.PlannerItemSelectionFragmentBinding
 import kotlinx.android.synthetic.main.planner_item_selection_fragment.*
 
 @AndroidEntryPoint
@@ -33,8 +34,15 @@ class PlannerItemSelectionFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    initDatabinding()
     initErrorMessageSnackbar()
     initRecyclerView()
+  }
+
+  private fun initDatabinding() {
+    val binding = PlannerItemSelectionFragmentBinding.bind(requireView())
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = this
   }
 
   private fun initErrorMessageSnackbar() {

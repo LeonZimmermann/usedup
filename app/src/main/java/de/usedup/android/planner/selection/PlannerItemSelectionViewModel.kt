@@ -2,10 +2,9 @@ package de.usedup.android.planner.selection
 
 import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.Navigation
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.utils.toLongValue
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Meal
@@ -15,13 +14,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.time.LocalDate
+import javax.inject.Inject
 
-class PlannerItemSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PlannerItemSelectionViewModel @Inject constructor(
   mealRepository: MealRepository,
   private val plannerRepository: PlannerRepository
 ) : ViewModel(), PlannerItemSelectionAdapter.Callback {
 
   val mealList: MutableLiveData<MutableList<Meal>> = mealRepository.meals
+  val mealListEmpty: LiveData<Boolean> = Transformations.map(mealList) { it.isEmpty() }
   val errorMessage = MutableLiveData<String>()
 
   var plannerItemId: Id? = null
