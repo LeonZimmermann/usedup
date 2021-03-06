@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import de.usedup.android.R
 import de.usedup.android.utils.toDisplayString
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.planner_placeholder.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.*
 
 class PlannerRecyclerAdapter(private val context: Context, private val coroutineScope: CoroutineScope,
   private val callbacks: Callbacks) :
@@ -47,9 +49,9 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
     val dinnerItemNameTextView: TextView = itemView.dinner_item_name_tv
     val dinnerItemDurationTextView: TextView = itemView.dinner_item_duration_tv
     val dinnerItemImageView: ImageView = itemView.dinner_item_image
-    val previewButton: Button = itemView.preview_button
-    val changeButton: Button = itemView.change_button
-    val deleteButton: Button = itemView.delete_button
+    val previewButton: ImageView = itemView.preview_button
+    val changeButton: ImageView = itemView.change_button
+    val deleteButton: ImageView = itemView.delete_button
   }
 
   inner class PlannerPlaceholderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -75,7 +77,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
   }
 
   private fun bindPlannerItemViewHolder(holder: PlannerItemViewHolder, position: Int) = coroutineScope.launch {
-    val plannerItem = plannerItems[position]
+    val plannerItem = plannerItems.first { it.date.toLocalDate().dayOfWeek == LocalDate.now().plusDays(position.toLong()).dayOfWeek }
     val date = plannerItem.date.toLocalDate()
     val meal = mealRepository.getMealForId(plannerItem.mealId)
     if (meal != null) {
@@ -98,25 +100,24 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
   }
 
   private fun bindPlannerPlaceholderViewHolder(holder: PlannerPlaceholderViewHolder, position: Int) {
-    val date = plannerItems.lastOrNull()?.date?.toLocalDate()?.plusDays(1) ?: LocalDate.now()
+    val date = LocalDate.now().plusDays(position.toLong())
     val weekdayText = date.dayOfWeek.toDisplayString()
     val dayText = date.dayOfMonth
     holder.weekdayDateTextView.text = "$weekdayText $dayText."
     holder.addButton.setOnClickListener { callbacks.onAddButtonClicked(it, date) }
   }
 
-  override fun getItemViewType(position: Int): Int = if (position >= plannerItems.size) PLACEHOLDER_TYPE else ITEM_TYPE
-
-  override fun getItemCount() = numberOfSlots() + 1
-
-  private fun numberOfSlots(): Int {
-    if (plannerItems.isEmpty()) return 0
-    val firstDay = requireNotNull(plannerItems.minBy { it.date }).date
-    val lastDay = requireNotNull(plannerItems.maxBy { it.date }).date
-    return firstDay.millisToDays() - lastDay.millisToDays()
+  override fun getItemViewType(position: Int): Int {
+    return if (plannerItems.filter { it.date.toLocalDate() >= LocalDate.now() }.none {
+        it.date.toLocalDate().dayOfWeek == LocalDate.now().plusDays(position.toLong()).dayOfWeek
+      }) {
+      PLACEHOLDER_TYPE
+    } else {
+      ITEM_TYPE
+    }
   }
 
-  private fun Long.millisToDays(): Int = (this / (24 * 60 * 60 * 1000)).toInt()
+  override fun getItemCount() = 7
 
   fun setPlannerItems(plannerItems: List<PlannerItem>) {
     this.plannerItems = plannerItems

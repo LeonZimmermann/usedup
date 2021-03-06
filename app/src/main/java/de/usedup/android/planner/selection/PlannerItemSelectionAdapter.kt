@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import de.usedup.android.R
 import de.usedup.android.utils.toIntFormat
 import de.usedup.android.datamodel.api.objects.Meal
+import de.usedup.android.utils.toDurationString
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 
 class PlannerItemSelectionAdapter(private val context: Context, private val callback: Callback) :
@@ -37,7 +38,7 @@ class PlannerItemSelectionAdapter(private val context: Context, private val call
         .into(holder.dinnerItemImage)
     }
     holder.dinnerItemName.text = meal.name
-    holder.dinnerItemDuration.text = "${meal.duration.toIntFormat()} min"
+    holder.dinnerItemDuration.text = meal.duration.toDurationString()
     holder.itemView.setOnClickListener { callback.onMealSelected(holder.itemView, meal) }
   }
 
