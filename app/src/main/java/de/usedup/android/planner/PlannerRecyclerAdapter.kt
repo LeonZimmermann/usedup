@@ -19,6 +19,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import de.usedup.android.utils.toDurationString
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.weekday_date_tv
@@ -85,7 +86,7 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
       val dayText = date.dayOfMonth
       holder.weekdayDateTextView.text = "$weekdayText $dayText."
       holder.dinnerItemNameTextView.text = meal.name
-      holder.dinnerItemDurationTextView.text = "${meal.duration}"
+      holder.dinnerItemDurationTextView.text = meal.duration.toDurationString()
     } else {
       // TODO Find Better solution
       holder.weekdayDateTextView.text = "Error"

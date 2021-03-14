@@ -22,12 +22,14 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import de.usedup.android.utils.toDurationString
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
 import kotlinx.android.synthetic.main.template_browser_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ManagementRecyclerAdapter constructor(context: Context, private val recyclerView: RecyclerView,
   private val navController: NavController, private val coroutineScope: CoroutineScope) :
@@ -111,7 +113,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       }
       meal.apply {
         nameTv.text = name
-        durationTv.text = "${duration.toIntFormat()}min"
+        durationTv.text = duration.toDurationString()
       }
     }
   }
@@ -164,7 +166,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
           meals.remove(meal)
         }
       }
-      notifyItemRemoved(position)
+      withContext(Dispatchers.Main) { notifyItemRemoved(position) }
     }
   }
 
