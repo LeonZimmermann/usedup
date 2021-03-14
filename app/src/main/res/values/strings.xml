@@ -40,7 +40,7 @@
     <string name="add_instructions">Add Instructions</string>
     <string name="add_description">Add Description</string>
     <string name="add_ingredients">Add Ingredients</string>
-    <string name="duration">Duration</string>
+    <string name="duration">Duration (in minutes)</string>
     <string name="ingredients">Ingredients</string>
     <string name="shopping_entry_amount">%1$dx</string>
     <string name="edit">Edit</string>
