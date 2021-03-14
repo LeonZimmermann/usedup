@@ -135,6 +135,10 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:22.0.2'
 
+    // Google Play Billing
+    implementation "com.android.billingclient:billing:$billingVersion"
+    implementation "com.android.billingclient:billing-ktx:$billingVersion"
+
     // Multidex
     implementation 'com.android.support:multidex:1.0.3'
 }

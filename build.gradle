@@ -28,6 +28,7 @@ task clean(type: Delete) {
 }
 
 ext {
+    billingVersion = "3.0.0"
     workVersion = "2.4.0"
     navigationVersion = "2.3.0"
     archLifecycleVersion = '2.2.0'
