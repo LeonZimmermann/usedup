@@ -45,13 +45,13 @@ class ConsumptionElementDialogFragment @JvmOverloads constructor(private var cal
 
   private fun initNameInput(view: View) {
     view.name_input.onItemClickListener = viewModel
-    viewModel.productNames.observe(this, Observer { productNames ->
+    viewModel.productNames.observe(this, { productNames ->
       view.name_input.setAdapter(ArrayAdapter(requireContext(), R.layout.list_item, productNames))
     })
   }
 
   private fun initMeasureInput(view: View) {
-    viewModel.measureNames.observe(this, Observer { measureNames ->
+    viewModel.measureNames.observe(this, { measureNames ->
       view.measure_input.setAdapter(ArrayAdapter(requireContext(), R.layout.list_item, measureNames))
     })
   }

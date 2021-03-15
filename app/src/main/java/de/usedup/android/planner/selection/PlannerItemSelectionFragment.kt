@@ -46,7 +46,7 @@ class PlannerItemSelectionFragment : Fragment() {
   }
 
   private fun initErrorMessageSnackbar() {
-    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+    viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
       Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
     })
   }
@@ -55,7 +55,7 @@ class PlannerItemSelectionFragment : Fragment() {
     val adapter = PlannerItemSelectionAdapter(requireContext(), viewModel)
     recycler_view.adapter = adapter
     recycler_view.layoutManager = LinearLayoutManager(requireContext())
-    viewModel.mealList.observe(viewLifecycleOwner, Observer { mealList ->
+    viewModel.mealList.observe(viewLifecycleOwner, { mealList ->
       adapter.setMealList(mealList)
     })
   }

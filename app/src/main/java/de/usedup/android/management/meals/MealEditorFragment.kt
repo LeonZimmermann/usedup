@@ -91,7 +91,7 @@ class MealEditorFragment : Fragment() {
         }
       }).attachToRecyclerView(view.ingredients_list)
     }
-    viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { consumptionElementList ->
+    viewModel.consumptionElementList.observe(viewLifecycleOwner, { consumptionElementList ->
       adapter.setConsumptionElementList(consumptionElementList)
       val params = view.add_ingredients_button.layoutParams as ViewGroup.MarginLayoutParams
       val topMarginDimensionId = if (consumptionElementList.isEmpty()) R.dimen.lMargin else R.dimen.sMargin

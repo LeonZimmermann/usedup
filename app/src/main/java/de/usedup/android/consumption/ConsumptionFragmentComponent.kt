@@ -44,20 +44,20 @@ class ConsumptionFragmentComponent : Fragment() {
   }
 
   private fun initNameInput() {
-    viewModel.mappedNameList.observe(viewLifecycleOwner, Observer { mappedNameList ->
+    viewModel.mappedNameList.observe(viewLifecycleOwner, { mappedNameList ->
       mappedNameList.removeObservers(viewLifecycleOwner)
-      mappedNameList.observe(viewLifecycleOwner, Observer { nameList ->
+      mappedNameList.observe(viewLifecycleOwner, { nameList ->
         name_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nameList))
       })
     })
-    viewModel.nameHint.observe(viewLifecycleOwner, Observer { nameHint ->
+    viewModel.nameHint.observe(viewLifecycleOwner, { nameHint ->
       name_input.hint = nameHint
     })
     name_input.onItemClickListener = viewModel
   }
 
   private fun initQuantityInput() {
-    viewModel.quantityInputFieldFocus.observe(viewLifecycleOwner, Observer { focusQuantityInputField ->
+    viewModel.quantityInputFieldFocus.observe(viewLifecycleOwner, { focusQuantityInputField ->
       if (focusQuantityInputField) {
         quantity_input.requestFocus()
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
@@ -67,13 +67,13 @@ class ConsumptionFragmentComponent : Fragment() {
   }
 
   private fun initMeasureInput() {
-    viewModel.measureNameList.observe(viewLifecycleOwner, Observer { measureList ->
+    viewModel.measureNameList.observe(viewLifecycleOwner, { measureList ->
       measure_input.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, measureList))
     })
   }
 
   private fun initErrorSnackbar() {
-    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+    viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
       Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
     })
   }

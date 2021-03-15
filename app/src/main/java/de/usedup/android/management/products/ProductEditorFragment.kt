@@ -66,7 +66,7 @@ class ProductEditorFragment : Fragment() {
   }
 
   private fun initSystemMessage() {
-    viewModel.systemMessage.observe(viewLifecycleOwner, Observer { systemMessage ->
+    viewModel.systemMessage.observe(viewLifecycleOwner, { systemMessage ->
       if (!systemMessage.isNullOrBlank()) Snackbar.make(requireView(), systemMessage, Snackbar.LENGTH_LONG).show()
     })
   }

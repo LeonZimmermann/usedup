@@ -50,7 +50,7 @@ class ShoppingProductDialog(private var titleStringId: Int = -1, private var cal
   }
 
   private fun initView(view: View) {
-    viewModel.productNames.observe(this, Observer { productNames ->
+    viewModel.productNames.observe(this, { productNames ->
       view.product_name_input.setAdapter(
         ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, productNames))
     })

@@ -47,10 +47,10 @@ class OverviewFragment : Fragment() {
     discrepancy_recyclerview.layoutManager = object : LinearLayoutManager(requireContext()) {
       override fun canScrollVertically(): Boolean = false
     }
-    viewModel.discrepancyProductList.observe(viewLifecycleOwner, Observer { discrepancyProductList ->
+    viewModel.discrepancyProductList.observe(viewLifecycleOwner, { discrepancyProductList ->
       adapter.productAmountList = discrepancyProductList
     })
-    viewModel.discrepancyAdditionalAmount.observe(viewLifecycleOwner, Observer { discrepancyAdditionalAmount ->
+    viewModel.discrepancyAdditionalAmount.observe(viewLifecycleOwner, { discrepancyAdditionalAmount ->
       adapter.additionalAmount = discrepancyAdditionalAmount
     })
   }

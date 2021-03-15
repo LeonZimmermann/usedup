@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun initActivityToStart() {
-    viewModel.activityToStart.observe(this, Observer { activityToStart ->
+    viewModel.activityToStart.observe(this, { activityToStart ->
       val intent = Intent(this@MainActivity, activityToStart).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
       }

@@ -25,7 +25,7 @@ class LoginFlowActivity : AppCompatActivity() {
   }
 
   private fun initActivityToStart() {
-    viewModel.activityToStart.observe(this, Observer { activityToStart ->
+    viewModel.activityToStart.observe(this, { activityToStart ->
       val intent = Intent(this@LoginFlowActivity, activityToStart).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
       }

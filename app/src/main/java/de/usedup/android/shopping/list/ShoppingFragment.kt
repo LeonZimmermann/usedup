@@ -52,7 +52,7 @@ class ShoppingFragment : Fragment() {
     val adapter = ShoppingListCategoryRecyclerAdapter(requireContext(), viewModel.onCheckButtonPressedCallback)
     shopping_list_recycler_view.adapter = adapter
     shopping_list_recycler_view.layoutManager = LinearLayoutManager(requireContext())
-    viewModel.shoppingListCategories.observe(viewLifecycleOwner, Observer { shoppingListCategories ->
+    viewModel.shoppingListCategories.observe(viewLifecycleOwner, { shoppingListCategories ->
       adapter.initShoppingListCategories(shoppingListCategories)
     })
   }

@@ -43,7 +43,7 @@ class ManagementFragment : Fragment() {
 
   private fun initTabLayout() {
     tab_layout.addOnTabSelectedListener(viewModel)
-    viewModel.mode.observe(viewLifecycleOwner, Observer { mode ->
+    viewModel.mode.observe(viewLifecycleOwner, { mode ->
       val tabPosition = when (mode) {
         ManagementViewModel.Mode.PRODUCT -> 0
         ManagementViewModel.Mode.TEMPLATE -> 1
@@ -55,16 +55,16 @@ class ManagementFragment : Fragment() {
   }
 
   private fun initAdapter() {
-    viewModel.products.observe(viewLifecycleOwner, Observer { products ->
+    viewModel.products.observe(viewLifecycleOwner, { products ->
       viewModel.adapter.products = products
     })
-    viewModel.templates.observe(viewLifecycleOwner, Observer { templates ->
+    viewModel.templates.observe(viewLifecycleOwner, { templates ->
       viewModel.adapter.templates = templates
     })
-    viewModel.meals.observe(viewLifecycleOwner, Observer { meals ->
+    viewModel.meals.observe(viewLifecycleOwner, { meals ->
       viewModel.adapter.meals = meals
     })
-    viewModel.mode.observe(viewLifecycleOwner, Observer { mode ->
+    viewModel.mode.observe(viewLifecycleOwner, { mode ->
       viewModel.adapter.mode = mode
     })
   }

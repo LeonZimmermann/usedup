@@ -44,7 +44,7 @@ class PlannerFragment : Fragment() {
     val adapter = PlannerRecyclerAdapter(requireContext(), viewModel.viewModelScope, viewModel)
     recycler_view.adapter = adapter
     recycler_view.layoutManager = LinearLayoutManager(requireContext())
-    viewModel.plannerItems.observe(viewLifecycleOwner, Observer { plannerItems ->
+    viewModel.plannerItems.observe(viewLifecycleOwner, { plannerItems ->
       adapter.setPlannerItems(plannerItems)
     })
   }

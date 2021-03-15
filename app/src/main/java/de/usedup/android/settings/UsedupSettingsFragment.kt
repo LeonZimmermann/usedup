@@ -34,7 +34,7 @@ class UsedupSettingsFragment : Fragment() {
   }
 
   private fun initErrorMessage() {
-    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+    viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
       Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
     })
   }

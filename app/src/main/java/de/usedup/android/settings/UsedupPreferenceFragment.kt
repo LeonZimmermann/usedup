@@ -29,14 +29,14 @@ class UsedupPreferenceFragment : PreferenceFragmentCompat() {
   private fun initShoppingWeekdaysPreference() {
     val shoppingWeekdayPreference = requireNotNull(findPreference<MultiSelectListPreference>("shopping_weekdays"))
     viewModel.shoppingWeekdayPreferenceEntryValues.observe(viewLifecycleOwner,
-      Observer { shoppingWeekdayPreferenceEntryValues ->
+      { shoppingWeekdayPreferenceEntryValues ->
         shoppingWeekdayPreference.entryValues = shoppingWeekdayPreferenceEntryValues
       })
-    viewModel.shoppingWeekdayPreferenceEntries.observe(viewLifecycleOwner, Observer { shoppingWeekayPreferenceEntries ->
+    viewModel.shoppingWeekdayPreferenceEntries.observe(viewLifecycleOwner, { shoppingWeekayPreferenceEntries ->
       shoppingWeekdayPreference.entries = shoppingWeekayPreferenceEntries
     })
     viewModel.shoppingWeekdayPreferenceSummary.observe(viewLifecycleOwner,
-      Observer { shoppingWeekdayPreferenceSummary ->
+      { shoppingWeekdayPreferenceSummary ->
         shoppingWeekdayPreference.summary = shoppingWeekdayPreferenceSummary
       })
     shoppingWeekdayPreference.setOnPreferenceChangeListener { _, newValue ->

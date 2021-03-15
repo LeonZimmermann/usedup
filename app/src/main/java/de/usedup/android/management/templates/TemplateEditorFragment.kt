@@ -69,7 +69,7 @@ class TemplateEditorFragment : Fragment() {
         }
       }).attachToRecyclerView(view.ingredients_list)
     }
-    viewModel.consumptionElementList.observe(viewLifecycleOwner, Observer { consumptionElementList ->
+    viewModel.consumptionElementList.observe(viewLifecycleOwner, { consumptionElementList ->
       adapter.setConsumptionElementList(consumptionElementList)
     })
   }
@@ -91,7 +91,7 @@ class TemplateEditorFragment : Fragment() {
   }
 
   private fun initErrorMessage() {
-    viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
+    viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
       Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
     })
   }
