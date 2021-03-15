@@ -1,7 +1,7 @@
 package de.usedup.android.datamodel.api.objects
 
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.exceptions.IncompatibleMeasuresException
-import com.usedup.android.zimmermann.homeassistant.datamodel.firebase.objects.FirebaseMeasure
+import de.usedup.android.datamodel.api.exceptions.IncompatibleMeasuresException
+import de.usedup.android.datamodel.firebase.objects.FirebaseMeasure
 import junit.framework.Assert.assertEquals
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test

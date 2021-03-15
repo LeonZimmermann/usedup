@@ -1,8 +1,8 @@
 package de.usedup.android.consumption
 
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.objects.MeasureValue
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
-import de.usedup.android.app.*
+import de.usedup.android.*
+import de.usedup.android.datamodel.api.objects.MeasureValue
+import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

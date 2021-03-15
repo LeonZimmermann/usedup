@@ -1,9 +1,8 @@
 package de.usedup.android.shopping.preview
 
-import de.usedup.android.app.mockProduct
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.repositories.MealRepository
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.repositories.PlannerRepository
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.repositories.product.ProductRepository
+import de.usedup.android.mockProduct
+import de.usedup.android.datamodel.api.repositories.PlannerRepository
+import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

@@ -1,9 +1,9 @@
-package de.usedup.android.app
+package de.usedup.android
 
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.objects.Id
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.objects.Measure
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.objects.Product
-import com.usedup.android.zimmermann.homeassistant.datamodel.api.repositories.MeasureRepository
+import de.usedup.android.datamodel.api.objects.Id
+import de.usedup.android.datamodel.api.objects.Measure
+import de.usedup.android.datamodel.api.objects.Product
+import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import io.mockk.every
 import io.mockk.mockk
 
