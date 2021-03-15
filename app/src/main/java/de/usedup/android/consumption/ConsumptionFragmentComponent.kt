@@ -30,17 +30,17 @@ class ConsumptionFragmentComponent : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    initDatabinding(view)
+    initDatabinding()
     initNameInput()
     initQuantityInput()
     initMeasureInput()
     initErrorSnackbar()
   }
 
-  private fun initDatabinding(view: View) {
-    binding = ConsumptionFragmentComponentBinding.bind(view)
-    binding.lifecycleOwner = this
+  private fun initDatabinding() {
+    binding = ConsumptionFragmentComponentBinding.bind(requireView())
     binding.viewModel = viewModel
+    binding.lifecycleOwner = this
   }
 
   private fun initNameInput() {

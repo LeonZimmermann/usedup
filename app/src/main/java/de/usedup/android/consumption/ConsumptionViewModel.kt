@@ -71,9 +71,9 @@ class ConsumptionViewModel @Inject constructor(
   fun consume() = viewModelScope.launch(Dispatchers.Default) {
     try {
       when (mode.value) {
-        Mode.PRODUCT -> consumeProduct()
-        Mode.TEMPLATE -> consumeTemplate()
-        Mode.MEAL -> consumeMeal()
+        Mode.PRODUCT -> consumeProduct().join()
+        Mode.TEMPLATE -> consumeTemplate().join()
+        Mode.MEAL -> consumeMeal().join()
       }
       clearInputs()
     } catch (e: NotEnoughException) {
@@ -89,7 +89,7 @@ class ConsumptionViewModel @Inject constructor(
     try {
       if (nameText.value.isNullOrBlank()) throw InvalidInputException("Please insert a name")
       if (quantityText.value.isNullOrBlank()) throw InvalidInputException("Please insert a quantity")
-      val product = nameText.value?.let { productRepository.getProductForName(it) } ?: throw InvalidInputException(
+      val product = nameText.value?.let { productRepository.getProductForName(it.trim()) } ?: throw InvalidInputException(
         "Could not find product")
       val quantity = quantityText.value?.toDoubleOrNull() ?: throw InvalidInputException("Please insert a valid quantity")
       val measure =
