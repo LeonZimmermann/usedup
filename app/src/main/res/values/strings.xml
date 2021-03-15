@@ -75,4 +75,5 @@
     <string name="meal">Meal</string>
     <string name="consume">Consume</string>
     <string name="register_consumptions">Register consumptions</string>
+    <string name="add_meal">Add Meal</string>
 </resources>

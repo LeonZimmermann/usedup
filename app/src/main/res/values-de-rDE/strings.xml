@@ -67,4 +67,5 @@
     <string name="sign_in_with_facebook">Mit Facebook anmelden</string>
     <string name="sign_in_with_google">Mit Google anmelden</string>
     <string name="terms_of_service">AGBs</string>
+    <string name="add_meal">Gericht hinzufügen</string>
 </resources>
