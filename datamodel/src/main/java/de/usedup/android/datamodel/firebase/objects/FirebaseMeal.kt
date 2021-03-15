@@ -9,8 +9,7 @@ internal class FirebaseMeal(
   @PropertyName("description") var description: String? = null,
   @PropertyName("instructions") var instructions: String? = null,
   @PropertyName("backgroundUrl") var backgroundUrl: String? = null,
-  @PropertyName("ingredients") var ingredients: List<FirebaseMealIngredient>? = null,
-  @PropertyName("userReference") var userReference: DocumentReference? = null
+  @PropertyName("ingredients") var ingredients: List<FirebaseMealIngredient>? = null
 ) {
   companion object {
     const val COLLECTION_NAME = "meals"

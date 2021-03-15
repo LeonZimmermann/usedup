@@ -37,7 +37,7 @@ class TemplateEditorViewModel @ViewModelInject constructor(
   val actionButtonText: MutableLiveData<String> = MutableLiveData("Add Template")
   val errorMessage: MutableLiveData<String> = MutableLiveData()
 
-  var templateId: Id? = null
+  private var templateId: Id? = null
     private set
 
   fun setTemplateId(templateId: Id) = viewModelScope.launch(Dispatchers.IO) {

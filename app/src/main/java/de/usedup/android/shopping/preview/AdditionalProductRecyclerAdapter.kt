@@ -75,6 +75,5 @@ class AdditionalProductRecyclerAdapter(context: Context, var callback: Callback)
   }
 
   companion object {
-    private const val TAG = "APRA"
   }
 }

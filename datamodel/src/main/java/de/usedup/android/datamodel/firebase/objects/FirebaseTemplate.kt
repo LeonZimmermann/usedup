@@ -5,8 +5,7 @@ import com.google.firebase.firestore.PropertyName
 
 internal class FirebaseTemplate(
   @PropertyName("name") var name: String? = null,
-  @PropertyName("components") var components: List<FirebaseTemplateComponent>? = null,
-  @PropertyName("userReference") var userReference: DocumentReference? = null
+  @PropertyName("components") var components: List<FirebaseTemplateComponent>? = null
 ) {
   companion object {
     const val COLLECTION_NAME = "templates"

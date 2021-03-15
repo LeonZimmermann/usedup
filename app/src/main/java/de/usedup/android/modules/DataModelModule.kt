@@ -2,9 +2,7 @@ package de.usedup.android.modules
 
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.DefineComponent
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import de.usedup.android.datamodel.api.repositories.*
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository

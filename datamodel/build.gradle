@@ -39,10 +39,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-auth-ktx:20.0.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:20.0.3'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:22.0.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.1'

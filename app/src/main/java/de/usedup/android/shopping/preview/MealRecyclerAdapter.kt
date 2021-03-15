@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.usedup.android.R
 import kotlinx.android.synthetic.main.shopping_list_preview_meal.view.*
 
-class MealRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<MealRecyclerAdapter.MealViewHolder>() {
+class MealRecyclerAdapter(context: Context) : RecyclerView.Adapter<MealRecyclerAdapter.MealViewHolder>() {
 
   private val inflater = LayoutInflater.from(context)
   private var meals: List<MealRepresentation> = emptyList()
@@ -18,7 +18,6 @@ class MealRecyclerAdapter(private val context: Context) : RecyclerView.Adapter<M
   inner class MealViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val nameTv: TextView = itemView.meal_name_tv
     private val durationTv: TextView = itemView.dinner_item_duration_tv
-    private val imageView: ImageView = itemView.meal_image_view
 
     fun init(meal: MealRepresentation) {
       meal.apply {

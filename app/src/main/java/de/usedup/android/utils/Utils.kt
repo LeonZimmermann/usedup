@@ -31,7 +31,7 @@ fun Iterable<*>.enumerationJoin(context: Context): String {
 
 fun Int.toDurationString() = "$this min"
 
-fun Long.toLocalDate() = Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDate()
+fun Long.toLocalDate(): LocalDate = Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDate()
 fun LocalDate.toLongValue() = this.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
 
 private val TIME_FORMAT = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)

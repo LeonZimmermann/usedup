@@ -65,8 +65,7 @@ object FirebaseMealRepository : MealRepository {
     ingredients: List<MealIngredient>
   ) = withContext(Dispatchers.IO) {
     val firebaseIngredients = mapMealIngredients(ingredients)
-    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients,
-      FirebaseUserRepository.getDocumentReferenceToCurrentUser())
+    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
     val task = collection.add(firebaseMeal).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception!!)
     else {

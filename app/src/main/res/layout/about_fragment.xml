@@ -65,7 +65,6 @@
             app:layout_constraintTop_toBottomOf="@+id/privacy_policy_text" />
 
     <TextView
-            android:id="@+id/imprint_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="TODO..."

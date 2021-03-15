@@ -1,15 +1,14 @@
 package de.usedup.android.planner.selection
 
 import android.view.View
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.usedup.android.utils.toLongValue
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Meal
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.PlannerRepository
+import de.usedup.android.utils.toLongValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException

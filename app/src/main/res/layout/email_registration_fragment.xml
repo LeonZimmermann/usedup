@@ -81,7 +81,6 @@
 
     <Button
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:id="@+id/signin_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/register"

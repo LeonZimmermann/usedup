@@ -7,19 +7,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import de.usedup.android.R
-import de.usedup.android.utils.toDisplayString
-import de.usedup.android.utils.toLocalDate
-import de.usedup.android.components.recyclerViewHandler.RecyclerViewHandlerAdapter
-import de.usedup.android.datamodel.api.objects.PlannerItem
-import de.usedup.android.datamodel.api.repositories.MealRepository
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import de.usedup.android.R
+import de.usedup.android.components.recyclerViewHandler.RecyclerViewHandlerAdapter
+import de.usedup.android.datamodel.api.objects.PlannerItem
+import de.usedup.android.datamodel.api.repositories.MealRepository
+import de.usedup.android.utils.toDisplayString
 import de.usedup.android.utils.toDurationString
+import de.usedup.android.utils.toLocalDate
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.weekday_date_tv
@@ -27,7 +26,6 @@ import kotlinx.android.synthetic.main.planner_placeholder.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.*
 
 class PlannerRecyclerAdapter(private val context: Context, private val coroutineScope: CoroutineScope,
   private val callbacks: Callbacks) :

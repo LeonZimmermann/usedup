@@ -1,8 +1,5 @@
 package de.usedup.android.mealdetails
 
-import android.text.Html
-import android.text.Spanned
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,7 +31,7 @@ class MealDetailsViewModel @Inject constructor(
   val errorMessage = MutableLiveData<String?>()
   val navigateUp = MutableLiveData(false)
 
-  var mealId: Id? = null
+  private var mealId: Id? = null
     private set
 
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {

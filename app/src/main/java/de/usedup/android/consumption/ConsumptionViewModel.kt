@@ -3,7 +3,6 @@ package de.usedup.android.consumption
 import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException

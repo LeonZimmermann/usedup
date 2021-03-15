@@ -52,12 +52,6 @@ class ProductDiscrepancyRecyclerAdapter(context: Context, var callback: Callback
     notifyDataSetChanged()
   }
 
-  internal fun addProductDiscrepancy(productDiscrepancy: ProductDiscrepancyRepresentation) {
-    Log.d(TAG, "addProductDiscrepancy: $productDiscrepancy")
-    this.productDiscrepancyList.add(productDiscrepancy)
-    notifyItemInserted(this.productDiscrepancyList.size - 1)
-  }
-
   internal fun replaceProductDiscrepancy(index: Int, productDiscrepancy: ProductDiscrepancyRepresentation) {
     Log.d(TAG, "replaceProductDiscrepancy: $index, $productDiscrepancy")
     this.productDiscrepancyList[index] = productDiscrepancy

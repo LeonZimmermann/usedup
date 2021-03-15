@@ -36,11 +36,12 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                <fragment
+                <androidx.fragment.app.FragmentContainerView
                         android:name="de.usedup.android.consumption.ConsumptionFragmentComponent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:layout="@layout/consumption_fragment_component" />
+                        tools:layout="@layout/consumption_fragment_component"
+                        android:id="@+id/TODO" />
             </FrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -22,9 +22,6 @@ class ShoppingListPreviewGeneratorUnitTest {
   private lateinit var productRepository: ProductRepository
 
   @MockK
-  private lateinit var mealRepository: MealRepository
-
-  @MockK
   private lateinit var plannerRepository: PlannerRepository
 
   @InjectMockKs

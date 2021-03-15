@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import de.usedup.android.R
-import de.usedup.android.utils.toIntFormat
 import de.usedup.android.datamodel.api.objects.Meal
 import de.usedup.android.utils.toDurationString
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
