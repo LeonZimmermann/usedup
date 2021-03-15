@@ -34,13 +34,18 @@ class ShoppingListPreviewViewModel @Inject constructor(
   val editAdditionalProductShoppingProduct: MutableLiveData<ShoppingProduct?> = MutableLiveData(null)
 
   // Dialog
-  val productNames: LiveData<List<String>> =
-    Transformations.map(productRepository.products) { products -> products.map { it.name }.toList() }
+  var productNames: MutableLiveData<List<String>> = MutableLiveData()
   var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
   var dialogEditShoppingProduct: ShoppingProduct? = null
 
   val productDiscrepancyEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
   val mealsEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+
+  init {
+    viewModelScope.launch(Dispatchers.IO) {
+      productNames.postValue(productRepository.getAllProducts().map { it.name })
+    }
+  }
 
   fun initShoppingListPreview() {
     viewModelScope.launch(Dispatchers.IO) {

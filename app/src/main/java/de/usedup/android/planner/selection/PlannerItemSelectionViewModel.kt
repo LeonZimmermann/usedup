@@ -21,12 +21,18 @@ class PlannerItemSelectionViewModel @Inject constructor(
   private val plannerRepository: PlannerRepository
 ) : ViewModel(), PlannerItemSelectionAdapter.Callback {
 
-  val mealList: MutableLiveData<MutableList<Meal>> = mealRepository.meals
+  val mealList: MutableLiveData<Set<Meal>> = MutableLiveData()
   val mealListEmpty: LiveData<Boolean> = Transformations.map(mealList) { it.isEmpty() }
   val errorMessage = MutableLiveData<String>()
 
   var plannerItemId: Id? = null
   lateinit var date: LocalDate
+
+  init {
+    viewModelScope.launch(Dispatchers.IO) {
+      mealList.postValue(mealRepository.getAllMeals())
+    }
+  }
 
   override fun onMealSelected(view: View, meal: Meal) {
     viewModelScope.launch(Dispatchers.IO) {

@@ -1,6 +1,5 @@
 package de.usedup.android.management.meals
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,7 @@ class MealEditorViewModel @Inject constructor(
   private val mealRepository: MealRepository
 ) : ViewModel() {
 
-  var products: MutableLiveData<MutableList<Product>> = productRepository.products
+  var products: MutableLiveData<Set<Product>> = MutableLiveData()
 
   var nameString = MutableLiveData<String>()
   var durationString = MutableLiveData<String>()
@@ -46,6 +45,12 @@ class MealEditorViewModel @Inject constructor(
 
   var mealId: Id? = null
     private set
+
+  init {
+    viewModelScope.launch(Dispatchers.IO) {
+      products.postValue(productRepository.getAllProducts())
+    }
+  }
 
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealEditorViewModel.mealId = mealId

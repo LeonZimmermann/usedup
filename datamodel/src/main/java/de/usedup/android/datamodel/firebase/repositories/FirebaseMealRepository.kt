@@ -1,6 +1,5 @@
 package de.usedup.android.datamodel.firebase.repositories
 
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -18,44 +17,30 @@ import java.io.IOException
 object FirebaseMealRepository : MealRepository {
   private val collection = Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME)
 
-  override val meals: MutableLiveData<MutableList<Meal>> = MutableLiveData()
-
-  override suspend fun init() {
-    withContext(Dispatchers.IO) {
-      collection.filterForUser().get()
-        .addOnSuccessListener { documents ->
-          meals.value = documents.map { Meal.createInstance(it.id, it.toObject()) }.toMutableList()
-        }
-    }
+  override fun getAllMeals(): Set<Meal> {
+    return Tasks.await(collection.filterForUser().get()).map { Meal.createInstance(it.id, it.toObject()) }.toSet()
   }
 
   override suspend fun getMealForId(id: Id): Meal? = withContext(Dispatchers.IO) {
-    if (meals.value != null) meals.value?.firstOrNull { it.id == id }
-    else {
-      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+    val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+    if (document.exists()) {
       val firebaseMeal = document.toObject<FirebaseMeal>() ?: throw IOException()
-      val meal = Meal.createInstance(document.id, firebaseMeal)
-      val mealList = meals.value!!
-      mealList.add(meal)
-      meals.postValue(mealList)
-      meal
+      Meal.createInstance(document.id, firebaseMeal)
+    } else {
+      null
     }
   }
 
   override suspend fun getMealForName(name: String) = withContext(Dispatchers.IO) {
-    if (meals.value != null) meals.value?.firstOrNull { it.name == name }
-    else {
-      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+    val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+    if (document.exists()) {
       val firebaseMeal = document.toObject<FirebaseMeal>()
-      val meal = Meal.createInstance(document.id, firebaseMeal)
-      val mealList = requireNotNull(meals.value)
-      mealList.add(meal)
-      meals.postValue(mealList)
-      meal
+      Meal.createInstance(document.id, firebaseMeal)
+    } else {
+      null
     }
   }
 
-  @Throws(IOException::class)
   override suspend fun addMeal(
     name: String,
     duration: Int,
@@ -63,19 +48,13 @@ object FirebaseMealRepository : MealRepository {
     instructions: String?,
     backgroundUrl: String?,
     ingredients: List<MealIngredient>
-  ) = withContext(Dispatchers.IO) {
+  ): Unit = withContext(Dispatchers.IO) {
     val firebaseIngredients = mapMealIngredients(ingredients)
     val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
     val task = collection.add(firebaseMeal).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception!!)
-    else {
-      val mealList = meals.value!!
-      mealList.add(Meal.createInstance(task.result!!.id, firebaseMeal))
-      meals.postValue(mealList)
-    }
+    task.exception?.let { throw IOException(it) }
   }
 
-  @Throws(IOException::class)
   override suspend fun updateMeal(
     id: Id,
     name: String,
@@ -96,7 +75,7 @@ object FirebaseMealRepository : MealRepository {
         "ingredients" to firebaseIngredients
       )
       val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
-      if (task.exception != null) throw IOException(task.exception!!)
+      if (task.exception != null) throw IOException(requireNotNull(task.exception))
       else {
         getMealForId(id)?.apply {
           this.name = name
@@ -105,18 +84,25 @@ object FirebaseMealRepository : MealRepository {
           this.instructions = instructions
           this.backgroundUrl = backgroundUrl
           this.ingredients = ingredients
-          meals.postValue(meals.value)
         }
       }
     }
   }
 
-  @Throws(IOException::class, NoSuchElementException::class)
-  override suspend fun deleteMeal(id: Id) = withContext(Dispatchers.IO) {
-    meals.value!!.remove(getMealForId(id))
-    val task = collection.document((id as FirebaseId).value).delete().apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception!!)
-    else meals.postValue(meals.value)
+  override suspend fun deleteMeal(id: Id): Unit = withContext(Dispatchers.IO) {
+    // TODO Warn user that planner items containing this meal will be deleted
+    // TODO Retry on failure
+    val mealReference = collection.document((id as FirebaseId).value)
+    mealReference.delete().addOnSuccessListener {
+      Firebase.firestore.collection(FirebasePlannerItem.COLLECTION_NAME).whereEqualTo("mealReference", mealReference)
+        .addSnapshotListener { value, error ->
+          if (error != null) {
+            value?.documents?.map { it.reference }?.forEach { it.delete() }
+          } else {
+            // TODO Add logging and retry
+          }
+        }
+    }
   }
 
   private fun mapMealIngredients(ingredients: List<MealIngredient>) = ingredients.map {

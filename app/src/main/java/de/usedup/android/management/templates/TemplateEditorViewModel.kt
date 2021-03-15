@@ -30,7 +30,7 @@ class TemplateEditorViewModel @Inject constructor(
   private val templateRepository: TemplateRepository
 ) : ViewModel() {
 
-  var products: MutableLiveData<MutableList<Product>> = productRepository.products
+  var products: MutableLiveData<Set<Product>> = MutableLiveData()
 
   var nameString = MutableLiveData<String>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> = MutableLiveData(mutableListOf())
@@ -40,6 +40,12 @@ class TemplateEditorViewModel @Inject constructor(
 
   private var templateId: Id? = null
     private set
+
+  init {
+    viewModelScope.launch(Dispatchers.IO) {
+      products.postValue(productRepository.getAllProducts())
+    }
+  }
 
   fun setTemplateId(templateId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@TemplateEditorViewModel.templateId = templateId

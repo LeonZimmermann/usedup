@@ -6,8 +6,7 @@ import android.widget.AdapterView
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
-import de.usedup.android.datamodel.api.objects.Measure
-import de.usedup.android.datamodel.api.objects.MeasureValue
+import de.usedup.android.datamodel.api.objects.*
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
@@ -25,10 +24,9 @@ class ConsumptionViewModel @Inject constructor(
   private val productRepository: ProductRepository
 ) : ViewModel(), AdapterView.OnItemClickListener {
 
-  private val productNameList = Transformations.map(productRepository.products) { products -> products.map { it.name } }
-  private val templateNameList =
-    Transformations.map(templateRepository.templates) { templates -> templates.map { it.name } }
-  private val mealNameList = Transformations.map(mealRepository.meals) { meals -> meals.map { it.name } }
+  private var productNameList: MutableLiveData<List<String>> = MutableLiveData()
+  private var templateNameList: MutableLiveData<List<String>> = MutableLiveData()
+  private var mealNameList: MutableLiveData<List<String>> = MutableLiveData()
   private val measures: MutableList<Measure> = measureRepository.measures
 
   private val consumptionCalculator = ConsumptionCalculator(measureRepository)
@@ -50,6 +48,11 @@ class ConsumptionViewModel @Inject constructor(
 
   init {
     setMode(Mode.PRODUCT)
+    viewModelScope.launch(Dispatchers.IO) {
+      productNameList.postValue(productRepository.getAllProducts().map { it.name })
+      templateNameList.postValue(templateRepository.getAllTemplates().map { it.name })
+      mealNameList.postValue(mealRepository.getAllMeals().map { it.name })
+    }
   }
 
   fun setMode(mode: Mode) {
@@ -84,20 +87,19 @@ class ConsumptionViewModel @Inject constructor(
 
   private suspend fun consumeProduct() = viewModelScope.launch(Dispatchers.IO) {
     try {
-      if (nameText.value.isNullOrBlank()) throw InvalidInputException("The product name is invalid")
-      if (quantityText.value.isNullOrBlank()) throw InvalidInputException("The quantity is invalid")
-      val product = nameText.value?.let { productRepository.getProductForName(it) }!!
-      val quantity = quantityText.value?.toDouble()!!
+      if (nameText.value.isNullOrBlank()) throw InvalidInputException("Please insert a name")
+      if (quantityText.value.isNullOrBlank()) throw InvalidInputException("Please insert a quantity")
+      val product = nameText.value?.let { productRepository.getProductForName(it) } ?: throw InvalidInputException(
+        "Could not find product")
+      val quantity = quantityText.value?.toDoubleOrNull() ?: throw InvalidInputException("Please insert a valid quantity")
       val measure =
-        measures.find { it.name == measureText.value } ?: throw InvalidInputException("The measure is invalid")
+        measures.find { it.name == measureText.value } ?: throw InvalidInputException("Could not find measure")
       val updatedQuantity = consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure))
       productRepository.changeQuantity(product, updatedQuantity)
     } catch (e: NotEnoughException) {
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
-    } catch (e: NoSuchElementException) {
-      errorMessage.postValue("Could not find the provided product")
     }
   }
 
@@ -117,8 +119,6 @@ class ConsumptionViewModel @Inject constructor(
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
-    } catch (e: NoSuchElementException) {
-      errorMessage.postValue("Could not find the provided template")
     }
   }
 
@@ -138,8 +138,6 @@ class ConsumptionViewModel @Inject constructor(
       errorMessage.postValue(e.message)
     } catch (e: InvalidInputException) {
       errorMessage.postValue(e.message)
-    } catch (e: NoSuchElementException) {
-      errorMessage.postValue("Could not find the provided meal")
     }
   }
 

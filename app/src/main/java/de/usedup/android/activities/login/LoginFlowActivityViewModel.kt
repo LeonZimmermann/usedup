@@ -32,9 +32,6 @@ class LoginFlowActivityViewModel @Inject constructor(
   fun initAppAndStartActivity() = viewModelScope.launch(Dispatchers.IO) {
     UsedupNotificationChannelManager.getInstance(context).createNotificationChannels()
     userRepository.init()
-    productRepository.init()
-    templateRepository.init()
-    mealRepository.init()
     categoryRepository.init()
     measureRepository.init()
     plannerRepository.init()

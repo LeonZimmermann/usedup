@@ -3,17 +3,20 @@ package de.usedup.android.overview
 import android.view.View
 import androidx.lifecycle.*
 import androidx.navigation.Navigation
+import com.facebook.internal.Mutable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.objects.Product
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import de.usedup.android.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.max
 
 @HiltViewModel
 class OverviewViewModel @Inject constructor(productRepository: ProductRepository) : ViewModel() {
 
-  val products: MutableLiveData<MutableList<Product>> = productRepository.products
+  val products: MutableLiveData<Set<Product>> = MutableLiveData()
 
   val discrepancyProductList: LiveData<List<Pair<Product, Int>>> = Transformations.map(products) { products ->
     products.filter { it.discrepancy > 0 }
@@ -27,6 +30,12 @@ class OverviewViewModel @Inject constructor(productRepository: ProductRepository
 
   fun onShoppingButtonClicked(view: View) {
     Navigation.findNavController(view).navigate(R.id.action_global_shopping_fragment)
+  }
+
+  init {
+    viewModelScope.launch(Dispatchers.IO) {
+      products.postValue(productRepository.getAllProducts())
+    }
   }
 
   companion object {

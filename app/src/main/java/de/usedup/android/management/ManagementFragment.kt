@@ -56,13 +56,13 @@ class ManagementFragment : Fragment() {
 
   private fun initAdapter() {
     viewModel.products.observe(viewLifecycleOwner, { products ->
-      viewModel.adapter.products = products
+      viewModel.adapter.products = products.toMutableList()
     })
     viewModel.templates.observe(viewLifecycleOwner, { templates ->
-      viewModel.adapter.templates = templates
+      viewModel.adapter.templates = templates.toMutableList()
     })
     viewModel.meals.observe(viewLifecycleOwner, { meals ->
-      viewModel.adapter.meals = meals
+      viewModel.adapter.meals = meals.toMutableList()
     })
     viewModel.mode.observe(viewLifecycleOwner, { mode ->
       viewModel.adapter.mode = mode

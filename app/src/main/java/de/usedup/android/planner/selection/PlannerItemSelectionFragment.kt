@@ -56,7 +56,7 @@ class PlannerItemSelectionFragment : Fragment() {
     recycler_view.adapter = adapter
     recycler_view.layoutManager = LinearLayoutManager(requireContext())
     viewModel.mealList.observe(viewLifecycleOwner, { mealList ->
-      adapter.setMealList(mealList)
+      adapter.setMealList(mealList.toList())
     })
   }
 
