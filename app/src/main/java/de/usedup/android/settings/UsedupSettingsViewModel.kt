@@ -9,10 +9,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.activities.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class UsedupSettingsViewModel @ViewModelInject constructor(@ApplicationContext private val context: Context) :
+@HiltViewModel
+class UsedupSettingsViewModel @Inject constructor(@ApplicationContext private val context: Context) :
   ViewModel() {
 
   private val authentication = FirebaseAuth.getInstance()

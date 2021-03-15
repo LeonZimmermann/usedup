@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.R
 import de.usedup.android.components.recyclerViewHandler.RecyclerViewHandler
 import de.usedup.android.datamodel.api.objects.Meal
@@ -19,8 +20,10 @@ import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ManagementViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ManagementViewModel @Inject constructor(
   @ApplicationContext private val context: Context,
   productRepository: ProductRepository,
   templateRepository: TemplateRepository,

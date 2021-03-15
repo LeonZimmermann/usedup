@@ -4,11 +4,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.components.consumption.ConsumptionElement
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.Id
@@ -21,9 +21,10 @@ import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-
-class TemplateEditorViewModel @ViewModelInject constructor(
+@HiltViewModel
+class TemplateEditorViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
   private val templateRepository: TemplateRepository

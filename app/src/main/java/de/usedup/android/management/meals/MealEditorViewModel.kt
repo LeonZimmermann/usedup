@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.components.consumption.ConsumptionElement
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.Id
@@ -16,8 +17,10 @@ import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import javax.inject.Inject
 
-class MealEditorViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MealEditorViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
   private val mealRepository: MealRepository

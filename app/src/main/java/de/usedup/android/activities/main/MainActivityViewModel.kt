@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.activities.AppActivity
 import de.usedup.android.activities.login.LoginFlowActivity
 import de.usedup.android.notifications.UsedupNotificationChannelManager
@@ -13,8 +14,10 @@ import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
   @ApplicationContext private val context: Context,
   private val userRepository: UserRepository,
   private val productRepository: ProductRepository,

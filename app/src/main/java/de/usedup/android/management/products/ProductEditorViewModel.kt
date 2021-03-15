@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.repositories.CategoryRepository
@@ -15,8 +16,10 @@ import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
-class ProductEditorViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ProductEditorViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
   private val categoryRepository: CategoryRepository

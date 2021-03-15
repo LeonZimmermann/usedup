@@ -9,13 +9,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.MeasureValue
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ConsumptionElementDialogViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ConsumptionElementDialogViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository
 ) : ViewModel(), AdapterView.OnItemClickListener {
