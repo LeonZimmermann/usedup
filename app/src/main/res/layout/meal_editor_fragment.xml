@@ -44,11 +44,11 @@
                         android:onClick="@{eventHandler::onImageViewClicked}"
                         android:scaleType="center"
                         android:src="@drawable/add_photo_icon"
-                        android:tint="@android:color/white"
                         app:layout_constraintDimensionRatio="16:9"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@android:color/white" />
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/name_input_wrapper"

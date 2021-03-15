@@ -12,10 +12,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:backgroundTintMode="add"
-            android:tint="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/info_text"
-            app:srcCompat="@drawable/info_icon" />
+            app:srcCompat="@drawable/info_icon"
+            app:tint="@android:color/white" />
 
     <TextView
             android:id="@+id/info_text"

@@ -46,7 +46,7 @@
                 android:textSize="@dimen/itemTextSizeMedium"
                 app:layout_constraintBottom_toBottomOf="@+id/meal_name_tv"
                 app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/dinner_item_name_tv"
+                app:layout_constraintTop_toTopOf="@+id/meal_name_tv"
                 tools:text="Duration" />
 
         <ImageView
