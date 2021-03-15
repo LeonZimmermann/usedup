@@ -14,7 +14,7 @@
     <string name="missing_products">Missing Products</string>
     <string name="cart_amount">Cart Amount</string>
     <string name="change_cart_amount_for_product">Change cart amount for product</string>
-    <string name="add_additional_product">Add additional product</string>
+    <string name="add_additional_product">Add product</string>
 
     <!-- Facebook -->
     <string name="facebook_application_id" translatable="false">535190474056037</string>
@@ -48,7 +48,6 @@
     <string name="category">Category</string>
     <string name="reset">Reset</string>
     <string name="settings">Settings</string>
-    <string name="manage_calendar">Manage Calendar</string>
     <string name="number_picker">Number Picker</string>
     <string name="register_with_email">Register with Email</string>
     <string name="register">Register</string>
@@ -84,4 +83,14 @@
     <string name="management">Management</string>
     <string name="calendar">Calendar</string>
     <string name="others">Others</string>
+    <string name="no_discrepancy_message">You don\'t miss any products</string>
+    <string name="no_meals_message">You don\'t have any meals planned</string>
+    <string name="product_name">Name of the product</string>
+    <string name="save_dinner">Save Dinner</string>
+    <string name="no_meals_yet_message">You don\'t have any meals yet :(</string>
+    <string name="product">Product</string>
+    <string name="template">Template</string>
+    <string name="meal">Meal</string>
+    <string name="consume">Consume</string>
+    <string name="register_consumptions">Register consumptions</string>
 </resources>

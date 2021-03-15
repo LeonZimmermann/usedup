@@ -174,7 +174,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="32dp"
                         android:onClick="@{eventHandler::onSaveDinnerButtonClicked}"
-                        android:text="Save Dinner"
+                        android:text="@string/save_dinner"
                         android:textAlignment="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

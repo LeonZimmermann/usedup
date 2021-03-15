@@ -28,7 +28,7 @@
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Product Name"
+                    android:hint="@string/product_name"
                     android:inputType="none"
                     android:text="@={viewModel.nameText}" />
         </com.google.android.material.textfield.TextInputLayout>
