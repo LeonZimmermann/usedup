@@ -1,12 +1,16 @@
 package de.usedup.android.datamodel.api.repositories.product
 
+import androidx.lifecycle.LiveData
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Product
-import java.io.IOException
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineScope
 
 interface ProductRepository {
 
-  fun getAllProducts(): Set<Product>
+  fun getAllProductsLiveData(coroutineScope: CoroutineScope): LiveData<Set<Product>>
+
+  fun getAllProducts(): Single<Set<Product>>
 
   suspend fun getProductForId(id: Id): Product?
 

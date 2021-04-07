@@ -1,29 +1,28 @@
 package de.usedup.android.datamodel.api.repositories
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.PlannerItem
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineScope
 
 interface PlannerRepository {
 
   /**
-   * Holds a LiveData of all items that are available in the database and belong to this user.
-   */
-  val plan: MutableLiveData<MutableList<PlannerItem>>
-
-  /**
-   * Initializes the plan field of the repository. Should be run on IO Dispatcher, as it fetches data from the database.
-   * Should also update the plan, so that deprecated PlannerItems are removed from the database.
-   */
-  suspend fun init()
-
-  /**
-   * Loads the PlannerItems blocking in the current thread if it hasn't been loaded yet. Otherwise the value in the plan
-   * field should be returned.
+   * Lazily loads the PlannerItems in a IO-Coroutine. If the data was already the already available value is returned.
    *
    * @return a list of planner items
    */
-  fun getAllPlannerItems(): List<PlannerItem>
+  fun getAllPlannerItemsLiveData(coroutineScope: CoroutineScope): LiveData<List<PlannerItem>>
+
+  /**
+   * Returns a Single object that returns all planner items. The Single object can be subscribed on to asynchronously
+   * retrieve its value.
+   *
+   * @return a list of planner items
+   */
+  fun getAllPlannerItems(): Single<List<PlannerItem>>
 
   /**
    * Adds a new item to the repository and database. Should be run on IO Dispatcher, as it fetches data from the database.

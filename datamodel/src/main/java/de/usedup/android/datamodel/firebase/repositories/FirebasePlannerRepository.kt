@@ -1,6 +1,8 @@
 package de.usedup.android.datamodel.firebase.repositories
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -12,39 +14,53 @@ import de.usedup.android.datamodel.firebase.filterForUser
 import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseMeal
 import de.usedup.android.datamodel.firebase.objects.FirebasePlannerItem
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
 object FirebasePlannerRepository : PlannerRepository {
 
-  override val plan: MutableLiveData<MutableList<PlannerItem>> = MutableLiveData()
   private val collection = Firebase.firestore.collection(FirebasePlannerItem.COLLECTION_NAME)
 
-  override suspend fun init() {
-    withContext(Dispatchers.IO) {
-      collection.filterForUser().get()
-        .addOnSuccessListener { documents ->
-          plan.value = documents.map { PlannerItem.createInstance(it.id, it.toObject()) }.toMutableList()
-        }
+  private val plannerList: MutableLiveData<MutableList<PlannerItem>> = MutableLiveData()
+
+  override fun getAllPlannerItemsLiveData(coroutineScope: CoroutineScope): LiveData<List<PlannerItem>> {
+    if (plannerList.value == null) {
+      coroutineScope.launch(Dispatchers.IO) {
+        plannerList.postValue(
+          Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
+            .toMutableList())
+      }
+    }
+    return Transformations.map(plannerList) { it.toList() }
+  }
+
+  override fun getAllPlannerItems(): Single<List<PlannerItem>> {
+    return Single.fromCallable {
+      if (plannerList.value == null) {
+        val plannerList =
+          Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
+            .toMutableList()
+        this.plannerList.postValue(plannerList)
+        plannerList
+      } else {
+        plannerList.value
+      }
     }
   }
 
-  override fun getAllPlannerItems(): List<PlannerItem> = runBlocking(Dispatchers.IO) {
-    if (plan.value != null) plan.value!!
-    else Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
-  }
-
   private suspend fun getPlannerItemForId(id: Id): PlannerItem? = withContext(Dispatchers.IO) {
-    if (plan.value != null) plan.value?.firstOrNull { it.id == id }
+    if (plannerList.value != null) plannerList.value?.firstOrNull { it.id == id }
     else {
       val document = Tasks.await(collection.document((id as FirebaseId).value).get())
       val firebasePlannerItem = document.toObject<FirebasePlannerItem>() ?: throw IOException()
       val plannerItem = PlannerItem.createInstance(document.id, firebasePlannerItem)
-      val plannerItemList = requireNotNull(plan.value)
+      val plannerItemList = requireNotNull(plannerList.value)
       plannerItemList.add(plannerItem)
-      plan.postValue(plannerItemList)
+      plannerList.postValue(plannerItemList)
       plannerItem
     }
   }
@@ -52,14 +68,21 @@ object FirebasePlannerRepository : PlannerRepository {
   override suspend fun addPlannerItem(mealId: Id, date: Long) = withContext(Dispatchers.IO) {
     val mealReference =
       Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME).document((mealId as FirebaseId).value)
-    val firebaseObject =
+    val firebasePlannerItem =
       FirebasePlannerItem(mealReference, date, FirebaseUserRepository.getDocumentReferenceToCurrentUser())
-    val task = collection.add(firebaseObject).apply { Tasks.await(this) }
-    if (task.exception != null) throw IOException(task.exception)
-    else {
-      val plannerItemList = plan.value!!
-      plannerItemList.add(PlannerItem.createInstance(task.result!!.id, firebaseObject))
-      plan.postValue(plannerItemList)
+    val task = collection.add(firebasePlannerItem).apply { Tasks.await(this) }
+    when {
+      task.exception != null -> {
+        throw IOException(task.exception)
+      }
+      task.result == null -> {
+        throw IOException()
+      }
+      else -> {
+        val mutablePlannerList = requireNotNull(plannerList.value)
+        mutablePlannerList.add(PlannerItem.createInstance(requireNotNull(task.result).id, firebasePlannerItem))
+        plannerList.postValue(mutablePlannerList)
+      }
     }
   }
 
@@ -76,16 +99,16 @@ object FirebasePlannerRepository : PlannerRepository {
         getPlannerItemForId(id)?.apply {
           this.mealId = mealId
           this.date = date
-          plan.postValue(plan.value)
+          plannerList.postValue(plannerList.value)
         }
       }
     }
   }
 
   override suspend fun deletePlannerItem(id: Id) = withContext(Dispatchers.IO) {
-    requireNotNull(plan.value).remove(getPlannerItemForId(id))
+    requireNotNull(plannerList.value).remove(getPlannerItemForId(id))
     val task = collection.document((id as FirebaseId).value).delete().apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception)
-    else plan.postValue(plan.value)
+    else plannerList.postValue(plannerList.value)
   }
 }

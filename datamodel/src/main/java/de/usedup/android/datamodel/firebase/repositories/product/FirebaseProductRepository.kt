@@ -1,5 +1,7 @@
 package de.usedup.android.datamodel.firebase.repositories.product
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -11,8 +13,10 @@ import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import de.usedup.android.datamodel.firebase.filterForUser
 import de.usedup.android.datamodel.firebase.objects.*
 import de.usedup.android.datamodel.firebase.repositories.FirebaseUserRepository
+import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -22,8 +26,29 @@ object FirebaseProductRepository : ProductRepository {
   private val consumptionDatabaseProcessor = FirebaseQuantityProcessor()
   private val consumptionInMemoryProcessor = InMemoryQuantityProcessor()
 
-  override fun getAllProducts(): Set<Product> = runBlocking(Dispatchers.IO) {
-    Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet()
+  private val productList: MutableLiveData<Set<Product>> = MutableLiveData()
+
+  override fun getAllProductsLiveData(coroutineScope: CoroutineScope): LiveData<Set<Product>> {
+    if (productList.value == null) {
+      coroutineScope.launch(Dispatchers.IO) {
+        productList.postValue(
+          Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet())
+      }
+    }
+    return productList
+  }
+
+  override fun getAllProducts(): Single<Set<Product>> {
+    return Single.fromCallable {
+      if (productList.value == null) {
+        val productList =
+          Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet()
+        this.productList.postValue(productList)
+        productList
+      } else {
+        productList.value
+      }
+    }
   }
 
   override suspend fun getProductForId(id: Id) = withContext(Dispatchers.IO) {
@@ -62,7 +87,19 @@ object FirebaseProductRepository : ProductRepository {
     val firebaseProduct = FirebaseProduct(name, quantity, min, max, capacity, measureReference, categoryReference,
       FirebaseUserRepository.getDocumentReferenceToCurrentUser())
     val task = collection.add(firebaseProduct).apply { Tasks.await(this) }
-    task.exception?.let { throw IOException(it) }
+    when {
+      task.exception != null -> {
+        throw IOException(task.exception)
+      }
+      task.result == null -> {
+        throw IOException()
+      }
+      else -> {
+        val mutableProductSet = requireNotNull(productList.value).toMutableSet()
+        mutableProductSet.add(Product.createInstance(requireNotNull(task.result).id, firebaseProduct))
+        productList.postValue(mutableProductSet.toSet())
+      }
+    }
   }
 
   override suspend fun updateProduct(id: Id, name: String, categoryId: Id, capacity: Double, measureId: Id,
@@ -88,6 +125,7 @@ object FirebaseProductRepository : ProductRepository {
           this.quantity = quantity
           this.min = min
           this.max = max
+          productList.postValue(productList.value)
         }
       }
     }

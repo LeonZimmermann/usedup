@@ -35,7 +35,6 @@ class MainActivityViewModel @Inject constructor(
     userRepository.init()
     categoryRepository.init()
     measureRepository.init()
-    plannerRepository.init()
     activityToStart.postValue(AppActivity::class.java)
   }
 

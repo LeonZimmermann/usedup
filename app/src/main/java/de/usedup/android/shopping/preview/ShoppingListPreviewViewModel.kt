@@ -6,11 +6,16 @@ import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.R
+import de.usedup.android.datamodel.api.objects.PlannerItem
+import de.usedup.android.datamodel.api.objects.Product
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.PlannerRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import de.usedup.android.shopping.data.ShoppingProduct
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -20,11 +25,10 @@ import javax.inject.Inject
 class ShoppingListPreviewViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   mealRepository: MealRepository,
-  plannerRepository: PlannerRepository,
+  private val plannerRepository: PlannerRepository,
   measureRepository: MeasureRepository) : ViewModel() {
 
-  private val shoppingListPreviewGenerator =
-    ShoppingListPreviewGenerator(productRepository, mealRepository, plannerRepository)
+  private val shoppingListPreviewGenerator = ShoppingListPreviewGenerator(mealRepository)
   private val mapper = ShoppingListPreviewToShoppingListMapper(productRepository, measureRepository)
 
   private val mutableShoppingListPreview = MutableLiveData<ShoppingListPreview>()
@@ -34,25 +38,28 @@ class ShoppingListPreviewViewModel @Inject constructor(
   val editAdditionalProductShoppingProduct: MutableLiveData<ShoppingProduct?> = MutableLiveData(null)
 
   // Dialog
-  var productNames: MutableLiveData<List<String>> = MutableLiveData()
+  var productNames: LiveData<List<String>> =
+    Transformations.map(
+      productRepository.getAllProductsLiveData(viewModelScope)) { products -> products.map { it.name } }
   var shoppingProductDialog: MutableLiveData<ShoppingProductDialog?> = MutableLiveData(null)
   var dialogEditShoppingProduct: ShoppingProduct? = null
 
   val productDiscrepancyEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
   val mealsEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
 
-  init {
-    viewModelScope.launch(Dispatchers.IO) {
-      productNames.postValue(productRepository.getAllProducts().map { it.name })
-    }
-  }
-
   fun initShoppingListPreview() {
     viewModelScope.launch(Dispatchers.IO) {
-      val shoppingListPreview = shoppingListPreviewGenerator.generateShoppingListPreview()
-      mutableShoppingListPreview.postValue(shoppingListPreview)
-      productDiscrepancyEmpty.postValue(shoppingListPreview.productDiscrepancyList.isEmpty())
-      mealsEmpty.postValue(shoppingListPreview.mealList.isEmpty())
+      Single.zip(listOf(productRepository.getAllProducts(), plannerRepository.getAllPlannerItems())) {
+        Pair(it[0] as Set<Product>, it[1] as List<PlannerItem>)
+      }.onErrorComplete().subscribe { (products, plannerItems) ->
+        viewModelScope.launch(Dispatchers.IO) {
+          val shoppingListPreview =
+            shoppingListPreviewGenerator.generateShoppingListPreview(products, plannerItems)
+          mutableShoppingListPreview.postValue(shoppingListPreview)
+          productDiscrepancyEmpty.postValue(shoppingListPreview.productDiscrepancyList.isEmpty())
+          mealsEmpty.postValue(shoppingListPreview.mealList.isEmpty())
+        }
+      }
     }
   }
 

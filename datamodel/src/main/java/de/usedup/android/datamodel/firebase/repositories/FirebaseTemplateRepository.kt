@@ -1,5 +1,7 @@
 package de.usedup.android.datamodel.firebase.repositories
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -10,15 +12,25 @@ import de.usedup.android.datamodel.api.objects.TemplateComponent
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
 import de.usedup.android.datamodel.firebase.filterForUser
 import de.usedup.android.datamodel.firebase.objects.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
 object FirebaseTemplateRepository : TemplateRepository {
   private val collection = Firebase.firestore.collection(FirebaseTemplate.COLLECTION_NAME)
 
-  override fun getAllTemplates(): Set<Template> {
-    return Tasks.await(collection.filterForUser().get()).map { Template.createInstance(it.id, it.toObject()) }.toSet()
+  private val templateList: MutableLiveData<Set<Template>> = MutableLiveData()
+
+  override fun getAllTemplates(coroutineScope: CoroutineScope): LiveData<Set<Template>> {
+    if (templateList.value == null) {
+      coroutineScope.launch(Dispatchers.IO) {
+        templateList.postValue(
+          Tasks.await(collection.filterForUser().get()).map { Template.createInstance(it.id, it.toObject()) }.toSet())
+      }
+    }
+    return templateList
   }
 
   override suspend fun getTemplateForId(id: Id) = withContext(Dispatchers.IO) {
@@ -47,7 +59,19 @@ object FirebaseTemplateRepository : TemplateRepository {
       val firebaseTemplate =
         FirebaseTemplate(name, firebaseComponents)
       val task = collection.add(firebaseTemplate).apply { Tasks.await(this) }
-      task.exception?.let { throw IOException(it) }
+      when {
+        task.exception != null -> {
+          throw IOException(task.exception)
+        }
+        task.result == null -> {
+          throw IOException()
+        }
+        else -> {
+          val mutableTemplateSet = requireNotNull(templateList.value).toMutableSet()
+          mutableTemplateSet.add(Template.createInstance(requireNotNull(task.result).id, firebaseTemplate))
+          templateList.postValue(mutableTemplateSet.toSet())
+        }
+      }
     }
 
   // TODO Add filter for user
@@ -64,6 +88,7 @@ object FirebaseTemplateRepository : TemplateRepository {
         getTemplateForId(id)?.apply {
           this.name = name
           this.components = components
+          templateList.postValue(templateList.value)
         }
       }
     }

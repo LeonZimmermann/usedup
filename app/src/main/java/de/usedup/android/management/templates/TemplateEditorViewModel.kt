@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,9 +31,9 @@ class TemplateEditorViewModel @Inject constructor(
   private val templateRepository: TemplateRepository
 ) : ViewModel() {
 
-  var products: MutableLiveData<Set<Product>> = MutableLiveData()
+  val products: LiveData<Set<Product>> = productRepository.getAllProductsLiveData(viewModelScope)
 
-  var nameString = MutableLiveData<String>()
+  val nameString = MutableLiveData<String>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> = MutableLiveData(mutableListOf())
   val buttonTopMargin: MutableLiveData<Int> = MutableLiveData()
   val actionButtonText: MutableLiveData<String> = MutableLiveData("Add Template")
@@ -40,12 +41,6 @@ class TemplateEditorViewModel @Inject constructor(
 
   private var templateId: Id? = null
     private set
-
-  init {
-    viewModelScope.launch(Dispatchers.IO) {
-      products.postValue(productRepository.getAllProducts())
-    }
-  }
 
   fun setTemplateId(templateId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@TemplateEditorViewModel.templateId = templateId

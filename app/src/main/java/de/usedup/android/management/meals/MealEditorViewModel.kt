@@ -1,11 +1,11 @@
 package de.usedup.android.management.meals
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.components.consumption.ConsumptionElement
-import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.MealIngredient
 import de.usedup.android.datamodel.api.objects.MeasureValue
@@ -25,12 +25,12 @@ class MealEditorViewModel @Inject constructor(
   private val mealRepository: MealRepository
 ) : ViewModel() {
 
-  var products: MutableLiveData<Set<Product>> = MutableLiveData()
+  val products: LiveData<Set<Product>> = productRepository.getAllProductsLiveData(viewModelScope)
 
-  var nameString = MutableLiveData<String>()
-  var durationString = MutableLiveData<String>()
-  var descriptionString = MutableLiveData<String>()
-  var instructionsString = MutableLiveData<String>()
+  val nameString = MutableLiveData<String>()
+  val durationString = MutableLiveData<String>()
+  val descriptionString = MutableLiveData<String?>()
+  val instructionsString = MutableLiveData<String?>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> = MutableLiveData(mutableListOf())
   var photoFile: File? = null
 
@@ -43,14 +43,10 @@ class MealEditorViewModel @Inject constructor(
   private val instructions: String?
     get() = instructionsString.value
 
+  val errorMessage: MutableLiveData<String> = MutableLiveData()
+
   var mealId: Id? = null
     private set
-
-  init {
-    viewModelScope.launch(Dispatchers.IO) {
-      products.postValue(productRepository.getAllProducts())
-    }
-  }
 
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealEditorViewModel.mealId = mealId
@@ -75,27 +71,24 @@ class MealEditorViewModel @Inject constructor(
   }
 
   fun addConsumptionElement(consumptionElement: ConsumptionElement) {
-    val consumptionElementList = consumptionElementList.value
-    consumptionElementList?.let { list ->
-      list.firstOrNull { it.product == consumptionElement.product }?.apply {
-        this.valueValue += consumptionElement.valueValue
-      }
-        ?: list.add(consumptionElement)
+    consumptionElementList.value?.let { list ->
+      val foundConsumptionElement = list.firstOrNull { it.product == consumptionElement.product }
+      if (foundConsumptionElement != null) foundConsumptionElement.valueValue += consumptionElement.valueValue
+      else list.add(consumptionElement)
+      this.consumptionElementList.postValue(list)
     }
-    this.consumptionElementList.value = consumptionElementList
   }
 
   fun addNewMealToDatabase() = viewModelScope.launch(Dispatchers.IO) {
-    // TODO Check if name is null and consumptionList empty (Validation)
     when {
-      name.isNullOrBlank() -> throw InvalidInputException("Insert a name")
-      duration == null -> throw InvalidInputException("Insert a duration")
-      consumptionElementList.value!!.isEmpty() -> throw InvalidInputException("Insert consumption elements")
-      else -> mealRepository.addMeal(name!!, duration!!, description, instructions, photoFile?.toString(),
+      name.isNullOrBlank() -> errorMessage.postValue("Insert a name")
+      duration == null -> errorMessage.postValue("Insert a duration")
+      requireNotNull(consumptionElementList.value).isEmpty() -> errorMessage.postValue("Insert consumption elements")
+      else -> mealRepository.addMeal(requireNotNull(name), requireNotNull(duration), description, instructions,
+        photoFile?.toString(),
         consumptionElementList.value!!.map { element ->
           MealIngredient(element.product.id, element.valueValue.measure.id, element.valueValue.double)
         })
     }
-
   }
 }

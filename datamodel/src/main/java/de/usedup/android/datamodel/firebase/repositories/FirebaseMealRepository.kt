@@ -1,5 +1,7 @@
 package de.usedup.android.datamodel.firebase.repositories
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -10,15 +12,25 @@ import de.usedup.android.datamodel.api.objects.MealIngredient
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.firebase.filterForUser
 import de.usedup.android.datamodel.firebase.objects.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
 object FirebaseMealRepository : MealRepository {
   private val collection = Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME)
 
-  override fun getAllMeals(): Set<Meal> {
-    return Tasks.await(collection.filterForUser().get()).map { Meal.createInstance(it.id, it.toObject()) }.toSet()
+  private val mealList: MutableLiveData<Set<Meal>> = MutableLiveData()
+
+  override fun getAllMeals(coroutineScope: CoroutineScope): LiveData<Set<Meal>> {
+    if (mealList.value == null) {
+      coroutineScope.launch(Dispatchers.IO) {
+        mealList.postValue(
+          Tasks.await(collection.filterForUser().get()).map { Meal.createInstance(it.id, it.toObject()) }.toSet())
+      }
+    }
+    return mealList
   }
 
   override suspend fun getMealForId(id: Id): Meal? = withContext(Dispatchers.IO) {
@@ -52,7 +64,19 @@ object FirebaseMealRepository : MealRepository {
     val firebaseIngredients = mapMealIngredients(ingredients)
     val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
     val task = collection.add(firebaseMeal).apply { Tasks.await(this) }
-    task.exception?.let { throw IOException(it) }
+    when {
+      task.exception != null -> {
+        throw IOException(task.exception)
+      }
+      task.result == null -> {
+        throw IOException()
+      }
+      else -> {
+        val mutableMealSet = requireNotNull(mealList.value).toMutableSet()
+        mutableMealSet.add(Meal.createInstance(requireNotNull(task.result).id, firebaseMeal))
+        mealList.postValue(mutableMealSet.toSet())
+      }
+    }
   }
 
   override suspend fun updateMeal(
@@ -84,6 +108,7 @@ object FirebaseMealRepository : MealRepository {
           this.instructions = instructions
           this.backgroundUrl = backgroundUrl
           this.ingredients = ingredients
+          mealList.postValue(mealList.value)
         }
       }
     }

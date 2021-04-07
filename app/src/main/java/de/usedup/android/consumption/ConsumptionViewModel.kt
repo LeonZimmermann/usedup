@@ -24,9 +24,12 @@ class ConsumptionViewModel @Inject constructor(
   private val productRepository: ProductRepository
 ) : ViewModel(), AdapterView.OnItemClickListener {
 
-  private var productNameList: MutableLiveData<List<String>> = MutableLiveData()
-  private var templateNameList: MutableLiveData<List<String>> = MutableLiveData()
-  private var mealNameList: MutableLiveData<List<String>> = MutableLiveData()
+  private val productNameList: LiveData<List<String>> =
+    Transformations.map(productRepository.getAllProductsLiveData(viewModelScope)) { it.map { product -> product.name } }
+  private val templateNameList: LiveData<List<String>> =
+    Transformations.map(templateRepository.getAllTemplates(viewModelScope)) { it.map { template -> template.name } }
+  private val mealNameList: LiveData<List<String>> =
+    Transformations.map(mealRepository.getAllMeals(viewModelScope)) { it.map { meal -> meal.name } }
   private val measures: MutableList<Measure> = measureRepository.measures
 
   private val consumptionCalculator = ConsumptionCalculator(measureRepository)
@@ -48,11 +51,6 @@ class ConsumptionViewModel @Inject constructor(
 
   init {
     setMode(Mode.PRODUCT)
-    viewModelScope.launch(Dispatchers.IO) {
-      productNameList.postValue(productRepository.getAllProducts().map { it.name })
-      templateNameList.postValue(templateRepository.getAllTemplates().map { it.name })
-      mealNameList.postValue(mealRepository.getAllMeals().map { it.name })
-    }
   }
 
   fun setMode(mode: Mode) {
@@ -89,9 +87,11 @@ class ConsumptionViewModel @Inject constructor(
     try {
       if (nameText.value.isNullOrBlank()) throw InvalidInputException("Please insert a name")
       if (quantityText.value.isNullOrBlank()) throw InvalidInputException("Please insert a quantity")
-      val product = nameText.value?.let { productRepository.getProductForName(it.trim()) } ?: throw InvalidInputException(
-        "Could not find product")
-      val quantity = quantityText.value?.toDoubleOrNull() ?: throw InvalidInputException("Please insert a valid quantity")
+      val product =
+        nameText.value?.let { productRepository.getProductForName(it.trim()) } ?: throw InvalidInputException(
+          "Could not find product")
+      val quantity =
+        quantityText.value?.toDoubleOrNull() ?: throw InvalidInputException("Please insert a valid quantity")
       val measure =
         measures.find { it.name == measureText.value } ?: throw InvalidInputException("Could not find measure")
       val updatedQuantity = consumptionCalculator.calculateUpdatedQuantity(product, MeasureValue(quantity, measure))

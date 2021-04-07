@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import de.usedup.android.R
 import de.usedup.android.databinding.MealEditorFragmentBinding
 import de.usedup.android.camera.CameraFragment
@@ -31,13 +31,12 @@ import java.io.File
 @AndroidEntryPoint
 class MealEditorFragment : Fragment() {
 
-  private lateinit var viewModel: MealEditorViewModel
+  private val viewModel: MealEditorViewModel by viewModels()
   private lateinit var binding: MealEditorFragmentBinding
   private lateinit var adapter: ConsumptionElementAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    initViewModel()
     initMealIdAndPhotoFile(savedInstanceState)
   }
 
@@ -48,15 +47,10 @@ class MealEditorFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding(view)
+    initErrorMessageHandler()
     initAdapter(view)
     initIngredientsList(view)
     initImageView()
-  }
-
-  private fun initViewModel() {
-    viewModel = activity?.run {
-      ViewModelProviders.of(this).get(MealEditorViewModel::class.java)
-    } ?: throw Exception("Invalid Activity")
   }
 
   private fun initMealIdAndPhotoFile(savedInstanceState: Bundle?) {
@@ -76,6 +70,12 @@ class MealEditorFragment : Fragment() {
     binding.lifecycleOwner = this
     binding.viewModel = viewModel
     binding.eventHandler = EventHandler()
+  }
+
+  private fun initErrorMessageHandler() {
+    viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+      errorMessage?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show() }
+    }
   }
 
   private fun initAdapter(view: View) {

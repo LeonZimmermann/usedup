@@ -2,6 +2,7 @@ package de.usedup.android.management
 
 import android.content.Context
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,8 +20,6 @@ import de.usedup.android.datamodel.api.objects.Template
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,9 +30,9 @@ class ManagementViewModel @Inject constructor(
   mealRepository: MealRepository
 ) : ViewModel(), TabLayout.OnTabSelectedListener {
 
-  var products: MutableLiveData<Set<Product>> = MutableLiveData()
-  var templates: MutableLiveData<Set<Template>> = MutableLiveData()
-  var meals: MutableLiveData<Set<Meal>> = MutableLiveData()
+  val products: LiveData<Set<Product>> = productRepository.getAllProductsLiveData(viewModelScope)
+  val templates: LiveData<Set<Template>> = templateRepository.getAllTemplates(viewModelScope)
+  val meals: LiveData<Set<Meal>> = mealRepository.getAllMeals(viewModelScope)
 
   val noEntries: MutableLiveData<Boolean> = MutableLiveData()
   val noEntryMessage: MutableLiveData<String> = MutableLiveData()
@@ -41,14 +40,6 @@ class ManagementViewModel @Inject constructor(
   var mode: MutableLiveData<Mode> = MutableLiveData(Mode.PRODUCT)
 
   lateinit var adapter: ManagementRecyclerAdapter
-
-  init {
-    viewModelScope.launch(Dispatchers.IO) {
-      products.postValue(productRepository.getAllProducts())
-      templates.postValue(templateRepository.getAllTemplates())
-      meals.postValue(mealRepository.getAllMeals())
-    }
-  }
 
   fun initAdapter(recyclerView: RecyclerView) {
     adapter = ManagementRecyclerAdapter(context, recyclerView, Navigation.findNavController(recyclerView),

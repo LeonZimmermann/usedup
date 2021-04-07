@@ -2,7 +2,7 @@ package de.usedup.android.planner
 
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class PlannerViewModel @Inject constructor(private val plannerRepository: PlannerRepository) : ViewModel(),
   PlannerRecyclerAdapter.Callbacks {
 
-  val plannerItems: MutableLiveData<MutableList<PlannerItem>> = plannerRepository.plan
+  val plannerItems: LiveData<List<PlannerItem>> = plannerRepository.getAllPlannerItemsLiveData(viewModelScope)
 
   override fun onPreviewButtonClicked(view: View, plannerItem: PlannerItem) {
     Navigation.findNavController(view).navigate(R.id.action_planner_fragment_to_meal_details_fragment,

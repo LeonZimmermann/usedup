@@ -4,15 +4,12 @@ import android.content.DialogInterface
 import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.MeasureValue
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +20,7 @@ class ConsumptionElementDialogViewModel @Inject constructor(
 ) : ViewModel(), AdapterView.OnItemClickListener {
 
   private val measures = measureRepository.measures
-  var productNames: MutableLiveData<List<String>> = MutableLiveData()
+  val productNames: LiveData<List<String>> = Transformations.map(productRepository.getAllProductsLiveData(viewModelScope)) { it.map { product -> product.name } }
   val measureNames = MutableLiveData(measureRepository.measures.map { it.name })
 
   val nameText: MutableLiveData<String> = MutableLiveData()
@@ -31,19 +28,14 @@ class ConsumptionElementDialogViewModel @Inject constructor(
   val measureText: MutableLiveData<String> = MutableLiveData()
   val measureInputType: MutableLiveData<Int> = MutableLiveData(InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE)
 
-  init {
-    viewModelScope.launch(Dispatchers.IO) {
-      productNames.postValue(productRepository.getAllProducts().map { it.name })
-    }
-  }
-
   fun onPositiveButtonClicked(callback: ConsumptionElementDialogFragment.Callback) {
     viewModelScope.launch {
       val product = nameText.value?.let { productRepository.getProductForName(it) } ?: throw InvalidInputException(
         "Invalid product name")
       val measure = measureText.value?.let { measureRepository.getMeasureForName(it) } ?: throw InvalidInputException(
         "Invalid measure")
-      val consumption = consumptionText.value?.toDoubleOrNull() ?: throw InvalidInputException("Invalid consumption value")
+      val consumption =
+        consumptionText.value?.toDoubleOrNull() ?: throw InvalidInputException("Invalid consumption value")
       callback.onPositiveButtonClicked(ConsumptionElement(product, MeasureValue(consumption, measure)))
     }
   }
