@@ -134,11 +134,13 @@ object FirebaseProductRepository : ProductRepository {
   override suspend fun changeQuantity(product: Product, updatedQuantity: Double) = withContext(Dispatchers.IO) {
     consumptionDatabaseProcessor.updateSingleProductQuantity(product, updatedQuantity)
     consumptionInMemoryProcessor.updateSingleProductQuantity(product, updatedQuantity)
+    productList.postValue(productList.value)
   }
 
   override suspend fun changeQuantity(data: List<Pair<Product, Double>>) = withContext(Dispatchers.IO) {
     consumptionDatabaseProcessor.updateMultipleProductQuantities(data)
     consumptionInMemoryProcessor.updateMultipleProductQuantities(data)
+    productList.postValue(productList.value)
   }
 
   override suspend fun deleteProduct(id: Id): Unit = withContext(Dispatchers.IO) {
