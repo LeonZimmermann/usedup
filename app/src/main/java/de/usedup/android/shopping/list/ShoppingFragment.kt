@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.ShoppingFragmentBinding
 import de.usedup.android.shopping.data.ShoppingCart
 import de.usedup.android.shopping.data.ShoppingList
-import de.usedup.android.shopping.data.ShoppingProduct
 import kotlinx.android.synthetic.main.shopping_fragment.*
 import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 
@@ -33,7 +31,7 @@ class ShoppingFragment : Fragment() {
   }
 
   override fun onDestroy() {
-    viewModel.saveNavigationState(findNavController())
+    viewModel.saveShoppingListState()
     super.onDestroy()
   }
 

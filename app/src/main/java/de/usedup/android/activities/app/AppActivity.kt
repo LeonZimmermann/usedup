@@ -37,6 +37,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     initNavigation()
   }
 
+  override fun onPause() {
+    super.onPause()
+    viewModel.saveNavigationState(navController)
+  }
+
   override fun onResume() {
     super.onResume()
     viewModel.restoreNavigationState(navController)

@@ -26,6 +26,7 @@ class ShoppingViewModel @Inject constructor(
 
   private val shoppingList: MutableLiveData<ShoppingList> = MutableLiveData()
   private val shoppingCart: MutableSet<ShoppingProduct> = mutableSetOf()
+  private var confirmedCart: Boolean = false
 
   val shoppingListCategories: LiveData<Set<ShoppingListCategoryRepresentation>> =
     Transformations.map(shoppingList) { shoppingList ->
@@ -55,6 +56,7 @@ class ShoppingViewModel @Inject constructor(
   }
 
   fun onConfirmButtonPressed(view: View) = viewModelScope.launch(Dispatchers.Default) {
+    confirmedCart = true
     shoppingCart.forEach { shoppingProduct ->
       launch(Dispatchers.IO) {
         productRepository.changeQuantity(shoppingProduct.product,
@@ -81,9 +83,12 @@ class ShoppingViewModel @Inject constructor(
     }
   }
 
-  fun saveNavigationState(navController: NavController) {
-    navigationStateHolder.navControllerState = navController.saveState()
-    navigationStateHolder.shoppingList = requireNotNull(shoppingList.value)
-    navigationStateHolder.shoppingCart = ShoppingCart(shoppingCart)
+  fun saveShoppingListState() {
+    if (navigationStateHolder.navControllerState != null && !confirmedCart) {
+      navigationStateHolder.shoppingList = requireNotNull(shoppingList.value)
+      navigationStateHolder.shoppingCart = ShoppingCart(shoppingCart)
+    } else {
+      confirmedCart = false
+    }
   }
 }

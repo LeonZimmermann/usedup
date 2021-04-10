@@ -11,6 +11,10 @@ import javax.inject.Inject
 @HiltViewModel
 class AppActivityViewModel @Inject constructor(private val navigationStateHolder: NavigationStateHolder) : ViewModel() {
 
+  fun saveNavigationState(navController: NavController) {
+    navigationStateHolder.navControllerState = navController.saveState()
+  }
+
   fun restoreNavigationState(navController: NavController) {
     navigationStateHolder.navControllerState?.let {
       navController.restoreState(it)
