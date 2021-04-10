@@ -39,7 +39,10 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activities.AppActivity"
+                android:name=".activities.loading.LoadingActivity"
+                android:noHistory="true" />
+        <activity
+                android:name=".activities.app.AppActivity"
                 android:noHistory="true"
                 android:windowSoftInputMode="stateHidden" />
         <activity

@@ -1,16 +1,13 @@
 package de.usedup.android.settings
 
 import android.content.Context
-import android.content.Intent
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import de.usedup.android.activities.main.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -25,6 +22,9 @@ class UsedupSettingsViewModel @Inject constructor(@ApplicationContext private va
   val userName: MutableLiveData<String> = MutableLiveData()
   val userEmail: MutableLiveData<String> = MutableLiveData()
 
+  val backToMainActivity: MutableLiveData<Boolean> = MutableLiveData()
+  val navigateUp: MutableLiveData<Boolean> = MutableLiveData()
+
   init {
     try {
       val user = requireNotNull(authentication.currentUser)
@@ -33,14 +33,13 @@ class UsedupSettingsViewModel @Inject constructor(@ApplicationContext private va
       userEmail.postValue(user.email)
     } catch (e: IllegalArgumentException) {
       errorMessage.postValue("Cannot access account information")
-      // TODO Navigate up
+      navigateUp.postValue(true)
     }
   }
 
   fun onLogoutClicked() {
     authentication.signOut()
-    val intent = Intent(context, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
-    context.startActivity(intent)
+    backToMainActivity.postValue(true)
   }
 
   companion object {

@@ -30,7 +30,7 @@ task clean(type: Delete) {
 ext {
     billingVersion = "3.0.0"
     workVersion = "2.4.0"
-    navigationVersion = "2.3.0"
+    navigationVersion = "2.3.5"
     archLifecycleVersion = '2.2.0'
     androidxArchVersion = '2.0.0'
     coroutines = '1.2.0'

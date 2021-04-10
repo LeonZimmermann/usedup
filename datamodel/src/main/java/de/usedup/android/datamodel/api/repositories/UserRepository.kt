@@ -9,6 +9,8 @@ interface UserRepository {
   @Throws(IOException::class)
   suspend fun init()
 
+  fun isInitialized(): Boolean
+
   @Throws(IOException::class)
   suspend fun getCurrentUser(): User
 

@@ -30,6 +30,8 @@ object FirebaseUserRepository : UserRepository {
     }
   }
 
+  override fun isInitialized(): Boolean = currentUser != null
+
   private suspend fun createNewUser() = withContext(Dispatchers.IO) {
     val authUser = requireNotNull(FirebaseAuth.getInstance().currentUser)
     addUser(FirebaseId(authUser.uid), requireNotNull(authUser.displayName),

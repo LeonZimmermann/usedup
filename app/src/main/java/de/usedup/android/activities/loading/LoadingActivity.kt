@@ -1,29 +1,30 @@
-package de.usedup.android.activities.main
+package de.usedup.android.activities.loading
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import de.usedup.android.R
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class LoadingActivity : AppCompatActivity() {
 
-  private val viewModel: MainActivityViewModel by viewModels()
+  private val viewModel: LoadingActivityViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.loading_activity)
     initActivityToStart()
-    viewModel.navigateActivity()
+    viewModel.initializeApp()
   }
 
   private fun initActivityToStart() {
     viewModel.activityToStart.observe(this, { activityToStart ->
-      val intent = Intent(this@MainActivity, activityToStart).apply {
+      val intent = Intent(this@LoadingActivity, activityToStart).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
       }
       startActivity(intent)
     })
   }
-
 }

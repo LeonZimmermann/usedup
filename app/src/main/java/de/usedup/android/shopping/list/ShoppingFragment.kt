@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import de.usedup.android.R
-import de.usedup.android.shopping.data.ShoppingList
-import de.usedup.android.databinding.ShoppingFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import de.usedup.android.R
+import de.usedup.android.databinding.ShoppingFragmentBinding
+import de.usedup.android.shopping.data.ShoppingCart
+import de.usedup.android.shopping.data.ShoppingList
+import de.usedup.android.shopping.data.ShoppingProduct
 import kotlinx.android.synthetic.main.shopping_fragment.*
 import org.jetbrains.anko.sdk27.coroutines.onScrollChange
+
 
 @AndroidEntryPoint
 class ShoppingFragment : Fragment() {
@@ -23,9 +26,15 @@ class ShoppingFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     requireNotNull(arguments).apply {
+      (getSerializable(SHOPPING_CART) as? ShoppingCart)?.let { viewModel.restoreShoppingCart(it) }
       viewModel.initShoppingList(
         getSerializable(SHOPPING_LIST) as? ShoppingList ?: throw RuntimeException("No shopping-list provided"))
     }
+  }
+
+  override fun onDestroy() {
+    viewModel.saveNavigationState(findNavController())
+    super.onDestroy()
   }
 
   override fun onCreateView(
@@ -65,6 +74,7 @@ class ShoppingFragment : Fragment() {
 
   companion object {
     const val SHOPPING_LIST = "shoppingList"
+    const val SHOPPING_CART = "shoppingCart"
     private const val SHOW_ACTION_BUTTON_THRESHOLD = 50
 
     fun newInstance() = ShoppingFragment()

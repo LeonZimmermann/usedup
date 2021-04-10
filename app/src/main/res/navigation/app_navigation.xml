@@ -142,6 +142,10 @@
         <argument
                 android:name="shoppingList"
                 app:argType="de.usedup.android.datamodel.api.objects.Id" />
+        <argument
+                android:name="shoppingCart"
+                app:argType="de.usedup.android.shopping.data.ShoppingCart"
+                app:nullable="true" />
     </fragment>
     <action
             android:id="@+id/action_global_overview_fragment"

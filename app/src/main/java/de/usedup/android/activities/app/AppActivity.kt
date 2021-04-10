@@ -1,8 +1,9 @@
-package de.usedup.android.activities
+package de.usedup.android.activities.app
 
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -14,14 +15,16 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import de.usedup.android.R
 import dagger.hilt.android.AndroidEntryPoint
+import de.usedup.android.R
 import kotlinx.android.synthetic.main.app_activity.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+  private val viewModel: AppActivityViewModel by viewModels()
 
   private lateinit var navController: NavController
   private lateinit var appBarConfiguration: AppBarConfiguration
@@ -32,6 +35,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     setContentView(R.layout.app_activity)
     setSupportActionBar(toolbar)
     initNavigation()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.restoreNavigationState(navController)
   }
 
   private fun initNavigation() {
@@ -58,31 +66,31 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
   }
 
   override fun onNavigationItemSelected(item: MenuItem) = when (item.itemId) {
-      R.id.shopping_option -> {
-          navController.navigate(R.id.action_global_shopping_fragment)
-          drawer.closeDrawer(navigation_view)
-          true
-      }
-      R.id.planner_option -> {
-          navController.navigate(R.id.action_global_planner_fragment)
-          drawer.closeDrawer(navigation_view)
-          true
-      }
-      R.id.management_option -> {
-          navController.navigate(R.id.action_global_management)
-          drawer.closeDrawer(navigation_view)
-          true
-      }
-      R.id.settings_option -> {
-          navController.navigate(R.id.action_global_settings_fragment)
-          drawer.closeDrawer(navigation_view)
-          true
-      }
-      R.id.about_option -> {
-          navController.navigate(R.id.action_global_about_fragment)
-          drawer.closeDrawer(navigation_view)
-          true
-      }
+    R.id.shopping_option -> {
+      navController.navigate(R.id.action_global_shopping_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.planner_option -> {
+      navController.navigate(R.id.action_global_planner_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.management_option -> {
+      navController.navigate(R.id.action_global_management)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.settings_option -> {
+      navController.navigate(R.id.action_global_settings_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.about_option -> {
+      navController.navigate(R.id.action_global_about_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
     else -> false
   }
 
