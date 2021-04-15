@@ -69,6 +69,8 @@
     <string name="no_meals_message">You don\'t have any meals planned</string>
     <string name="product_name">Name of the product</string>
     <string name="save_dinner">Save Dinner</string>
+    <string name="no_products_yet_message">No Products available yet :(</string>
+    <string name="no_templates_yet_message">No Templates available yet :(</string>
     <string name="no_meals_yet_message">You don\'t have any meals yet :(</string>
     <string name="product">Product</string>
     <string name="template">Template</string>
@@ -76,4 +78,10 @@
     <string name="consume">Consume</string>
     <string name="register_consumptions">Register consumptions</string>
     <string name="add_meal">Add Meal</string>
+    <string name="discrepancy_info">This is where you can see the products you are missing in your home, as well as the respective discrepancy.</string>
+    <string name="consumption_info">Select if you consumed a product, template or meal, enter the according name and press consume to update your homes stock.</string>
+    <string name="enter_product_name">Enter the products name</string>
+    <string name="enter_template_name">Enter the templates name</string>
+    <string name="enter_meal_name">Enter the meals name</string>
+
 </resources>

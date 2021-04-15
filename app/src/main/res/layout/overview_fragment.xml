@@ -91,7 +91,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/register_textview"
-                        app:text="This is where you can see the products you are missing in your home, as well as the respective discrepancy" />
+                        app:text="@string/discrepancy_info" />
 
                 <Button
                         android:id="@+id/shopping_button"

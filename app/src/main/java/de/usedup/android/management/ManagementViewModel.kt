@@ -73,17 +73,17 @@ class ManagementViewModel @Inject constructor(
     when (tab.position) {
       0 -> {
         mode.postValue(Mode.PRODUCT)
-        noEntryMessage.postValue("No Products available yet :(")
+        noEntryMessage.postValue(context.getString(R.string.no_products_yet_message))
         noEntries.postValue(products.value?.isEmpty() ?: true)
       }
       1 -> {
         mode.postValue(Mode.TEMPLATE)
-        noEntryMessage.postValue("No Templates available yet :(")
+        noEntryMessage.postValue(context.getString(R.string.no_templates_yet_message))
         noEntries.postValue(templates.value?.isEmpty() ?: true)
       }
       2 -> {
         mode.postValue(Mode.MEAL)
-        noEntryMessage.postValue("No Meals available yet :(")
+        noEntryMessage.postValue(context.getString(R.string.no_meals_yet_message))
         noEntries.postValue(meals.value?.isEmpty() ?: true)
       }
     }

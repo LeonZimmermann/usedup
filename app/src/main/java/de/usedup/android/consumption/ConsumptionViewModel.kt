@@ -1,10 +1,13 @@
 package de.usedup.android.consumption
 
+import android.content.Context
 import android.text.InputType
 import android.view.View
 import android.widget.AdapterView
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import de.usedup.android.R
 import de.usedup.android.datamodel.api.exceptions.InvalidInputException
 import de.usedup.android.datamodel.api.objects.*
 import de.usedup.android.datamodel.api.repositories.MealRepository
@@ -18,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConsumptionViewModel @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val mealRepository: MealRepository,
   private val measureRepository: MeasureRepository,
   private val templateRepository: TemplateRepository,
@@ -61,7 +65,7 @@ class ConsumptionViewModel @Inject constructor(
     }
     this.mode.value = mode
     this.mappedNameList.value = nameList
-    nameHint.postValue(mode.hint)
+    nameHint.postValue(context.getString(mode.hintStringId))
     if (nameList.value == null) this.nameText.postValue("")
     else this.nameText.postValue(if (nameList.value!!.size == 1) nameList.value!![0] else "")
   }
@@ -166,9 +170,9 @@ class ConsumptionViewModel @Inject constructor(
     }
   }
 
-  enum class Mode(internal val hint: String) {
-    PRODUCT("Enter the products name"),
-    TEMPLATE("Enter the templates name"),
-    MEAL("Enter the meals name")
+  enum class Mode(internal val hintStringId: Int) {
+    PRODUCT(R.string.enter_product_name),
+    TEMPLATE(R.string.enter_template_name),
+    MEAL(R.string.enter_meal_name)
   }
 }

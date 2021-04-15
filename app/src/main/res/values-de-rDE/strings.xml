@@ -68,4 +68,8 @@
     <string name="sign_in_with_google">Mit Google anmelden</string>
     <string name="terms_of_service">AGBs</string>
     <string name="add_meal">Gericht hinzufügen</string>
+    <string name="discrepancy_info">Hier kannst du die fehlenden Produkte deines Haushalts einsehen.</string>
+    <string name="consumption_info">"Wähle aus, ob die ein Produkt, eine Vorlage oder ein Gericht verbraucht hast. Anschließend gibst du den entsprechenden Namen an, um den Bestand zu aktualisieren. "</string>
+    <string name="no_products_yet_message">Du hast noch keine Produkte :(</string>
+    <string name="no_templates_yet_message">Du hast noch keine Vorlagen :(</string>
 </resources>

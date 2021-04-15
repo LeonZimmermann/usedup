@@ -165,7 +165,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/product_mode_button"
-                app:text="Select if you consumed a product, template or meal, enter the according name and press consume to update your homes stock" />
+                app:text="@string/consumption_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
