@@ -34,22 +34,32 @@ object FirebaseMealRepository : MealRepository {
   }
 
   override suspend fun getMealForId(id: Id): Meal? = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.document((id as FirebaseId).value).get())
-    if (document.exists()) {
-      val firebaseMeal = document.toObject<FirebaseMeal>() ?: throw IOException()
-      Meal.createInstance(document.id, firebaseMeal)
+    val mealInMemory = mealList.value?.firstOrNull { it.id == id }
+    if (mealInMemory != null) {
+      mealInMemory
     } else {
-      null
+      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+      if (document.exists()) {
+        val firebaseMeal = document.toObject<FirebaseMeal>() ?: throw IOException()
+        Meal.createInstance(document.id, firebaseMeal)
+      } else {
+        null
+      }
     }
   }
 
   override suspend fun getMealForName(name: String) = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
-    if (document.exists()) {
-      val firebaseMeal = document.toObject<FirebaseMeal>()
-      Meal.createInstance(document.id, firebaseMeal)
+    val mealInMemory = mealList.value?.firstOrNull { it.name == name }
+    if (mealInMemory != null) {
+      mealInMemory
     } else {
-      null
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      if (document.exists()) {
+        val firebaseMeal = document.toObject<FirebaseMeal>()
+        Meal.createInstance(document.id, firebaseMeal)
+      } else {
+        null
+      }
     }
   }
 

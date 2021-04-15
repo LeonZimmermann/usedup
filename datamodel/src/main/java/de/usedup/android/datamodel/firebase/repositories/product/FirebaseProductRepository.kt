@@ -51,23 +51,33 @@ object FirebaseProductRepository : ProductRepository {
     }
   }
 
-  override suspend fun getProductForId(id: Id) = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.document((id as FirebaseId).value).get())
-    if (document.exists()) {
-      val firebaseProduct = document.toObject<FirebaseProduct>() ?: throw IOException()
-      Product.createInstance(document.id, firebaseProduct)
+  override suspend fun getProductForId(id: Id): Product? = withContext(Dispatchers.IO) {
+    val productInMemory = productList.value?.firstOrNull { it.id == id }
+    if (productInMemory != null) {
+      productInMemory
     } else {
-      null
+      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+      if (document.exists()) {
+        val firebaseProduct = document.toObject<FirebaseProduct>() ?: throw IOException()
+        Product.createInstance(document.id, firebaseProduct)
+      } else {
+        null
+      }
     }
   }
 
   override suspend fun getProductForName(name: String) = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
-    if (document.exists()) {
-      val firebaseProduct = document.toObject<FirebaseProduct>()
-      Product.createInstance(document.id, firebaseProduct)
+    val productInMemory = productList.value?.firstOrNull { it.name == name }
+    if (productInMemory != null) {
+      productInMemory
     } else {
-      null
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      if (document.exists()) {
+        val firebaseProduct = document.toObject<FirebaseProduct>()
+        Product.createInstance(document.id, firebaseProduct)
+      } else {
+        null
+      }
     }
   }
 

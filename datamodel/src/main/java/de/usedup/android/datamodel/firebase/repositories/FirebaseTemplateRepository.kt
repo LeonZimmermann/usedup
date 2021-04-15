@@ -34,22 +34,32 @@ object FirebaseTemplateRepository : TemplateRepository {
   }
 
   override suspend fun getTemplateForId(id: Id) = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.document((id as FirebaseId).value).get())
-    if (document.exists()) {
-      val firebaseTemplate = document.toObject<FirebaseTemplate>() ?: throw IOException()
-      Template.createInstance(document.id, firebaseTemplate)
+    val templateInMemory = templateList.value?.firstOrNull { it.id == id }
+    if (templateInMemory != null) {
+      templateInMemory
     } else {
-      null
+      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+      if (document.exists()) {
+        val firebaseTemplate = document.toObject<FirebaseTemplate>() ?: throw IOException()
+        Template.createInstance(document.id, firebaseTemplate)
+      } else {
+        null
+      }
     }
   }
 
   override suspend fun getTemplateForName(name: String) = withContext(Dispatchers.IO) {
-    val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
-    if (document.exists()) {
-      val firebaseTemplate = document.toObject<FirebaseTemplate>()
-      Template.createInstance(document.id, firebaseTemplate)
+    val templateInMemory = templateList.value?.firstOrNull { it.name == name }
+    if (templateInMemory != null) {
+      templateInMemory
     } else {
-      null
+      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      if (document.exists()) {
+        val firebaseTemplate = document.toObject<FirebaseTemplate>()
+        Template.createInstance(document.id, firebaseTemplate)
+      } else {
+        null
+      }
     }
   }
 

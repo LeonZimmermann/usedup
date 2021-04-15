@@ -93,13 +93,13 @@ class ProductEditorViewModel @Inject constructor(
       if (productId == null) productRepository.addProduct(name, category.id, capacity, measure.id, quantity, min, max)
       else productRepository.updateProduct(requireNotNull(productId), name, category.id, capacity, measure.id, quantity,
         min, max)
-      systemMessage.postValue("Added Product")
+      systemMessage.postValue("Saved Product")
       clearData()
       launch(Dispatchers.Main) {
         Navigation.findNavController(view).navigateUp()
       }
     } catch (e: IOException) {
-      systemMessage.postValue("Could not add product")
+      systemMessage.postValue("Could not save product")
     }
   }
 
