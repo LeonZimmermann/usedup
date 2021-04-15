@@ -22,7 +22,7 @@ class OverviewViewModel @Inject constructor(productRepository: ProductRepository
   }
 
   val discrepancyAdditionalAmount: LiveData<Int> = Transformations.map(products) { products ->
-    max(0, products.filter { it.amountToBuy > 0 }.size - DISCREPANCY_LIST_SIZE)
+    max(0, products.filter { it.hasDiscrepancy }.size - DISCREPANCY_LIST_SIZE)
   }
 
   fun onShoppingButtonClicked(view: View) {
