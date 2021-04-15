@@ -44,21 +44,21 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
 
   var products: MutableList<Product> = mutableListOf()
     set(value) {
-      field = value
+      field = value.sortedBy { it.name }.toMutableList()
       notifyDataSetChanged()
       recyclerView.scheduleLayoutAnimation()
     }
 
   var templates: MutableList<Template> = mutableListOf()
     set(value) {
-      field = value
+      field = value.sortedBy { it.name }.toMutableList()
       notifyDataSetChanged()
       recyclerView.scheduleLayoutAnimation()
     }
 
   var meals: MutableList<Meal> = mutableListOf()
     set(value) {
-      field = value
+      field = value.sortedBy { it.name }.toMutableList()
       notifyDataSetChanged()
       recyclerView.scheduleLayoutAnimation()
     }
