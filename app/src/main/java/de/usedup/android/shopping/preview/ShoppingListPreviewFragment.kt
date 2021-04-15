@@ -40,7 +40,6 @@ class ShoppingListPreviewFragment : Fragment() {
     initShoppingProductDialogHandler()
     initAddAdditionalProductShoppingProductHandler()
     initEditAdditionalProductShoppingProductHandler()
-    initActionButtonVisibilityHandler()
   }
 
   private fun initDatabinding() {
@@ -110,15 +109,8 @@ class ShoppingListPreviewFragment : Fragment() {
     })
   }
 
-  private fun initActionButtonVisibilityHandler() {
-    scrollView.onScrollChange { _, _, scrollY, _, _ ->
-      go_shopping_button.visibility = if (scrollY > SHOW_ACTION_BUTTON_THRESHOLD) View.GONE else View.VISIBLE
-    }
-  }
-
   companion object {
     private const val SHOPPING_PRODUCT_DIALOG = "SHOPPING_PRODUCT_DIALOG"
-    private const val SHOW_ACTION_BUTTON_THRESHOLD = 50
 
     fun newInstance() = ShoppingListPreviewFragment()
   }

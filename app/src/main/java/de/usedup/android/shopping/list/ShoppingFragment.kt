@@ -12,6 +12,7 @@ import de.usedup.android.R
 import de.usedup.android.databinding.ShoppingFragmentBinding
 import de.usedup.android.shopping.data.ShoppingCart
 import de.usedup.android.shopping.data.ShoppingList
+import kotlinx.android.synthetic.main.overview_fragment.*
 import kotlinx.android.synthetic.main.shopping_fragment.*
 import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 
@@ -58,7 +59,9 @@ class ShoppingFragment : Fragment() {
   private fun initShoppingListRecyclerView() {
     val adapter = ShoppingListCategoryRecyclerAdapter(requireContext(), viewModel.onCheckButtonPressedCallback)
     shopping_list_recycler_view.adapter = adapter
-    shopping_list_recycler_view.layoutManager = LinearLayoutManager(requireContext())
+    shopping_list_recycler_view.layoutManager = object : LinearLayoutManager(requireContext()) {
+      override fun canScrollVertically(): Boolean = false
+    }
     viewModel.shoppingListCategories.observe(viewLifecycleOwner, { shoppingListCategories ->
       adapter.initShoppingListCategories(shoppingListCategories)
     })
