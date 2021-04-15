@@ -15,8 +15,10 @@ data class Product(
     var measureId: Id,
     var categoryId: Id
 ) {
-  val discrepancy: Int
-    get() = calculateDiscrepancy(min, quantity)
+  val amountToBuy: Int
+    get() = calculateDiscrepancy(max, quantity)
+  val hasDiscrepancy: Boolean
+    get() = calculateDiscrepancy(min, quantity) > 0
 
   companion object {
     internal fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {

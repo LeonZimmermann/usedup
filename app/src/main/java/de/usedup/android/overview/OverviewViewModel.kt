@@ -16,13 +16,13 @@ class OverviewViewModel @Inject constructor(productRepository: ProductRepository
   val products: LiveData<Set<Product>> = productRepository.getAllProductsLiveData(viewModelScope)
 
   val discrepancyProductList: LiveData<List<Pair<Product, Int>>> = Transformations.map(products) { products ->
-    products.filter { it.discrepancy > 0 }
+    products.filter { it.hasDiscrepancy }
       .filterIndexed { index, _ -> index < DISCREPANCY_LIST_SIZE }
-      .map { Pair(it, it.discrepancy) }
+      .map { Pair(it, it.amountToBuy) }
   }
 
   val discrepancyAdditionalAmount: LiveData<Int> = Transformations.map(products) { products ->
-    max(0, products.filter { it.discrepancy > 0 }.size - DISCREPANCY_LIST_SIZE)
+    max(0, products.filter { it.amountToBuy > 0 }.size - DISCREPANCY_LIST_SIZE)
   }
 
   fun onShoppingButtonClicked(view: View) {

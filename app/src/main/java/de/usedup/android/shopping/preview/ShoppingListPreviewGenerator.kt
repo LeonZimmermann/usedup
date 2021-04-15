@@ -10,7 +10,7 @@ class ShoppingListPreviewGenerator(private val mealRepository: MealRepository) {
   suspend fun generateShoppingListPreview(products: Set<Product>,
     plannerItems: List<PlannerItem>): ShoppingListPreview {
     val productDiscrepancyList = products
-      .filter { it.discrepancy > 0 }
+      .filter { it.hasDiscrepancy }
       .map { ShoppingProduct(it) }
       .toSet()
     val mealList = plannerItems
