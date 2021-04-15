@@ -150,4 +150,9 @@
     <action
             android:id="@+id/action_global_overview_fragment"
             app:destination="@id/overview_fragment" />
+    <fragment
+            android:id="@+id/household_fragment"
+            android:name="de.usedup.android.household.HouseholdFragment"
+            android:label="Household"
+            tools:layout="@layout/household_fragment" /><action android:id="@+id/action_global_household_fragment" app:destination="@id/household_fragment"/>
 </navigation>

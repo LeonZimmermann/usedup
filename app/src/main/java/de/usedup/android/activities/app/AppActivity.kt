@@ -81,6 +81,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
       drawer.closeDrawer(navigation_view)
       true
     }
+    R.id.household_option -> {
+      navController.navigate(R.id.action_global_household_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
     R.id.management_option -> {
       navController.navigate(R.id.action_global_management)
       drawer.closeDrawer(navigation_view)

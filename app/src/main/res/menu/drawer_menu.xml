@@ -9,11 +9,21 @@
                 android:id="@+id/planner_option"
                 android:icon="@drawable/calendar_icon"
                 android:title="@string/planner" />
-        <item
-                android:id="@+id/management_option"
-                android:icon="@drawable/management_icon"
-                android:title="@string/management" />
     </group>
+    <item android:title="@string/household">
+        <menu>
+            <group>
+                <item
+                        android:id="@+id/household_option"
+                        android:icon="@drawable/household_icon"
+                        android:title="@string/household" />
+                <item
+                        android:id="@+id/management_option"
+                        android:icon="@drawable/management_icon"
+                        android:title="@string/management" />
+            </group>
+        </menu>
+    </item>
     <item android:title="@string/others">
         <menu>
             <group>

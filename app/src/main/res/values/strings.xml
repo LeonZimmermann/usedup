@@ -83,5 +83,10 @@
     <string name="enter_product_name">Enter the products name</string>
     <string name="enter_template_name">Enter the templates name</string>
     <string name="enter_meal_name">Enter the meals name</string>
+    <string name="users">Users</string>
+    <string name="add_user">Add User</string>
+    <string name="subscription">Subscription</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="household">Household</string>
 
 </resources>
