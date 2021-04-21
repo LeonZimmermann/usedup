@@ -1,6 +1,7 @@
 package de.usedup.android.datamodel.api.objects
 
 import de.usedup.android.datamodel.api.calculateDiscrepancy
+import de.usedup.android.datamodel.api.calculateRawDiscrepancy
 import de.usedup.android.datamodel.api.exceptions.DataIntegrityException
 import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseProduct
@@ -18,7 +19,7 @@ data class Product(
   val amountToBuy: Int
     get() = calculateDiscrepancy(max, quantity)
   val hasDiscrepancy: Boolean
-    get() = calculateDiscrepancy(min, quantity) > 0
+    get() = calculateRawDiscrepancy(min, quantity) >= 0
 
   companion object {
     internal fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {

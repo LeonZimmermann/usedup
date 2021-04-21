@@ -45,10 +45,10 @@ class ShoppingListPreviewGeneratorUnitTest {
     runBlockingTest {
       // Given
       val products = setOf(
-        mockProduct("Product One", 2.0, 3, 2),
-        mockProduct("Product Two", 3.0, 3, 2),
-        mockProduct("Product Three", 4.0, 3, 2),
-        mockProduct("Product Four", 5.0, 3, 2)
+        mockProduct("Product One", 2.0, 2, 3),
+        mockProduct("Product Two", 3.0, 2, 3),
+        mockProduct("Product Three", 4.0, 2, 3),
+        mockProduct("Product Four", 5.0, 2, 3)
       )
       val plannerItems = listOf<PlannerItem>()
       // When
