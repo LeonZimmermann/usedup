@@ -53,6 +53,10 @@ android {
 
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -135,6 +139,9 @@ dependencies {
 
     // Page Indicator
     implementation 'com.romandanylyk:pageindicatorview:1.0.3'
+
+    // Image Cropper
+    implementation 'com.github.CanHub:Android-Image-Cropper:3.0.1'
 
     // Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:20.0.3'

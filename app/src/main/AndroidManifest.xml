@@ -22,7 +22,7 @@
 
         <provider
                 android:name="androidx.core.content.FileProvider"
-                android:authorities="com.usedup.android.zimmermann.homeassistant.fileprovider"
+                android:authorities="de.usedup.android.fileprovider"
                 android:exported="false"
                 android:grantUriPermissions="true">
             <meta-data
@@ -43,7 +43,6 @@
                 android:noHistory="true" />
         <activity
                 android:name=".activities.app.AppActivity"
-                android:noHistory="true"
                 android:windowSoftInputMode="stateHidden" />
         <activity
                 android:name=".activities.login.LoginFlowActivity"
