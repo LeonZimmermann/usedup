@@ -19,7 +19,7 @@ data class Product(
   val amountToBuy: Int
     get() = calculateDiscrepancy(max, quantity)
   val hasDiscrepancy: Boolean
-    get() = calculateRawDiscrepancy(min, quantity) >= 0
+    get() = calculateRawDiscrepancy(min, quantity) > 0
 
   companion object {
     internal fun createInstance(id: String, firebaseObject: FirebaseProduct): Product {
