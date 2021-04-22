@@ -36,19 +36,21 @@ object FirebaseUserRepository : UserRepository {
     val authUser = requireNotNull(FirebaseAuth.getInstance().currentUser)
     addUser(FirebaseId(authUser.uid), requireNotNull(authUser.displayName),
       requireNotNull(authUser.email))
+    FirebaseHouseholdRepository.createHousehold(getCurrentUser().id)
   }
 
   override suspend fun getCurrentUser(): User = withContext(Dispatchers.IO) {
-    if (currentUser != null) currentUser!!
-    else {
+    if (currentUser == null) {
       val task = getDocumentReferenceToCurrentUser().get().apply { Tasks.await(this) }
       if (task.exception != null) {
         throw IOException(task.exception)
       } else {
         val result = task.result?.toObject<FirebaseUser>() ?: throw NoSuchElementException()
         currentUser = User.createInstance(result)
-        currentUser!!
+        requireNotNull(currentUser)
       }
+    } else {
+      requireNotNull(currentUser)
     }
   }
 

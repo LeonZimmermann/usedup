@@ -10,7 +10,7 @@ import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Template
 import de.usedup.android.datamodel.api.objects.TemplateComponent
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
-import de.usedup.android.datamodel.firebase.filterForUser
+import de.usedup.android.datamodel.firebase.filterForHousehold
 import de.usedup.android.datamodel.firebase.objects.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +27,7 @@ object FirebaseTemplateRepository : TemplateRepository {
     if (templateList.value == null) {
       coroutineScope.launch(Dispatchers.IO) {
         templateList.postValue(
-          Tasks.await(collection.filterForUser().get()).map { Template.createInstance(it.id, it.toObject()) }.toSet())
+          Tasks.await(collection.filterForHousehold().get()).map { Template.createInstance(it.id, it.toObject()) }.toSet())
       }
     }
     return templateList
@@ -53,7 +53,7 @@ object FirebaseTemplateRepository : TemplateRepository {
     if (templateInMemory != null) {
       templateInMemory
     } else {
-      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForHousehold().whereEqualTo("name", name).get()).first()
       if (document.exists()) {
         val firebaseTemplate = document.toObject<FirebaseTemplate>()
         Template.createInstance(document.id, firebaseTemplate)

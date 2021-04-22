@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.PlannerItem
 import de.usedup.android.datamodel.api.repositories.PlannerRepository
-import de.usedup.android.datamodel.firebase.filterForUser
+import de.usedup.android.datamodel.firebase.filterForHousehold
 import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseMeal
 import de.usedup.android.datamodel.firebase.objects.FirebasePlannerItem
@@ -31,7 +31,7 @@ object FirebasePlannerRepository : PlannerRepository {
     if (plannerList.value == null) {
       coroutineScope.launch(Dispatchers.IO) {
         plannerList.postValue(
-          Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
+          Tasks.await(collection.filterForHousehold().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
             .toMutableList())
       }
     }
@@ -42,7 +42,7 @@ object FirebasePlannerRepository : PlannerRepository {
     return Single.fromCallable {
       if (plannerList.value == null) {
         val plannerList =
-          Tasks.await(collection.filterForUser().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
+          Tasks.await(collection.filterForHousehold().get()).map { PlannerItem.createInstance(it.id, it.toObject()) }
             .toMutableList()
         this.plannerList.postValue(plannerList)
         plannerList

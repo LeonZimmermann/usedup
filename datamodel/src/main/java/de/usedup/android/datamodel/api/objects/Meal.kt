@@ -36,8 +36,8 @@ class MealIngredient(
 ) {
   companion object {
     internal fun createInstance(firebaseObject: FirebaseMealIngredient): MealIngredient {
-      val productId = FirebaseId(firebaseObject.product?.id ?: throw DataIntegrityException())
-      val measureId = FirebaseId(firebaseObject.measure?.id ?: throw DataIntegrityException())
+      val productId = FirebaseId(firebaseObject.productReference?.id ?: throw DataIntegrityException())
+      val measureId = FirebaseId(firebaseObject.measureReference?.id ?: throw DataIntegrityException())
       val value = firebaseObject.value ?: throw DataIntegrityException()
       return MealIngredient(productId, measureId, value)
     }

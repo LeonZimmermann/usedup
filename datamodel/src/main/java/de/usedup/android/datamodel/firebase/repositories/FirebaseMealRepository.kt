@@ -10,7 +10,7 @@ import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Meal
 import de.usedup.android.datamodel.api.objects.MealIngredient
 import de.usedup.android.datamodel.api.repositories.MealRepository
-import de.usedup.android.datamodel.firebase.filterForUser
+import de.usedup.android.datamodel.firebase.filterForHousehold
 import de.usedup.android.datamodel.firebase.objects.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +27,7 @@ object FirebaseMealRepository : MealRepository {
     if (mealList.value == null) {
       coroutineScope.launch(Dispatchers.IO) {
         mealList.postValue(
-          Tasks.await(collection.filterForUser().get()).map { Meal.createInstance(it.id, it.toObject()) }.toSet())
+          Tasks.await(collection.filterForHousehold().get()).map { Meal.createInstance(it.id, it.toObject()) }.toSet())
       }
     }
     return mealList
@@ -53,7 +53,7 @@ object FirebaseMealRepository : MealRepository {
     if (mealInMemory != null) {
       mealInMemory
     } else {
-      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForHousehold().whereEqualTo("name", name).get()).first()
       if (document.exists()) {
         val firebaseMeal = document.toObject<FirebaseMeal>()
         Meal.createInstance(document.id, firebaseMeal)

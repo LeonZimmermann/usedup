@@ -10,7 +10,7 @@ import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.Product
 import de.usedup.android.datamodel.api.repositories.product.InMemoryQuantityProcessor
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
-import de.usedup.android.datamodel.firebase.filterForUser
+import de.usedup.android.datamodel.firebase.filterForHousehold
 import de.usedup.android.datamodel.firebase.objects.*
 import de.usedup.android.datamodel.firebase.repositories.FirebaseUserRepository
 import io.reactivex.rxjava3.core.Single
@@ -32,7 +32,7 @@ object FirebaseProductRepository : ProductRepository {
     if (productList.value == null) {
       coroutineScope.launch(Dispatchers.IO) {
         productList.postValue(
-          Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet())
+          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet())
       }
     }
     return productList
@@ -42,7 +42,7 @@ object FirebaseProductRepository : ProductRepository {
     return Single.fromCallable {
       if (productList.value == null) {
         val productList =
-          Tasks.await(collection.filterForUser().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet()
+          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet()
         this.productList.postValue(productList)
         productList
       } else {
@@ -71,7 +71,7 @@ object FirebaseProductRepository : ProductRepository {
     if (productInMemory != null) {
       productInMemory
     } else {
-      val document = Tasks.await(collection.filterForUser().whereEqualTo("name", name).get()).first()
+      val document = Tasks.await(collection.filterForHousehold().whereEqualTo("name", name).get()).first()
       if (document.exists()) {
         val firebaseProduct = document.toObject<FirebaseProduct>()
         Product.createInstance(document.id, firebaseProduct)
