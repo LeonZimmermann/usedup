@@ -52,9 +52,7 @@ class ShoppingListPreviewFragment : Fragment() {
     additionalProductRecyclerAdapter =
       AdditionalProductRecyclerAdapter(requireContext(), viewModel.additionProductRecyclerAdapterCallback)
     additionalProductRecyclerView.adapter = additionalProductRecyclerAdapter
-    additionalProductRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
-      override fun canScrollVertically(): Boolean = false
-    }
+    additionalProductRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, { shoppingListPreview ->
       additionalProductRecyclerAdapter.initAdditionalProductList(
         shoppingListPreview.additionalProductList.map { AdditionalProductRepresentation(it) })
@@ -65,9 +63,7 @@ class ShoppingListPreviewFragment : Fragment() {
     productDiscrepancyRecyclerAdapter =
       ProductDiscrepancyRecyclerAdapter(requireContext(), viewModel.productDiscrepancyRecyclerAdapterCallback)
     productDiscrepancyRecyclerView.adapter = productDiscrepancyRecyclerAdapter
-    productDiscrepancyRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
-      override fun canScrollVertically(): Boolean = false
-    }
+    productDiscrepancyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, { shoppingListPreview ->
       productDiscrepancyRecyclerAdapter.initProductDiscrepancyList(
         shoppingListPreview.productDiscrepancyList.map { ProductDiscrepancyRepresentation(it) })
@@ -77,9 +73,7 @@ class ShoppingListPreviewFragment : Fragment() {
   private fun initMealRecyclerAdapter() {
     mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
     mealRecyclerView.adapter = mealRecyclerAdapter
-    mealRecyclerView.layoutManager = object : LinearLayoutManager(requireContext()) {
-      override fun canScrollVertically(): Boolean = false
-    }
+    mealRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, { shoppingListPreview ->
       mealRecyclerAdapter.setMealList(shoppingListPreview.mealList.map { MealRepresentation(it) })
     })
