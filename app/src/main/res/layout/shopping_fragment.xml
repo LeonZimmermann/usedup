@@ -15,10 +15,9 @@
             android:layout_height="match_parent"
             tools:context=".shopping.list.ShoppingFragment">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +34,7 @@
                         android:layout_marginStart="37dp"
                         android:layout_marginEnd="37dp"
                         android:layout_marginBottom="100dp"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                         tools:itemCount="5"
                         tools:listitem="@layout/shopping_category" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/confirm_button"

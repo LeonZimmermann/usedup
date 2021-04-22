@@ -30,9 +30,7 @@ class ShoppingListCategoryRecyclerAdapter(private val context: Context, private 
     val shoppingListCategory = shoppingListCategories[position]
     holder.categoryNameTextView.text = shoppingListCategory.name
     val adapter = ShoppingListElementRecyclerAdapter(context, callback)
-    holder.shoppingListCategoryRecyclerAdapter.layoutManager = object : LinearLayoutManager(context) {
-      override fun canScrollVertically(): Boolean = false
-    }
+    holder.shoppingListCategoryRecyclerAdapter.layoutManager = LinearLayoutManager(context)
     holder.shoppingListCategoryRecyclerAdapter.adapter = adapter
     adapter.initShoppingListElements(shoppingListCategory.shoppingListElementRepresentation)
   }

@@ -2,7 +2,6 @@ package de.usedup.android.shopping.list
 
 import android.view.View
 import androidx.lifecycle.*
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.R
@@ -33,14 +32,16 @@ class ShoppingViewModel @Inject constructor(
       shoppingList.shoppingProducts
         .groupBy { it.product.categoryId }
         .map(::mapToShoppingListCategoryRepresentation)
-        .toSet()
+        .toSortedSet(compareBy { it.position })
     }
 
   private fun mapToShoppingListCategoryRepresentation(
-    entry: Map.Entry<Id, List<ShoppingProduct>>): ShoppingListCategoryRepresentation =
-    ShoppingListCategoryRepresentation(categoryRepository.getCategoryForId(entry.key)!!.name,
+    entry: Map.Entry<Id, List<ShoppingProduct>>): ShoppingListCategoryRepresentation {
+    val category = requireNotNull(categoryRepository.getCategoryForId(entry.key))
+    return ShoppingListCategoryRepresentation(category.name, category.position,
       entry.value.map { ShoppingListElementRepresentation(it.product, it.cartAmount, shoppingCart.contains(it)) }
         .toSet())
+  }
 
   fun initShoppingList(shoppingList: ShoppingList) {
     this.shoppingList.postValue(shoppingList)

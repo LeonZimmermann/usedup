@@ -59,9 +59,7 @@ class ShoppingFragment : Fragment() {
   private fun initShoppingListRecyclerView() {
     val adapter = ShoppingListCategoryRecyclerAdapter(requireContext(), viewModel.onCheckButtonPressedCallback)
     shopping_list_recycler_view.adapter = adapter
-    shopping_list_recycler_view.layoutManager = object : LinearLayoutManager(requireContext()) {
-      override fun canScrollVertically(): Boolean = false
-    }
+    shopping_list_recycler_view.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListCategories.observe(viewLifecycleOwner, { shoppingListCategories ->
       adapter.initShoppingListCategories(shoppingListCategories)
     })
