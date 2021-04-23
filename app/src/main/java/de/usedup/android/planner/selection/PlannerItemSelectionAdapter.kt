@@ -31,7 +31,7 @@ class PlannerItemSelectionAdapter(private val context: Context, private val call
 
   override fun onBindViewHolder(holder: PlannerItemSelectionViewHolder, position: Int) {
     val meal = mealList[position]
-    meal.backgroundUrl?.let {
+    meal.imageName?.let {
       Glide.with(context)
         .load(it)
         .into(holder.dinnerItemImage)

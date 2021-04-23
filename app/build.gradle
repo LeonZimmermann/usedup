@@ -144,10 +144,11 @@ dependencies {
     implementation 'com.github.CanHub:Android-Image-Cropper:3.0.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-auth-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-auth-ktx:20.0.4'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.2'
 
     // Google Play Billing
     implementation "com.android.billingclient:billing:$billingVersion"

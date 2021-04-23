@@ -102,4 +102,6 @@
     <string name="select_meal_label">Select Meal</string>
     <string name="shopping_list_label">Shopping-List</string>
     <string name="household_label">Household</string>
+    <string name="discard">Discard</string>
+    <string name="accept">Accept</string>
 </resources>

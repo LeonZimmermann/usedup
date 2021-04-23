@@ -11,7 +11,7 @@ class Meal(
     var duration: Int,
     var description: String?,
     var instructions: String?,
-    var backgroundUrl: String?,
+    var imageName: String?,
     var ingredients: List<MealIngredient>
 ) {
   companion object {
@@ -20,7 +20,7 @@ class Meal(
       val duration = firebaseObject.duration ?: throw DataIntegrityException()
       val description = firebaseObject.description
       val instructions = firebaseObject.instructions
-      val backgroundUrl = firebaseObject.backgroundUrl
+      val backgroundUrl = firebaseObject.imageName
       val ingredients = firebaseObject.ingredients
         ?.map { MealIngredient.createInstance(it) }
         ?: throw DataIntegrityException()

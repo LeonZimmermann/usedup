@@ -95,8 +95,8 @@ object FirebaseMealRepository : MealRepository {
     id: Id,
     name: String,
     duration: Int,
-    description: String,
-    instructions: String,
+    description: String?,
+    instructions: String?,
     backgroundUrl: String?,
     ingredients: List<MealIngredient>
   ) {
@@ -118,7 +118,7 @@ object FirebaseMealRepository : MealRepository {
           this.duration = duration
           this.description = description
           this.instructions = instructions
-          this.backgroundUrl = backgroundUrl
+          this.imageName = backgroundUrl
           this.ingredients = ingredients
           mealList.postValue(mealList.value)
         }

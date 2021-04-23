@@ -1,68 +1,29 @@
 package de.usedup.android.camera
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
+import de.usedup.android.databinding.CameraFragmentBinding
 import kotlinx.android.synthetic.main.camera_fragment.*
 import org.jetbrains.anko.support.v4.toast
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
+@AndroidEntryPoint
 class CameraFragment : Fragment() {
 
-  private lateinit var photoUri: Uri
-  private var file: File? = null
+  private val viewModel: CameraViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    initFile(savedInstanceState)
-    initPhotoUri(savedInstanceState)
-  }
-
-  override fun onResume() {
-    super.onResume()
-    (activity as AppCompatActivity).supportActionBar!!.hide()
-  }
-
-  override fun onPause() {
-    super.onPause()
-    (activity as AppCompatActivity).supportActionBar!!.show()
-  }
-
-  private fun initFile(savedInstanceState: Bundle?) {
-    file = arguments?.getSerializable(FILE) as? File
-      ?: savedInstanceState?.getSerializable(FILE) as? File
-          ?: throw RuntimeException("No File parameter supplied!")
-  }
-
-  private fun initPhotoUri(savedInstanceState: Bundle?) {
-    var photoUri: Uri?
-    photoUri = savedInstanceState?.getParcelable(PHOTO_URI)
-    if (photoUri == null) {
-      try {
-        photoUri = dispatchTakePictureIntent()
-      } catch (e: IOException) {
-        if (e.message != null) toast(e.message!!)
-      }
-    }
-    this.photoUri = photoUri!!
+    viewModel.dispatchTakePictureIntent()
   }
 
   override fun onCreateView(
@@ -74,68 +35,72 @@ class CameraFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    cropImageView.setAspectRatio(16, 9)
-    cropImageView.setFixedAspectRatio(true)
-    discard_button.setOnClickListener { findNavController().navigateUp() }
-    accept_button.setOnClickListener {
-      cropImageView.croppedImage?.let {
-        it.compress(Bitmap.CompressFormat.JPEG, 100, file!!.outputStream())
-        findNavController().navigateUp()
-      }
-    }
-  }
-
-  private fun initCropImageView() {
-    file?.let {
-      cropImageView.setImageBitmap(BitmapFactory.decodeStream(it.inputStream()))
-    }
-  }
-
-  @Throws(IOException::class)
-  private fun dispatchTakePictureIntent(): Uri {
-    if (!requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY))
-      throw NoCameraException("Device has no camera")
-    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    val photoUri =
-      FileProvider.getUriForFile(requireContext(), "de.usedup.android.fileprovider", file!!)
-    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-    intent.resolveActivity(requireContext().packageManager)?.also {
-      startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-    }
-    return photoUri
+    initDatabinding()
+    initCropImageView()
+    initCameraIntentHandler()
+    initErrorMessageHandler()
+    initNavigateUpHandler()
+    viewModel.dispatchTakePictureIntent()
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == REQUEST_IMAGE_CAPTURE) initCropImageView()
+    if (requestCode == REQUEST_IMAGE_CAPTURE) {
+      cropImageView.setImageBitmap(BitmapFactory.decodeStream(viewModel.file.inputStream()))
+    }
   }
 
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    if (photoUri != null) outState.putParcelable(PHOTO_URI, photoUri)
-    if (file != null) outState.putSerializable(FILE, file)
+  private fun initDatabinding() {
+    val binding = CameraFragmentBinding.bind(requireView())
+    binding.viewModel = viewModel
+    binding.lifecycleOwner = this
+  }
+
+  override fun onResume() {
+    super.onResume()
+    requireNotNull((activity as AppCompatActivity).supportActionBar).hide()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    requireNotNull((activity as AppCompatActivity).supportActionBar).show()
+  }
+
+  private fun initCropImageView() {
+    cropImageView.setImageBitmap(BitmapFactory.decodeStream(viewModel.file.inputStream()))
+  }
+
+  private fun initCameraIntentHandler() {
+    viewModel.cameraIntent.observe(viewLifecycleOwner) {
+      it?.let {
+        startActivityForResult(it, REQUEST_IMAGE_CAPTURE)
+        viewModel.cameraIntent.postValue(null)
+      }
+    }
+  }
+
+  private fun initErrorMessageHandler() {
+    viewModel.errorMessage.observe(viewLifecycleOwner) {
+      it?.let {
+        toast(it)
+        viewModel.errorMessage.postValue(null)
+      }
+    }
+  }
+
+  private fun initNavigateUpHandler() {
+    viewModel.navigateUp.observe(viewLifecycleOwner) { navigateUp ->
+      if (navigateUp) {
+        findNavController().navigateUp()
+        viewModel.navigateUp.postValue(false)
+      }
+    }
   }
 
   companion object {
-    private const val PHOTO_URI = "photo_uri"
-    private const val FILE = "file"
     private const val REQUEST_IMAGE_CAPTURE = 1
-
-    @SuppressLint("SimpleDateFormat")
-    private val timestampFormatter = SimpleDateFormat("yyyyMMdd_HHmmss")
-
-    @Throws(IOException::class)
-    fun createPhotoFile(context: Context): File {
-      val timeStamp: String = timestampFormatter.format(Date())
-      val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        ?: throw IOException("Could not access external files dir")
-      val file = File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
-      file.deleteOnExit()
-      return file
-    }
+    const val BITMAP = "bitmap"
 
     fun newInstance() = CameraFragment()
   }
-
-  class NoCameraException(message: String) : Exception(message)
 }

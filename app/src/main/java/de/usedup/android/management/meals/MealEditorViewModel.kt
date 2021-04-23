@@ -1,5 +1,6 @@
 package de.usedup.android.management.meals
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,19 +11,19 @@ import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.MealIngredient
 import de.usedup.android.datamodel.api.objects.MeasureValue
 import de.usedup.android.datamodel.api.objects.Product
-import de.usedup.android.datamodel.api.repositories.MealRepository
-import de.usedup.android.datamodel.api.repositories.MeasureRepository
+import de.usedup.android.datamodel.api.repositories.*
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class MealEditorViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
-  private val mealRepository: MealRepository
+  private val mealRepository: MealRepository,
+  private val imageRepository: ImageRepository,
 ) : ViewModel() {
 
   val products: LiveData<Set<Product>> = productRepository.getAllProductsLiveData(viewModelScope)
@@ -32,7 +33,9 @@ class MealEditorViewModel @Inject constructor(
   val descriptionString = MutableLiveData<String?>()
   val instructionsString = MutableLiveData<String?>()
   val consumptionElementList: MutableLiveData<MutableList<ConsumptionElement>> = MutableLiveData(mutableListOf())
-  var photoFile: File? = null
+  val image: MutableLiveData<Bitmap> = MutableLiveData()
+  var oldImageName: String? = null
+  var newImageName: String? = null
 
   private val name: String?
     get() = nameString.value
@@ -43,6 +46,9 @@ class MealEditorViewModel @Inject constructor(
   private val instructions: String?
     get() = instructionsString.value
 
+  val addIngredientsClicked: MutableLiveData<Boolean> = MutableLiveData()
+  val openCamera: MutableLiveData<Boolean> = MutableLiveData()
+  val navigateUp: MutableLiveData<Boolean> = MutableLiveData()
   val errorMessage: MutableLiveData<String> = MutableLiveData()
 
   var mealId: Id? = null
@@ -51,7 +57,14 @@ class MealEditorViewModel @Inject constructor(
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealEditorViewModel.mealId = mealId
     mealRepository.getMealForId(mealId)?.apply {
-      backgroundUrl?.let { photoFile = File(it) }
+      imageName?.let { imageName ->
+        oldImageName = imageName
+        viewModelScope.launch(Dispatchers.IO) {
+          imageRepository.getImage(imageName)
+            .doOnError { errorMessage.postValue("Could not load image") }
+            .subscribe { image.postValue(it) }
+        }
+      }
       nameString.postValue(name)
       durationString.postValue(duration.toString())
       ingredients.let {
@@ -70,6 +83,11 @@ class MealEditorViewModel @Inject constructor(
     }
   }
 
+  fun setImageFromBitmap(bitmap: Bitmap) {
+    newImageName = UUID.randomUUID().toString()
+    image.postValue(bitmap)
+  }
+
   fun addConsumptionElement(consumptionElement: ConsumptionElement) {
     consumptionElementList.value?.let { list ->
       val foundConsumptionElement = list.firstOrNull { it.product == consumptionElement.product }
@@ -79,16 +97,44 @@ class MealEditorViewModel @Inject constructor(
     }
   }
 
-  fun addNewMealToDatabase() = viewModelScope.launch(Dispatchers.IO) {
-    when {
-      name.isNullOrBlank() -> errorMessage.postValue("Insert a name")
-      duration == null -> errorMessage.postValue("Insert a duration")
-      requireNotNull(consumptionElementList.value).isEmpty() -> errorMessage.postValue("Insert consumption elements")
-      else -> mealRepository.addMeal(requireNotNull(name), requireNotNull(duration), description, instructions,
-        photoFile?.toString(),
-        consumptionElementList.value!!.map { element ->
-          MealIngredient(element.product.id, element.valueValue.measure.id, element.valueValue.double)
-        })
+  fun onImageViewClicked() {
+    openCamera.postValue(true)
+  }
+
+  fun onAddIngredientsClicked() {
+    addIngredientsClicked.postValue(true)
+  }
+
+  fun onSaveDinnerButtonClicked() {
+    viewModelScope.launch(Dispatchers.IO) {
+      when {
+        name.isNullOrBlank() -> errorMessage.postValue("Insert a name")
+        duration == null -> errorMessage.postValue("Insert a duration")
+        requireNotNull(consumptionElementList.value).isEmpty() -> errorMessage.postValue("Insert consumption elements")
+        else -> {
+          val consumptions = requireNotNull(consumptionElementList.value).map { element ->
+            MealIngredient(element.product.id, element.valueValue.measure.id, element.valueValue.double)
+          }
+          if (mealId == null) {
+            mealRepository.addMeal(requireNotNull(name), requireNotNull(duration), description, instructions,
+              newImageName, consumptions)
+            newImageName?.let { imageRepository.createImage(it, requireNotNull(image.value)) }
+          } else {
+            if (newImageName == null) {
+              mealRepository.updateMeal(requireNotNull(mealId), requireNotNull(name), requireNotNull(duration),
+                description, instructions, oldImageName, consumptions)
+            } else {
+              if (oldImageName != null) {
+                imageRepository.deleteImage(requireNotNull(oldImageName))
+              }
+              imageRepository.createImage(requireNotNull(newImageName), requireNotNull(image.value))
+              mealRepository.updateMeal(requireNotNull(mealId), requireNotNull(name), requireNotNull(duration),
+                description, instructions, newImageName, consumptions)
+            }
+          }
+          navigateUp.postValue(true)
+        }
+      }
     }
   }
 }

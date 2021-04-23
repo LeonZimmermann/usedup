@@ -8,7 +8,7 @@ internal class FirebaseMeal(
   @PropertyName("duration") var duration: Int? = null,
   @PropertyName("description") var description: String? = null,
   @PropertyName("instructions") var instructions: String? = null,
-  @PropertyName("backgroundUrl") var backgroundUrl: String? = null,
+  @PropertyName("imageName") var imageName: String? = null,
   @PropertyName("ingredients") var ingredients: List<FirebaseMealIngredient>? = null,
   @PropertyName("householdReference") var householdReference: DocumentReference? = null,
 ) {

@@ -18,7 +18,7 @@ interface MealRepository {
   suspend fun addMeal(name: String, duration: Int, description: String?, instructions: String?, backgroundUrl: String?,
     ingredients: List<MealIngredient>)
 
-  suspend fun updateMeal(id: Id, name: String, duration: Int, description: String, instructions: String,
+  suspend fun updateMeal(id: Id, name: String, duration: Int, description: String?, instructions: String?,
     backgroundUrl: String?, ingredients: List<MealIngredient>)
 
   suspend fun deleteMeal(id: Id)
