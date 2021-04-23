@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text|textAutoComplete"
                     android:text="@={viewModel.nameText}"
-                    tools:hint="Enter the products name" />
+                    tools:hint="@string/enter_product_name" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

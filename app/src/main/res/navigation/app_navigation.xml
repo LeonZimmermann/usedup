@@ -7,12 +7,12 @@
     <fragment
             android:id="@+id/overview_fragment"
             android:name="de.usedup.android.overview.OverviewFragment"
-            android:label="Overview"
+            android:label="@string/overview_label"
             tools:layout="@layout/overview_fragment" />
     <fragment
             android:id="@+id/about_fragment"
             android:name="de.usedup.android.about.AboutFragment"
-            android:label="About"
+            android:label="@string/about_label"
             tools:layout="@layout/about_fragment" />
     <action
             android:id="@+id/action_global_about_fragment"
@@ -20,14 +20,14 @@
     <fragment
             android:id="@+id/shopping_list_preview_fragment"
             android:name="de.usedup.android.shopping.preview.ShoppingListPreviewFragment"
-            android:label="Preview">
+            android:label="@string/preview_label">
         <action
                 android:id="@+id/action_shopping_list_preview_fragment_to_shopping_list_fragment"
                 app:destination="@id/shopping_list_fragment" />
     </fragment>
     <navigation
             android:id="@+id/management"
-            android:label="Management"
+            android:label="@string/management_label"
             app:startDestination="@id/management_fragment">
         <navigation
                 android:id="@+id/meal"
@@ -41,7 +41,7 @@
             <fragment
                     android:id="@+id/meal_editor_fragment"
                     android:name="de.usedup.android.management.meals.MealEditorFragment"
-                    android:label="Edit Meal">
+                    android:label="@string/edit_meal_label">
                 <action
                         android:id="@+id/action_meal_editor_fragment_to_camera_fragment"
                         app:destination="@id/camera_fragment" />
@@ -54,7 +54,7 @@
         <fragment
                 android:id="@+id/product_editor_fragment"
                 android:name="de.usedup.android.management.products.ProductEditorFragment"
-                android:label="Edit Product">
+                android:label="@string/edit_product_label">
             <argument
                     android:name="productId"
                     app:argType="de.usedup.android.datamodel.api.objects.Id"
@@ -63,7 +63,7 @@
         <fragment
                 android:id="@+id/template_editor_fragment"
                 android:name="de.usedup.android.management.templates.TemplateEditorFragment"
-                android:label="Edit Template">
+                android:label="@string/edit_template_label">
             <argument
                     android:name="templateId"
                     app:argType="de.usedup.android.datamodel.api.objects.Id"
@@ -72,7 +72,7 @@
         <fragment
                 android:id="@+id/management_fragment"
                 android:name="de.usedup.android.management.ManagementFragment"
-                android:label="Management"
+                android:label="@string/management_label"
                 tools:layout="@layout/management_fragment">
             <action
                     android:id="@+id/action_management_fragment_to_product_editor_fragment"
@@ -94,14 +94,14 @@
     <fragment
             android:id="@+id/settings_fragment"
             android:name="de.usedup.android.settings.UsedupSettingsFragment"
-            android:label="Settings" />
+            android:label="@string/settings_label" />
     <action
             android:id="@+id/action_global_settings_fragment"
             app:destination="@id/settings_fragment" />
     <fragment
             android:id="@+id/planner_fragment"
             android:name="de.usedup.android.planner.PlannerFragment"
-            android:label="Dinner Planning">
+            android:label="@string/planning_label">
         <action
                 android:id="@+id/action_planner_fragment_to_meal_details_fragment"
                 app:destination="@id/meal_details_fragment" />
@@ -115,7 +115,7 @@
     <fragment
             android:id="@+id/meal_details_fragment"
             android:name="de.usedup.android.mealdetails.MealDetailsFragment"
-            android:label="Meal">
+            android:label="@string/meal_label">
         <argument
                 android:name="mealId"
                 app:argType="de.usedup.android.datamodel.api.objects.Id" />
@@ -123,7 +123,7 @@
     <fragment
             android:id="@+id/planner_item_selection_fragment"
             android:name="de.usedup.android.planner.selection.PlannerItemSelectionFragment"
-            android:label="Select Dinner"
+            android:label="@string/select_meal_label"
             tools:layout="@layout/planner_item_selection_fragment">
         <argument
                 android:name="date"
@@ -137,7 +137,7 @@
     <fragment
             android:id="@+id/shopping_list_fragment"
             android:name="de.usedup.android.shopping.list.ShoppingFragment"
-            android:label="Shopping-List"
+            android:label="@string/shopping_list_label"
             tools:layout="@layout/shopping_fragment">
         <argument
                 android:name="shoppingList"
@@ -153,6 +153,6 @@
     <fragment
             android:id="@+id/household_fragment"
             android:name="de.usedup.android.household.HouseholdFragment"
-            android:label="Household"
+            android:label="@string/household_label"
             tools:layout="@layout/household_fragment" /><action android:id="@+id/action_global_household_fragment" app:destination="@id/household_fragment"/>
 </navigation>

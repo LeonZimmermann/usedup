@@ -63,8 +63,8 @@ class SimpleProductPreviewAdapter constructor(
     val view = LinearLayout(parent.context).apply {
       setPadding(0, dip(10f), 0, dip(10f))
       textView {
-        text = "And $additionalAmount more..."
-        textColor = context.resources.getColor(android.R.color.darker_gray)
+        text = context.resources.getString(R.string.more_discrepancy_message, additionalAmount)
+        textColor = context.resources.getColor(android.R.color.darker_gray, null)
       }
     }
     return AdditionalMessageViewHolder(view)

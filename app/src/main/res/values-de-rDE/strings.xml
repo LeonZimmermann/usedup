@@ -72,4 +72,26 @@
     <string name="consumption_info">"Wähle aus, ob die ein Produkt, eine Vorlage oder ein Gericht verbraucht hast. Anschließend gibst du den entsprechenden Namen an, um den Bestand zu aktualisieren. "</string>
     <string name="no_products_yet_message">Du hast noch keine Produkte :(</string>
     <string name="no_templates_yet_message">Du hast noch keine Vorlagen :(</string>
+    <string name="enter_product_name">Gib einen Produktnamen an</string>
+    <string name="enter_template_name">Gib einen Vorlagenamen an</string>
+    <string name="enter_meal_name">Gib einen Gerichtnamen an</string>
+    <string name="users">Nutzer</string>
+    <string name="add_user">Nutzer hinzufügen</string>
+    <string name="subscription">Abbonement</string>
+    <string name="payment_method">Zahlungsmethode</string>
+    <string name="household">Haushalt</string>
+    <string name="more_discrepancy_message">Und %1$d weitere...</string>
+    <string name="about_label">Über</string>
+    <string name="overview_label">Überblick</string>
+    <string name="preview_label">Vorschau</string>
+    <string name="management_label">Management</string>
+    <string name="edit_meal_label">Gericht bearbeiten</string>
+    <string name="edit_product_label">Produkt bearbeiten</string>
+    <string name="edit_template_label">Vorlage bearbeiten</string>
+    <string name="settings_label">Einstellungen</string>
+    <string name="planning_label">Gerichteplanung</string>
+    <string name="meal_label">Gericht</string>
+    <string name="select_meal_label">Gericht auswählen</string>
+    <string name="shopping_list_label">Einkaufsliste</string>
+    <string name="household_label">Haushalt</string>
 </resources>
