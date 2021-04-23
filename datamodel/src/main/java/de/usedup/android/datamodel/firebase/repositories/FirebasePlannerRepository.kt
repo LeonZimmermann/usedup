@@ -11,6 +11,7 @@ import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.PlannerItem
 import de.usedup.android.datamodel.api.repositories.PlannerRepository
 import de.usedup.android.datamodel.firebase.filterForHousehold
+import de.usedup.android.datamodel.firebase.getHouseholdReference
 import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseMeal
 import de.usedup.android.datamodel.firebase.objects.FirebasePlannerItem
@@ -68,8 +69,7 @@ object FirebasePlannerRepository : PlannerRepository {
   override suspend fun addPlannerItem(mealId: Id, date: Long) = withContext(Dispatchers.IO) {
     val mealReference =
       Firebase.firestore.collection(FirebaseMeal.COLLECTION_NAME).document((mealId as FirebaseId).value)
-    val firebasePlannerItem =
-      FirebasePlannerItem(mealReference, date, FirebaseUserRepository.getDocumentReferenceToCurrentUser())
+    val firebasePlannerItem = FirebasePlannerItem(mealReference, date, getHouseholdReference())
     val task = collection.add(firebasePlannerItem).apply { Tasks.await(this) }
     when {
       task.exception != null -> {

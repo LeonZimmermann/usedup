@@ -6,7 +6,7 @@ import com.google.firebase.firestore.PropertyName
 data class FirebasePlannerItem(
   @PropertyName("mealReference") val mealReference: DocumentReference? = null,
   @PropertyName("date") val date: Long? = null,
-  @PropertyName("userReference") var userReference: DocumentReference? = null
+  @PropertyName("householdReference") var householdReference: DocumentReference? = null
 ) {
   companion object {
     const val COLLECTION_NAME = "planners"

@@ -11,8 +11,8 @@ import de.usedup.android.datamodel.api.objects.Product
 import de.usedup.android.datamodel.api.repositories.product.InMemoryQuantityProcessor
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import de.usedup.android.datamodel.firebase.filterForHousehold
+import de.usedup.android.datamodel.firebase.getHouseholdReference
 import de.usedup.android.datamodel.firebase.objects.*
-import de.usedup.android.datamodel.firebase.repositories.FirebaseUserRepository
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +32,8 @@ object FirebaseProductRepository : ProductRepository {
     if (productList.value == null) {
       coroutineScope.launch(Dispatchers.IO) {
         productList.postValue(
-          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet())
+          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }
+            .toSet())
       }
     }
     return productList
@@ -42,7 +43,8 @@ object FirebaseProductRepository : ProductRepository {
     return Single.fromCallable {
       if (productList.value == null) {
         val productList =
-          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }.toSet()
+          Tasks.await(collection.filterForHousehold().get()).map { Product.createInstance(it.id, it.toObject()) }
+            .toSet()
         this.productList.postValue(productList)
         productList
       } else {
@@ -95,7 +97,7 @@ object FirebaseProductRepository : ProductRepository {
     val categoryReference =
       Firebase.firestore.collection(FirebaseCategory.COLLECTION_NAME).document((categoryId as FirebaseId).value)
     val firebaseProduct = FirebaseProduct(name, quantity, min, max, capacity, measureReference, categoryReference,
-      FirebaseUserRepository.getDocumentReferenceToCurrentUser())
+      getHouseholdReference())
     val task = collection.add(firebaseProduct).apply { Tasks.await(this) }
     when {
       task.exception != null -> {

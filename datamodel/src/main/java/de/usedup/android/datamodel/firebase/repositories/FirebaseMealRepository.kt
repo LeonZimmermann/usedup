@@ -11,6 +11,7 @@ import de.usedup.android.datamodel.api.objects.Meal
 import de.usedup.android.datamodel.api.objects.MealIngredient
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.firebase.filterForHousehold
+import de.usedup.android.datamodel.firebase.getHouseholdReference
 import de.usedup.android.datamodel.firebase.objects.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +73,8 @@ object FirebaseMealRepository : MealRepository {
     ingredients: List<MealIngredient>
   ): Unit = withContext(Dispatchers.IO) {
     val firebaseIngredients = mapMealIngredients(ingredients)
-    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients)
+    val firebaseMeal = FirebaseMeal(name, duration, description, instructions, backgroundUrl, firebaseIngredients,
+      getHouseholdReference())
     val task = collection.add(firebaseMeal).apply { Tasks.await(this) }
     when {
       task.exception != null -> {
