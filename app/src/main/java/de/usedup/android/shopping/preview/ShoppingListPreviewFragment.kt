@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
@@ -71,7 +72,7 @@ class ShoppingListPreviewFragment : Fragment() {
   }
 
   private fun initMealRecyclerAdapter() {
-    mealRecyclerAdapter = MealRecyclerAdapter(requireContext())
+    mealRecyclerAdapter = MealRecyclerAdapter(requireContext(), viewModel.viewModelScope)
     mealRecyclerView.adapter = mealRecyclerAdapter
     mealRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     viewModel.shoppingListPreview.observe(viewLifecycleOwner, { shoppingListPreview ->

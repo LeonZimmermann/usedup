@@ -1,6 +1,7 @@
 package de.usedup.android.management.meals
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import de.usedup.android.datamodel.api.objects.MeasureValue
 import de.usedup.android.datamodel.api.objects.Product
 import de.usedup.android.datamodel.api.repositories.*
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
+import de.usedup.android.planner.PlannerRecyclerAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -61,7 +63,10 @@ class MealEditorViewModel @Inject constructor(
         oldImageName = imageName
         viewModelScope.launch(Dispatchers.IO) {
           imageRepository.getImage(imageName)
-            .doOnError { errorMessage.postValue("Could not load image") }
+            .doOnError {
+              Log.e(TAG, it.message ?: "An Error occurred while loading an image")
+              errorMessage.postValue("Could not load image")
+            }
             .subscribe { image.postValue(it) }
         }
       }
@@ -136,5 +141,9 @@ class MealEditorViewModel @Inject constructor(
         }
       }
     }
+  }
+
+  companion object {
+    private const val TAG = "MealEditorViewModel"
   }
 }

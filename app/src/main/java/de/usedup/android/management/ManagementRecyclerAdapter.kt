@@ -1,13 +1,16 @@
 package de.usedup.android.management
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import de.usedup.android.R
 import de.usedup.android.utils.toFloatFormat
 import de.usedup.android.utils.toIntFormat
@@ -22,6 +25,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import de.usedup.android.datamodel.api.repositories.ImageRepository
 import de.usedup.android.utils.toDurationString
 import kotlinx.android.synthetic.main.meal_browser_item.view.*
 import kotlinx.android.synthetic.main.product_browser_item.view.*
@@ -30,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.anko.padding
 
 class ManagementRecyclerAdapter constructor(context: Context, private val recyclerView: RecyclerView,
   private val navController: NavController, private val coroutineScope: CoroutineScope) :
@@ -106,6 +111,7 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
   inner class MealViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val nameTv: TextView = itemView.dinner_item_name_tv
     private val durationTv: TextView = itemView.dinner_item_duration_tv
+    private val dinnerItemImage: ImageView = itemView.dinner_item_image
 
     fun init(meal: Meal) {
       itemView.setOnClickListener {
@@ -114,6 +120,24 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
       meal.apply {
         nameTv.text = name
         durationTv.text = duration.toDurationString()
+      }
+      coroutineScope.launch(Dispatchers.IO) {
+        meal.imageName?.let { imageName ->
+          entryPoint.getImageRepository().getImage(imageName)
+            .onErrorComplete()
+            .subscribe {
+              coroutineScope.launch(Dispatchers.Main) {
+                Glide.with(dinnerItemImage.context)
+                  .load(it)
+                  .into(dinnerItemImage)
+                dinnerItemImage.apply {
+                  imageTintMode = PorterDuff.Mode.DST
+                  scaleType = ImageView.ScaleType.CENTER_CROP
+                  padding = 0
+                }
+              }
+            }
+        }
       }
     }
   }
@@ -176,5 +200,6 @@ class ManagementRecyclerAdapter constructor(context: Context, private val recycl
     fun getProductRepository(): ProductRepository
     fun getTemplateRepository(): TemplateRepository
     fun getMealRepository(): MealRepository
+    fun getImageRepository(): ImageRepository
   }
 }

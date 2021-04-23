@@ -1,5 +1,6 @@
 package de.usedup.android.mealdetails
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.components.consumption.ConsumptionElement
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.MeasureValue
+import de.usedup.android.datamodel.api.repositories.ImageRepository
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class MealDetailsViewModel @Inject constructor(
   private val productRepository: ProductRepository,
   private val measureRepository: MeasureRepository,
-  private val mealRepository: MealRepository
+  private val mealRepository: MealRepository,
+  private val imageRepository: ImageRepository,
 ) : ViewModel() {
 
   val nameString = MutableLiveData<String>()
@@ -27,6 +30,7 @@ class MealDetailsViewModel @Inject constructor(
   val descriptionString = MutableLiveData<String>()
   val instructionsString = MutableLiveData<String>()
   val ingredientsString: MutableLiveData<String> = MutableLiveData()
+  val image: MutableLiveData<Bitmap> = MutableLiveData()
 
   val errorMessage = MutableLiveData<String?>()
   val navigateUp = MutableLiveData(false)
@@ -37,6 +41,13 @@ class MealDetailsViewModel @Inject constructor(
   fun setMealId(mealId: Id) = viewModelScope.launch(Dispatchers.IO) {
     this@MealDetailsViewModel.mealId = mealId
     mealRepository.getMealForId(mealId)?.apply {
+      imageName?.let { imageName ->
+        viewModelScope.launch(Dispatchers.IO) {
+          imageRepository.getImage(imageName).subscribe {
+            image.postValue(it)
+          }
+        }
+      }
       nameString.postValue(name)
       durationString.postValue(duration.toDurationString())
       ingredientsString.postValue(createIngredientsString(ingredients.mapNotNull { ingredient ->

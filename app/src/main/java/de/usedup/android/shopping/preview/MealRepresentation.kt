@@ -8,4 +8,6 @@ data class MealRepresentation(private val data: ShoppingMeal) {
     get() = data.meal.name
   val durationText: String
     get() = data.meal.duration.toDurationString()
+  val imageName: String?
+    get() = data.meal.imageName
 }

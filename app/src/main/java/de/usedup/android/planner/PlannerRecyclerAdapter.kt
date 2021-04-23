@@ -1,6 +1,8 @@
 package de.usedup.android.planner
 
 import android.content.Context
+import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -15,6 +18,7 @@ import dagger.hilt.components.SingletonComponent
 import de.usedup.android.R
 import de.usedup.android.components.recyclerViewHandler.RecyclerViewHandlerAdapter
 import de.usedup.android.datamodel.api.objects.PlannerItem
+import de.usedup.android.datamodel.api.repositories.ImageRepository
 import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.utils.toDisplayString
 import de.usedup.android.utils.toDurationString
@@ -24,7 +28,9 @@ import kotlinx.android.synthetic.main.planner_item.view.*
 import kotlinx.android.synthetic.main.planner_item.view.weekday_date_tv
 import kotlinx.android.synthetic.main.planner_placeholder.view.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.padding
 import java.time.LocalDate
 
 class PlannerRecyclerAdapter(private val context: Context, private val coroutineScope: CoroutineScope,
@@ -76,7 +82,8 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
   }
 
   private fun bindPlannerItemViewHolder(holder: PlannerItemViewHolder, position: Int) = coroutineScope.launch {
-    val plannerItem = plannerItems.first { it.date.toLocalDate().dayOfWeek == LocalDate.now().plusDays(position.toLong()).dayOfWeek }
+    val plannerItem =
+      plannerItems.first { it.date.toLocalDate().dayOfWeek == LocalDate.now().plusDays(position.toLong()).dayOfWeek }
     val date = plannerItem.date.toLocalDate()
     val meal = mealRepository.getMealForId(plannerItem.mealId)
     if (meal != null) {
@@ -85,14 +92,30 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
       holder.weekdayDateTextView.text = "$weekdayText $dayText."
       holder.dinnerItemNameTextView.text = meal.name
       holder.dinnerItemDurationTextView.text = meal.duration.toDurationString()
+      meal.imageName?.let { imageName ->
+        coroutineScope.launch(Dispatchers.IO) {
+          entryPoint.getImageRepository().getImage(imageName)
+            .doOnError { Log.e(TAG, it.message ?: "An Error occurred while loading an image") }
+            .subscribe {
+              coroutineScope.launch(Dispatchers.Main) {
+                Glide.with(context)
+                  .load(it)
+                  .into(holder.dinnerItemImageView)
+                holder.dinnerItemImageView.apply {
+                  imageTintMode = PorterDuff.Mode.DST
+                  scaleType = ImageView.ScaleType.CENTER_CROP
+                  padding = 0
+                }
+              }
+            }
+        }
+      }
     } else {
       // TODO Find Better solution
       holder.weekdayDateTextView.text = "Error"
       holder.dinnerItemNameTextView.text = "Error"
       holder.dinnerItemDurationTextView.text = "0"
     }
-    // TODO Init image
-    // holder.dinnerItemImageView.image =
     holder.previewButton.setOnClickListener { callbacks.onPreviewButtonClicked(it, plannerItem) }
     holder.changeButton.setOnClickListener { callbacks.onChangeButtonClicked(it, plannerItem) }
     holder.deleteButton.setOnClickListener { callbacks.onDeleteButtonClicked(it, plannerItem) }
@@ -127,9 +150,12 @@ class PlannerRecyclerAdapter(private val context: Context, private val coroutine
   @InstallIn(SingletonComponent::class)
   interface PlannerRecyclerAdapterEntryPoint {
     fun getMealRepository(): MealRepository
+    fun getImageRepository(): ImageRepository
   }
 
   companion object {
+    private const val TAG = "PlannerRecyclerAdapter"
+
     private const val ITEM_TYPE = 0
     private const val PLACEHOLDER_TYPE = 1
   }
