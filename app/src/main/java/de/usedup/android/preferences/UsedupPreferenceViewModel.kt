@@ -1,4 +1,4 @@
-package de.usedup.android.settings
+package de.usedup.android.preferences
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -40,7 +40,7 @@ class UsedupPreferenceViewModel @Inject constructor(@ApplicationContext private 
       val summaryEntries = values
         .map { it.toDisplayString() }
         .enumerationJoin(context)
-      "$summaryEntries selected"
+      context.resources.getString(R.string.selected_shopping_days, summaryEntries)
     } else context.resources.getString(R.string.shopping_notification_channel_description))
   }
 

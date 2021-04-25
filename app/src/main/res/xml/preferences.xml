@@ -7,7 +7,7 @@
             android:key="shopping_weekdays"
             android:summary="@string/shopping_weekdays_summary"
             android:title="@string/shopping_weekdays_title" />
-    <de.usedup.android.settings.TimePreference
+    <de.usedup.android.preferences.TimePreference
             android:icon="@drawable/clock_icon"
             android:key="dinner_time"
             android:summary="@string/dinner_time_summary"

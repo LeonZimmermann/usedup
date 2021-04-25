@@ -91,8 +91,13 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
       drawer.closeDrawer(navigation_view)
       true
     }
-    R.id.settings_option -> {
-      navController.navigate(R.id.action_global_settings_fragment)
+    R.id.account_option -> {
+      navController.navigate(R.id.action_global_account_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.preference_option -> {
+      navController.navigate(R.id.action_global_preference_fragment)
       drawer.closeDrawer(navigation_view)
       true
     }

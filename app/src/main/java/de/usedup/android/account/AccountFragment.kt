@@ -1,4 +1,4 @@
-package de.usedup.android.settings
+package de.usedup.android.account
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,15 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.activities.main.MainActivity
-import de.usedup.android.databinding.UsedupSettingsFragmentBinding
+import de.usedup.android.databinding.AccountFragmentBinding
 
 @AndroidEntryPoint
-class UsedupSettingsFragment : Fragment() {
+class AccountFragment : Fragment() {
 
-  private val viewModel: UsedupSettingsViewModel by viewModels()
+  private val viewModel: AccountViewModel by viewModels()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    return inflater.inflate(R.layout.usedup_settings_fragment, container, false)
+    return inflater.inflate(R.layout.account_fragment, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,7 +32,7 @@ class UsedupSettingsFragment : Fragment() {
   }
 
   private fun initDatabinding() {
-    val binding = UsedupSettingsFragmentBinding.bind(requireView())
+    val binding = AccountFragmentBinding.bind(requireView())
     binding.lifecycleOwner = this
     binding.viewModel = viewModel
   }
@@ -63,6 +63,7 @@ class UsedupSettingsFragment : Fragment() {
   }
 
   companion object {
-    fun newInstance() = UsedupSettingsFragment()
+    fun newInstance() = AccountFragment()
   }
+
 }

@@ -92,12 +92,12 @@
             android:id="@+id/action_global_shopping_fragment"
             app:destination="@id/shopping_list_preview_fragment" />
     <fragment
-            android:id="@+id/settings_fragment"
-            android:name="de.usedup.android.settings.UsedupSettingsFragment"
-            android:label="@string/settings_label" />
+            android:id="@+id/preference_fragment"
+            android:name="de.usedup.android.preferences.PreferenceFragment"
+            android:label="@string/preference_label" />
     <action
-            android:id="@+id/action_global_settings_fragment"
-            app:destination="@id/settings_fragment" />
+            android:id="@+id/action_global_preference_fragment"
+            app:destination="@id/preference_fragment" />
     <fragment
             android:id="@+id/planner_fragment"
             android:name="de.usedup.android.planner.PlannerFragment"
@@ -155,4 +155,9 @@
             android:name="de.usedup.android.household.HouseholdFragment"
             android:label="@string/household_label"
             tools:layout="@layout/household_fragment" /><action android:id="@+id/action_global_household_fragment" app:destination="@id/household_fragment"/>
+    <fragment
+            android:id="@+id/account_fragment"
+            android:name="de.usedup.android.account.AccountFragment"
+            android:label="@string/account" />
+    <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
 </navigation>

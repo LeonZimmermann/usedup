@@ -26,7 +26,7 @@
     <string name="ingredients">Zutaten</string>
     <string name="add_ingredients">Zutaten hinzufügen</string>
     <string name="category">Kategorie</string>
-    <string name="settings">Einstellungen</string>
+    <string name="preferences">Einstellungen</string>
     <string name="register_with_email">Mit Email registrieren</string>
     <string name="register">Registrieren</string>
     <string name="or">oder</string>
@@ -88,7 +88,7 @@
     <string name="edit_meal_label">Gericht bearbeiten</string>
     <string name="edit_product_label">Produkt bearbeiten</string>
     <string name="edit_template_label">Vorlage bearbeiten</string>
-    <string name="settings_label">Einstellungen</string>
+    <string name="preference_label">Einstellungen</string>
     <string name="planning_label">Gerichteplanung</string>
     <string name="meal_label">Gericht</string>
     <string name="select_meal_label">Gericht auswählen</string>
@@ -103,4 +103,6 @@
     <string name="shopping_weekdays_title">Tage zum Einkaufen</string>
     <string name="dinner_time_summary">Gib eine Zeit an, zu der du üblicherweise zu Abend isst</string>
     <string name="dinner_time_title">Zeit für Abendessen</string>
+    <string name="account">Account</string>
+    <string name="selected_shopping_days">%1$s ausgewählt</string>
 </resources>

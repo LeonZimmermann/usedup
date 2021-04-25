@@ -1,6 +1,5 @@
-package de.usedup.android.settings
+package de.usedup.android.account
 
-import android.content.Context
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
@@ -8,12 +7,10 @@ import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class UsedupSettingsViewModel @Inject constructor(@ApplicationContext private val context: Context) :
-  ViewModel() {
+class AccountViewModel @Inject constructor() : ViewModel() {
 
   private val authentication = FirebaseAuth.getInstance()
 

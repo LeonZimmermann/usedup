@@ -1,10 +1,9 @@
-package de.usedup.android.settings
+package de.usedup.android.preferences
 
 import android.os.Bundle
 import android.view.View
 import android.widget.TimePicker
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat

@@ -1,4 +1,4 @@
-package de.usedup.android.settings
+package de.usedup.android.preferences
 
 import android.app.Dialog
 import android.app.TimePickerDialog

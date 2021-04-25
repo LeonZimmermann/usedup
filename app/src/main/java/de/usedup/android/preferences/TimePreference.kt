@@ -1,4 +1,4 @@
-package de.usedup.android.settings
+package de.usedup.android.preferences
 
 import android.content.Context
 import android.os.Parcel
