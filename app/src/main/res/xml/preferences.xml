@@ -2,14 +2,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <MultiSelectListPreference
             android:dialogIcon="@drawable/calendar_icon"
-            android:dialogTitle="Select Shopping Weekdays"
+            android:dialogTitle="@string/shopping_weekdays_dialog_title"
             android:icon="@drawable/calendar_icon"
             android:key="shopping_weekdays"
-            android:summary="Select the weekdays on which you go shopping"
-            android:title="Shopping Weekdays" />
+            android:summary="@string/shopping_weekdays_summary"
+            android:title="@string/shopping_weekdays_title" />
     <de.usedup.android.settings.TimePreference
             android:icon="@drawable/clock_icon"
             android:key="dinner_time"
-            android:summary="Select the time at which you usually eat for dinner"
-            android:title="Dinner Time" />
+            android:summary="@string/dinner_time_summary"
+            android:title="@string/dinner_time_title" />
+    <SwitchPreference
+        android:icon="@drawable/info_icon"
+        android:key="display_info"
+        android:summary="@string/display_info_summary"
+        android:title="@string/display_info_title"/>
 </PreferenceScreen>

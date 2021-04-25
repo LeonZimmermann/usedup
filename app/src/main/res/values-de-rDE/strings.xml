@@ -94,4 +94,13 @@
     <string name="select_meal_label">Gericht auswählen</string>
     <string name="shopping_list_label">Einkaufsliste</string>
     <string name="household_label">Haushalt</string>
+    <string name="discard">Verwerfen</string>
+    <string name="accept">Akzeptieren</string>
+    <string name="display_info_summary">Gibt an, ob Infoboxen angezeigt werden sollen</string>
+    <string name="display_info_title">Infoboxen</string>
+    <string name="shopping_weekdays_dialog_title">Tage zum Einkaufen wählen</string>
+    <string name="shopping_weekdays_summary">Wähle aus, an welchen Tagen du einkaufen gehen möchtest</string>
+    <string name="shopping_weekdays_title">Tage zum Einkaufen</string>
+    <string name="dinner_time_summary">Gib eine Zeit an, zu der du üblicherweise zu Abend isst</string>
+    <string name="dinner_time_title">Zeit für Abendessen</string>
 </resources>

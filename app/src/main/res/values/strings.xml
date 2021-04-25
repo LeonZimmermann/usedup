@@ -104,4 +104,11 @@
     <string name="household_label">Household</string>
     <string name="discard">Discard</string>
     <string name="accept">Accept</string>
+    <string name="display_info_summary">Whether or not you want the info boxes to show</string>
+    <string name="display_info_title">Info Boxes</string>
+    <string name="shopping_weekdays_dialog_title">Select Shopping Weekdays</string>
+    <string name="shopping_weekdays_summary">Select the weekdays on which you go shopping</string>
+    <string name="shopping_weekdays_title">Shopping Weekdays</string>
+    <string name="dinner_time_summary">Select the time at which you usually eat for dinner</string>
+    <string name="dinner_time_title">Dinner Time</string>
 </resources>
