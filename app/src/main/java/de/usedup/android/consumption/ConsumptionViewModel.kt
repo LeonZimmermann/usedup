@@ -157,10 +157,10 @@ class ConsumptionViewModel @Inject constructor(
     currentQuantityText.postValue("")
   }
 
-  override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+  override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
     viewModelScope.launch {
       if (mode.value == Mode.PRODUCT) {
-        val product = productRepository.getProductForName(productNameList.value!![position])
+        val product = productRepository.getProductForName(parent.getItemAtPosition(position) as String)
         if (product != null) {
           val productMeasure = measureRepository.getMeasureForId(product.measureId)
           if (productMeasure != null) {
