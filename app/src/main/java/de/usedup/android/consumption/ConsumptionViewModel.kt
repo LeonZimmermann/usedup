@@ -14,6 +14,7 @@ import de.usedup.android.datamodel.api.repositories.MealRepository
 import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.TemplateRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
+import de.usedup.android.utils.toFloatFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -49,6 +50,8 @@ class ConsumptionViewModel @Inject constructor(
   val measureText: MutableLiveData<String> = MutableLiveData()
   val measureInputType: MutableLiveData<Int> = MutableLiveData(InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE)
 
+  val currentQuantityText: MutableLiveData<String> = MutableLiveData("")
+
   val errorMessage: MutableLiveData<String> = MutableLiveData()
 
   val mode = MutableLiveData<Mode>()
@@ -63,6 +66,7 @@ class ConsumptionViewModel @Inject constructor(
       Mode.TEMPLATE -> templateNameList
       Mode.MEAL -> mealNameList
     }
+    clearInputs()
     this.mode.value = mode
     this.mappedNameList.value = nameList
     nameHint.postValue(context.getString(mode.hintStringId))
@@ -150,6 +154,7 @@ class ConsumptionViewModel @Inject constructor(
     quantityText.postValue("")
     measureText.postValue("")
     measureNameList.postValue(listOf())
+    currentQuantityText.postValue("")
   }
 
   override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -161,9 +166,11 @@ class ConsumptionViewModel @Inject constructor(
           if (productMeasure != null) {
             val measureList = measures.filter { it.type == productMeasure.type }.map { it.name }
             this@ConsumptionViewModel.measureNameList.value = measureList
-            measureText.value = if (measureList.size > 1) "" else productMeasure.name
-            measureInputType.value = if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0
+            measureText.postValue(if (measureList.size > 1) "" else productMeasure.name)
+            measureInputType.postValue(if (measureList.size > 1) InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE else 0)
             quantityInputFieldFocus.postValue(true)
+            currentQuantityText.postValue(context.resources.getString(R.string.current_quantity_message, product.name,
+              product.quantity.toFloatFormat()))
           }
         }
       }

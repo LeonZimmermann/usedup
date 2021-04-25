@@ -143,7 +143,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quantity_input_wrapper" />
+                app:layout_constraintTop_toBottomOf="@+id/current_quantity_tv" />
 
         <TextView
                 android:id="@+id/title"
@@ -166,6 +166,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/product_mode_button"
                 app:text="@string/consumption_info" />
+
+        <TextView
+                android:id="@+id/current_quantity_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{viewModel.currentQuantityText}"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/itemTextSizeSmall"
+                android:visibility="@{viewModel.currentQuantityText.empty ? View.GONE : View.VISIBLE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/quantity_input_wrapper"
+                tools:text="Current quantity of product is 5.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
