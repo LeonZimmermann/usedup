@@ -113,4 +113,8 @@
     <string name="dinner_time_title">Dinner Time</string>
     <string name="account">Account</string>
     <string name="selected_shopping_days">%1$s selected</string>
+    <string name="history">History</string>
+    <string name="statistics">Statistics</string>
+    <string name="read_more">Read more</string>
+    <string name="coming_soon">Coming soon</string>
 </resources>

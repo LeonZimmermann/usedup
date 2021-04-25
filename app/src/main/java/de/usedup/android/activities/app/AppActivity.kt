@@ -1,5 +1,7 @@
 package de.usedup.android.activities.app
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
@@ -88,6 +91,24 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     }
     R.id.management_option -> {
       navController.navigate(R.id.action_global_management)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.statistics_option -> {
+      Snackbar.make(container, getString(R.string.coming_soon), Snackbar.LENGTH_LONG)
+        .setAction(R.string.read_more) {
+          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://usedup.de")))
+        }
+        .show()
+      drawer.closeDrawer(navigation_view)
+      true
+    }
+    R.id.history_option -> {
+      Snackbar.make(container, getString(R.string.coming_soon), Snackbar.LENGTH_LONG)
+        .setAction(R.string.read_more) {
+          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://usedup.de")))
+        }
+        .show()
       drawer.closeDrawer(navigation_view)
       true
     }

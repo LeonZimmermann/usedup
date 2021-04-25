@@ -21,6 +21,14 @@
                         android:id="@+id/management_option"
                         android:icon="@drawable/management_icon"
                         android:title="@string/management" />
+                <item
+                        android:id="@+id/statistics_option"
+                        android:icon="@drawable/statistics_icon"
+                        android:title="@string/statistics" />
+                <item
+                        android:id="@+id/history_option"
+                        android:icon="@drawable/history_icon"
+                        android:title="@string/history" />
             </group>
         </menu>
     </item>
