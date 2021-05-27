@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.ShoppingListPreviewFragmentBinding
 import kotlinx.android.synthetic.main.shopping_list_preview_fragment.*
-import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 
 @AndroidEntryPoint
 class ShoppingListPreviewFragment : Fragment() {

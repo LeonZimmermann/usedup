@@ -13,9 +13,7 @@ import de.usedup.android.datamodel.api.repositories.MeasureRepository
 import de.usedup.android.datamodel.api.repositories.PlannerRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
 import de.usedup.android.shopping.data.ShoppingProduct
-import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

@@ -120,4 +120,6 @@
     <string name="current_quantity_message">Current quantity of %1$s is %2$s</string>
     <string name="no_wifi_message">It seems like you don\'t have your Wifi activated. Changes you make will take no effect, while you are offline.</string>
     <string name="enable_wifi">Enable Wifi</string>
+    <string name="admin">Admin</string>
+    <string name="member">Member</string>
 </resources>
