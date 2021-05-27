@@ -5,11 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.R
-import de.usedup.android.navigation.NavigationStateHolder
+import de.usedup.android.modules.ConnectionStateHolder
+import de.usedup.android.modules.NavigationStateHolder
 import javax.inject.Inject
 
 @HiltViewModel
-class AppActivityViewModel @Inject constructor(private val navigationStateHolder: NavigationStateHolder) : ViewModel() {
+class AppActivityViewModel @Inject constructor(
+  private val navigationStateHolder: NavigationStateHolder,
+  private val connectionStateHolder: ConnectionStateHolder,
+) : ViewModel() {
+
+  fun setConnectionState(hasConnection: Boolean) {
+    connectionStateHolder.hasConnection.postValue(hasConnection)
+  }
 
   fun saveNavigationState(navController: NavController) {
     navigationStateHolder.navControllerState = navController.saveState()

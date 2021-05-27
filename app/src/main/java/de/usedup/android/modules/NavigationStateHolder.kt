@@ -1,4 +1,4 @@
-package de.usedup.android.navigation
+package de.usedup.android.modules
 
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData

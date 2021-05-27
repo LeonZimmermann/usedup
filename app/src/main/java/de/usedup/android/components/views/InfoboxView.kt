@@ -23,7 +23,7 @@ class InfoboxView @JvmOverloads constructor(
     }
     context.theme.obtainStyledAttributes(attrs, R.styleable.InfoboxView, defStyleAttr, defStyleRes).apply {
       try {
-        view.info_text.text = getString(R.styleable.InfoboxView_text)
+        view.info_text.text = getString(R.styleable.InfoboxView_info_text)
       } finally {
         recycle()
       }

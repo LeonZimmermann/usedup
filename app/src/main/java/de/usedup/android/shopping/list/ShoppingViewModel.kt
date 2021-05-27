@@ -8,7 +8,7 @@ import de.usedup.android.R
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.repositories.CategoryRepository
 import de.usedup.android.datamodel.api.repositories.product.ProductRepository
-import de.usedup.android.navigation.NavigationStateHolder
+import de.usedup.android.modules.NavigationStateHolder
 import de.usedup.android.shopping.data.ShoppingCart
 import de.usedup.android.shopping.data.ShoppingList
 import de.usedup.android.shopping.data.ShoppingProduct

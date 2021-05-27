@@ -165,7 +165,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/product_mode_button"
-                app:text="@string/consumption_info" />
+                app:info_text="@string/consumption_info" />
 
         <TextView
                 android:id="@+id/current_quantity_tv"

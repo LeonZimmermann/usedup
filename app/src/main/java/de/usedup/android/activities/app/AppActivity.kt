@@ -1,7 +1,11 @@
 package de.usedup.android.activities.app
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -33,11 +37,19 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
   private lateinit var appBarConfiguration: AppBarConfiguration
   private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
+  private val wifiStatusReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+      viewModel.setConnectionState((getSystemService(WIFI_SERVICE) as WifiManager).isWifiEnabled)
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.app_activity)
     setSupportActionBar(toolbar)
     initNavigation()
+    registerReceiver(wifiStatusReceiver, IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION))
+    viewModel.setConnectionState((getSystemService(WIFI_SERVICE) as WifiManager).isWifiEnabled)
   }
 
   override fun onPause() {
@@ -48,6 +60,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
   override fun onResume() {
     super.onResume()
     viewModel.restoreNavigationState(navController)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    unregisterReceiver(wifiStatusReceiver);
   }
 
   private fun initNavigation() {

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="InfoboxView">
-        <attr name="text" format="string"/>
+        <attr name="info_text" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="BannerView">
+        <attr name="banner_text" format="string"/>
+        <attr name="banner_icon" format="integer"/>
     </declare-styleable>
 </resources>
