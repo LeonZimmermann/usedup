@@ -10,7 +10,7 @@
                 type="de.usedup.android.shopping.list.ShoppingViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <de.usedup.android.components.base.UsedupContainer
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:keepScreenOn="true"
@@ -18,7 +18,7 @@
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +61,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </de.usedup.android.components.base.UsedupContainer>
 
 </layout>

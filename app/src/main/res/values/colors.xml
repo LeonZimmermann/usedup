@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#1C4826</color>
     <color name="colorAccent">#ef5350</color>
 
+    <color name="alert">#FFE8AD</color>
+
     <!-- Text -->
     <color name="listItemTextColor">#555555</color>
 

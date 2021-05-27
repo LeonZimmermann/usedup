@@ -4,11 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:elevation="15dp"
-        android:padding="37dp"
         android:layout_margin="0dp"
-        android:clipToPadding="false">
+        android:background="@color/alert"
+        android:clipToPadding="false"
+        android:elevation="15dp"
+        android:paddingTop="15dp"
+        android:paddingLeft="37dp"
+        android:paddingRight="37dp"
+        android:paddingBottom="15dp">
 
     <TextView
             android:id="@+id/message_tv"
@@ -16,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/itemTextSizeMedium"
+            android:textSize="@dimen/itemTextSizeSmall"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/icon_image"
             app:layout_constraintTop_toTopOf="@+id/icon_image"
@@ -26,17 +29,19 @@
             android:id="@+id/icon_image"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:tint="@android:color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:tint="@android:color/black"
             tools:srcCompat="@drawable/about_icon" />
 
     <Button
             android:id="@+id/positive_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            android:minHeight="25dp"
             android:text="@string/enable_wifi"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/message_tv" />
 
@@ -45,8 +50,10 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="5dp"
+            android:minHeight="25dp"
             android:text="@string/discard"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/positive_button"
             app:layout_constraintEnd_toStartOf="@+id/positive_button"
             app:layout_constraintTop_toTopOf="@+id/positive_button" />
