@@ -122,4 +122,7 @@
     <string name="enable_wifi">Enable Wifi</string>
     <string name="admin">Admin</string>
     <string name="member">Member</string>
+    <string name="permissions">Permissions</string>
+    <string name="add_permissions">Add Permissions</string>
+    <string name="remove_from_household">Remove from Household</string>
 </resources>

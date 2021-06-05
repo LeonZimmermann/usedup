@@ -154,10 +154,19 @@
             android:id="@+id/household_fragment"
             android:name="de.usedup.android.household.HouseholdFragment"
             android:label="@string/household_label"
-            tools:layout="@layout/household_fragment" /><action android:id="@+id/action_global_household_fragment" app:destination="@id/household_fragment"/>
+            tools:layout="@layout/household_fragment" >
+        <action
+                android:id="@+id/action_household_fragment_to_member_fragment"
+                app:destination="@id/member_fragment" />
+    </fragment><action android:id="@+id/action_global_household_fragment" app:destination="@id/household_fragment"/>
     <fragment
             android:id="@+id/account_fragment"
             android:name="de.usedup.android.account.AccountFragment"
             android:label="@string/account" />
     <action android:id="@+id/action_global_account_fragment" app:destination="@id/account_fragment" />
+    <fragment
+            android:id="@+id/member_fragment"
+            android:name="de.usedup.android.member.MemberFragment"
+            android:label="@string/member"
+            tools:layout="@layout/member_fragment" />
 </navigation>

@@ -4,8 +4,11 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HouseholdViewModel : ViewModel(), HouseholdMemberRecyclerAdapter.Callback {
+@HiltViewModel
+class HouseholdViewModel @Inject constructor() : ViewModel(), HouseholdMemberRecyclerAdapter.Callback {
 
   val householdMembers: MutableLiveData<Collection<HouseholdMemberRepresentation>> by lazy {
     MutableLiveData(listOf(
@@ -16,9 +19,11 @@ class HouseholdViewModel : ViewModel(), HouseholdMemberRecyclerAdapter.Callback 
     ))
   }
 
+  val memberPreview: MutableLiveData<HouseholdMemberRepresentation?> = MutableLiveData()
+
   override fun onPreviewButtonClicked(adapter: HouseholdMemberRecyclerAdapter, index: Int, view: View,
     householdMemberRepresentation: HouseholdMemberRepresentation) {
-    Snackbar.make(view, "TODO: ${householdMemberRepresentation.name} preview requested", Snackbar.LENGTH_LONG).show()
+    memberPreview.postValue(householdMemberRepresentation)
   }
 
   fun onAddUserButtonClicked(view: View) {

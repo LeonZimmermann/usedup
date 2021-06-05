@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.HouseholdFragmentBinding
 import kotlinx.android.synthetic.main.household_fragment.*
 
+@AndroidEntryPoint
 class HouseholdFragment : Fragment() {
 
   private val viewModel: HouseholdViewModel by viewModels()
@@ -26,6 +29,7 @@ class HouseholdFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     initDatabinding()
     initHouseholdMemberAdapter()
+    initMemberPreviewCallback()
   }
 
   private fun initDatabinding() {
@@ -40,6 +44,15 @@ class HouseholdFragment : Fragment() {
     users_recyclerview.layoutManager = LinearLayoutManager(requireContext())
     viewModel.householdMembers.observe(viewLifecycleOwner) { householdMembers ->
       householdMemberAdapter.initHouseholdMembers(householdMembers)
+    }
+  }
+
+  private fun initMemberPreviewCallback() {
+    viewModel.memberPreview.observe(viewLifecycleOwner) { memberPreview ->
+      if (memberPreview != null) {
+        findNavController().navigate(R.id.action_household_fragment_to_member_fragment)
+        viewModel.memberPreview.postValue(null)
+      }
     }
   }
 
