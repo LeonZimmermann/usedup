@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="de.usedup.android.household.HouseholdMemberRepresentation.Role" />
+
         <variable
                 name="viewModel"
                 type="de.usedup.android.member.MemberViewModel" />
@@ -49,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="37dp"
                 android:layout_marginEnd="37dp"
-                android:text="@{viewModel.member.role.ressourceId}"
+                android:text="@{viewModel.member.role}"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/itemTextSizeMedium"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,6 +120,7 @@
                 android:backgroundTint="@color/negative"
                 android:onClick="@{(view) -> viewModel.onRemoveClicked(view)}"
                 android:text="@string/remove_from_household"
+                android:visibility="@{viewModel.member.role == Role.MEMBER ? View.VISIBLE : View.GONE}"
                 app:icon="@drawable/cross_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

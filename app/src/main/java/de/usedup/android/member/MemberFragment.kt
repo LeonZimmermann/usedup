@@ -9,11 +9,19 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.MemberFragmentBinding
+import de.usedup.android.datamodel.api.objects.Id
 
 @AndroidEntryPoint
 class MemberFragment : Fragment() {
 
   private val viewModel: MemberViewModel by viewModels()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    arguments?.apply {
+      viewModel.setMember(getSerializable(MEMBER_ID) as Id)
+    }
+  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?): View? {
@@ -32,6 +40,8 @@ class MemberFragment : Fragment() {
   }
 
   companion object {
+    const val MEMBER_ID = "member_id"
+
     fun newInstance() = MemberFragment()
   }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.HouseholdFragmentBinding
+import de.usedup.android.member.MemberFragment
 import kotlinx.android.synthetic.main.household_fragment.*
 
 @AndroidEntryPoint
@@ -50,7 +52,9 @@ class HouseholdFragment : Fragment() {
   private fun initMemberPreviewCallback() {
     viewModel.memberPreview.observe(viewLifecycleOwner) { memberPreview ->
       if (memberPreview != null) {
-        findNavController().navigate(R.id.action_household_fragment_to_member_fragment)
+        findNavController().navigate(R.id.action_household_fragment_to_member_fragment, bundleOf(
+          MemberFragment.MEMBER_ID to memberPreview.id
+        ))
         viewModel.memberPreview.postValue(null)
       }
     }

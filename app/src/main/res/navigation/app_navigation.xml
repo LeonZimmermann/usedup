@@ -168,5 +168,9 @@
             android:id="@+id/member_fragment"
             android:name="de.usedup.android.member.MemberFragment"
             android:label="@string/member"
-            tools:layout="@layout/member_fragment" />
+            tools:layout="@layout/member_fragment" >
+        <argument
+                android:name="member_id"
+                app:argType="de.usedup.android.datamodel.api.objects.Id" />
+    </fragment>
 </navigation>

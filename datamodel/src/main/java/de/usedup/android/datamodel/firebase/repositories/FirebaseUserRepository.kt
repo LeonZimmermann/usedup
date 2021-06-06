@@ -13,6 +13,7 @@ import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseUser
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -53,6 +54,14 @@ object FirebaseUserRepository : UserRepository {
       }
     } else {
       requireNotNull(currentUser)
+    }
+  }
+
+  override fun getUser(id: Id): Single<User> {
+    return Single.fromCallable {
+      val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+      val result = document.toObject<FirebaseUser>() ?: throw NoSuchElementException()
+      User.createInstance(result)
     }
   }
 

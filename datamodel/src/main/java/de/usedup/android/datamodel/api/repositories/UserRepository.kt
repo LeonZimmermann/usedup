@@ -3,6 +3,7 @@ package de.usedup.android.datamodel.api.repositories
 import de.usedup.android.datamodel.api.objects.Id
 import de.usedup.android.datamodel.api.objects.User
 import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Single
 import java.io.IOException
 
 interface UserRepository {
@@ -14,6 +15,8 @@ interface UserRepository {
 
   @Throws(IOException::class)
   suspend fun getCurrentUser(): User
+
+  fun getUser(id: Id): Single<User>
 
   fun getUsersFlowable(ids: Set<Id>): Flowable<User>
 

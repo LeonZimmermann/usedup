@@ -29,7 +29,7 @@ class HouseholdViewModel @Inject constructor(
           val role = if (household.adminId == user.id) HouseholdMemberRepresentation.Role.ADMIN
           else HouseholdMemberRepresentation.Role.MEMBER
           val householdMemberList = requireNotNull(householdMembers.value)
-          householdMemberList.add(HouseholdMemberRepresentation(user.photoUrl, user.name, role))
+          householdMemberList.add(HouseholdMemberRepresentation(user.id, user.photoUrl, user.name, role))
           this.householdMembers.postValue(householdMemberList)
         }
     }
