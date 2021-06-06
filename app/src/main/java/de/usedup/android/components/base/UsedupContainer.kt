@@ -36,9 +36,13 @@ class UsedupContainer : ConstraintLayout {
     this.wrapper = inflate(context, R.layout.usedup_fragment, this)
     wrapper.bannerView.onPositiveClicked { context.startActivity(Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)) }
     wrapper.bannerView.onNegativeClicked { bannerView.visibility = View.GONE }
+  }
+
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
     findViewTreeLifecycleOwner()?.let {
       connectionStateHolder.hasConnection.observe(it) { hasConnection ->
-        wrapper.bannerView.visibility = if (hasConnection) View.GONE else View.VISIBLE
+        wrapper?.bannerView?.visibility = if (hasConnection) View.GONE else View.VISIBLE
       }
     }
   }
