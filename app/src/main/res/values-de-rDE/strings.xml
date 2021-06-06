@@ -112,4 +112,7 @@
     <string name="current_quantity_message">Aktueller Bestand von %1$s beträgt %2$s</string>
     <string name="no_internet_message">Du hast keine Internetverbindung. Änderungen werden nicht übernommen.</string>
     <string name="open_settings">Einstellungen öffnen</string>
+    <string name="admin">Admin</string>
+    <string name="member">Mitglied</string>
+    <string name="remove_from_household">Aus Haushalt entfernen</string>
 </resources>
