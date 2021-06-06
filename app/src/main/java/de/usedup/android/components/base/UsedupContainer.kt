@@ -3,6 +3,7 @@ package de.usedup.android.components.base
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WifiManager
+import android.provider.Settings
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,7 @@ class UsedupContainer : ConstraintLayout {
     this.entryPoint = EntryPointAccessors.fromApplication(context, UsedupContainerEntryPoint::class.java)
     this.connectionStateHolder = entryPoint.getConnectionStateHolder()
     this.wrapper = inflate(context, R.layout.usedup_fragment, this)
-    wrapper.bannerView.onPositiveClicked { context.startActivity(Intent(WifiManager.ACTION_PICK_WIFI_NETWORK)) }
+    wrapper.bannerView.onPositiveClicked { context.startActivity(Intent(Settings.ACTION_SETTINGS)) }
     wrapper.bannerView.onNegativeClicked { bannerView.visibility = View.GONE }
   }
 

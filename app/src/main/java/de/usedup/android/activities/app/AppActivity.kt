@@ -4,14 +4,18 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.Network
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -26,6 +30,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import kotlinx.android.synthetic.main.app_activity.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 
 @AndroidEntryPoint
@@ -37,9 +46,35 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
   private lateinit var appBarConfiguration: AppBarConfiguration
   private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
+  private lateinit var connectivityManager: ConnectivityManager
+
+  private val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
+    override fun onAvailable(network: Network) {
+      updateInternetConnectionStatus()
+    }
+
+    override fun onLost(network: Network) {
+      updateInternetConnectionStatus()
+    }
+  }
+
   private val wifiStatusReceiver: BroadcastReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-      viewModel.setConnectionState((getSystemService(WIFI_SERVICE) as WifiManager).isWifiEnabled)
+      updateInternetConnectionStatus()
+    }
+  }
+
+  fun updateInternetConnectionStatus() = lifecycleScope.launch(Dispatchers.IO) {
+    try {
+      val googleConnection: HttpsURLConnection = URL("https://www.google.com").openConnection() as HttpsURLConnection
+      googleConnection.setRequestProperty("User-Agent", "Test")
+      googleConnection.setRequestProperty("Connection", "close")
+      googleConnection.connectTimeout = 1500
+      googleConnection.connect()
+      viewModel.setConnectionState(googleConnection.responseCode == 200)
+    } catch (e: IOException) {
+      Log.e(TAG, "Error checking internet connection", e)
+      viewModel.setConnectionState(false)
     }
   }
 
@@ -48,6 +83,8 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     setContentView(R.layout.app_activity)
     setSupportActionBar(toolbar)
     initNavigation()
+    connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+    connectivityManager.registerDefaultNetworkCallback(networkCallback)
     registerReceiver(wifiStatusReceiver, IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION))
     viewModel.setConnectionState((getSystemService(WIFI_SERVICE) as WifiManager).isWifiEnabled)
   }
@@ -64,6 +101,7 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
   override fun onDestroy() {
     super.onDestroy()
+    connectivityManager.unregisterNetworkCallback(networkCallback)
     unregisterReceiver(wifiStatusReceiver);
   }
 
@@ -149,5 +187,9 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
   override fun onSupportNavigateUp(): Boolean {
     return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+  }
+
+  companion object {
+    const val TAG = "AppActivity"
   }
 }

@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/icon_image"
             app:layout_constraintTop_toTopOf="@+id/icon_image"
-            tools:text="@string/no_wifi_message" />
+            tools:text="@string/no_internet_message" />
 
     <ImageView
             android:id="@+id/icon_image"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:minHeight="25dp"
-            android:text="@string/enable_wifi"
+            android:text="@string/open_settings"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/message_tv" />
