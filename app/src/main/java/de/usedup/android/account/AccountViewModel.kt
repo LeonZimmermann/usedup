@@ -4,13 +4,19 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.usedup.android.datamodel.api.repositories.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor() : ViewModel() {
+class AccountViewModel @Inject constructor(
+  private val userRepository: UserRepository,
+) : ViewModel() {
 
   private val authentication = FirebaseAuth.getInstance()
 
@@ -23,14 +29,11 @@ class AccountViewModel @Inject constructor() : ViewModel() {
   val navigateUp: MutableLiveData<Boolean> = MutableLiveData()
 
   init {
-    try {
-      val user = requireNotNull(authentication.currentUser)
-      userImage.postValue(user.photoUrl?.toString())
-      userName.postValue(user.displayName)
+    viewModelScope.launch(Dispatchers.IO) {
+      val user = userRepository.getCurrentUser()
+      userImage.postValue(user.photoUrl)
+      userName.postValue(user.name)
       userEmail.postValue(user.email)
-    } catch (e: IllegalArgumentException) {
-      errorMessage.postValue("Cannot access account information")
-      navigateUp.postValue(true)
     }
   }
 

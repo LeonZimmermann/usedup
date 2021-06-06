@@ -11,6 +11,8 @@ import de.usedup.android.datamodel.api.objects.User
 import de.usedup.android.datamodel.api.repositories.UserRepository
 import de.usedup.android.datamodel.firebase.objects.FirebaseId
 import de.usedup.android.datamodel.firebase.objects.FirebaseUser
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Flowable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -35,7 +37,7 @@ object FirebaseUserRepository : UserRepository {
   private suspend fun createNewUser() = withContext(Dispatchers.IO) {
     val authUser = requireNotNull(FirebaseAuth.getInstance().currentUser)
     addUser(FirebaseId(authUser.uid), requireNotNull(authUser.displayName),
-      requireNotNull(authUser.email))
+      requireNotNull(authUser.email), authUser.photoUrl?.toString())
     FirebaseHouseholdRepository.createHousehold(getCurrentUser().id)
   }
 
@@ -54,17 +56,29 @@ object FirebaseUserRepository : UserRepository {
     }
   }
 
+  override fun getUsersFlowable(ids: Set<Id>): Flowable<User> {
+    return Flowable.create({ emitter ->
+      ids.forEach { id ->
+        val document = Tasks.await(collection.document((id as FirebaseId).value).get())
+        val result = document.toObject<FirebaseUser>() ?: throw NoSuchElementException()
+        if (emitter.isCancelled) return@forEach
+        emitter.onNext(User.createInstance(result))
+      }
+      emitter.onComplete()
+    }, BackpressureStrategy.BUFFER)
+  }
+
   fun getDocumentReferenceToCurrentUser(): DocumentReference =
     collection.document(requireNotNull(FirebaseAuth.getInstance().uid))
 
-  override suspend fun addUser(id: Id, name: String, email: String) = withContext(Dispatchers.IO) {
+  override suspend fun addUser(id: Id, name: String, email: String, photoUrl: String?) = withContext(Dispatchers.IO) {
     val firebaseUser = FirebaseUser((id as FirebaseId).value, name, email)
     val task = collection.document(id.value).set(firebaseUser).apply { Tasks.await(this) }
     if (task.exception != null) throw IOException(task.exception)
     else currentUser = User.createInstance(firebaseUser)
   }
 
-  override suspend fun updateUser(id: Id, name: String, email: String) {
+  override suspend fun updateUser(id: Id, name: String, email: String, photoUrl: String?) {
     withContext(Dispatchers.IO) {
       val data = mapOf(
         "name" to name,
@@ -73,7 +87,7 @@ object FirebaseUserRepository : UserRepository {
       val task = collection.document((id as FirebaseId).value).update(data).apply { Tasks.await(this) }
       if (task.exception != null) throw IOException(task.exception)
       else {
-        if (currentUser == null) currentUser = User(id, name, email)
+        if (currentUser == null) currentUser = User(id, name, email, photoUrl)
         else currentUser?.let {
           it.name = name
           it.email = email

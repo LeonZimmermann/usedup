@@ -43,13 +43,15 @@ class HouseholdMemberRecyclerAdapter(private val context: Context, var callback:
     householdMembers[position].apply {
       holder.userNameTextView.text = name
       holder.userRoleTextView.text = context.getString(role.ressourceId)
-      imageRepository.getImage(photoUrl)
-        .onErrorComplete()
-        .subscribe { image ->
-          Glide.with(context)
-            .load(image)
-            .into(holder.userImage)
-        }
+      photoUrl?.let {
+        imageRepository.getImage(it)
+          .onErrorComplete()
+          .subscribe { image ->
+            Glide.with(context)
+              .load(image)
+              .into(holder.userImage)
+          }
+      }
       holder.previewButton.setOnClickListener {
         callback.onPreviewButtonClicked(this@HouseholdMemberRecyclerAdapter, position, holder.itemView, this)
       }

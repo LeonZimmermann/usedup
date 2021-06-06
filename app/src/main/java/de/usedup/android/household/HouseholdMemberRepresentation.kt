@@ -3,7 +3,7 @@ package de.usedup.android.household
 import de.usedup.android.R
 
 data class HouseholdMemberRepresentation(
-  val photoUrl: String,
+  val photoUrl: String?,
   val name: String,
   val role: Role,
 ) {
