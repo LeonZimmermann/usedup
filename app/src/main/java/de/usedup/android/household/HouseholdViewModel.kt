@@ -1,8 +1,10 @@
 package de.usedup.android.household
 
+import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.facebook.internal.Mutable
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.usedup.android.datamodel.api.repositories.HouseholdRepository
@@ -14,11 +16,15 @@ import javax.inject.Inject
 class HouseholdViewModel @Inject constructor(
   householdRepository: HouseholdRepository,
   private val userRepository: UserRepository,
-) : ViewModel(), HouseholdMemberRecyclerAdapter.Callback {
+) : ViewModel(), HouseholdMemberRecyclerAdapter.Callback, EmailInputDialog.Callback {
 
   val householdMembers: MutableLiveData<MutableList<HouseholdMemberRepresentation>> = MutableLiveData(mutableListOf())
 
   val memberPreview: MutableLiveData<HouseholdMemberRepresentation?> = MutableLiveData()
+
+  val showEmailDialog: MutableLiveData<Boolean> = MutableLiveData(false)
+
+  val errorMessage: MutableLiveData<String?> = MutableLiveData(null)
 
   init {
     householdRepository.getHousehold().onErrorComplete().subscribe { household ->
@@ -41,6 +47,14 @@ class HouseholdViewModel @Inject constructor(
   }
 
   fun onAddUserButtonClicked(view: View) {
-    Snackbar.make(view, "TODO: adding user requested", Snackbar.LENGTH_LONG).show()
+    showEmailDialog.postValue(true)
+  }
+
+  override fun onPositiveButtonClicked(email: String) {
+    if (email.isNullOrBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      errorMessage.postValue("\"$email\" is not a valid email address")
+      return
+    }
+    errorMessage.postValue("TODO: Implement")
   }
 }

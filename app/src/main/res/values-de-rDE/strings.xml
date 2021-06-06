@@ -76,7 +76,7 @@
     <string name="enter_template_name">Gib einen Vorlagenamen an</string>
     <string name="enter_meal_name">Gib einen Gerichtnamen an</string>
     <string name="users">Nutzer</string>
-    <string name="add_user">Nutzer hinzufügen</string>
+    <string name="invite_user">Nutzer einladen</string>
     <string name="subscription">Abbonement</string>
     <string name="payment_method">Zahlungsmethode</string>
     <string name="household">Haushalt</string>

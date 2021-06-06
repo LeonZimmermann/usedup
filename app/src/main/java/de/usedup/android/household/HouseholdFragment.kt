@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.databinding.HouseholdFragmentBinding
@@ -32,6 +33,8 @@ class HouseholdFragment : Fragment() {
     initDatabinding()
     initHouseholdMemberAdapter()
     initMemberPreviewCallback()
+    initShowEmailDialogCallback()
+    initErrorMessageCallback()
   }
 
   private fun initDatabinding() {
@@ -56,6 +59,30 @@ class HouseholdFragment : Fragment() {
           MemberFragment.MEMBER_ID to memberPreview.id
         ))
         viewModel.memberPreview.postValue(null)
+      }
+    }
+  }
+
+  private fun initShowEmailDialogCallback() {
+    viewModel.showEmailDialog.observe(viewLifecycleOwner) { showEmailDialog ->
+      if (showEmailDialog) {
+        openEmailInputDialog()
+        viewModel.showEmailDialog.postValue(false)
+      }
+    }
+  }
+
+  private fun openEmailInputDialog() {
+    EmailInputDialog.newInstance().apply {
+      callback = viewModel
+    }.show(parentFragmentManager, "EmailInputDialog")
+  }
+
+  private fun initErrorMessageCallback() {
+    viewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+      if (!errorMessage.isNullOrBlank()) {
+        Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG).show()
+        viewModel.errorMessage.postValue(null)
       }
     }
   }

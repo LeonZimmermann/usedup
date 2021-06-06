@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:onClick="@{(view) -> viewModel.onAddUserButtonClicked(view)}"
-                    android:text="@string/add_user"
+                    android:text="@string/invite_user"
                     app:icon="@drawable/invite_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
