@@ -40,6 +40,10 @@
                         android:icon="@drawable/account_icon"
                         android:title="@string/account" />
                 <item
+                    android:id="@+id/invitations_option"
+                    android:icon="@drawable/invite_icon"
+                    android:title="Invitations"/>
+                <item
                         android:id="@+id/preference_option"
                         android:icon="@drawable/settings_icon"
                         android:title="@string/preferences" />

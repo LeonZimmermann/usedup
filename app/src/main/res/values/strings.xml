@@ -126,4 +126,8 @@
     <string name="add_permissions">Add Permissions</string>
     <string name="remove_from_household">Remove from Household</string>
     <string name="enter_email_address">Enter Email address</string>
+    <string name="change_household_warning">By changing your household you won\'t be able to access your current data anymore!</string>
+    <string name="accept_invitation">Accept Invitation</string>
+    <string name="decline_invitation">Decline Invitation</string>
+    <string name="invitation_message">%1$s invited you to their household</string>
 </resources>

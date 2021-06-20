@@ -173,4 +173,22 @@
                 android:name="member_id"
                 app:argType="de.usedup.android.datamodel.api.objects.Id" />
     </fragment>
+    <fragment
+            android:id="@+id/invitation_list_fragment"
+            android:name="de.usedup.android.invitationlist.InvitationListFragment"
+            android:label="Invitations"
+            tools:layout="@layout/invitation_list_fragment" >
+        <action
+                android:id="@+id/action_invitation_list_fragment_to_invitation_details_fragment"
+                app:destination="@id/invitation_details_fragment" />
+    </fragment>
+    <action android:id="@+id/action_global_invitation_list_fragment" app:destination="@id/invitation_list_fragment" />
+    <fragment
+            android:id="@+id/invitation_details_fragment"
+            android:name="de.usedup.android.invitationdetails.InvitationDetailsFragment"
+            android:label="Invitations" >
+        <argument
+                android:name="invitationId"
+                app:argType="de.usedup.android.datamodel.api.objects.Id" />
+    </fragment>
 </navigation>

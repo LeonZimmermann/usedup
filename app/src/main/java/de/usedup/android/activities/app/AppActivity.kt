@@ -172,6 +172,11 @@ class AppActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
       drawer.closeDrawer(navigation_view)
       true
     }
+    R.id.invitations_option -> {
+      navController.navigate(R.id.action_global_invitation_list_fragment)
+      drawer.closeDrawer(navigation_view)
+      true
+    }
     R.id.preference_option -> {
       navController.navigate(R.id.action_global_preference_fragment)
       drawer.closeDrawer(navigation_view)

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="de.usedup.android.invitationdetails.InvitationDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".invitationdetails.InvitationDetailsFragment">
+
+        <TextView
+                android:id="@+id/textView15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginTop="37dp"
+                android:layout_marginEnd="37dp"
+                android:text="@{String.format(@string/invitation_message, viewModel.invitation.name)}"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/itemTextSizeBig"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Leon Zimmermann invited you to their household" />
+
+        <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                app:imageUrl="@{viewModel.invitation.photoUrl}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                tools:src="@drawable/account_icon" />
+
+        <FrameLayout
+                android:id="@+id/consumption_fragment_component"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/card_background"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.invitation.message}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/itemTextSizeMedium"
+                    tools:text="Hey Leon, would you like to be part of my household?" />
+        </FrameLayout>
+
+        <TextView
+                android:id="@+id/textView16"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="37dp"
+                android:text="@string/change_household_warning"
+                android:textAlignment="center"
+                android:textColor="@color/negative"
+                android:textSize="@dimen/itemTextSizeMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/consumption_fragment_component" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/accept_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:onClick="@{view -> viewModel.onAcceptClicked(view)}"
+                android:text="@string/accept_invitation"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/check_icon"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/decline_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/decline_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="37dp"
+                android:backgroundTint="@color/negative"
+                android:onClick="@{view -> viewModel.onDeclineClicked(view)}"
+                android:text="@string/decline_invitation"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/cross_icon"
+                app:iconTint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
