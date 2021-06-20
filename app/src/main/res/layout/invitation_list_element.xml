@@ -13,8 +13,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/account_icon"
-            app:tint="@android:color/black" />
+            app:srcCompat="@drawable/account_icon" />
 
     <TextView
             android:id="@+id/user_name_tv"

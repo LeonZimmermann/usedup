@@ -22,7 +22,7 @@ class AccountViewModel @Inject constructor(
   private val authentication = FirebaseAuth.getInstance()
 
   val errorMessage: MutableLiveData<String> = MutableLiveData()
-  val userImage: MutableLiveData<String> = MutableLiveData()
+  val userImage: MutableLiveData<String?> = MutableLiveData()
   val userName: MutableLiveData<String> = MutableLiveData()
   val userEmail: MutableLiveData<String> = MutableLiveData()
 
