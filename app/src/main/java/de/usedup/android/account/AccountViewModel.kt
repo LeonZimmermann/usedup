@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import de.usedup.android.R
 import de.usedup.android.datamodel.api.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,9 +47,9 @@ class AccountViewModel @Inject constructor(
     @JvmStatic
     @BindingAdapter("imageUrl")
     fun loadImage(view: ImageView, url: String?) {
-      url?.let {
+      if (!url.isNullOrBlank()) {
         Glide.with(view.context)
-          .load(it)
+          .load(url)
           .circleCrop()
           .into(view)
       }

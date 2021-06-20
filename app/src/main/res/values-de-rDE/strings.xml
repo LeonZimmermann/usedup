@@ -115,4 +115,11 @@
     <string name="admin">Admin</string>
     <string name="member">Mitglied</string>
     <string name="remove_from_household">Aus Haushalt entfernen</string>
+    <string name="permissions">Befugnisse</string>
+    <string name="add_permissions">Befugnis hinzufügen</string>
+    <string name="enter_email_address">Email-Adresse eingeben</string>
+    <string name="change_household_warning">Durch einen Wechsel des Haushalts ist der aktuelle Datenbestand nicht mehr abrufbar!</string>
+    <string name="accept_invitation">Einladung annehmen</string>
+    <string name="decline_invitation">Einladung ablehnen</string>
+    <string name="invitation_message">%1$s hat dich zu seinem Haushalt eingeladen</string>
 </resources>

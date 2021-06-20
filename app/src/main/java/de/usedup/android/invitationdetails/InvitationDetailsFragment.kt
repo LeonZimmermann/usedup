@@ -20,7 +20,7 @@ class InvitationDetailsFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.apply {
-      viewModel.initInvitation(getSerializable(INVITATION_ID) as Id)
+      viewModel.setInvitationId(getSerializable(INVITATION_ID) as Id)
     }
   }
 

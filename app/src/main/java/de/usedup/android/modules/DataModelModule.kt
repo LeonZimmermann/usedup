@@ -39,4 +39,7 @@ object DataModelModule {
 
   @Provides
   fun provideImageRepository(): ImageRepository = FirebaseImageRepository
+
+  @Provides
+  fun provideInvitationRepository(): InvitationRepository = FirebaseInvitationRepository
 }
