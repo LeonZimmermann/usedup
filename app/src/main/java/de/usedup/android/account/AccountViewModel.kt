@@ -42,17 +42,4 @@ class AccountViewModel @Inject constructor(
     authentication.signOut()
     backToMainActivity.postValue(true)
   }
-
-  companion object {
-    @JvmStatic
-    @BindingAdapter("imageUrl")
-    fun loadImage(view: ImageView, url: String?) {
-      if (!url.isNullOrBlank()) {
-        Glide.with(view.context)
-          .load(url)
-          .circleCrop()
-          .into(view)
-      }
-    }
-  }
 }
