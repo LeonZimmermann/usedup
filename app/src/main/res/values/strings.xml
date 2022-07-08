@@ -130,4 +130,5 @@
     <string name="accept_invitation">Accept Invitation</string>
     <string name="decline_invitation">Decline Invitation</string>
     <string name="invitation_message">%1$s invited you to their household</string>
+    <string name="save">Save</string>
 </resources>

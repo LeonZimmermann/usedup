@@ -99,16 +99,4 @@ class TemplateEditorViewModel @Inject constructor(
     this.consumptionElementList.postValue(consumptionElementList)
     //buttonTopMargin.postValue(if (consumptionElementList.isEmpty()) lMargin else sMargin)
   }
-
-  companion object {
-    @JvmStatic
-    @BindingAdapter("android:layout_marginTop")
-    fun setLayoutMarginTop(view: TextView, marginTop: Int) {
-      if (view.layoutParams is ViewGroup.MarginLayoutParams) {
-        val p = view.layoutParams as ViewGroup.MarginLayoutParams
-        p.setMargins(p.leftMargin, marginTop, p.rightMargin, p.bottomMargin)
-        view.requestLayout()
-      }
-    }
-  }
 }

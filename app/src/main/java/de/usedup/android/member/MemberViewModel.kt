@@ -42,12 +42,4 @@ class MemberViewModel @Inject constructor(
   fun onRemoveClicked(view: View) {
 
   }
-
-  companion object {
-    @JvmStatic
-    @BindingAdapter("android:text")
-    fun setPaddingLeft(view: TextView, role: HouseholdMemberRepresentation.Role?) {
-      view.text = if (role != null) view.context.getString(role.ressourceId) else null
-    }
-  }
 }

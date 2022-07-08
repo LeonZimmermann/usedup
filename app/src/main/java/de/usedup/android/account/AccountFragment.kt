@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import de.usedup.android.R
 import de.usedup.android.activities.main.MainActivity
 import de.usedup.android.databinding.AccountFragmentBinding
+import kotlinx.android.synthetic.main.account_fragment.*
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {

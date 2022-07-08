@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="android.text.InputType" />
+
         <variable
                 name="viewModel"
                 type="de.usedup.android.account.AccountViewModel" />
@@ -32,8 +36,8 @@
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:editable="false"
+                    android:focusable="@{viewModel.editMode ? true : false}"
+                    android:inputType="@{viewModel.editMode ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
                     android:text="@{viewModel.userName}" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,14 +52,14 @@
                 android:hint="@string/email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/save_name_button">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:editable="false"
+                    android:focusable="@{viewModel.editMode ? true : false}"
+                    android:inputType="@{viewModel.editMode ? InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS : InputType.TYPE_NULL}"
                     android:text="@{viewModel.userEmail}" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,15 +77,63 @@
 
         <Button
                 android:id="@+id/logout_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="37dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="37dp"
+                android:backgroundTint="@color/negative"
                 android:onClick="@{() -> viewModel.onLogoutClicked()}"
                 android:text="@string/logout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/save_email_button" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/edit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="37dp"
+                android:layout_marginBottom="37dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:clickable="true"
+                android:onClick="@{(view) -> viewModel.onEditButtonClicked(view)}"
+                android:src="@{viewModel.editMode ? @drawable/check_icon : @drawable/edit_icon}"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+                android:id="@+id/edit_profile_image_button"
+                style="@style/RoundIconButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="5dp"
+                android:visibility="@{viewModel.editMode ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                app:srcCompat="@drawable/edit_icon"
+                app:tint="@android:color/white" />
+
+        <Button
+                android:id="@+id/save_name_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:visibility="@{viewModel.editMode ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+        <Button
+                android:id="@+id/save_email_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:visibility="@{viewModel.editMode ? View.VISIBLE : View.GONE}"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
